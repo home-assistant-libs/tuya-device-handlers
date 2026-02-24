@@ -10,6 +10,17 @@
   "commitMessagePrefix": "⬆️",
   "packageRules": [
     {
+      "matchManagers": ["pip_requirements"],
+      "matchFileNames": [".github/workflows/constraints.txt"],
+      "addLabels": ["python"]
+    },
+    {
+      "matchManagers": ["pip_requirements"],
+      "matchFileNames": [".github/workflows/constraints.txt"],
+      "matchDepTypes": ["dev"],
+      "rangeStrategy": "pin"
+    },
+    {
       "matchManagers": ["poetry"],
       "addLabels": ["python"]
     },
