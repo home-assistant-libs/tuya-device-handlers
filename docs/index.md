@@ -19,5 +19,5 @@ reference
 contributing
 Code of Conduct <codeofconduct>
 License <license>
-Changelog <https://github.com/hacf-fr/tuya-device-handlers/releases>
+Changelog <https://github.com/home-assistant-libs/tuya-device-handlers/releases>
 ```
