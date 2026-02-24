@@ -5,8 +5,8 @@
 [![License](https://img.shields.io/pypi/l/tuya-device-handlers)][license]
 
 [![Read the documentation at https://tuya-device-handlers.readthedocs.io/](https://img.shields.io/readthedocs/tuya-device-handlers/latest.svg?label=Read%20the%20Docs)][read the docs]
-[![Tests](https://github.com/hacf-fr/tuya-device-handlers/workflows/Tests/badge.svg)][tests]
-[![Codecov](https://codecov.io/gh/hacf-fr/tuya-device-handlers/branch/main/graph/badge.svg)][codecov]
+[![Tests](https://github.com/home-assistant-libs/tuya-device-handlers/workflows/Tests/badge.svg)][tests]
+[![Codecov](https://codecov.io/gh/home-assistant-libs/tuya-device-handlers/branch/main/graph/badge.svg)][codecov]
 
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)][pre-commit]
 [![ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)][ruff]
@@ -14,8 +14,8 @@
 [pypi_]: https://pypi.org/project/tuya-device-handlers/
 [python version]: https://pypi.org/project/tuya-device-handlers
 [read the docs]: https://tuya-device-handlers.readthedocs.io/
-[tests]: https://github.com/hacf-fr/tuya-device-handlers/actions?workflow=Tests
-[codecov]: https://app.codecov.io/gh/hacf-fr/tuya-device-handlers
+[tests]: https://github.com/home-assistant-libs/tuya-device-handlers/actions?workflow=Tests
+[codecov]: https://app.codecov.io/gh/home-assistant-libs/tuya-device-handlers
 [pre-commit]: https://github.com/pre-commit/pre-commit
 [ruff]: https://github.com/astral-sh/ruff
 
@@ -61,11 +61,11 @@ This project was generated from [@cjolowicz]'s [Hypermodern Python Cookiecutter]
 [@cjolowicz]: https://github.com/cjolowicz
 [pypi]: https://pypi.org/
 [hypermodern python cookiecutter]: https://github.com/cjolowicz/cookiecutter-hypermodern-python
-[file an issue]: https://github.com/hacf-fr/tuya-device-handlers/issues
+[file an issue]: https://github.com/home-assistant-libs/tuya-device-handlers/issues
 [pip]: https://pip.pypa.io/
 
 <!-- github-only -->
 
-[license]: https://github.com/hacf-fr/tuya-device-handlers/blob/main/LICENSE
-[contributor guide]: https://github.com/hacf-fr/tuya-device-handlers/blob/main/CONTRIBUTING.md
+[license]: https://github.com/home-assistant-libs/tuya-device-handlers/blob/main/LICENSE
+[contributor guide]: https://github.com/home-assistant-libs/tuya-device-handlers/blob/main/CONTRIBUTING.md
 [command-line reference]: https://tuya-device-handlers.readthedocs.io/en/latest/usage.html

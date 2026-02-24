@@ -2,11 +2,11 @@
 name = "tuya-device-handlers"
 version = "0.0.10"
 description = "Tuya quirks library"
-authors = ["epenet", "HACF <contact@hacf.fr>"]
+authors = ["epenet"]
 license = "MIT"
 readme = "README.md"
-homepage = "https://github.com/hacf-fr/tuya-device-handlers"
-repository = "https://github.com/hacf-fr/tuya-device-handlers"
+homepage = "https://github.com/home-assistant-libs/tuya-device-handlers"
+repository = "https://github.com/home-assistant-libs/tuya-device-handlers"
 documentation = "https://tuya-device-handlers.readthedocs.io"
 keywords=["tuya"]
 classifiers = [
@@ -20,7 +20,7 @@ classifiers = [
 ]
 
 [tool.poetry.urls]
-Changelog = "https://github.com/hacf-fr/tuya-device-handlers/releases"
+Changelog = "https://github.com/home-assistant-libs/tuya-device-handlers/releases"
 
 [tool.poetry.requires-plugins]
 poetry-plugin-export = ">=1.8"

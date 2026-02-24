@@ -3,7 +3,7 @@
 from datetime import datetime
 
 project = "Tuya quirks library"
-author = "HACF (created and maintained by @epenet)"
+author = "Home Assistant (created and maintained by @epenet)"
 copyright = f"{datetime.now().year}, {author}"
 extensions = [
     "sphinx.ext.autodoc",
