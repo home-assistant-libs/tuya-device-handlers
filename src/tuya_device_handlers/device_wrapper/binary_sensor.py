@@ -24,7 +24,7 @@ class DPCodeBitmapBitWrapper(DPCodeBitmapWrapper, DeviceWrapper[bool]):
 
     def read_device_status(self, device: CustomerDevice) -> bool | None:
         """Read the device value for the dpcode."""
-        if (raw_value := super().read_device_status(device)) is None:
+        if (raw_value := self._read_dpcode_value(device)) is None:
             return None
         return (raw_value & (1 << self._mask)) != 0
 

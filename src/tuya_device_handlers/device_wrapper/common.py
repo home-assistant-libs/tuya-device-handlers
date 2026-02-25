@@ -305,7 +305,7 @@ class DPCodeJsonWrapper(DPCodeTypeInformationWrapper[JsonTypeInformation]):
         """Read and process raw value against this type information."""
         if (raw_value := device.status.get(self.dpcode)) is None:
             return None
-        return json.loads(raw_value)
+        return json.loads(raw_value)  # type: ignore[no-any-return]
 
 
 class DPCodeRawWrapper(DPCodeTypeInformationWrapper[RawTypeInformation]):

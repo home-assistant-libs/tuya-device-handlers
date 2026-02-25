@@ -44,7 +44,7 @@ class WindDirectionEnumWrapper(DPCodeEnumWrapper, DeviceWrapper[float]):
 
     def read_device_status(self, device: CustomerDevice) -> float | None:
         """Read the device value for the dpcode."""
-        if (status := super()._read_dpcode_value(device)) is None:
+        if (status := self._read_dpcode_value(device)) is None:
             return None
         return self._WIND_DIRECTIONS.get(status)
 
@@ -105,7 +105,7 @@ class ElectricityCurrentJsonWrapper(DPCodeJsonWrapper, DeviceWrapper[float]):
 
     def read_device_status(self, device: CustomerDevice) -> float | None:
         """Read the device value for the dpcode."""
-        if (status := super()._read_dpcode_value(device)) is None:
+        if (status := self._read_dpcode_value(device)) is None:
             return None
         return status.get("electricCurrent")
 
@@ -117,7 +117,7 @@ class ElectricityPowerJsonWrapper(DPCodeJsonWrapper, DeviceWrapper[float]):
 
     def read_device_status(self, device: CustomerDevice) -> float | None:
         """Read the device value for the dpcode."""
-        if (status := super()._read_dpcode_value(device)) is None:
+        if (status := self._read_dpcode_value(device)) is None:
             return None
         return status.get("power")
 
@@ -129,7 +129,7 @@ class ElectricityVoltageJsonWrapper(DPCodeJsonWrapper, DeviceWrapper[float]):
 
     def read_device_status(self, device: CustomerDevice) -> float | None:
         """Read the device value for the dpcode."""
-        if (status := super()._read_dpcode_value(device)) is None:
+        if (status := self._read_dpcode_value(device)) is None:
             return None
         return status.get("voltage")
 
@@ -142,7 +142,7 @@ class ElectricityCurrentRawWrapper(DPCodeRawWrapper, DeviceWrapper[float]):
 
     def read_device_status(self, device: CustomerDevice) -> float | None:
         """Read the device value for the dpcode."""
-        if (raw_value := super()._read_dpcode_value(device)) is None or (
+        if (raw_value := self._read_dpcode_value(device)) is None or (
             value := ElectricityData.from_bytes(raw_value)
         ) is None:
             return None
@@ -157,7 +157,7 @@ class ElectricityPowerRawWrapper(DPCodeRawWrapper, DeviceWrapper[float]):
 
     def read_device_status(self, device: CustomerDevice) -> float | None:
         """Read the device value for the dpcode."""
-        if (raw_value := super()._read_dpcode_value(device)) is None or (
+        if (raw_value := self._read_dpcode_value(device)) is None or (
             value := ElectricityData.from_bytes(raw_value)
         ) is None:
             return None
@@ -171,7 +171,7 @@ class ElectricityVoltageRawWrapper(DPCodeRawWrapper, DeviceWrapper[float]):
 
     def read_device_status(self, device: CustomerDevice) -> float | None:
         """Read the device value for the dpcode."""
-        if (raw_value := super()._read_dpcode_value(device)) is None or (
+        if (raw_value := self._read_dpcode_value(device)) is None or (
             value := ElectricityData.from_bytes(raw_value)
         ) is None:
             return None
