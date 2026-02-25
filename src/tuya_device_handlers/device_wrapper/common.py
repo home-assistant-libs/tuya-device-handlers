@@ -180,7 +180,7 @@ class DPCodeBooleanWrapper[T = bool](
         return raw_value  # type: ignore[no-any-return]
 
     def _convert_value_to_raw_value(
-        self, device: CustomerDevice, value: T
+        self, device: CustomerDevice, value: Any
     ) -> Any:
         """Convert a Home Assistant value back to a raw device value."""
         if value in (True, False):
