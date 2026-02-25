@@ -20,7 +20,6 @@ from tuya_device_handlers.device_wrapper.sensor import (
     ElectricityVoltageRawWrapper,
     WindDirectionEnumWrapper,
 )
-from tuya_device_handlers.helpers.homeassistant import TuyaSensorStateClass
 
 from . import send_wrapper_update
 
@@ -34,7 +33,6 @@ def _snapshot_sensor(
     expected = {
         "native_unit": wrapper.native_unit,
         "state": wrapper.read_device_status(mock_device),
-        "state_class": wrapper.state_class,
         "suggested_unit": wrapper.suggested_unit,
     }
     for key in ("options",):
@@ -202,7 +200,6 @@ def test_delta_sensor(
 
     assert wrapper
     wrapper.initialize(mock_device)
-    assert wrapper.state_class == TuyaSensorStateClass.TOTAL_INCREASING
     assert wrapper.read_device_status(mock_device) == 0
 
     # Send delta update
