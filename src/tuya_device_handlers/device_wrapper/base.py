@@ -30,7 +30,7 @@ class DeviceWrapper[T]:
     def skip_update(
         self,
         device: CustomerDevice,
-        updated_status_properties: list[str] | None,
+        updated_status_properties: list[str],
         dp_timestamps: dict[str, int] | None = None,
     ) -> bool:
         """Determine if the wrapper should skip an update.

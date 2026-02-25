@@ -56,7 +56,7 @@ class DPCodeWrapper(DeviceWrapper[Any]):
     def skip_update(
         self,
         device: CustomerDevice,
-        updated_status_properties: list[str] | None,
+        updated_status_properties: list[str],
         dp_timestamps: dict[str, int] | None = None,
     ) -> bool:
         """Determine if the wrapper should skip an update.
@@ -64,10 +64,7 @@ class DPCodeWrapper(DeviceWrapper[Any]):
         By default, skip if updated_status_properties is not given or
         does not include this dpcode.
         """
-        return (
-            updated_status_properties is None
-            or self.dpcode not in updated_status_properties
-        )
+        return self.dpcode not in updated_status_properties
 
     def read_device_status(self, device: CustomerDevice) -> Any | None:
         """Read and process raw value against this type information.
