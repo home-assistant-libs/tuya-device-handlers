@@ -185,7 +185,11 @@ class DPCodeBooleanWrapper(
 
 
 class DPCodeEnumBaseWrapper(DPCodeTypeInformationWrapper[EnumTypeInformation]):
-    """Simple wrapper for EnumTypeInformation values."""
+    """Base wrapper for EnumTypeInformation values.
+
+    Provides typed `_read_device_status`, and `read_device_status` should be
+    implemented in subclass.
+    """
 
     _DPTYPE = EnumTypeInformation
     options: list[str]
@@ -303,7 +307,10 @@ class DPCodeIntegerWrapper(
 
 
 class DPCodeJsonBaseWrapper(DPCodeTypeInformationWrapper[JsonTypeInformation]):
-    """Simple wrapper for JsonTypeInformation values."""
+    """Base wrapper for JsonTypeInformation values.
+
+    Provides typed `_read_device_status`, and `read_device_status` should be
+    implemented in subclass."""
 
     _DPTYPE = JsonTypeInformation
 
@@ -331,7 +338,11 @@ class DPCodeJsonWrapper(DPCodeJsonBaseWrapper, DeviceWrapper[dict[str, Any]]):
 
 
 class DPCodeRawBaseWrapper(DPCodeTypeInformationWrapper[RawTypeInformation]):
-    """Simple wrapper for RawTypeInformation values."""
+    """Base wrapper for RawTypeInformation values.
+
+    Provides typed `_read_device_status`, and `read_device_status` should be
+    implemented in subclass.
+    """
 
     _DPTYPE = RawTypeInformation
 
