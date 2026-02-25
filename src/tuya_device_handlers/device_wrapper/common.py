@@ -42,7 +42,7 @@ def _should_log_warning(device_id: str, warning_key: str) -> bool:
     return True
 
 
-class DPCodeWrapper(DeviceWrapper[Any]):
+class DPCodeWrapper[T](DeviceWrapper[T]):
     """Base device wrapper for a single DPCode.
 
     Used as a common interface for referring to a DPCode, and
@@ -66,7 +66,7 @@ class DPCodeWrapper(DeviceWrapper[Any]):
         """
         return self.dpcode not in updated_status_properties
 
-    def read_device_status(self, device: CustomerDevice) -> Any | None:
+    def read_device_status(self, device: CustomerDevice) -> T | None:
         """Read device status and convert to a Home Assistant value."""
         return self._read_dpcode_value(device)
 
@@ -79,7 +79,7 @@ class DPCodeWrapper(DeviceWrapper[Any]):
         return device.status.get(self.dpcode)
 
     def _convert_value_to_raw_value(
-        self, device: CustomerDevice, value: Any
+        self, device: CustomerDevice, value: T
     ) -> Any:
         """Convert display value back to a raw device value.
 
@@ -89,7 +89,7 @@ class DPCodeWrapper(DeviceWrapper[Any]):
         raise NotImplementedError
 
     def get_update_commands(
-        self, device: CustomerDevice, value: Any
+        self, device: CustomerDevice, value: T
     ) -> list[dict[str, Any]]:
         """Get the update commands for the dpcode.
 
@@ -103,8 +103,8 @@ class DPCodeWrapper(DeviceWrapper[Any]):
         ]
 
 
-class DPCodeTypeInformationWrapper[TypeInformationT: TypeInformation](
-    DPCodeWrapper
+class DPCodeTypeInformationWrapper[TypeInformationT: TypeInformation, T](
+    DPCodeWrapper[T]
 ):
     """Base DPCode wrapper with Type Information."""
 
@@ -135,7 +135,9 @@ class DPCodeTypeInformationWrapper[TypeInformationT: TypeInformation](
         return None
 
 
-class DPCodeBitmapWrapper(DPCodeTypeInformationWrapper[BitmapTypeInformation]):
+class DPCodeBitmapWrapper[T = int](
+    DPCodeTypeInformationWrapper[BitmapTypeInformation, T]
+):
     """Simple wrapper for BitmapTypeInformation values."""
 
     _DPTYPE = BitmapTypeInformation
@@ -149,8 +151,8 @@ class DPCodeBitmapWrapper(DPCodeTypeInformationWrapper[BitmapTypeInformation]):
         return raw_value
 
 
-class DPCodeBooleanWrapper(
-    DPCodeTypeInformationWrapper[BooleanTypeInformation]
+class DPCodeBooleanWrapper[T = bool](
+    DPCodeTypeInformationWrapper[BooleanTypeInformation, T]
 ):
     """Simple wrapper for BooleanTypeInformation values."""
 
@@ -178,8 +180,8 @@ class DPCodeBooleanWrapper(
         return raw_value  # type: ignore[no-any-return]
 
     def _convert_value_to_raw_value(
-        self, device: CustomerDevice, value: bool
-    ) -> bool | None:
+        self, device: CustomerDevice, value: T
+    ) -> Any:
         """Convert a Home Assistant value back to a raw device value."""
         if value in (True, False):
             return value
@@ -188,7 +190,9 @@ class DPCodeBooleanWrapper(
         raise SetValueOutOfRangeError(f"Invalid boolean value `{value}`")
 
 
-class DPCodeEnumWrapper(DPCodeTypeInformationWrapper[EnumTypeInformation]):
+class DPCodeEnumWrapper[T = str](
+    DPCodeTypeInformationWrapper[EnumTypeInformation, T]
+):
     """Simple wrapper for EnumTypeInformation values."""
 
     _DPTYPE = EnumTypeInformation
@@ -223,8 +227,8 @@ class DPCodeEnumWrapper(DPCodeTypeInformationWrapper[EnumTypeInformation]):
         return raw_value  # type: ignore[no-any-return]
 
     def _convert_value_to_raw_value(
-        self, device: CustomerDevice, value: str
-    ) -> str | None:
+        self, device: CustomerDevice, value: Any
+    ) -> Any:
         """Convert a Home Assistant value back to a raw device value."""
         if value in self.type_information.range:
             return value
@@ -235,8 +239,8 @@ class DPCodeEnumWrapper(DPCodeTypeInformationWrapper[EnumTypeInformation]):
         )
 
 
-class DPCodeIntegerWrapper(
-    DPCodeTypeInformationWrapper[IntegerTypeInformation]
+class DPCodeIntegerWrapper[T = float](
+    DPCodeTypeInformationWrapper[IntegerTypeInformation, T]
 ):
     """Simple wrapper for IntegerTypeInformation values."""
 
@@ -280,8 +284,8 @@ class DPCodeIntegerWrapper(
         return self.type_information.scale_value(raw_value)
 
     def _convert_value_to_raw_value(
-        self, device: CustomerDevice, value: float
-    ) -> int:
+        self, device: CustomerDevice, value: Any
+    ) -> Any:
         """Convert a Home Assistant value back to a raw device value."""
         new_value = self.type_information.scale_value_back(value)
         if self.type_information.min <= new_value <= self.type_information.max:
@@ -294,7 +298,9 @@ class DPCodeIntegerWrapper(
         )
 
 
-class DPCodeJsonWrapper(DPCodeTypeInformationWrapper[JsonTypeInformation]):
+class DPCodeJsonWrapper[T = dict[str, Any]](
+    DPCodeTypeInformationWrapper[JsonTypeInformation, T]
+):
     """Simple wrapper for JsonTypeInformation values."""
 
     _DPTYPE = JsonTypeInformation
@@ -308,7 +314,9 @@ class DPCodeJsonWrapper(DPCodeTypeInformationWrapper[JsonTypeInformation]):
         return json.loads(raw_value)  # type: ignore[no-any-return]
 
 
-class DPCodeRawWrapper(DPCodeTypeInformationWrapper[RawTypeInformation]):
+class DPCodeRawWrapper[T = bytes](
+    DPCodeTypeInformationWrapper[RawTypeInformation, T]
+):
     """Simple wrapper for RawTypeInformation values."""
 
     _DPTYPE = RawTypeInformation
@@ -320,7 +328,9 @@ class DPCodeRawWrapper(DPCodeTypeInformationWrapper[RawTypeInformation]):
         return base64.b64decode(raw_value)
 
 
-class DPCodeStringWrapper(DPCodeTypeInformationWrapper[StringTypeInformation]):
+class DPCodeStringWrapper[T = str](
+    DPCodeTypeInformationWrapper[StringTypeInformation, T]
+):
     """Simple wrapper for StringTypeInformation values."""
 
     _DPTYPE = StringTypeInformation
