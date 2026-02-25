@@ -131,18 +131,31 @@ class DPCodeTypeInformationWrapper[TypeInformationT: TypeInformation](
         return None
 
 
-class DPCodeBitmapWrapper(DPCodeTypeInformationWrapper[BitmapTypeInformation]):
-    """Simple wrapper for BitmapTypeInformation values."""
+class DPCodeBitmapBaseWrapper(
+    DPCodeTypeInformationWrapper[BitmapTypeInformation]
+):
+    """Base wrapper for BitmapTypeInformation values.
+
+    Provides typed `_read_device_status`, and `read_device_status` should be
+    implemented in subclass."""
 
     _DPTYPE = BitmapTypeInformation
 
-    def read_device_status(self, device: CustomerDevice) -> int | None:
+    def _read_device_status(self, device: CustomerDevice) -> int | None:
         """Read and process raw value against this type information."""
         if (raw_value := device.status.get(self.dpcode)) is None:
             return None
         if TYPE_CHECKING:
             assert isinstance(raw_value, int)
         return raw_value
+
+
+class DPCodeBitmapWrapper(DPCodeBitmapBaseWrapper, DeviceWrapper[int]):
+    """Simple wrapper for BitmapTypeInformation values."""
+
+    def read_device_status(self, device: CustomerDevice) -> int | None:
+        """Read and process raw value against this type information."""
+        return super()._read_device_status(device)
 
 
 class DPCodeBooleanWrapper(
