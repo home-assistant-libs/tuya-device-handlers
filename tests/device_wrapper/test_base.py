@@ -10,8 +10,8 @@ def test_skip_update(mock_device: CustomerDevice) -> None:
     wrapper = DeviceWrapper[str]()
 
     assert wrapper
-    assert wrapper.skip_update(mock_device, None, None) is True
+    assert wrapper.skip_update(mock_device, [], None) is True
     assert wrapper.skip_update(mock_device, ["a", "b", "c"], {}) is True
     # Ensure compatibility when dp_timestamps is not passed up
-    assert wrapper.skip_update(mock_device, None) is True
+    assert wrapper.skip_update(mock_device, []) is True
     assert wrapper.skip_update(mock_device, ["a", "b", "c"]) is True
