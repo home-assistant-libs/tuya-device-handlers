@@ -5,7 +5,6 @@ from __future__ import annotations
 import logging
 from typing import TYPE_CHECKING
 
-from ..helpers.homeassistant import TuyaSensorStateClass
 from ..raw_data_model import ElectricityData
 from .base import DeviceWrapper
 from .common import (
@@ -60,7 +59,6 @@ class DeltaIntegerWrapper(DPCodeIntegerWrapper):
 
     _accumulated_value: float = 0
     _last_dp_timestamp: int | None = None
-    state_class = TuyaSensorStateClass.TOTAL_INCREASING
 
     def skip_update(
         self,

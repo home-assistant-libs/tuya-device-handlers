@@ -3,7 +3,6 @@
   dict({
     'native_unit': '%',
     'state': 0,
-    'state_class': <TuyaSensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
     'suggested_unit': None,
   })
 # ---
@@ -11,7 +10,6 @@
   dict({
     'native_unit': 'A',
     'state': 599.552,
-    'state_class': None,
     'suggested_unit': None,
   })
 # ---
@@ -19,7 +17,6 @@
   dict({
     'native_unit': 'mA',
     'state': 72,
-    'state_class': None,
     'suggested_unit': 'A',
   })
 # ---
@@ -27,7 +24,6 @@
   dict({
     'native_unit': 'kW',
     'state': 6.912,
-    'state_class': None,
     'suggested_unit': None,
   })
 # ---
@@ -35,7 +31,6 @@
   dict({
     'native_unit': 'W',
     'state': 8,
-    'state_class': None,
     'suggested_unit': 'kW',
   })
 # ---
@@ -43,7 +38,6 @@
   dict({
     'native_unit': 'V',
     'state': 52.7,
-    'state_class': None,
     'suggested_unit': None,
   })
 # ---
@@ -51,7 +45,6 @@
   dict({
     'native_unit': 'V',
     'state': 234.1,
-    'state_class': None,
     'suggested_unit': None,
   })
 # ---
@@ -77,7 +70,6 @@
       'north_north_west',
     ]),
     'state': 22.5,
-    'state_class': None,
     'suggested_unit': None,
   })
 # ---

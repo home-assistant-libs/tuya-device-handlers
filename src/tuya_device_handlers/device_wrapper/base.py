@@ -4,8 +4,6 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any
 
-from ..helpers.homeassistant import TuyaSensorStateClass
-
 if TYPE_CHECKING:
     from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
 
@@ -15,7 +13,6 @@ class DeviceWrapper[T]:
 
     native_unit: str | None = None
     suggested_unit: str | None = None
-    state_class: TuyaSensorStateClass | None = None
 
     max_value: float
     min_value: float
