@@ -67,10 +67,14 @@ class DPCodeWrapper(DeviceWrapper[Any]):
         return self.dpcode not in updated_status_properties
 
     def read_device_status(self, device: CustomerDevice) -> Any | None:
-        """Read and process raw value against this type information.
+        """Read device status and convert to a Home Assistant value."""
+        return self._read_dpcode_value(device)
 
-        Base implementation does no validation, subclasses may override to provide
-        specific validation.
+    def _read_dpcode_value(self, device: CustomerDevice) -> Any | None:
+        """Read the DPCode value.
+
+        Base implementation returns the raw value, subclasses may override to provide
+        specific conversion or validation.
         """
         return device.status.get(self.dpcode)
 
@@ -131,31 +135,18 @@ class DPCodeTypeInformationWrapper[TypeInformationT: TypeInformation](
         return None
 
 
-class DPCodeBitmapBaseWrapper(
-    DPCodeTypeInformationWrapper[BitmapTypeInformation]
-):
-    """Base wrapper for BitmapTypeInformation values.
-
-    Provides typed `_read_device_status`, and `read_device_status` should be
-    implemented in subclass."""
+class DPCodeBitmapWrapper(DPCodeTypeInformationWrapper[BitmapTypeInformation]):
+    """Simple wrapper for BitmapTypeInformation values."""
 
     _DPTYPE = BitmapTypeInformation
 
-    def _read_device_status(self, device: CustomerDevice) -> int | None:
+    def _read_dpcode_value(self, device: CustomerDevice) -> int | None:
         """Read and process raw value against this type information."""
         if (raw_value := device.status.get(self.dpcode)) is None:
             return None
         if TYPE_CHECKING:
             assert isinstance(raw_value, int)
         return raw_value
-
-
-class DPCodeBitmapWrapper(DPCodeBitmapBaseWrapper, DeviceWrapper[int]):
-    """Simple wrapper for BitmapTypeInformation values."""
-
-    def read_device_status(self, device: CustomerDevice) -> int | None:
-        """Read and process raw value against this type information."""
-        return super()._read_device_status(device)
 
 
 class DPCodeBooleanWrapper(
@@ -165,7 +156,7 @@ class DPCodeBooleanWrapper(
 
     _DPTYPE = BooleanTypeInformation
 
-    def read_device_status(self, device: CustomerDevice) -> bool | None:
+    def _read_dpcode_value(self, device: CustomerDevice) -> bool | None:
         """Read and process raw value against this type information."""
         if (raw_value := device.status.get(self.dpcode)) is None:
             return None
@@ -197,12 +188,8 @@ class DPCodeBooleanWrapper(
         raise SetValueOutOfRangeError(f"Invalid boolean value `{value}`")
 
 
-class DPCodeEnumBaseWrapper(DPCodeTypeInformationWrapper[EnumTypeInformation]):
-    """Base wrapper for EnumTypeInformation values.
-
-    Provides typed `_read_device_status`, and `read_device_status` should be
-    implemented in subclass.
-    """
+class DPCodeEnumWrapper(DPCodeTypeInformationWrapper[EnumTypeInformation]):
+    """Simple wrapper for EnumTypeInformation values."""
 
     _DPTYPE = EnumTypeInformation
     options: list[str]
@@ -214,7 +201,7 @@ class DPCodeEnumBaseWrapper(DPCodeTypeInformationWrapper[EnumTypeInformation]):
         super().__init__(dpcode, type_information)
         self.options = type_information.range
 
-    def _read_device_status(self, device: CustomerDevice) -> str | None:
+    def _read_dpcode_value(self, device: CustomerDevice) -> str | None:
         """Read and process raw value against this type information."""
         if (raw_value := device.status.get(self.dpcode)) is None:
             return None
@@ -235,10 +222,6 @@ class DPCodeEnumBaseWrapper(DPCodeTypeInformationWrapper[EnumTypeInformation]):
             return None
         return raw_value  # type: ignore[no-any-return]
 
-    def read_device_status(self, device: CustomerDevice) -> Any | None:
-        """Read and process raw value against this type information."""
-        raise NotImplementedError
-
     def _convert_value_to_raw_value(
         self, device: CustomerDevice, value: str
     ) -> str | None:
@@ -250,14 +233,6 @@ class DPCodeEnumBaseWrapper(DPCodeTypeInformationWrapper[EnumTypeInformation]):
         raise SetValueOutOfRangeError(
             f"Enum value `{value}` out of range: {self.type_information.range}"
         )
-
-
-class DPCodeEnumWrapper(DPCodeEnumBaseWrapper, DeviceWrapper[str]):
-    """Simple wrapper for EnumTypeInformation values."""
-
-    def read_device_status(self, device: CustomerDevice) -> str | None:
-        """Read and process raw value against this type information."""
-        return super()._read_device_status(device)
 
 
 class DPCodeIntegerWrapper(
@@ -279,7 +254,7 @@ class DPCodeIntegerWrapper(
             type_information.step
         )
 
-    def read_device_status(self, device: CustomerDevice) -> float | None:
+    def _read_dpcode_value(self, device: CustomerDevice) -> float | None:
         """Read and process raw value against this type information."""
         if (raw_value := device.status.get(self.dpcode)) is None:
             return None
@@ -319,63 +294,30 @@ class DPCodeIntegerWrapper(
         )
 
 
-class DPCodeJsonBaseWrapper(DPCodeTypeInformationWrapper[JsonTypeInformation]):
-    """Base wrapper for JsonTypeInformation values.
-
-    Provides typed `_read_device_status`, and `read_device_status` should be
-    implemented in subclass."""
+class DPCodeJsonWrapper(DPCodeTypeInformationWrapper[JsonTypeInformation]):
+    """Base wrapper for JsonTypeInformation values."""
 
     _DPTYPE = JsonTypeInformation
 
-    def _read_device_status(
+    def _read_dpcode_value(
         self, device: CustomerDevice
     ) -> dict[str, Any] | None:
         """Read and process raw value against this type information."""
         if (raw_value := device.status.get(self.dpcode)) is None:
             return None
-        return json.loads(raw_value)  # type: ignore[no-any-return]
-
-    def read_device_status(self, device: CustomerDevice) -> Any | None:
-        """Read and process raw value against this type information."""
-        raise NotImplementedError
+        return json.loads(raw_value)
 
 
-class DPCodeJsonWrapper(DPCodeJsonBaseWrapper, DeviceWrapper[dict[str, Any]]):
-    """Simple wrapper for JsonTypeInformation values."""
-
-    def read_device_status(
-        self, device: CustomerDevice
-    ) -> dict[str, Any] | None:
-        """Read and process raw value against this type information."""
-        return super()._read_device_status(device)
-
-
-class DPCodeRawBaseWrapper(DPCodeTypeInformationWrapper[RawTypeInformation]):
-    """Base wrapper for RawTypeInformation values.
-
-    Provides typed `_read_device_status`, and `read_device_status` should be
-    implemented in subclass.
-    """
+class DPCodeRawWrapper(DPCodeTypeInformationWrapper[RawTypeInformation]):
+    """Simple wrapper for RawTypeInformation values."""
 
     _DPTYPE = RawTypeInformation
 
-    def _read_device_status(self, device: CustomerDevice) -> bytes | None:
+    def _read_dpcode_value(self, device: CustomerDevice) -> bytes | None:
         """Read and process raw value against this type information."""
         if (raw_value := device.status.get(self.dpcode)) is None:
             return None
         return base64.b64decode(raw_value)
-
-    def read_device_status(self, device: CustomerDevice) -> Any | None:
-        """Read and process raw value against this type information."""
-        raise NotImplementedError
-
-
-class DPCodeRawWrapper(DPCodeRawBaseWrapper, DeviceWrapper[bytes]):
-    """Simple wrapper for RawTypeInformation values."""
-
-    def read_device_status(self, device: CustomerDevice) -> bytes | None:
-        """Read and process raw value against this type information."""
-        return super()._read_device_status(device)
 
 
 class DPCodeStringWrapper(DPCodeTypeInformationWrapper[StringTypeInformation]):
