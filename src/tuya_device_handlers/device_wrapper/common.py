@@ -295,7 +295,7 @@ class DPCodeIntegerWrapper(
 
 
 class DPCodeJsonWrapper(DPCodeTypeInformationWrapper[JsonTypeInformation]):
-    """Base wrapper for JsonTypeInformation values."""
+    """Simple wrapper for JsonTypeInformation values."""
 
     _DPTYPE = JsonTypeInformation
 
