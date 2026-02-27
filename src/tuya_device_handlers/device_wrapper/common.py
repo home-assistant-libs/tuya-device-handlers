@@ -184,6 +184,9 @@ class DPCodeBooleanWrapper[T = bool](
     ) -> bool:
         """Convert a Home Assistant value back to a raw device value."""
         if value in (True, False):
+            if TYPE_CHECKING:
+                # mypy doesn't infer that if it's in a tuple of bools it's a bool
+                assert isinstance(value, bool)
             return value
         # Currently only called with boolean values
         # Safety net in case of future changes
@@ -231,6 +234,9 @@ class DPCodeEnumWrapper[T = str](
     ) -> str:
         """Convert a Home Assistant value back to a raw device value."""
         if value in self.type_information.range:
+            if TYPE_CHECKING:
+                # mypy doesn't infer that if it's in a list of strings it's a string
+                assert isinstance(value, str)
             return value
         # Guarded by select option validation
         # Safety net in case of future changes
