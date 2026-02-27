@@ -6,7 +6,6 @@ import logging
 from typing import TYPE_CHECKING
 
 from ..raw_data_model import ElectricityData
-from .base import DeviceWrapper
 from .common import (
     DPCodeEnumWrapper,
     DPCodeIntegerWrapper,
@@ -20,7 +19,7 @@ if TYPE_CHECKING:
 _LOGGER = logging.getLogger(__name__)
 
 
-class WindDirectionEnumWrapper(DPCodeEnumWrapper, DeviceWrapper[str]):
+class WindDirectionEnumWrapper(DPCodeEnumWrapper[float]):
     """Custom DPCode Wrapper for converting enum to wind direction."""
 
     _WIND_DIRECTIONS = {
@@ -42,9 +41,9 @@ class WindDirectionEnumWrapper(DPCodeEnumWrapper, DeviceWrapper[str]):
         "north_north_west": 337.5,
     }
 
-    def read_device_status(self, device: CustomerDevice) -> float | None:  # type: ignore[override]
+    def read_device_status(self, device: CustomerDevice) -> float | None:
         """Read the device value for the dpcode."""
-        if (status := super().read_device_status(device)) is None:
+        if (status := self._read_dpcode_value(device)) is None:
             return None
         return self._WIND_DIRECTIONS.get(status)
 
@@ -77,7 +76,7 @@ class DeltaIntegerWrapper(DPCodeIntegerWrapper):
             or dp_timestamps is None
             or (current_timestamp := dp_timestamps.get(self.dpcode)) is None
             or current_timestamp == self._last_dp_timestamp
-            or (raw_value := super().read_device_status(device)) is None
+            or (raw_value := self._read_dpcode_value(device)) is None
         ):
             return True
 
@@ -98,80 +97,80 @@ class DeltaIntegerWrapper(DPCodeIntegerWrapper):
         return self._accumulated_value
 
 
-class ElectricityCurrentJsonWrapper(DPCodeJsonWrapper, DeviceWrapper[float]):
+class ElectricityCurrentJsonWrapper(DPCodeJsonWrapper[float]):
     """Custom DPCode Wrapper for extracting electricity current from JSON."""
 
     native_unit = "A"
 
-    def read_device_status(self, device: CustomerDevice) -> float | None:  # type: ignore[override]
+    def read_device_status(self, device: CustomerDevice) -> float | None:
         """Read the device value for the dpcode."""
-        if (status := super().read_device_status(device)) is None:
+        if (status := self._read_dpcode_value(device)) is None:
             return None
         return status.get("electricCurrent")
 
 
-class ElectricityPowerJsonWrapper(DPCodeJsonWrapper, DeviceWrapper[float]):
+class ElectricityPowerJsonWrapper(DPCodeJsonWrapper[float]):
     """Custom DPCode Wrapper for extracting electricity power from JSON."""
 
     native_unit = "kW"
 
-    def read_device_status(self, device: CustomerDevice) -> float | None:  # type: ignore[override]
+    def read_device_status(self, device: CustomerDevice) -> float | None:
         """Read the device value for the dpcode."""
-        if (status := super().read_device_status(device)) is None:
+        if (status := self._read_dpcode_value(device)) is None:
             return None
         return status.get("power")
 
 
-class ElectricityVoltageJsonWrapper(DPCodeJsonWrapper, DeviceWrapper[float]):
+class ElectricityVoltageJsonWrapper(DPCodeJsonWrapper[float]):
     """Custom DPCode Wrapper for extracting electricity voltage from JSON."""
 
     native_unit = "V"
 
-    def read_device_status(self, device: CustomerDevice) -> float | None:  # type: ignore[override]
+    def read_device_status(self, device: CustomerDevice) -> float | None:
         """Read the device value for the dpcode."""
-        if (status := super().read_device_status(device)) is None:
+        if (status := self._read_dpcode_value(device)) is None:
             return None
         return status.get("voltage")
 
 
-class ElectricityCurrentRawWrapper(DPCodeRawWrapper, DeviceWrapper[float]):
+class ElectricityCurrentRawWrapper(DPCodeRawWrapper[float]):
     """Custom DPCode Wrapper for extracting electricity current from base64."""
 
     native_unit = "mA"
     suggested_unit = "A"
 
-    def read_device_status(self, device: CustomerDevice) -> float | None:  # type: ignore[override]
+    def read_device_status(self, device: CustomerDevice) -> float | None:
         """Read the device value for the dpcode."""
-        if (raw_value := super().read_device_status(device)) is None or (
+        if (raw_value := self._read_dpcode_value(device)) is None or (
             value := ElectricityData.from_bytes(raw_value)
         ) is None:
             return None
         return value.current
 
 
-class ElectricityPowerRawWrapper(DPCodeRawWrapper, DeviceWrapper[float]):
+class ElectricityPowerRawWrapper(DPCodeRawWrapper[float]):
     """Custom DPCode Wrapper for extracting electricity power from base64."""
 
     native_unit = "W"
     suggested_unit = "kW"
 
-    def read_device_status(self, device: CustomerDevice) -> float | None:  # type: ignore[override]
+    def read_device_status(self, device: CustomerDevice) -> float | None:
         """Read the device value for the dpcode."""
-        if (raw_value := super().read_device_status(device)) is None or (
+        if (raw_value := self._read_dpcode_value(device)) is None or (
             value := ElectricityData.from_bytes(raw_value)
         ) is None:
             return None
         return value.power
 
 
-class ElectricityVoltageRawWrapper(DPCodeRawWrapper, DeviceWrapper[float]):
+class ElectricityVoltageRawWrapper(DPCodeRawWrapper[float]):
     """Custom DPCode Wrapper for extracting electricity voltage from base64."""
 
     native_unit = "V"
 
-    def read_device_status(self, device: CustomerDevice) -> float | None:  # type: ignore[override]
+    def read_device_status(self, device: CustomerDevice) -> float | None:
         """Read the device value for the dpcode."""
-        if (raw_value := super().read_device_status(device)) is None or (
+        if (raw_value := self._read_dpcode_value(device)) is None or (
             value := ElectricityData.from_bytes(raw_value)
         ) is None:
             return None
