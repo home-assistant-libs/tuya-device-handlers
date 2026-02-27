@@ -79,7 +79,7 @@ class DPCodeWrapper[T](DeviceWrapper[T]):
         return device.status.get(self.dpcode)
 
     def _convert_value_to_raw_value(
-        self, device: CustomerDevice, value: T
+        self, device: CustomerDevice, value: Any
     ) -> Any:
         """Convert display value back to a raw device value.
 
@@ -180,11 +180,9 @@ class DPCodeBooleanWrapper[T = bool](
         return raw_value  # type: ignore[no-any-return]
 
     def _convert_value_to_raw_value(
-        self, device: CustomerDevice, value: T
+        self, device: CustomerDevice, value: Any
     ) -> bool:
         """Convert a Home Assistant value back to a raw device value."""
-        if TYPE_CHECKING:
-            assert isinstance(value, bool)
         if value in (True, False):
             return value
         # Currently only called with boolean values
@@ -229,11 +227,9 @@ class DPCodeEnumWrapper[T = str](
         return raw_value  # type: ignore[no-any-return]
 
     def _convert_value_to_raw_value(
-        self, device: CustomerDevice, value: T
+        self, device: CustomerDevice, value: Any
     ) -> str:
         """Convert a Home Assistant value back to a raw device value."""
-        if TYPE_CHECKING:
-            assert isinstance(value, str)
         if value in self.type_information.range:
             return value
         # Guarded by select option validation
@@ -288,11 +284,9 @@ class DPCodeIntegerWrapper[T = float](
         return self.type_information.scale_value(raw_value)
 
     def _convert_value_to_raw_value(
-        self, device: CustomerDevice, value: T
+        self, device: CustomerDevice, value: Any
     ) -> int:
         """Convert a Home Assistant value back to a raw device value."""
-        if TYPE_CHECKING:
-            assert isinstance(value, float)
         new_value = self.type_information.scale_value_back(value)
         if self.type_information.min <= new_value <= self.type_information.max:
             return new_value
