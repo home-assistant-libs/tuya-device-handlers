@@ -111,6 +111,11 @@ def device_fixture() -> CustomerDevice:
             type="Enum",
             values='{"range": ["scene", "customize_scene", "colour"]}',
         ),
+        "demo_alarm_enum": DeviceStatusRange(
+            code="demo_alarm",
+            type="Enum",
+            values='{"range": ["alarm", "normal"]}',
+        ),
         "demo_integer": DeviceStatusRange(
             code="demo_integer",
             type="Integer",

@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Self
 
 from ..type_information import BitmapTypeInformation
-from .common import DPCodeBitmapWrapper
+from .common import DPCodeBitmapWrapper, DPCodeWrapper
 
 if TYPE_CHECKING:
     from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
@@ -47,3 +47,22 @@ class DPCodeBitmapBitWrapper(DPCodeBitmapWrapper[bool]):
                 type_information.label.index(bitmap_key),
             )
         return None
+
+
+class DPCodeInSetWrapper(DPCodeWrapper[bool]):
+    """DPCode Wrapper to check if value is in a set."""
+
+    _valid_values: set[bool | float | int | str]
+
+    def __init__(
+        self, dpcode: str, valid_values: set[bool | float | int | str]
+    ) -> None:
+        """Init DPCodeInSetWrapper."""
+        super().__init__(dpcode)
+        self._valid_values = valid_values
+
+    def read_device_status(self, device: CustomerDevice) -> bool | None:
+        """Read the device value for the dpcode."""
+        if (raw_value := device.status.get(self.dpcode)) is None:
+            return None
+        return raw_value in self._valid_values

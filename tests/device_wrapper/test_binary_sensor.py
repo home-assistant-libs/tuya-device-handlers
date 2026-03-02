@@ -7,6 +7,7 @@ from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
 
 from tuya_device_handlers.device_wrapper.binary_sensor import (
     DPCodeBitmapBitWrapper,
+    DPCodeInSetWrapper,
 )
 
 
@@ -48,6 +49,27 @@ def test_bitmapbit_device_status(
     wrapper = DPCodeBitmapBitWrapper.find_dpcode(
         mock_device, "demo_bitmap", bitmap_key="motor_fault"
     )
+
+    assert wrapper
+    assert wrapper.read_device_status(mock_device) == expected_device_status
+
+
+@pytest.mark.parametrize(
+    ("status", "expected_device_status"),
+    [
+        (None, None),
+        ("alarm", True),
+        ("normal", False),
+    ],
+)
+def test_inset_device_status(
+    status: Any | None,
+    expected_device_status: Any | None,
+    mock_device: CustomerDevice,
+) -> None:
+    """Test read_device_status."""
+    mock_device.status["demo_alarm_enum"] = status
+    wrapper = DPCodeInSetWrapper("demo_alarm_enum", {"alarm"})
 
     assert wrapper
     assert wrapper.read_device_status(mock_device) == expected_device_status
