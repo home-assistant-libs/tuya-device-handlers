@@ -304,16 +304,6 @@ class DPCodeIntegerWrapper[T = float](
         )
 
 
-class DPCodeRoundedIntegerWrapper(DPCodeIntegerWrapper[int]):
-    """A wrapper to ensure float values are always rounded."""
-
-    def read_device_status(self, device: CustomerDevice) -> int | None:
-        """Read and round the device status."""
-        if (value := super()._read_dpcode_value(device)) is None:
-            return None
-        return round(value)
-
-
 class DPCodeJsonWrapper[T = dict[str, Any]](
     DPCodeTypeInformationWrapper[JsonTypeInformation, T]
 ):
