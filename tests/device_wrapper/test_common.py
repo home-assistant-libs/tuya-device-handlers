@@ -18,6 +18,7 @@ from tuya_device_handlers.device_wrapper.common import (
     DPCodeIntegerWrapper,
     DPCodeJsonWrapper,
     DPCodeRawWrapper,
+    DPCodeRoundedIntegerWrapper,
     DPCodeStringWrapper,
     DPCodeTypeInformationWrapper,
 )
@@ -46,6 +47,7 @@ def test_dpcode_not_found(
         (DPCodeBooleanWrapper, "demo_boolean", True),
         (DPCodeEnumWrapper, "demo_enum", "customize_scene"),
         (DPCodeIntegerWrapper, "demo_integer", 12.3),
+        (DPCodeRoundedIntegerWrapper, "demo_integer", 12),
         (DPCodeJsonWrapper, "demo_json", {"h": 210, "s": 1000, "v": 1000}),
         (
             DPCodeRawWrapper,
