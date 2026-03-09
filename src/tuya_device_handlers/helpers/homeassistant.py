@@ -71,6 +71,14 @@ class TuyaClimateHVACMode(StrEnum):
     FAN_ONLY = "fan_only"
 
 
+class TuyaCoverAction(StrEnum):
+    """Cover entity actions."""
+
+    OPEN = "open"
+    CLOSE = "close"
+    STOP = "stop"
+
+
 class TuyaCoverDeviceClass(StrEnum):
     """Device class for cover."""
 
