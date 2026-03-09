@@ -25,7 +25,7 @@ class ControlBackModePercentageMappingWrapper(DPCodePercentageWrapper):
 
     def _remap_inverted(self, device: CustomerDevice) -> bool:
         """Check if the remap helper should be inverted."""
-        return device.status.get("control_back_mode") != "back"
+        return bool(device.status.get("control_back_mode") != "back")
 
 
 class CoverInstructionBooleanWrapper(DPCodeBooleanWrapper[TuyaCoverAction]):
