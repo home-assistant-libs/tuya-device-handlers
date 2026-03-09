@@ -21,6 +21,30 @@ class TuyaEntityCategory(StrEnum):
     DIAGNOSTIC = "diagnostic"
 
 
+class TuyaAlarmControlPanelState(StrEnum):
+    """Alarm control panel entity states."""
+
+    DISARMED = "disarmed"
+    ARMED_HOME = "armed_home"
+    ARMED_AWAY = "armed_away"
+    ARMED_NIGHT = "armed_night"
+    ARMED_VACATION = "armed_vacation"
+    ARMED_CUSTOM_BYPASS = "armed_custom_bypass"
+    PENDING = "pending"
+    ARMING = "arming"
+    DISARMING = "disarming"
+    TRIGGERED = "triggered"
+
+
+class TuyaAlarmControlPanelAction(StrEnum):
+    """Alarm control panel entity actions."""
+
+    DISARM = "disarm"
+    ARM_HOME = "arm_home"
+    ARM_AWAY = "arm_away"
+    TRIGGER = "trigger"
+
+
 class TuyaClimateHVACMode(StrEnum):
     """HVAC mode for climate devices."""
 
