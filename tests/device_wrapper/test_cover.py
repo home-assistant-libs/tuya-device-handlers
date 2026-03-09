@@ -14,11 +14,15 @@ from tuya_device_handlers.device_wrapper.common import (
 )
 from tuya_device_handlers.device_wrapper.cover import (
     ControlBackModePercentageMappingWrapper,
+    CoverInstructionBooleanWrapper,
+    CoverInstructionEnumWrapper,
+    CoverInstructionSpecialEnumWrapper,
 )
 from tuya_device_handlers.device_wrapper.extended import (
     DPCodeInvertedPercentageWrapper,
     DPCodePercentageWrapper,
 )
+from tuya_device_handlers.helpers.homeassistant import TuyaCoverAction
 
 try:
     from typeguard import suppress_type_checks  # type: ignore[import-not-found]
@@ -32,7 +36,7 @@ except ImportError:
 def inject_control_back_mode(mock_device: CustomerDevice) -> None:
     mock_device.function["control_back_mode"] = DeviceFunction(
         {
-            "code": "master_state",
+            "code": "control_back_mode",
             "type": "Enum",
             "values": '{"range": ["forward", "back"]}',
         }
@@ -45,6 +49,44 @@ def inject_control_back_mode(mock_device: CustomerDevice) -> None:
         }
     )
     mock_device.status["control_back_mode"] = "forward"
+
+
+@pytest.fixture()
+def inject_control(mock_device: CustomerDevice) -> None:
+    mock_device.function["control"] = DeviceFunction(
+        {
+            "code": "control",
+            "type": "Enum",
+            "values": '{"range": ["open", "stop", "close"]}',
+        }
+    )
+    mock_device.status_range["control"] = DeviceStatusRange(
+        {
+            "code": "control",
+            "type": "Enum",
+            "values": '{"range": ["open", "stop", "close"]}',
+        }
+    )
+    mock_device.status["control"] = "stop"
+
+
+@pytest.fixture()
+def inject_legacy_control(mock_device: CustomerDevice) -> None:
+    mock_device.function["legacy_control"] = DeviceFunction(
+        {
+            "code": "legacy_control",
+            "type": "Enum",
+            "values": '{"range": ["open", "stop", "close"]}',
+        }
+    )
+    mock_device.status_range["legacy_control"] = DeviceStatusRange(
+        {
+            "code": "legacy_control",
+            "type": "Enum",
+            "values": '{"range": ["open", "stop", "close"]}',
+        }
+    )
+    mock_device.status["legacy_control"] = "stop"
 
 
 @pytest.mark.usefixtures("inject_control_back_mode")
@@ -87,3 +129,71 @@ def test_read_device_status(
     # All wrappers return None if status is missing
     mock_device.status.pop(dpcode)
     assert wrapper.read_device_status(mock_device) is None
+
+
+@pytest.mark.usefixtures("inject_control")
+@pytest.mark.parametrize(
+    ("wrapper_type", "dpcode", "action", "expected"),
+    [
+        (
+            CoverInstructionBooleanWrapper,
+            "demo_boolean",
+            TuyaCoverAction.OPEN,
+            [{"code": "demo_boolean", "value": True}],
+        ),
+        (
+            CoverInstructionBooleanWrapper,
+            "demo_boolean",
+            TuyaCoverAction.CLOSE,
+            [{"code": "demo_boolean", "value": False}],
+        ),
+        (
+            CoverInstructionEnumWrapper,
+            "control",
+            TuyaCoverAction.OPEN,
+            [{"code": "control", "value": "open"}],
+        ),
+        (
+            CoverInstructionEnumWrapper,
+            "control",
+            TuyaCoverAction.CLOSE,
+            [{"code": "control", "value": "close"}],
+        ),
+        (
+            CoverInstructionEnumWrapper,
+            "control",
+            TuyaCoverAction.STOP,
+            [{"code": "control", "value": "stop"}],
+        ),
+        (
+            CoverInstructionSpecialEnumWrapper,
+            "control",
+            TuyaCoverAction.OPEN,
+            [{"code": "control", "value": "FZ"}],
+        ),
+        (
+            CoverInstructionSpecialEnumWrapper,
+            "control",
+            TuyaCoverAction.CLOSE,
+            [{"code": "control", "value": "ZZ"}],
+        ),
+        (
+            CoverInstructionSpecialEnumWrapper,
+            "control",
+            TuyaCoverAction.STOP,
+            [{"code": "control", "value": "STOP"}],
+        ),
+    ],
+)
+def test_get_update_commands(
+    wrapper_type: type[DPCodeTypeInformationWrapper[Any, Any]],
+    dpcode: str,
+    action: TuyaCoverAction,
+    expected: list[dict[str, Any]],
+    mock_device: CustomerDevice,
+) -> None:
+    """Test get_update_commands."""
+    wrapper = wrapper_type.find_dpcode(mock_device, dpcode)
+
+    assert wrapper
+    assert wrapper.get_update_commands(mock_device, action) == expected
