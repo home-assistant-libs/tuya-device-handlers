@@ -2,7 +2,11 @@
 
 from typing import Any
 
-from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
+from tuya_sharing import (  # type: ignore[import-untyped]
+    CustomerDevice,
+    DeviceFunction,
+    DeviceStatusRange,
+)
 
 from tuya_device_handlers.device_wrapper.base import DeviceWrapper
 
@@ -21,3 +25,43 @@ def send_wrapper_update(
         wrapper.skip_update(
             device, list(updated_status_properties), dp_timestamps
         )
+
+
+def inject_dpcode_status(
+    mock_device: CustomerDevice, dpcode: str, state: Any
+) -> None:
+    mock_device.status[dpcode] = state
+
+
+def inject_dpcode_function(
+    mock_device: CustomerDevice, dpcode: str, dptype: str, values: str
+) -> None:
+    mock_device.function[dpcode] = DeviceFunction(
+        {"code": dpcode, "type": dptype, "values": values}
+    )
+
+
+def inject_dpcode_status_range(
+    mock_device: CustomerDevice, dpcode: str, dptype: str, values: str
+) -> None:
+    mock_device.status_range[dpcode] = DeviceStatusRange(
+        {"code": dpcode, "type": dptype, "values": values}
+    )
+
+
+def inject_dpcode(
+    mock_device: CustomerDevice,
+    dpcode: str,
+    state: Any,
+    *,
+    dptype: str | None = None,
+    values: str = "{}",
+    skip_function: bool = False,
+    skip_status_range: bool = False,
+) -> None:
+    inject_dpcode_status(mock_device, dpcode, state)
+    if dptype is not None:
+        if not skip_function:
+            inject_dpcode_function(mock_device, dpcode, dptype, values)
+        if not skip_status_range:
+            inject_dpcode_status_range(mock_device, dpcode, dptype, values)
