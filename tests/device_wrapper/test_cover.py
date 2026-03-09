@@ -14,6 +14,8 @@ from tuya_device_handlers.device_wrapper.common import (
 )
 from tuya_device_handlers.device_wrapper.cover import (
     ControlBackModePercentageMappingWrapper,
+    CoverClosedBooleanWrapper,
+    CoverClosedEnumWrapper,
     CoverInstructionBooleanWrapper,
     CoverInstructionEnumWrapper,
     CoverInstructionSpecialEnumWrapper,
@@ -89,33 +91,81 @@ def inject_legacy_control(mock_device: CustomerDevice) -> None:
     mock_device.status["legacy_control"] = "stop"
 
 
-@pytest.mark.usefixtures("inject_control_back_mode")
+@pytest.fixture()
+def inject_cover_situation(mock_device: CustomerDevice) -> None:
+    mock_device.status_range["cover_situation"] = DeviceStatusRange(
+        {
+            "code": "cover_situation",
+            "type": "Enum",
+            "values": '{"range": ["fully_open", "fully_close"]}',
+        }
+    )
+    mock_device.status["cover_situation"] = "fully_open"
+
+
+@pytest.mark.usefixtures("inject_control_back_mode", "inject_cover_situation")
 @pytest.mark.parametrize(
-    ("wrapper_type", "status_updates", "expected_device_status"),
+    ("wrapper_type", "dpcode", "status_updates", "expected_device_status"),
     [
-        (DPCodePercentageWrapper, {"demo_integer": 200}, 20),
-        (DPCodeInvertedPercentageWrapper, {"demo_integer": 200}, 80),
-        (ControlBackModePercentageMappingWrapper, {"demo_integer": 200}, 80),
+        (DPCodePercentageWrapper, "demo_integer", {"demo_integer": 200}, 20),
+        (
+            DPCodeInvertedPercentageWrapper,
+            "demo_integer",
+            {"demo_integer": 200},
+            80,
+        ),
         (
             ControlBackModePercentageMappingWrapper,
+            "demo_integer",
+            {"demo_integer": 200},
+            80,
+        ),
+        (
+            ControlBackModePercentageMappingWrapper,
+            "demo_integer",
             {"demo_integer": 200, "control_back_mode": "back"},
             20,
         ),
         (
             ControlBackModePercentageMappingWrapper,
+            "demo_integer",
             {"demo_integer": 200, "control_back_mode": "forward"},
             80,
+        ),
+        (
+            CoverClosedBooleanWrapper,
+            "demo_boolean",
+            {"demo_boolean": True},
+            False,
+        ),
+        (
+            CoverClosedBooleanWrapper,
+            "demo_boolean",
+            {"demo_boolean": False},
+            True,
+        ),
+        (
+            CoverClosedEnumWrapper,
+            "cover_situation",
+            {"cover_situation": "fully_open"},
+            False,
+        ),
+        (
+            CoverClosedEnumWrapper,
+            "cover_situation",
+            {"cover_situation": "fully_close"},
+            True,
         ),
     ],
 )
 def test_read_device_status(
+    dpcode: str,
     wrapper_type: type[DPCodeTypeInformationWrapper[Any, Any]],
     status_updates: dict[str, Any],
     expected_device_status: Any,
     mock_device: CustomerDevice,
 ) -> None:
     """Test read_device_status."""
-    dpcode = "demo_integer"
     mock_device.status.update(status_updates)
     wrapper = wrapper_type.find_dpcode(mock_device, dpcode)
 
@@ -185,7 +235,7 @@ def test_read_device_status(
         ),
     ],
 )
-def test_get_update_commands(
+def test_cover_action_command(
     wrapper_type: type[DPCodeTypeInformationWrapper[Any, Any]],
     dpcode: str,
     action: TuyaCoverAction,

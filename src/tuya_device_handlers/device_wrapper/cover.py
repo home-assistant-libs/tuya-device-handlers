@@ -76,3 +76,28 @@ class CoverInstructionSpecialEnumWrapper(CoverInstructionEnumWrapper):
         TuyaCoverAction.CLOSE: "ZZ",
         TuyaCoverAction.STOP: "STOP",
     }
+
+
+class CoverClosedBooleanWrapper(DPCodeBooleanWrapper):
+    """Boolean wrapper for checking if cover is closed (inverted)."""
+
+    def read_device_status(self, device: CustomerDevice) -> bool | None:
+        if (value := self._read_dpcode_value(device)) is None:
+            return None
+        return not value
+
+
+class CoverClosedEnumWrapper(DPCodeEnumWrapper[bool]):
+    """Enum wrapper for checking if state is closed."""
+
+    _MAPPINGS = {
+        "close": True,
+        "fully_close": True,
+        "open": False,
+        "fully_open": False,
+    }
+
+    def read_device_status(self, device: CustomerDevice) -> bool | None:
+        if (value := self._read_dpcode_value(device)) is None:
+            return None
+        return self._MAPPINGS.get(value)
