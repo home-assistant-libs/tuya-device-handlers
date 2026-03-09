@@ -27,6 +27,7 @@ except ImportError:
     suppress_type_checks = nullcontext
 
 
+@pytest.fixture(autouse=True)
 def _inject_default_alarm_codes(mock_device: CustomerDevice) -> None:
     mock_device.function["master_mode"] = DeviceFunction(
         {
@@ -120,7 +121,6 @@ def test_read_device_status(
     mock_device: CustomerDevice,
 ) -> None:
     """Test read_device_status."""
-    _inject_default_alarm_codes(mock_device)
     mock_device.status.update(status_updates)
     changed_by_wrapper = AlarmChangedByWrapper.find_dpcode(
         mock_device, "alarm_msg"
@@ -172,9 +172,21 @@ def test_get_update_commands(
     expected: list[dict[str, Any]],
     mock_device: CustomerDevice,
 ) -> None:
-    """Test read_device_status."""
-    _inject_default_alarm_codes(mock_device)
+    """Test get_update_commands."""
     wrapper = AlarmActionWrapper.find_dpcode(mock_device, "master_mode")
 
     assert wrapper
     assert wrapper.get_update_commands(mock_device, value) == expected
+
+
+def test_invalid_update_commands(
+    mock_device: CustomerDevice,
+) -> None:
+    """Test get_update_commands."""
+    wrapper = AlarmActionWrapper.find_dpcode(mock_device, "master_mode")
+
+    assert wrapper
+    with pytest.raises(
+        ValueError, match="Unsupported value 12 for master_mode"
+    ):
+        assert wrapper.get_update_commands(mock_device, "12")
