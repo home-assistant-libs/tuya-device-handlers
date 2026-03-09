@@ -27,7 +27,7 @@ except ImportError:
     suppress_type_checks = nullcontext
 
 
-def _inject_default_alarm_codes(mock_device: CustomerDevice):
+def _inject_default_alarm_codes(mock_device: CustomerDevice) -> None:
     mock_device.function["master_mode"] = DeviceFunction(
         {
             "code": "master_mode",
