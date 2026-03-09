@@ -537,3 +537,24 @@ class TuyaSwitchDeviceClass(StrEnum):
 
     OUTLET = "outlet"
     SWITCH = "switch"
+
+
+class TuyaVacuumActivity(StrEnum):
+    """Vacuum activity states."""
+
+    CLEANING = "cleaning"
+    DOCKED = "docked"
+    IDLE = "idle"
+    PAUSED = "paused"
+    RETURNING = "returning"
+    ERROR = "error"
+
+
+class TuyaVacuumAction(StrEnum):
+    """Vacuum entity actions."""
+
+    START = "start"
+    STOP = "stop"
+    PAUSE = "pause"
+    RETURN_TO_BASE = "return_to_base"
+    LOCATE = "locate"
