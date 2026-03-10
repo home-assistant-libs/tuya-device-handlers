@@ -138,6 +138,7 @@ def test_vacuum_action_command(
         inject_dpcode(mock_device, "power_go", False, dptype="Boolean")
     elif sample == "wrapper_2":
         inject_dpcode(mock_device, "switch_charge", False, dptype="Boolean")
+        inject_dpcode(mock_device, "pause", False, dptype="Boolean")
 
     wrapper = VacuumActionWrapper.find_dpcode(mock_device)
 
