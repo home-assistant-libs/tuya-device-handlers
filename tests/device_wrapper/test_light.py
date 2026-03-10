@@ -93,3 +93,70 @@ def test_read_device_status(
     # All wrappers return None if status is missing
     mock_device.status.pop(dpcode)
     assert wrapper.read_device_status(mock_device) is None
+
+
+@pytest.mark.parametrize(
+    ("wrapper_type", "dpcode", "action", "expected"),
+    [
+        (
+            BrightnessWrapper,
+            "bright_value",
+            255,
+            [{"code": "bright_value", "value": 1000}],
+        ),
+        (
+            BrightnessWrapper,
+            "bright_value",
+            126,
+            [{"code": "bright_value", "value": 499}],
+        ),
+        (
+            BrightnessWrapper,
+            "bright_value",
+            0,
+            [{"code": "bright_value", "value": 10}],
+        ),
+        (
+            ColorDataWrapper,
+            "colour_data",
+            (228.6350974930362, 393.3070866141732, 1002.9330708661417),
+            [
+                {
+                    "code": "colour_data",
+                    "value": '{"h": 229, "s": 1000, "v": 1000}',
+                }
+            ],
+        ),
+        (
+            ColorTempWrapper,
+            "temp_value",
+            2000,
+            [{"code": "temp_value", "value": 0}],
+        ),
+        (
+            ColorTempWrapper,
+            "temp_value",
+            3059,
+            [{"code": "temp_value", "value": 500}],
+        ),
+        (
+            ColorTempWrapper,
+            "temp_value",
+            6500,
+            [{"code": "temp_value", "value": 1000}],
+        ),
+    ],
+)
+def test_light_action_command(
+    wrapper_type: type[DPCodeTypeInformationWrapper[Any, Any]],
+    dpcode: str,
+    action: str,
+    expected: list[dict[str, Any]],
+    mock_device: CustomerDevice,
+) -> None:
+    """Test get_update_commands."""
+    _inject_default_light(mock_device)
+    wrapper = wrapper_type.find_dpcode(mock_device, dpcode)
+
+    assert wrapper
+    assert wrapper.get_update_commands(mock_device, action) == expected
