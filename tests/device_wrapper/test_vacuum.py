@@ -116,6 +116,11 @@ def test_read_device_status(
             TuyaVacuumAction.LOCATE,
             [],
         ),
+        (
+            "wrapper_3",
+            TuyaVacuumAction.RETURN_TO_BASE,
+            [],
+        ),
     ],
 )
 def test_vacuum_action_command(
