@@ -3,11 +3,7 @@
 from typing import Any
 
 import pytest
-from tuya_sharing import (  # type: ignore[import-untyped]
-    CustomerDevice,
-    DeviceFunction,
-    DeviceStatusRange,
-)
+from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
 
 from tuya_device_handlers.device_wrapper.common import (
     DPCodeTypeInformationWrapper,
@@ -26,6 +22,8 @@ from tuya_device_handlers.device_wrapper.extended import (
 )
 from tuya_device_handlers.helpers.homeassistant import TuyaCoverAction
 
+from . import inject_dpcode
+
 try:
     from typeguard import suppress_type_checks  # type: ignore[import-not-found]
 except ImportError:
@@ -34,76 +32,6 @@ except ImportError:
     suppress_type_checks = nullcontext
 
 
-@pytest.fixture()
-def inject_control_back_mode(mock_device: CustomerDevice) -> None:
-    mock_device.function["control_back_mode"] = DeviceFunction(
-        {
-            "code": "control_back_mode",
-            "type": "Enum",
-            "values": '{"range": ["forward", "back"]}',
-        }
-    )
-    mock_device.status_range["control_back_mode"] = DeviceStatusRange(
-        {
-            "code": "control_back_mode",
-            "type": "Enum",
-            "values": '{"range": ["forward", "back"]}',
-        }
-    )
-    mock_device.status["control_back_mode"] = "forward"
-
-
-@pytest.fixture()
-def inject_control(mock_device: CustomerDevice) -> None:
-    mock_device.function["control"] = DeviceFunction(
-        {
-            "code": "control",
-            "type": "Enum",
-            "values": '{"range": ["open", "stop", "close"]}',
-        }
-    )
-    mock_device.status_range["control"] = DeviceStatusRange(
-        {
-            "code": "control",
-            "type": "Enum",
-            "values": '{"range": ["open", "stop", "close"]}',
-        }
-    )
-    mock_device.status["control"] = "stop"
-
-
-@pytest.fixture()
-def inject_legacy_control(mock_device: CustomerDevice) -> None:
-    mock_device.function["legacy_control"] = DeviceFunction(
-        {
-            "code": "legacy_control",
-            "type": "Enum",
-            "values": '{"range": ["open", "stop", "close"]}',
-        }
-    )
-    mock_device.status_range["legacy_control"] = DeviceStatusRange(
-        {
-            "code": "legacy_control",
-            "type": "Enum",
-            "values": '{"range": ["open", "stop", "close"]}',
-        }
-    )
-    mock_device.status["legacy_control"] = "stop"
-
-
-@pytest.fixture()
-def inject_cover_situation(mock_device: CustomerDevice) -> None:
-    mock_device.status_range["cover_situation"] = DeviceStatusRange(
-        {
-            "code": "cover_situation",
-            "type": "Enum",
-            "values": '{"range": ["fully_open", "fully_close"]}',
-        }
-    )
-    mock_device.status["cover_situation"] = "fully_open"
-
-
-@pytest.mark.usefixtures("inject_control_back_mode", "inject_cover_situation")
 @pytest.mark.parametrize(
     ("wrapper_type", "dpcode", "status_updates", "expected_device_status"),
     [
@@ -166,6 +94,21 @@ def test_read_device_status(
     mock_device: CustomerDevice,
 ) -> None:
     """Test read_device_status."""
+    inject_dpcode(
+        mock_device,
+        "control_back_mode",
+        "forward",
+        dptype="Enum",
+        values='{"range": ["forward", "back"]}',
+    )
+    inject_dpcode(
+        mock_device,
+        "cover_situation",
+        "fully_open",
+        dptype="Enum",
+        values='{"range": ["fully_open", "fully_close"]}',
+        skip_function=True,
+    )
     mock_device.status.update(status_updates)
     wrapper = wrapper_type.find_dpcode(mock_device, dpcode)
 
@@ -181,7 +124,6 @@ def test_read_device_status(
     assert wrapper.read_device_status(mock_device) is None
 
 
-@pytest.mark.usefixtures("inject_control")
 @pytest.mark.parametrize(
     ("wrapper_type", "dpcode", "action", "expected"),
     [
@@ -217,21 +159,21 @@ def test_read_device_status(
         ),
         (
             CoverInstructionSpecialEnumWrapper,
-            "control",
+            "legacy_control",
             TuyaCoverAction.OPEN,
-            [{"code": "control", "value": "FZ"}],
+            [{"code": "legacy_control", "value": "FZ"}],
         ),
         (
             CoverInstructionSpecialEnumWrapper,
-            "control",
+            "legacy_control",
             TuyaCoverAction.CLOSE,
-            [{"code": "control", "value": "ZZ"}],
+            [{"code": "legacy_control", "value": "ZZ"}],
         ),
         (
             CoverInstructionSpecialEnumWrapper,
-            "control",
+            "legacy_control",
             TuyaCoverAction.STOP,
-            [{"code": "control", "value": "STOP"}],
+            [{"code": "legacy_control", "value": "STOP"}],
         ),
     ],
 )
@@ -243,6 +185,20 @@ def test_cover_action_command(
     mock_device: CustomerDevice,
 ) -> None:
     """Test get_update_commands."""
+    inject_dpcode(
+        mock_device,
+        "control",
+        "stop",
+        dptype="Enum",
+        values='{"range": ["open", "stop", "close"]}',
+    )
+    inject_dpcode(
+        mock_device,
+        "legacy_control",
+        "stop",
+        dptype="Enum",
+        values='{"range": ["FZ", "ZZ", "STOP"]}',
+    )
     wrapper = wrapper_type.find_dpcode(mock_device, dpcode)
 
     assert wrapper

@@ -3,11 +3,7 @@
 from typing import Any
 
 import pytest
-from tuya_sharing import (  # type: ignore[import-untyped]
-    CustomerDevice,
-    DeviceFunction,
-    DeviceStatusRange,
-)
+from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
 
 from tuya_device_handlers.device_wrapper.alarm_control_panel import (
     AlarmActionWrapper,
@@ -19,6 +15,8 @@ from tuya_device_handlers.helpers.homeassistant import (
     TuyaAlarmControlPanelState,
 )
 
+from . import inject_dpcode
+
 try:
     from typeguard import suppress_type_checks  # type: ignore[import-not-found]
 except ImportError:
@@ -27,46 +25,22 @@ except ImportError:
     suppress_type_checks = nullcontext
 
 
-@pytest.fixture(autouse=True)
 def _inject_default_alarm_codes(mock_device: CustomerDevice) -> None:
-    mock_device.function["master_mode"] = DeviceFunction(
-        {
-            "code": "master_mode",
-            "type": "Enum",
-            "values": '{"range": ["disarmed", "arm", "home", "sos"]}',
-        }
+    inject_dpcode(mock_device, "alarm_msg", "**REDACTED**", dptype="Raw")
+    inject_dpcode(
+        mock_device,
+        "master_mode",
+        "disarmed",
+        dptype="Enum",
+        values='{"range": ["disarmed", "arm", "home", "sos"]}',
     )
-    mock_device.function["master_state"] = DeviceFunction(
-        {
-            "code": "master_state",
-            "type": "Enum",
-            "values": '{"range": ["normal", "alarm"]}',
-        }
+    inject_dpcode(
+        mock_device,
+        "master_state",
+        "normal",
+        dptype="Enum",
+        values='{"range": ["normal", "alarm"]}',
     )
-    mock_device.status_range["alarm_msg"] = DeviceStatusRange(
-        {
-            "code": "alarm_msg",
-            "type": "Raw",
-            "values": "{}",
-        }
-    )
-    mock_device.status_range["master_mode"] = DeviceStatusRange(
-        {
-            "code": "master_mode",
-            "type": "Enum",
-            "values": '{"range": ["disarmed", "arm", "home", "sos"]}',
-        }
-    )
-    mock_device.status_range["master_state"] = DeviceStatusRange(
-        {
-            "code": "master_state",
-            "type": "Enum",
-            "values": '{"range": ["normal", "alarm"]}',
-        }
-    )
-    mock_device.status["alarm_msg"] = "**REDACTED**"
-    mock_device.status["master_mode"] = "disarmed"
-    mock_device.status["master_state"] = "normal"
 
 
 @pytest.mark.parametrize(
@@ -121,6 +95,7 @@ def test_read_device_status(
     mock_device: CustomerDevice,
 ) -> None:
     """Test read_device_status."""
+    _inject_default_alarm_codes(mock_device)
     mock_device.status.update(status_updates)
     changed_by_wrapper = AlarmChangedByWrapper.find_dpcode(
         mock_device, "alarm_msg"
@@ -173,6 +148,7 @@ def test_get_update_commands(
     mock_device: CustomerDevice,
 ) -> None:
     """Test get_update_commands."""
+    _inject_default_alarm_codes(mock_device)
     wrapper = AlarmActionWrapper.find_dpcode(mock_device, "master_mode")
 
     assert wrapper
@@ -183,6 +159,7 @@ def test_invalid_update_commands(
     mock_device: CustomerDevice,
 ) -> None:
     """Test get_update_commands."""
+    _inject_default_alarm_codes(mock_device)
     wrapper = AlarmActionWrapper.find_dpcode(mock_device, "master_mode")
 
     assert wrapper
