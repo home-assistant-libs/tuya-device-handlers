@@ -159,20 +159,29 @@ def test_read_device_status(
 
     assert wrapper
     if sample == "extended_brightness":
-        assert isinstance(wrapper, BrightnessWrapper)
-        wrapper.brightness_max = DPCodeIntegerWrapper.find_dpcode(
+        brightness_wrapper = wrapper
+        assert isinstance(brightness_wrapper, BrightnessWrapper)
+        brightness_wrapper.brightness_max = DPCodeIntegerWrapper.find_dpcode(
             mock_device, "brightness_max_1"
         )
-        assert isinstance(wrapper.brightness_max, DPCodeIntegerWrapper)
-        wrapper.brightness_max_remap = RemapHelper.from_type_information(
-            wrapper.brightness_max.type_information, 0, 255
+        assert isinstance(
+            brightness_wrapper.brightness_max, DPCodeIntegerWrapper
         )
-        wrapper.brightness_min = DPCodeIntegerWrapper.find_dpcode(
+        brightness_wrapper.brightness_max_remap = (
+            RemapHelper.from_type_information(
+                brightness_wrapper.brightness_max.type_information, 0, 255
+            )
+        )
+        brightness_wrapper.brightness_min = DPCodeIntegerWrapper.find_dpcode(
             mock_device, "brightness_min_1"
         )
-        assert isinstance(wrapper.brightness_min, DPCodeIntegerWrapper)
-        wrapper.brightness_min_remap = RemapHelper.from_type_information(
-            wrapper.brightness_min.type_information, 0, 255
+        assert isinstance(
+            brightness_wrapper.brightness_min, DPCodeIntegerWrapper
+        )
+        brightness_wrapper.brightness_min_remap = (
+            RemapHelper.from_type_information(
+                brightness_wrapper.brightness_min.type_information, 0, 255
+            )
         )
 
     assert wrapper.read_device_status(mock_device) == expected_device_status
@@ -305,4 +314,29 @@ def test_light_action_command(
     wrapper = wrapper_type.find_dpcode(mock_device, dpcode)
 
     assert wrapper
+    if sample == "extended_brightness":
+        brightness_wrapper = wrapper
+        assert isinstance(brightness_wrapper, BrightnessWrapper)
+        brightness_wrapper.brightness_max = DPCodeIntegerWrapper.find_dpcode(
+            mock_device, "brightness_max_1"
+        )
+        assert isinstance(
+            brightness_wrapper.brightness_max, DPCodeIntegerWrapper
+        )
+        brightness_wrapper.brightness_max_remap = (
+            RemapHelper.from_type_information(
+                brightness_wrapper.brightness_max.type_information, 0, 255
+            )
+        )
+        brightness_wrapper.brightness_min = DPCodeIntegerWrapper.find_dpcode(
+            mock_device, "brightness_min_1"
+        )
+        assert isinstance(
+            brightness_wrapper.brightness_min, DPCodeIntegerWrapper
+        )
+        brightness_wrapper.brightness_min_remap = (
+            RemapHelper.from_type_information(
+                brightness_wrapper.brightness_min.type_information, 0, 255
+            )
+        )
     assert wrapper.get_update_commands(mock_device, action) == expected
