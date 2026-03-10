@@ -7,3 +7,22 @@ coverage:
     patch:
       default:
         target: auto
+    device-wrapper:
+      target: 100%
+      flags:
+        - device-wrapper
+    helpers:
+      target: 100%
+      flags:
+        - helpers
+
+comment:
+  layout: "diff, flags, files"
+
+flags:
+  device-wrapper:
+    paths: #note, accepts globs, not regexes
+      - src/tuya_device_handlers/device_wrapper
+  helpers:
+    paths: #note, accepts globs, not regexes
+      - src/tuya_device_handlers/helpers
