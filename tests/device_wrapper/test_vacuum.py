@@ -87,11 +87,6 @@ def test_read_device_status(
             [{"code": "mode", "value": "chargego"}],
         ),
         (
-            "wrapper_2",
-            TuyaVacuumAction.RETURN_TO_BASE,
-            [{"code": "switch_charge", "value": True}],
-        ),
-        (
             "wrapper_1",
             TuyaVacuumAction.LOCATE,
             [{"code": "seek", "value": True}],
@@ -110,6 +105,16 @@ def test_read_device_status(
             "wrapper_1",
             TuyaVacuumAction.PAUSE,
             [{"code": "power_go", "value": False}],
+        ),
+        (
+            "wrapper_2",
+            TuyaVacuumAction.RETURN_TO_BASE,
+            [{"code": "switch_charge", "value": True}],
+        ),
+        (
+            "wrapper_2",
+            TuyaVacuumAction.LOCATE,
+            [],
         ),
     ],
 )
