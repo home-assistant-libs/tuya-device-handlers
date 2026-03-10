@@ -79,46 +79,60 @@ def test_read_device_status(
 
 
 @pytest.mark.parametrize(
-    ("action", "expected"),
+    ("sample", "action", "expected"),
     [
         (
+            "wrapper_1",
             TuyaVacuumAction.RETURN_TO_BASE,
             [{"code": "mode", "value": "chargego"}],
         ),
         (
+            "wrapper_2",
+            TuyaVacuumAction.RETURN_TO_BASE,
+            [{"code": "switch_charge", "value": True}],
+        ),
+        (
+            "wrapper_1",
             TuyaVacuumAction.LOCATE,
             [{"code": "seek", "value": True}],
         ),
         (
+            "wrapper_1",
             TuyaVacuumAction.START,
             [{"code": "power_go", "value": True}],
         ),
         (
+            "wrapper_1",
             TuyaVacuumAction.STOP,
             [{"code": "power_go", "value": False}],
         ),
         (
+            "wrapper_1",
             TuyaVacuumAction.PAUSE,
             [{"code": "power_go", "value": False}],
         ),
     ],
 )
 def test_vacuum_action_command(
+    sample: str,
     action: TuyaVacuumAction,
     expected: list[dict[str, Any]],
     mock_device: CustomerDevice,
 ) -> None:
     """Test get_update_commands."""
-    inject_dpcode(mock_device, "power", False, dptype="Boolean")
-    inject_dpcode(mock_device, "seek", False, dptype="Boolean")
-    inject_dpcode(
-        mock_device,
-        "mode",
-        "chargego",
-        dptype="Enum",
-        values='{"range": ["random", "smart", "wall_follow", "chargego"]}',
-    )
-    inject_dpcode(mock_device, "power_go", False, dptype="Boolean")
+    if sample == "wrapper_1":
+        inject_dpcode(mock_device, "power", False, dptype="Boolean")
+        inject_dpcode(mock_device, "seek", False, dptype="Boolean")
+        inject_dpcode(
+            mock_device,
+            "mode",
+            "chargego",
+            dptype="Enum",
+            values='{"range": ["random", "smart", "wall_follow", "chargego"]}',
+        )
+        inject_dpcode(mock_device, "power_go", False, dptype="Boolean")
+    elif sample == "wrapper_2":
+        inject_dpcode(mock_device, "switch_charge", False, dptype="Boolean")
 
     wrapper = VacuumActionWrapper.find_dpcode(mock_device)
 
