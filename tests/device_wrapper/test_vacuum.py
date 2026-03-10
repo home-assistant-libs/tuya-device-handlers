@@ -144,3 +144,12 @@ def test_vacuum_action_command(
 
     assert wrapper
     assert wrapper.get_update_commands(mock_device, action) == expected
+
+
+def test_find_dpcode_failure(
+    mock_device: CustomerDevice,
+) -> None:
+    """Test get_update_commands."""
+    wrapper = VacuumActivityWrapper.find_dpcode(mock_device)
+
+    assert wrapper is None
