@@ -243,6 +243,8 @@ def test_read_device_status(
             6500,
             [{"code": "temp_value", "value": 1000}],
         ),
+        # Note: extended_brightness is here for coverage, but we never got
+        # diagnostic data to validate
         (
             "extended_brightness",
             BrightnessWrapper,
