@@ -15,15 +15,15 @@ class RemapHelper:
 
     source_min: int
     source_max: int
-    target_min: int
-    target_max: int
+    target_min: float
+    target_max: float
 
     @classmethod
     def from_type_information(
         cls,
         type_information: IntegerTypeInformation,
-        target_min: int,
-        target_max: int,
+        target_min: float,
+        target_max: float,
     ) -> RemapHelper:
         """Create RemapHelper from IntegerTypeInformation."""
         return cls(

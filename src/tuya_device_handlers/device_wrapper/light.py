@@ -141,8 +141,8 @@ class ColorTempWrapper(DPCodeIntegerWrapper[int]):
     ) -> None:
         """Init DPCodeIntegerWrapper."""
         super().__init__(dpcode, type_information)
-        max_mireds = round(self.kelvin_to_mired(self.MIN_KELVIN))
-        min_mireds = round(self.kelvin_to_mired(self.MAX_KELVIN))
+        max_mireds = self.kelvin_to_mired(self.MIN_KELVIN)
+        min_mireds = self.kelvin_to_mired(self.MAX_KELVIN)
         self._remap_helper = RemapHelper.from_type_information(
             type_information, min_mireds, max_mireds
         )
