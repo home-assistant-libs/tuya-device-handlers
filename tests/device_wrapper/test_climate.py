@@ -162,14 +162,26 @@ def test_swing_mode_action_command(
         (
             '["cold", "freeze", "hot", "wet", "wind", "auto"]',
             {"mode": "cold"},
-            None,
+            TuyaClimateHVACMode.COOL,
             "cold",
+        ),
+        (
+            '["cold", "freeze", "hot", "wet", "wind", "auto"]',
+            {"mode": "auto"},
+            TuyaClimateHVACMode.HEAT_COOL,
+            None,
         ),
         (
             '["cold", "freeze", "hot", "wet", "wind", "auto"]',
             {},
             None,
             None,
+        ),
+        (
+            '["auto", "manual", "off"]',
+            {"mode": "manual"},
+            TuyaClimateHVACMode.HEAT_COOL,
+            "manual",
         ),
     ],
 )

@@ -168,9 +168,11 @@ class DefaultHVACModeWrapper(DPCodeEnumWrapper[TuyaClimateHVACMode]):
         self, device: CustomerDevice
     ) -> TuyaClimateHVACMode | None:
         """Read the device status."""
-        if (raw := self._read_dpcode_value(device)) not in self._mappings:
+        if (
+            raw := self._read_dpcode_value(device)
+        ) not in _DEFAULT_DEVICE_MODE_TO_HVACMODE:
             return None
-        return self._mappings[raw]
+        return _DEFAULT_DEVICE_MODE_TO_HVACMODE[raw]
 
     def _convert_value_to_raw_value(
         self,
