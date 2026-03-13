@@ -10,7 +10,6 @@ from tuya_device_handlers.device_wrapper.common import (
 )
 from tuya_device_handlers.device_wrapper.cover import (
     ControlBackModePercentageMappingWrapper,
-    CoverClosedBooleanWrapper,
     CoverClosedEnumWrapper,
     CoverInstructionBooleanWrapper,
     CoverInstructionEnumWrapper,
@@ -59,18 +58,6 @@ except ImportError:
             "demo_integer",
             {"demo_integer": 200, "control_back_mode": "forward"},
             80,
-        ),
-        (
-            CoverClosedBooleanWrapper,
-            "demo_boolean",
-            {"demo_boolean": True},
-            False,
-        ),
-        (
-            CoverClosedBooleanWrapper,
-            "demo_boolean",
-            {"demo_boolean": False},
-            True,
         ),
         (
             CoverClosedEnumWrapper,

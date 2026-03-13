@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING, Any
 
 from ..type_information import IntegerTypeInformation
 from ..utils import RemapHelper
-from .common import DPCodeIntegerWrapper
+from .common import DPCodeBooleanWrapper, DPCodeIntegerWrapper
 
 if TYPE_CHECKING:
     from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
@@ -82,3 +82,17 @@ class DPCodeInvertedPercentageWrapper(DPCodePercentageWrapper):
     def _remap_inverted(self, device: CustomerDevice) -> bool:
         """Check if the remap helper should be inverted."""
         return True
+
+
+class DPCodeInvertedBooleanWrapper(DPCodeBooleanWrapper):
+    """Inverted boolean wrapper."""
+
+    def read_device_status(self, device: CustomerDevice) -> bool | None:
+        if (value := self._read_dpcode_value(device)) is None:
+            return None
+        return not value
+
+    def _convert_value_to_raw_value(
+        self, device: CustomerDevice, value: Any
+    ) -> bool:
+        return not super()._convert_value_to_raw_value(device, value)

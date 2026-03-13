@@ -9,6 +9,7 @@ from tuya_device_handlers.device_wrapper.common import (
     DPCodeTypeInformationWrapper,
 )
 from tuya_device_handlers.device_wrapper.extended import (
+    DPCodeInvertedBooleanWrapper,
     DPCodeInvertedPercentageWrapper,
     DPCodePercentageWrapper,
     DPCodeRoundedIntegerWrapper,
@@ -31,6 +32,8 @@ except ImportError:
         (DPCodePercentageWrapper, "demo_integer", 123, 12),
         (DPCodeInvertedPercentageWrapper, "demo_integer", 0, 100),
         (DPCodeInvertedPercentageWrapper, "demo_integer", 123, 88),
+        (DPCodeInvertedBooleanWrapper, "demo_boolean", True, False),
+        (DPCodeInvertedBooleanWrapper, "demo_boolean", False, True),
     ],
 )
 def test_read_device_status(
@@ -70,6 +73,12 @@ def test_read_device_status(
             "demo_integer",
             11.3,
             [{"code": "demo_integer", "value": 887}],
+        ),
+        (
+            DPCodeInvertedBooleanWrapper,
+            "demo_boolean",
+            False,
+            [{"code": "demo_boolean", "value": True}],
         ),
     ],
 )

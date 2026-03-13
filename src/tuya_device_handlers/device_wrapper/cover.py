@@ -78,15 +78,6 @@ class CoverInstructionSpecialEnumWrapper(CoverInstructionEnumWrapper):
     }
 
 
-class CoverClosedBooleanWrapper(DPCodeBooleanWrapper):
-    """Boolean wrapper for checking if cover is closed (inverted)."""
-
-    def read_device_status(self, device: CustomerDevice) -> bool | None:
-        if (value := self._read_dpcode_value(device)) is None:
-            return None
-        return not value
-
-
 class CoverClosedEnumWrapper(DPCodeEnumWrapper[bool]):
     """Enum wrapper for checking if state is closed."""
 
