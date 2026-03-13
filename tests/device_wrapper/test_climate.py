@@ -131,7 +131,7 @@ def test_swing_mode_unavailable(
         ),
     ],
 )
-def test_cover_action_command(
+def test_swing_mode_action_command(
     sample: str,
     action: TuyaClimateSwingMode,
     expected: list[dict[str, Any]],
@@ -194,3 +194,38 @@ def test_read_hvac_preset(
     assert hvac_wrapper and preset_wrapper
     assert hvac_wrapper.read_device_status(mock_device) == expected_hvac_mode
     assert preset_wrapper.read_device_status(mock_device) == expected_preset
+
+
+@pytest.mark.parametrize(
+    ("range", "action", "expected"),
+    [
+        (
+            '["cold", "hot", "wet", "wind", "auto"]',
+            TuyaClimateHVACMode.COOL,
+            [{"code": "mode", "value": "cold"}],
+        ),
+        (
+            '["cold", "hot", "wet", "wind", "auto"]',
+            TuyaClimateHVACMode.HEAT,
+            [{"code": "mode", "value": "hot"}],
+        ),
+    ],
+)
+def test_hvac_action_command(
+    range: str,
+    action,
+    expected: list[dict[str, Any]],
+    mock_device: CustomerDevice,
+) -> None:
+    """Test get_update_commands."""
+    inject_dpcode(
+        mock_device,
+        "mode",
+        None,
+        dptype="Enum",
+        values=f'{{"range": {range}}}',
+    )
+    wrapper = DefaultHVACModeWrapper.find_dpcode(mock_device, "mode")
+
+    assert wrapper
+    assert wrapper.get_update_commands(mock_device, action) == expected
