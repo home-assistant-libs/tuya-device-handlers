@@ -4,10 +4,25 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any
 
+from ..type_information import IntegerTypeInformation
 from .common import DPCodeEnumWrapper
+from .extended import DPCodeRemappedIntegerWrapper
 
 if TYPE_CHECKING:
     from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
+
+
+class FanSpeedIntegerWrapper(DPCodeRemappedIntegerWrapper):
+    """Wrapper for fan speed DP code (from an integer).
+
+    Contrary to the standard DPCodePercentageWrapper we start the range at 1.
+    """
+
+    def __init__(
+        self, dpcode: str, type_information: IntegerTypeInformation
+    ) -> None:
+        """Init FanSpeedIntegerWrapper."""
+        super().__init__(dpcode, type_information, target_min=1, target_max=100)
 
 
 class FanSpeedEnumWrapper(DPCodeEnumWrapper[int]):

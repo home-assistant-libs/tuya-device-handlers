@@ -82,13 +82,3 @@ class DPCodeInvertedPercentageWrapper(DPCodePercentageWrapper):
     def _remap_inverted(self, device: CustomerDevice) -> bool:
         """Check if the remap helper should be inverted."""
         return True
-
-
-class DPCodeNonZeroPercentageWrapper(DPCodeRemappedIntegerWrapper):
-    """Wrapper to map Tuya integer values to non-zero percentage (1..100)."""
-
-    def __init__(
-        self, dpcode: str, type_information: IntegerTypeInformation
-    ) -> None:
-        """Init DPCodeNonZeroPercentageWrapper."""
-        super().__init__(dpcode, type_information, target_min=1, target_max=100)
