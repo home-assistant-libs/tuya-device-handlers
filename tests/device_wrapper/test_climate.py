@@ -213,7 +213,7 @@ def test_read_hvac_preset(
 )
 def test_hvac_action_command(
     range: str,
-    action,
+    action: TuyaClimateHVACMode,
     expected: list[dict[str, Any]],
     mock_device: CustomerDevice,
 ) -> None:
