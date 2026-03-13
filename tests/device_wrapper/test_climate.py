@@ -81,3 +81,65 @@ def test_swing_mode_unavailable(
     wrapper = SwingModeCompositeWrapper.find_dpcode(mock_device)
 
     assert wrapper is None
+
+
+@pytest.mark.parametrize(
+    ("sample", "action", "expected"),
+    [
+        (
+            "swing_only",
+            TuyaClimateSwingMode.ON,
+            [{"code": "swing", "value": True}],
+        ),
+        (
+            "swing_only",
+            TuyaClimateSwingMode.OFF,
+            [{"code": "swing", "value": False}],
+        ),
+        (
+            "horizontal_only",
+            TuyaClimateSwingMode.HORIZONTAL,
+            [{"code": "switch_horizontal", "value": True}],
+        ),
+        (
+            "horizontal_only",
+            TuyaClimateSwingMode.OFF,
+            [{"code": "switch_horizontal", "value": False}],
+        ),
+        (
+            "vertical_only",
+            TuyaClimateSwingMode.VERTICAL,
+            [{"code": "switch_vertical", "value": True}],
+        ),
+        (
+            "vertical_only",
+            TuyaClimateSwingMode.OFF,
+            [{"code": "switch_vertical", "value": False}],
+        ),
+        (
+            "both",
+            TuyaClimateSwingMode.BOTH,
+            [
+                {"code": "switch_vertical", "value": True},
+                {"code": "switch_horizontal", "value": True},
+            ],
+        ),
+    ],
+)
+def test_cover_action_command(
+    sample: str,
+    action: TuyaClimateSwingMode,
+    expected: list[dict[str, Any]],
+    mock_device: CustomerDevice,
+) -> None:
+    """Test get_update_commands."""
+    if sample == "swing_only":
+        inject_dpcode(mock_device, "swing", None, dptype="Boolean")
+    if sample in {"horizontal_only", "both"}:
+        inject_dpcode(mock_device, "switch_horizontal", None, dptype="Boolean")
+    if sample in {"vertical_only", "both"}:
+        inject_dpcode(mock_device, "switch_vertical", None, dptype="Boolean")
+    wrapper = SwingModeCompositeWrapper.find_dpcode(mock_device)
+
+    assert wrapper
+    assert wrapper.get_update_commands(mock_device, action) == expected
