@@ -2,15 +2,29 @@
 
 from __future__ import annotations
 
+import collections
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Any, Self
 
-from ..helpers.homeassistant import TuyaClimateSwingMode
+from ..helpers.homeassistant import TuyaClimateHVACMode, TuyaClimateSwingMode
+from ..type_information import EnumTypeInformation
 from .base import DeviceWrapper
-from .common import DPCodeBooleanWrapper
+from .common import DPCodeBooleanWrapper, DPCodeEnumWrapper
 
 if TYPE_CHECKING:
     from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
+
+_DEFAULT_DEVICE_MODE_TO_HVACMODE = {
+    "auto": TuyaClimateHVACMode.HEAT_COOL,
+    "cold": TuyaClimateHVACMode.COOL,
+    "freeze": TuyaClimateHVACMode.COOL,
+    "heat": TuyaClimateHVACMode.HEAT,
+    "hot": TuyaClimateHVACMode.HEAT,
+    "manual": TuyaClimateHVACMode.HEAT_COOL,
+    "off": TuyaClimateHVACMode.OFF,
+    "wet": TuyaClimateHVACMode.DRY,
+    "wind": TuyaClimateHVACMode.FAN_ONLY,
+}
 
 
 @dataclass(kw_only=True)
@@ -112,3 +126,88 @@ class SwingModeCompositeWrapper(DeviceWrapper[str]):
                 )
             )
         return commands
+
+
+def _filter_hvac_mode_mappings(
+    tuya_range: list[str],
+) -> dict[str, TuyaClimateHVACMode | None]:
+    """Filter TUYA_HVAC_TO_HA modes that are not in the range.
+
+    If multiple Tuya modes map to the same HA mode, set the mapping to None to avoid
+    ambiguity when converting back from HA to Tuya modes.
+    """
+    modes_in_range = {
+        tuya_mode: _DEFAULT_DEVICE_MODE_TO_HVACMODE.get(tuya_mode)
+        for tuya_mode in tuya_range
+    }
+    modes_occurrences = collections.Counter(modes_in_range.values())
+    for key, value in modes_in_range.items():
+        if value is not None and modes_occurrences[value] > 1:
+            modes_in_range[key] = None
+    return modes_in_range
+
+
+class DefaultHVACModeWrapper(DPCodeEnumWrapper[TuyaClimateHVACMode]):
+    """Wrapper for managing climate HVACMode."""
+
+    # Modes that do not map to HVAC modes are ignored (they are handled by PresetWrapper)
+
+    def __init__(
+        self, dpcode: str, type_information: EnumTypeInformation
+    ) -> None:
+        """Init _HvacModeWrapper."""
+        super().__init__(dpcode, type_information)
+        self._mappings = _filter_hvac_mode_mappings(type_information.range)
+        self.options = [
+            ha_mode
+            for ha_mode in self._mappings.values()
+            if ha_mode is not None
+        ]
+
+    def read_device_status(
+        self, device: CustomerDevice
+    ) -> TuyaClimateHVACMode | None:
+        """Read the device status."""
+        if (
+            raw := self._read_dpcode_value(device)
+        ) not in _DEFAULT_DEVICE_MODE_TO_HVACMODE:
+            return None
+        return _DEFAULT_DEVICE_MODE_TO_HVACMODE[raw]
+
+    def _convert_value_to_raw_value(
+        self,
+        device: CustomerDevice,
+        value: TuyaClimateHVACMode,
+    ) -> Any:
+        """Convert value to raw value."""
+        return next(
+            tuya_mode
+            for tuya_mode, ha_mode in self._mappings.items()
+            if ha_mode == value
+        )
+
+
+class DefaultPresetModeWrapper(DPCodeEnumWrapper):
+    """Wrapper for managing climate preset modes."""
+
+    # Modes that map to HVAC modes are ignored (they are handled by HVACModeWrapper)
+
+    def __init__(
+        self, dpcode: str, type_information: EnumTypeInformation
+    ) -> None:
+        """Init _PresetWrapper."""
+        super().__init__(dpcode, type_information)
+        mappings = _filter_hvac_mode_mappings(type_information.range)
+        self.options = [
+            tuya_mode
+            for tuya_mode, ha_mode in mappings.items()
+            if ha_mode is None
+        ]
+
+    def read_device_status(self, device: CustomerDevice) -> str | None:
+        """Read the device status."""
+        if (
+            raw := self._read_dpcode_value(device)
+        ) in _DEFAULT_DEVICE_MODE_TO_HVACMODE:
+            return None
+        return raw
