@@ -1,6 +1,5 @@
 """Test DeviceWrapper classes"""
 
-import base64
 from typing import Any
 
 import pytest
@@ -29,7 +28,7 @@ except ImportError:
         (
             Base64Utf8RawWrapper,
             "demo_raw",
-            base64.b64encode(b"https://some-picture-url.com/image.jpg"),
+            "aHR0cHM6Ly9zb21lLXBpY3R1cmUtdXJsLmNvbS9pbWFnZS5qcGc=",
             (
                 "triggered",
                 {"message": "https://some-picture-url.com/image.jpg"},
@@ -38,7 +37,7 @@ except ImportError:
         (
             Base64Utf8StringWrapper,
             "demo_string",
-            base64.b64encode(b"My dog ate my dinner"),
+            "TXkgZG9nIGF0ZSBteSBkaW5uZXI=",
             (
                 "triggered",
                 {"message": "My dog ate my dinner"},
