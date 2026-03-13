@@ -8,10 +8,9 @@ from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
 from tuya_device_handlers.device_wrapper.common import (
     DPCodeTypeInformationWrapper,
 )
-from tuya_device_handlers.device_wrapper.extended import (
-    DPCodeInvertedPercentageWrapper,
-    DPCodePercentageWrapper,
-    DPCodeRoundedIntegerWrapper,
+from tuya_device_handlers.device_wrapper.fan import (
+    FanSpeedEnumWrapper,
+    FanSpeedIntegerWrapper,
 )
 
 try:
@@ -25,12 +24,11 @@ except ImportError:
 @pytest.mark.parametrize(
     ("wrapper_type", "dpcode", "status", "expected_device_status"),
     [
-        (DPCodeRoundedIntegerWrapper, "demo_integer", 0, 0),
-        (DPCodeRoundedIntegerWrapper, "demo_integer", 123, 12),
-        (DPCodePercentageWrapper, "demo_integer", 0, 0),
-        (DPCodePercentageWrapper, "demo_integer", 123, 12),
-        (DPCodeInvertedPercentageWrapper, "demo_integer", 0, 100),
-        (DPCodeInvertedPercentageWrapper, "demo_integer", 123, 88),
+        (FanSpeedEnumWrapper, "demo_enum", "scene", 33),
+        (FanSpeedEnumWrapper, "demo_enum", "customize_scene", 66),
+        (FanSpeedEnumWrapper, "demo_enum", "other", None),
+        (FanSpeedIntegerWrapper, "demo_integer", 0, 1),
+        (FanSpeedIntegerWrapper, "demo_integer", 123, 13),
     ],
 )
 def test_read_device_status(
@@ -60,16 +58,28 @@ def test_read_device_status(
     ("wrapper_type", "dpcode", "value", "expected"),
     [
         (
-            DPCodePercentageWrapper,
-            "demo_integer",
-            11.3,
-            [{"code": "demo_integer", "value": 113}],
+            FanSpeedEnumWrapper,
+            "demo_enum",
+            10,
+            [{"code": "demo_enum", "value": "scene"}],
         ),
         (
-            DPCodeInvertedPercentageWrapper,
+            FanSpeedEnumWrapper,
+            "demo_enum",
+            90,
+            [{"code": "demo_enum", "value": "colour"}],
+        ),
+        (
+            FanSpeedEnumWrapper,
+            "demo_enum",
+            500,  # not a valid value - maps last value
+            [{"code": "demo_enum", "value": "colour"}],
+        ),
+        (
+            FanSpeedIntegerWrapper,
             "demo_integer",
             11.3,
-            [{"code": "demo_integer", "value": 887}],
+            [{"code": "demo_integer", "value": 104}],
         ),
     ],
 )

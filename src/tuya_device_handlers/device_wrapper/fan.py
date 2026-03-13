@@ -33,9 +33,6 @@ class FanSpeedEnumWrapper(DPCodeEnumWrapper[int]):
         if (value := self._read_dpcode_value(device)) is None:
             return None
 
-        if value not in self.options:
-            raise ValueError(f'The value "{value}" is not in "{self.options}"')
-
         list_len = len(self.options)
         list_position = self.options.index(value) + 1
         return (list_position * 100) // list_len
@@ -44,8 +41,7 @@ class FanSpeedEnumWrapper(DPCodeEnumWrapper[int]):
         self, device: CustomerDevice, value: Any
     ) -> Any:
         """Convert a Home Assistant value back to a raw device value."""
-        if not (list_len := len(self.options)):
-            raise ValueError("The ordered list is empty")
+        list_len = len(self.options)
 
         for offset, speed in enumerate(self.options):
             list_position = offset + 1
