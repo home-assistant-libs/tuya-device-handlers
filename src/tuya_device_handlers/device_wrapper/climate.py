@@ -155,7 +155,7 @@ class DefaultHVACModeWrapper(DPCodeEnumWrapper[TuyaClimateHVACMode]):
     def __init__(
         self, dpcode: str, type_information: EnumTypeInformation
     ) -> None:
-        """Init _HvacModeWrapper."""
+        """Init DefaultHVACModeWrapper."""
         super().__init__(dpcode, type_information)
         self._mappings = _filter_hvac_mode_mappings(type_information.range)
         self.options = [
@@ -168,11 +168,9 @@ class DefaultHVACModeWrapper(DPCodeEnumWrapper[TuyaClimateHVACMode]):
         self, device: CustomerDevice
     ) -> TuyaClimateHVACMode | None:
         """Read the device status."""
-        if (
-            raw := self._read_dpcode_value(device)
-        ) not in _DEFAULT_DEVICE_MODE_TO_HVACMODE:
+        if (raw := self._read_dpcode_value(device)) not in self._mappings:
             return None
-        return _DEFAULT_DEVICE_MODE_TO_HVACMODE[raw]
+        return self._mappings[raw]
 
     def _convert_value_to_raw_value(
         self,
@@ -195,7 +193,7 @@ class DefaultPresetModeWrapper(DPCodeEnumWrapper):
     def __init__(
         self, dpcode: str, type_information: EnumTypeInformation
     ) -> None:
-        """Init _PresetWrapper."""
+        """Init DefaultPresetModeWrapper."""
         super().__init__(dpcode, type_information)
         mappings = _filter_hvac_mode_mappings(type_information.range)
         self.options = [
@@ -206,8 +204,6 @@ class DefaultPresetModeWrapper(DPCodeEnumWrapper):
 
     def read_device_status(self, device: CustomerDevice) -> str | None:
         """Read the device status."""
-        if (
-            raw := self._read_dpcode_value(device)
-        ) in _DEFAULT_DEVICE_MODE_TO_HVACMODE:
-            return None
-        return raw
+        if (raw := self._read_dpcode_value(device)) in self.options:
+            return raw
+        return None

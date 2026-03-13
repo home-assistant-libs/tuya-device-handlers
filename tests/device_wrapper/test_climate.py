@@ -6,9 +6,14 @@ import pytest
 from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
 
 from tuya_device_handlers.device_wrapper.climate import (
+    DefaultHVACModeWrapper,
+    DefaultPresetModeWrapper,
     SwingModeCompositeWrapper,
 )
-from tuya_device_handlers.helpers.homeassistant import TuyaClimateSwingMode
+from tuya_device_handlers.helpers.homeassistant import (
+    TuyaClimateHVACMode,
+    TuyaClimateSwingMode,
+)
 
 from . import inject_dpcode
 
@@ -143,3 +148,49 @@ def test_cover_action_command(
 
     assert wrapper
     assert wrapper.get_update_commands(mock_device, action) == expected
+
+
+@pytest.mark.parametrize(
+    ("range", "status_updates", "expected_hvac_mode", "expected_preset"),
+    [
+        (
+            '["cold", "hot", "wet", "wind", "auto"]',
+            {"mode": "cold"},
+            TuyaClimateHVACMode.COOL,
+            None,
+        ),
+        (
+            '["cold", "freeze", "hot", "wet", "wind", "auto"]',
+            {"mode": "cold"},
+            None,
+            "cold",
+        ),
+        (
+            '["cold", "freeze", "hot", "wet", "wind", "auto"]',
+            {},
+            None,
+            None,
+        ),
+    ],
+)
+def test_read_hvac_preset(
+    range: str,
+    status_updates: dict[str, Any],
+    expected_hvac_mode: Any,
+    expected_preset: Any,
+    mock_device: CustomerDevice,
+) -> None:
+    inject_dpcode(
+        mock_device,
+        "mode",
+        None,
+        dptype="Enum",
+        values=f'{{"range": {range}}}',
+    )
+    mock_device.status.update(status_updates)
+    hvac_wrapper = DefaultHVACModeWrapper.find_dpcode(mock_device, "mode")
+    preset_wrapper = DefaultPresetModeWrapper.find_dpcode(mock_device, "mode")
+
+    assert hvac_wrapper and preset_wrapper
+    assert hvac_wrapper.read_device_status(mock_device) == expected_hvac_mode
+    assert preset_wrapper.read_device_status(mock_device) == expected_preset
