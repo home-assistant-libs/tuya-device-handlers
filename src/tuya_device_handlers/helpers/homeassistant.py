@@ -71,6 +71,16 @@ class TuyaClimateHVACMode(StrEnum):
     FAN_ONLY = "fan_only"
 
 
+class TuyaClimateSwingMode(StrEnum):
+    """Swing mode for climate devices."""
+
+    ON = "on"
+    OFF = "off"
+    BOTH = "both"
+    VERTICAL = "vertical"
+    HORIZONTAL = "horizontal"
+
+
 class TuyaCoverAction(StrEnum):
     """Cover entity actions."""
 
