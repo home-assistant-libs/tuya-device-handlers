@@ -15,7 +15,7 @@ if TYPE_CHECKING:
 
 @dataclass(kw_only=True)
 class SwingModeCompositeWrapper(DeviceWrapper[str]):
-    """Wrapper for managing climate swing mode operations across multiple DPCodes.
+    """Wrapper for managing swing mode across multiple boolean DPCodes.
 
     on/off lookup based for "swing" or "shake"
     horizontal lookup based on "switch_horizontal"
