@@ -1,0 +1,41 @@
+"""Tuya device wrapper."""
+
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Any
+
+from .common import DPCodeEnumWrapper
+
+if TYPE_CHECKING:
+    from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
+
+
+class FanSpeedEnumWrapper(DPCodeEnumWrapper[int]):
+    """Wrapper for fan speed DP code (from an enum)."""
+
+    def read_device_status(self, device: CustomerDevice) -> int | None:
+        """Get the current speed as a percentage."""
+        if (value := self._read_dpcode_value(device)) is None:
+            return None
+
+        if value not in self.options:
+            raise ValueError(f'The value "{value}" is not in "{self.options}"')
+
+        list_len = len(self.options)
+        list_position = self.options.index(value) + 1
+        return (list_position * 100) // list_len
+
+    def _convert_value_to_raw_value(
+        self, device: CustomerDevice, value: Any
+    ) -> Any:
+        """Convert a Home Assistant value back to a raw device value."""
+        if not (list_len := len(self.options)):
+            raise ValueError("The ordered list is empty")
+
+        for offset, speed in enumerate(self.options):
+            list_position = offset + 1
+            upper_bound = (list_position * 100) // list_len
+            if value <= upper_bound:
+                return speed
+
+        return self.options[-1]
