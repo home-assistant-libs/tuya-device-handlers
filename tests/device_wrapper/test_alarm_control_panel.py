@@ -166,4 +166,4 @@ def test_invalid_update_commands(
     with pytest.raises(
         ValueError, match="Unsupported value 12 for master_mode"
     ):
-        assert wrapper.get_update_commands(mock_device, "12")
+        assert wrapper.get_update_commands(mock_device, "12")  # type: ignore[arg-type]
