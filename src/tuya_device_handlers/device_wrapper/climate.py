@@ -54,13 +54,13 @@ class SwingModeCompositeWrapper(DeviceWrapper[str]):
             device, "switch_vertical", prefer_function=True
         )
         if on_off or horizontal or vertical:
-            options: list[str] = [TuyaClimateSwingMode.OFF]
+            options: list[str] = [TuyaClimateSwingMode.OFF.value]
             if on_off:
-                options.append(TuyaClimateSwingMode.ON)
+                options.append(TuyaClimateSwingMode.ON.value)
             if horizontal:
-                options.append(TuyaClimateSwingMode.HORIZONTAL)
+                options.append(TuyaClimateSwingMode.HORIZONTAL.value)
             if vertical:
-                options.append(TuyaClimateSwingMode.VERTICAL)
+                options.append(TuyaClimateSwingMode.VERTICAL.value)
             return cls(
                 on_off=on_off,
                 horizontal=horizontal,
