@@ -82,7 +82,7 @@ class AlarmActionWrapper(DPCodeEnumWrapper[TuyaAlarmControlPanelAction]):
         TuyaAlarmControlPanelAction.DISARM: "disarmed",
         TuyaAlarmControlPanelAction.TRIGGER: "sos",
     }
-    options: list[TuyaAlarmControlPanelAction]
+    options: list[TuyaAlarmControlPanelAction]  # type: ignore[assignment]
 
     def __init__(
         self, dpcode: str, type_information: EnumTypeInformation
