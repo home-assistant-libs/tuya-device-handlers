@@ -96,7 +96,7 @@ class AlarmActionWrapper(DPCodeEnumWrapper[TuyaAlarmControlPanelAction]):
         ]
 
     def _convert_value_to_raw_value(
-        self, device: CustomerDevice, value: TuyaAlarmControlPanelAction
+        self, device: CustomerDevice, value: Any
     ) -> Any:
         """Convert value to raw value."""
         if value in self.options:
