@@ -39,7 +39,7 @@ class SwingModeCompositeWrapper(DeviceWrapper[TuyaClimateSwingMode]):
     on_off: DPCodeBooleanWrapper | None = None
     horizontal: DPCodeBooleanWrapper | None = None
     vertical: DPCodeBooleanWrapper | None = None
-    options: list[TuyaClimateSwingMode]  # type: ignore[assignment]
+    options: list[str]
 
     @classmethod
     def find_dpcode(cls, device: CustomerDevice) -> Self | None:
@@ -54,7 +54,7 @@ class SwingModeCompositeWrapper(DeviceWrapper[TuyaClimateSwingMode]):
             device, "switch_vertical", prefer_function=True
         )
         if on_off or horizontal or vertical:
-            options = [TuyaClimateSwingMode.OFF]
+            options: list[str] = [TuyaClimateSwingMode.OFF]
             if on_off:
                 options.append(TuyaClimateSwingMode.ON)
             if horizontal:
