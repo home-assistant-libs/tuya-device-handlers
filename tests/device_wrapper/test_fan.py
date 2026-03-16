@@ -9,9 +9,13 @@ from tuya_device_handlers.device_wrapper.common import (
     DPCodeTypeInformationWrapper,
 )
 from tuya_device_handlers.device_wrapper.fan import (
+    FanDirectionEnumWrapper,
     FanSpeedEnumWrapper,
     FanSpeedIntegerWrapper,
 )
+from tuya_device_handlers.helpers.homeassistant import TuyaFanDirection
+
+from . import inject_dpcode
 
 try:
     from typeguard import suppress_type_checks  # type: ignore[import-not-found]
@@ -24,6 +28,19 @@ except ImportError:
 @pytest.mark.parametrize(
     ("wrapper_type", "dpcode", "status", "expected_device_status"),
     [
+        (FanDirectionEnumWrapper, "direction", "scene", None),
+        (
+            FanDirectionEnumWrapper,
+            "direction",
+            "forward",
+            TuyaFanDirection.FORWARD,
+        ),
+        (
+            FanDirectionEnumWrapper,
+            "direction",
+            "reverse",
+            TuyaFanDirection.REVERSE,
+        ),
         (FanSpeedEnumWrapper, "demo_enum", "scene", 33),
         (FanSpeedEnumWrapper, "demo_enum", "customize_scene", 66),
         (FanSpeedEnumWrapper, "demo_enum", "other", None),
@@ -39,6 +56,13 @@ def test_read_device_status(
     mock_device: CustomerDevice,
 ) -> None:
     """Test read_device_status."""
+    inject_dpcode(
+        mock_device,
+        "direction",
+        "chargego",
+        dptype="Enum",
+        values='{"range": ["forward","reverse"]}',
+    )
     mock_device.status[dpcode] = status
     wrapper = wrapper_type.find_dpcode(mock_device, dpcode)
 

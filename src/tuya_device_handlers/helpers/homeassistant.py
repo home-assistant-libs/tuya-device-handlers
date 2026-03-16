@@ -105,6 +105,13 @@ class TuyaCoverDeviceClass(StrEnum):
     WINDOW = "window"
 
 
+class TuyaFanDirection(StrEnum):
+    """Fan direction for fan devices."""
+
+    FORWARD = "forward"
+    REVERSE = "reverse"
+
+
 class TuyaSensorDeviceClass(StrEnum):
     """Device class for sensors."""
 

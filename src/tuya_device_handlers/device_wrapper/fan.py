@@ -4,12 +4,36 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any
 
-from ..type_information import IntegerTypeInformation
+from ..helpers.homeassistant import TuyaFanDirection
+from ..type_information import EnumTypeInformation, IntegerTypeInformation
 from .common import DPCodeEnumWrapper
 from .extended import DPCodeRemappedIntegerWrapper
 
 if TYPE_CHECKING:
     from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
+
+
+class FanDirectionEnumWrapper(DPCodeEnumWrapper[TuyaFanDirection]):
+    """Wrapper for fan direction DP code."""
+
+    _MAPPINGS = {
+        "forward": TuyaFanDirection.FORWARD,
+        "reverse": TuyaFanDirection.REVERSE,
+    }
+
+    def __init__(
+        self, dpcode: str, type_information: EnumTypeInformation
+    ) -> None:
+        """Init FanDirectionEnumWrapper."""
+        super().__init__(dpcode, type_information)
+
+    def read_device_status(self, device: CustomerDevice) -> str | None:
+        """Read the device status and return the direction string."""
+        if (
+            value := self._read_dpcode_value(device)
+        ) and value in self._MAPPINGS:
+            return value
+        return None
 
 
 class FanSpeedIntegerWrapper(DPCodeRemappedIntegerWrapper):
