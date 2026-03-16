@@ -9,8 +9,8 @@ from tuya_device_handlers.device_wrapper.common import (
     DPCodeTypeInformationWrapper,
 )
 from tuya_device_handlers.device_wrapper.event import (
-    Base64Utf8RawWrapper,
-    Base64Utf8StringWrapper,
+    Base64Utf8RawEventWrapper,
+    Base64Utf8StringEventWrapper,
     SimpleEventEnumWrapper,
 )
 
@@ -26,7 +26,7 @@ except ImportError:
     ("wrapper_type", "dpcode", "status", "expected_device_status"),
     [
         (
-            Base64Utf8RawWrapper,
+            Base64Utf8RawEventWrapper,
             "demo_raw",
             "aHR0cHM6Ly9zb21lLXBpY3R1cmUtdXJsLmNvbS9pbWFnZS5qcGc=",
             (
@@ -35,7 +35,7 @@ except ImportError:
             ),
         ),
         (
-            Base64Utf8StringWrapper,
+            Base64Utf8StringEventWrapper,
             "demo_string",
             "TXkgZG9nIGF0ZSBteSBkaW5uZXI=",
             (
