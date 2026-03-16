@@ -28,7 +28,7 @@ _DEFAULT_DEVICE_MODE_TO_HVACMODE = {
 
 
 @dataclass(kw_only=True)
-class SwingModeCompositeWrapper(DeviceWrapper[str]):
+class SwingModeCompositeWrapper(DeviceWrapper[TuyaClimateSwingMode]):
     """Wrapper for managing swing mode across multiple boolean DPCodes.
 
     on/off lookup based for "swing" or "shake"
@@ -39,7 +39,7 @@ class SwingModeCompositeWrapper(DeviceWrapper[str]):
     on_off: DPCodeBooleanWrapper | None = None
     horizontal: DPCodeBooleanWrapper | None = None
     vertical: DPCodeBooleanWrapper | None = None
-    options: list[str]
+    options: list[TuyaClimateSwingMode]
 
     @classmethod
     def find_dpcode(cls, device: CustomerDevice) -> Self | None:
@@ -54,13 +54,13 @@ class SwingModeCompositeWrapper(DeviceWrapper[str]):
             device, "switch_vertical", prefer_function=True
         )
         if on_off or horizontal or vertical:
-            options: list[str] = [TuyaClimateSwingMode.OFF.value]
+            options: list[TuyaClimateSwingMode] = [TuyaClimateSwingMode.OFF]
             if on_off:
-                options.append(TuyaClimateSwingMode.ON.value)
+                options.append(TuyaClimateSwingMode.ON)
             if horizontal:
-                options.append(TuyaClimateSwingMode.HORIZONTAL.value)
+                options.append(TuyaClimateSwingMode.HORIZONTAL)
             if vertical:
-                options.append(TuyaClimateSwingMode.VERTICAL.value)
+                options.append(TuyaClimateSwingMode.VERTICAL)
             return cls(
                 on_off=on_off,
                 horizontal=horizontal,
@@ -69,7 +69,9 @@ class SwingModeCompositeWrapper(DeviceWrapper[str]):
             )
         return None
 
-    def read_device_status(self, device: CustomerDevice) -> str | None:
+    def read_device_status(
+        self, device: CustomerDevice
+    ) -> TuyaClimateSwingMode | None:
         """Read the device swing mode."""
         if self.on_off and self.on_off.read_device_status(device):
             return TuyaClimateSwingMode.ON
@@ -92,7 +94,7 @@ class SwingModeCompositeWrapper(DeviceWrapper[str]):
         return TuyaClimateSwingMode.OFF
 
     def get_update_commands(
-        self, device: CustomerDevice, value: str
+        self, device: CustomerDevice, value: TuyaClimateSwingMode
     ) -> list[dict[str, Any]]:
         """Set new target swing operation."""
         commands = []
