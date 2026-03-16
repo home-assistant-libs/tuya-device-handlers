@@ -27,11 +27,13 @@ class FanDirectionEnumWrapper(DPCodeEnumWrapper[TuyaFanDirection]):
         """Init FanDirectionEnumWrapper."""
         super().__init__(dpcode, type_information)
 
-    def read_device_status(self, device: CustomerDevice) -> str | None:
+    def read_device_status(
+        self, device: CustomerDevice
+    ) -> TuyaFanDirection | None:
         """Read the device status and return the direction string."""
-        if (
-            value := self._read_dpcode_value(device)
-        ) and value in self._MAPPINGS:
+        if (raw_value := self._read_dpcode_value(device)) and (
+            value := self._MAPPINGS.get(raw_value)
+        ):
             return value
         return None
 
