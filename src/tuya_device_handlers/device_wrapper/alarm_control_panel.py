@@ -72,7 +72,7 @@ class AlarmStateWrapper(DPCodeEnumWrapper[TuyaAlarmControlPanelState]):
         return self._STATE_MAPPINGS.get(status)
 
 
-class AlarmActionWrapper(DPCodeEnumWrapper):
+class AlarmActionWrapper(DPCodeEnumWrapper[TuyaAlarmControlPanelAction]):
     """Wrapper for setting the alarm mode of a device."""
 
     _ACTION_MAPPINGS = {
@@ -82,6 +82,7 @@ class AlarmActionWrapper(DPCodeEnumWrapper):
         TuyaAlarmControlPanelAction.DISARM: "disarmed",
         TuyaAlarmControlPanelAction.TRIGGER: "sos",
     }
+    options: list[TuyaAlarmControlPanelAction]
 
     def __init__(
         self, dpcode: str, type_information: EnumTypeInformation
@@ -95,7 +96,7 @@ class AlarmActionWrapper(DPCodeEnumWrapper):
         ]
 
     def _convert_value_to_raw_value(
-        self, device: CustomerDevice, value: Any
+        self, device: CustomerDevice, value: TuyaAlarmControlPanelAction
     ) -> Any:
         """Convert value to raw value."""
         if value in self.options:
