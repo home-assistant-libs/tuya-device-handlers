@@ -26,21 +26,23 @@ class SimpleEventEnumWrapper(DPCodeEnumWrapper[tuple[str, None]]):
         return (raw_value, None)
 
 
-class Base64Utf8StringWrapper(DPCodeStringWrapper[tuple[str, dict[str, Any]]]):
+class Base64Utf8StringEventWrapper(
+    DPCodeStringWrapper[tuple[str, dict[str, Any]]]
+):
     """Wrapper for a string message received in a base64/UTF-8 STRING DPCode.
 
     Raises 'triggered' event, with the message in the event attributes.
     """
 
     def __init__(self, dpcode: str, type_information: Any) -> None:
-        """Init Base64Utf8StringWrapper."""
+        """Init Base64Utf8StringEventWrapper."""
         super().__init__(dpcode, type_information)
         self.options = ["triggered"]
 
     def read_device_status(
         self, device: CustomerDevice
     ) -> tuple[str, dict[str, Any]] | None:
-        """Return the event attributes for the alarm message."""
+        """Return the event with message attribute."""
         if (raw_value := self._read_dpcode_value(device)) is None:
             return None
         return (
@@ -49,21 +51,21 @@ class Base64Utf8StringWrapper(DPCodeStringWrapper[tuple[str, dict[str, Any]]]):
         )
 
 
-class Base64Utf8RawWrapper(DPCodeRawWrapper[tuple[str, dict[str, Any]]]):
+class Base64Utf8RawEventWrapper(DPCodeRawWrapper[tuple[str, dict[str, Any]]]):
     """Wrapper for a string message received in a base64/UTF-8 RAW DPCode.
 
     Raises 'triggered' event, with the message in the event attributes.
     """
 
     def __init__(self, dpcode: str, type_information: Any) -> None:
-        """Init _DoorbellPicWrapper."""
+        """Init Base64Utf8RawEventWrapper."""
         super().__init__(dpcode, type_information)
         self.options = ["triggered"]
 
     def read_device_status(
         self, device: CustomerDevice
     ) -> tuple[str, dict[str, Any]] | None:
-        """Return the event attributes for the doorbell picture."""
+        """Return the event with message attribute."""
         if (status := self._read_dpcode_value(device)) is None:
             return None
         return ("triggered", {"message": status.decode("utf-8")})
