@@ -102,14 +102,14 @@ class VacuumActionWrapper(DeviceWrapper[TuyaVacuumAction]):
         if charge_wrapper or (
             mode_wrapper and self._TUYA_MODE_RETURN_HOME in mode_wrapper.options
         ):
-            self.options.append("return_to_base")
+            self.options.append(TuyaVacuumAction.RETURN_TO_BASE)
         if locate_wrapper:
-            self.options.append("locate")
+            self.options.append(TuyaVacuumAction.LOCATE)
         if pause_wrapper:
-            self.options.append("pause")
+            self.options.append(TuyaVacuumAction.PAUSE)
         if switch_wrapper:
-            self.options.append("start")
-            self.options.append("stop")
+            self.options.append(TuyaVacuumAction.START)
+            self.options.append(TuyaVacuumAction.STOP)
 
     @classmethod
     def find_dpcode(cls, device: CustomerDevice) -> Self:
