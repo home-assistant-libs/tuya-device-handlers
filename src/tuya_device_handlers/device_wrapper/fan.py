@@ -26,6 +26,11 @@ class FanDirectionEnumWrapper(DPCodeEnumWrapper[TuyaFanDirection]):
     ) -> None:
         """Init FanDirectionEnumWrapper."""
         super().__init__(dpcode, type_information)
+        self.options = [
+            ha_mode
+            for tuya_mode, ha_mode in self._MAPPINGS.items()
+            if tuya_mode in type_information.range
+        ]
 
     def read_device_status(
         self, device: CustomerDevice
