@@ -556,6 +556,13 @@ class TuyaSwitchDeviceClass(StrEnum):
     SWITCH = "switch"
 
 
+class TuyaUnitOfTemperature(StrEnum):
+    """Temperature units."""
+
+    CELSIUS = "°C"
+    FAHRENHEIT = "°F"
+
+
 class TuyaVacuumActivity(StrEnum):
     """Vacuum activity states."""
 
