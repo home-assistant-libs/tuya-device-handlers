@@ -1,4 +1,4 @@
-"""Definitions for valve entity"""
+"""Tuya device wrapper."""
 
 from dataclasses import dataclass
 
@@ -6,5 +6,5 @@ from ..device_wrapper import DeviceWrapper
 
 
 @dataclass
-class ValveDefinition:
+class TuyaValveDefinition:
     control_wrapper: DeviceWrapper[bool]

@@ -1,4 +1,4 @@
-"""Definitions for camera entity"""
+"""Tuya device wrapper."""
 
 from dataclasses import dataclass
 

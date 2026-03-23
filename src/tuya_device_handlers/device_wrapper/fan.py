@@ -2,15 +2,26 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
 from typing import TYPE_CHECKING, Any
 
 from ..helpers.homeassistant import TuyaFanDirection
 from ..type_information import EnumTypeInformation, IntegerTypeInformation
+from .base import DeviceWrapper
 from .common import DPCodeEnumWrapper
 from .extended import DPCodeRemappedIntegerWrapper
 
 if TYPE_CHECKING:
     from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
+
+
+@dataclass
+class TuyaFanDefinition:
+    direction_wrapper: DeviceWrapper[TuyaFanDirection] | None
+    mode_wrapper: DeviceWrapper[str] | None
+    oscillate_wrapper: DeviceWrapper[bool] | None
+    speed_wrapper: DeviceWrapper[int] | None
+    switch_wrapper: DeviceWrapper[bool] | None
 
 
 class FanDirectionEnumWrapper(DPCodeEnumWrapper[TuyaFanDirection]):

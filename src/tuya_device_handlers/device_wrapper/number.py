@@ -1,4 +1,4 @@
-"""Definitions for number entity"""
+"""Tuya device wrapper."""
 
 from dataclasses import dataclass
 

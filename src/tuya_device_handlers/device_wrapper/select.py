@@ -1,4 +1,4 @@
-"""Definitions for select entity"""
+"""Tuya device wrapper."""
 
 from dataclasses import dataclass
 

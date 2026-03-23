@@ -1,4 +1,4 @@
-"""Definitions for button entity"""
+"""Tuya device wrapper."""
 
 from dataclasses import dataclass
 

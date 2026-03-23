@@ -1,4 +1,4 @@
-"""Definitions for siren entity"""
+"""Tuya device wrapper."""
 
 from dataclasses import dataclass
 

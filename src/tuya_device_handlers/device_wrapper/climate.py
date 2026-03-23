@@ -6,13 +6,32 @@ import collections
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Any, Self
 
-from ..helpers.homeassistant import TuyaClimateHVACMode, TuyaClimateSwingMode
+from ..helpers.homeassistant import (
+    TuyaClimateHVACMode,
+    TuyaClimateSwingMode,
+    TuyaUnitOfTemperature,
+)
 from ..type_information import EnumTypeInformation
 from .base import DeviceWrapper
 from .common import DPCodeBooleanWrapper, DPCodeEnumWrapper
 
 if TYPE_CHECKING:
     from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
+
+
+@dataclass
+class TuyaClimateDefinition:
+    current_humidity_wrapper: DeviceWrapper[int] | None
+    current_temperature_wrapper: DeviceWrapper[float] | None
+    fan_mode_wrapper: DeviceWrapper[str] | None
+    hvac_mode_wrapper: DeviceWrapper[TuyaClimateHVACMode] | None
+    preset_wrapper: DeviceWrapper[str] | None
+    set_temperature_wrapper: DeviceWrapper[float] | None
+    swing_wrapper: DeviceWrapper[TuyaClimateSwingMode] | None
+    switch_wrapper: DeviceWrapper[bool] | None
+    target_humidity_wrapper: DeviceWrapper[int] | None
+    temperature_unit: TuyaUnitOfTemperature
+
 
 _DEFAULT_DEVICE_MODE_TO_HVACMODE = {
     "auto": TuyaClimateHVACMode.HEAT_COOL,

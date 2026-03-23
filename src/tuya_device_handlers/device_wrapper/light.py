@@ -2,15 +2,26 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
 import json
 from typing import TYPE_CHECKING, Any
 
 from ..type_information import IntegerTypeInformation
 from ..utils import RemapHelper
+from .base import DeviceWrapper
 from .common import DPCodeIntegerWrapper, DPCodeJsonWrapper
 
 if TYPE_CHECKING:
     from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
+
+
+@dataclass
+class TuyaLightDefinition:
+    brightness_wrapper: DeviceWrapper[int] | None
+    color_data_wrapper: DeviceWrapper[tuple[float, float, float]] | None
+    color_mode_wrapper: DeviceWrapper[str] | None
+    color_temp_wrapper: DeviceWrapper[int] | None
+    switch_wrapper: DeviceWrapper[bool]
 
 
 class BrightnessWrapper(DPCodeIntegerWrapper[int]):

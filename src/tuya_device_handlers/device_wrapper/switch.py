@@ -1,4 +1,4 @@
-"""Definitions for switch entity"""
+"""Tuya device wrapper."""
 
 from dataclasses import dataclass
 
