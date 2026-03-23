@@ -19,6 +19,19 @@ if TYPE_CHECKING:
     from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
 
 
+_DEFAULT_DEVICE_MODE_TO_HVACMODE = {
+    "auto": TuyaClimateHVACMode.HEAT_COOL,
+    "cold": TuyaClimateHVACMode.COOL,
+    "freeze": TuyaClimateHVACMode.COOL,
+    "heat": TuyaClimateHVACMode.HEAT,
+    "hot": TuyaClimateHVACMode.HEAT,
+    "manual": TuyaClimateHVACMode.HEAT_COOL,
+    "off": TuyaClimateHVACMode.OFF,
+    "wet": TuyaClimateHVACMode.DRY,
+    "wind": TuyaClimateHVACMode.FAN_ONLY,
+}
+
+
 @dataclass
 class TuyaClimateDefinition:
     current_humidity_wrapper: DeviceWrapper[int] | None
@@ -31,19 +44,6 @@ class TuyaClimateDefinition:
     switch_wrapper: DeviceWrapper[bool] | None
     target_humidity_wrapper: DeviceWrapper[int] | None
     temperature_unit: TuyaUnitOfTemperature
-
-
-_DEFAULT_DEVICE_MODE_TO_HVACMODE = {
-    "auto": TuyaClimateHVACMode.HEAT_COOL,
-    "cold": TuyaClimateHVACMode.COOL,
-    "freeze": TuyaClimateHVACMode.COOL,
-    "heat": TuyaClimateHVACMode.HEAT,
-    "hot": TuyaClimateHVACMode.HEAT,
-    "manual": TuyaClimateHVACMode.HEAT_COOL,
-    "off": TuyaClimateHVACMode.OFF,
-    "wet": TuyaClimateHVACMode.DRY,
-    "wind": TuyaClimateHVACMode.FAN_ONLY,
-}
 
 
 @dataclass(kw_only=True)
