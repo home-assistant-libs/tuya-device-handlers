@@ -8,8 +8,6 @@ from ..helpers.homeassistant import TuyaVacuumAction, TuyaVacuumActivity
 
 @dataclass
 class VacuumDefinition:
-    key: str
-
     action_wrapper: DeviceWrapper[TuyaVacuumAction] | None
     activity_wrapper: DeviceWrapper[TuyaVacuumActivity] | None
     fan_speed_wrapper: DeviceWrapper[str] | None

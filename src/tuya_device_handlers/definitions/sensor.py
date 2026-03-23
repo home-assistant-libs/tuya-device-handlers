@@ -7,6 +7,4 @@ from ..device_wrapper import DeviceWrapper
 
 @dataclass
 class SensorDefinition:
-    key: str
-
     sensor_wrapper: DeviceWrapper[str | int | float]

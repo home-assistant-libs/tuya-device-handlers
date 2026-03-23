@@ -7,8 +7,6 @@ from ..device_wrapper import DeviceWrapper
 
 @dataclass
 class HumidifierDefinition:
-    key: str
-
     current_humidity_wrapper: DeviceWrapper[int] | None = None
     mode_wrapper: DeviceWrapper[str] | None = None
     switch_wrapper: DeviceWrapper[bool] | None = None

@@ -7,6 +7,4 @@ from ..device_wrapper import DeviceWrapper
 
 @dataclass
 class SwitchDefinition:
-    key: str
-
     switch_wrapper: DeviceWrapper[bool]

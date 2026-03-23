@@ -8,8 +8,6 @@ from ..helpers.homeassistant import TuyaFanDirection
 
 @dataclass
 class FanDefinition:
-    key: str
-
     direction_wrapper: DeviceWrapper[TuyaFanDirection] | None
     mode_wrapper: DeviceWrapper[str] | None
     oscillate_wrapper: DeviceWrapper[bool] | None

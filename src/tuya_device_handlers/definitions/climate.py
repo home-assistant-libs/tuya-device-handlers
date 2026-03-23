@@ -12,8 +12,6 @@ from ..helpers.homeassistant import (
 
 @dataclass
 class ClimateDefinition:
-    key: str
-
     current_humidity_wrapper: DeviceWrapper[int] | None
     current_temperature_wrapper: DeviceWrapper[float] | None
     fan_mode_wrapper: DeviceWrapper[str] | None

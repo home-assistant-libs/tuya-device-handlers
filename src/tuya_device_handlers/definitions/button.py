@@ -7,6 +7,4 @@ from ..device_wrapper import DeviceWrapper
 
 @dataclass
 class ButtonDefinition:
-    key: str
-
     button_wrapper: DeviceWrapper[bool]

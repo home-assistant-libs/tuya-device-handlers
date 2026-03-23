@@ -7,6 +7,4 @@ from ..device_wrapper import DeviceWrapper
 
 @dataclass
 class NumberDefinition:
-    key: str
-
     number_wrapper: DeviceWrapper[float]
