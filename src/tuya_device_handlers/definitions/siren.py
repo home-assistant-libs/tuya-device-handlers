@@ -6,5 +6,5 @@ from ..device_wrapper import DeviceWrapper
 
 
 @dataclass
-class SirenDefinition:
+class TuyaSirenDefinition:
     siren_wrapper: DeviceWrapper[bool]

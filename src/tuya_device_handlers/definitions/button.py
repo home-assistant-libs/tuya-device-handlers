@@ -6,5 +6,5 @@ from ..device_wrapper import DeviceWrapper
 
 
 @dataclass
-class ButtonDefinition:
+class TuyaButtonDefinition:
     button_wrapper: DeviceWrapper[bool]

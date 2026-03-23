@@ -10,7 +10,7 @@ from ..helpers.homeassistant import (
 
 
 @dataclass
-class AlarmControlPanelDefinition:
+class TuyaAlarmControlPanelDefinition:
     action_wrapper: DeviceWrapper[TuyaAlarmControlPanelAction]
     changed_by_wrapper: DeviceWrapper[str] | None
     state_wrapper: DeviceWrapper[TuyaAlarmControlPanelState]

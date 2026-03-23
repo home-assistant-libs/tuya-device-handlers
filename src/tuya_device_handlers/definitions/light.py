@@ -6,7 +6,7 @@ from ..device_wrapper import DeviceWrapper
 
 
 @dataclass
-class LightDefinition:
+class TuyaLightDefinition:
     brightness_wrapper: DeviceWrapper[int] | None
     color_data_wrapper: DeviceWrapper[tuple[float, float, float]] | None
     color_mode_wrapper: DeviceWrapper[str] | None

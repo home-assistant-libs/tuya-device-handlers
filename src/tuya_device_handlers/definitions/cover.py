@@ -7,7 +7,7 @@ from ..helpers.homeassistant import TuyaCoverAction
 
 
 @dataclass
-class CoverDefinition:
+class TuyaCoverDefinition:
     current_position_wrapper: DeviceWrapper[int] | None
     current_state_wrapper: DeviceWrapper[bool] | None
     instruction_wrapper: DeviceWrapper[TuyaCoverAction] | None

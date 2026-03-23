@@ -6,6 +6,6 @@ from ..device_wrapper import DeviceWrapper
 
 
 @dataclass
-class CameraDefinition:
+class TuyaCameraDefinition:
     motion_detection_switch: DeviceWrapper[bool] | None
     recording_status: DeviceWrapper[bool] | None

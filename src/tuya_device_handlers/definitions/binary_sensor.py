@@ -6,5 +6,5 @@ from ..device_wrapper import DeviceWrapper
 
 
 @dataclass
-class BinarySensorDefinition:
+class TuyaBinarySensorDefinition:
     binary_sensor_wrapper: DeviceWrapper[bool]

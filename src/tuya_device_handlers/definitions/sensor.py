@@ -6,5 +6,5 @@ from ..device_wrapper import DeviceWrapper
 
 
 @dataclass
-class SensorDefinition:
+class TuyaSensorDefinition:
     sensor_wrapper: DeviceWrapper[str | int | float]

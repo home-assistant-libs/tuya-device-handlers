@@ -6,5 +6,5 @@ from ..device_wrapper import DeviceWrapper
 
 
 @dataclass
-class SelectDefinition:
+class TuyaSelectDefinition:
     select_wrapper: DeviceWrapper[str]

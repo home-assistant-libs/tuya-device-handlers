@@ -7,7 +7,7 @@ from ..helpers.homeassistant import TuyaFanDirection
 
 
 @dataclass
-class FanDefinition:
+class TuyaFanDefinition:
     direction_wrapper: DeviceWrapper[TuyaFanDirection] | None
     mode_wrapper: DeviceWrapper[str] | None
     oscillate_wrapper: DeviceWrapper[bool] | None

@@ -6,5 +6,5 @@ from ..device_wrapper import DeviceWrapper
 
 
 @dataclass
-class NumberDefinition:
+class TuyaNumberDefinition:
     number_wrapper: DeviceWrapper[float]

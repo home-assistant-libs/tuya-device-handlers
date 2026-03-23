@@ -6,5 +6,5 @@ from ..device_wrapper import DeviceWrapper
 
 
 @dataclass
-class SwitchDefinition:
+class TuyaSwitchDefinition:
     switch_wrapper: DeviceWrapper[bool]

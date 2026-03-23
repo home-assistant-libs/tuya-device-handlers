@@ -7,5 +7,5 @@ from ..device_wrapper import DeviceWrapper
 
 
 @dataclass
-class EventDefinition:
+class TuyaEventDefinition:
     event_wrapper: DeviceWrapper[tuple[str, dict[str, Any] | None]]
