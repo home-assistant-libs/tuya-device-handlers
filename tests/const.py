@@ -13,6 +13,7 @@ DEVICE_FIXTURES = [
         "cs_zibqa9dutqyaxym2.json",
         "cz_guitoc9iylae4axs.json",
         "cz_PGEkBctAbtzKOZng.json",
+        "dj_mki13ie507rlry4r.json",
         "kt_5wnlzekkstwcdsvm.json",
         "mal_gyitctrjj1kefxp2.json",
         "sd_i6hyjg3af7doaswm.json",
