@@ -7,6 +7,7 @@ from tuya_device_handlers.definition.sensor import get_default_definition
 from tuya_device_handlers.device_wrapper.common import (
     DPCodeEnumWrapper,
     DPCodeIntegerWrapper,
+    DPCodeTypeInformationWrapper,
 )
 from tuya_device_handlers.device_wrapper.sensor import DeltaIntegerWrapper
 
@@ -39,7 +40,7 @@ from tuya_device_handlers.device_wrapper.sensor import DeltaIntegerWrapper
 def test_get_default_definition(
     fixture_filename: str,
     dpcode: str,
-    lookup_type: tuple[type, ...] | None,
+    lookup_type: tuple[type[DPCodeTypeInformationWrapper], ...] | None,
     wrapper_type: type,
 ) -> None:
     """Test get_default_definition"""
@@ -48,8 +49,16 @@ def test_get_default_definition(
     assert isinstance(definition.sensor_wrapper, wrapper_type)
 
 
-def test_get_default_definition_fails() -> None:
+@pytest.mark.parametrize(
+    "lookup_type",
+    [
+        None,
+        (DPCodeEnumWrapper,),
+    ],
+)
+def test_get_default_definition_fails(
+    lookup_type: tuple[type[DPCodeTypeInformationWrapper], ...] | None,
+) -> None:
     """Test get_default_definition"""
     device = create_device("cs_zibqa9dutqyaxym2.json")
-    assert not get_default_definition(device, "bad", None)
-    assert not get_default_definition(device, "bad", (DPCodeEnumWrapper,))
+    assert not get_default_definition(device, "bad", lookup_type)

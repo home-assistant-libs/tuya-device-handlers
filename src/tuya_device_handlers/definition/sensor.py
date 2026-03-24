@@ -25,8 +25,6 @@ def get_default_definition(
     wrapper_class: tuple[type[DPCodeTypeInformationWrapper], ...] | None,  # type: ignore[type-arg]
 ) -> TuyaSensorDefinition | None:
     """Get DPCode wrapper for an entity description."""
-    wrapper: DeviceWrapper | None  # type: ignore[type-arg]
-
     if wrapper_class:
         for cls in wrapper_class:
             if wrapper := cls.find_dpcode(device, dpcode):
