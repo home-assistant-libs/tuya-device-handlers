@@ -2,20 +2,13 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
 from typing import TYPE_CHECKING, Self
 
 from ..type_information import BitmapTypeInformation
-from .base import DeviceWrapper
 from .common import DPCodeBitmapWrapper, DPCodeWrapper
 
 if TYPE_CHECKING:
     from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
-
-
-@dataclass
-class TuyaBinarySensorDefinition:
-    binary_sensor_wrapper: DeviceWrapper[bool]
 
 
 class DPCodeBitmapBitWrapper(DPCodeBitmapWrapper[bool]):

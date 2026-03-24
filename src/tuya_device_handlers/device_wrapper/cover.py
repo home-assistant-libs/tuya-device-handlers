@@ -2,26 +2,15 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
 from ..helpers.homeassistant import TuyaCoverAction
 from ..type_information import EnumTypeInformation
-from .base import DeviceWrapper
 from .common import DPCodeBooleanWrapper, DPCodeEnumWrapper
 from .extended import DPCodePercentageWrapper
 
 if TYPE_CHECKING:
     from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
-
-
-@dataclass
-class TuyaCoverDefinition:
-    current_position_wrapper: DeviceWrapper[int] | None
-    current_state_wrapper: DeviceWrapper[bool] | None
-    instruction_wrapper: DeviceWrapper[TuyaCoverAction] | None
-    set_position_wrapper: DeviceWrapper[int] | None
-    tilt_position_wrapper: DeviceWrapper[int] | None
 
 
 class ControlBackModePercentageMappingWrapper(DPCodePercentageWrapper):

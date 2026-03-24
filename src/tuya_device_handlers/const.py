@@ -4,6 +4,9 @@ from __future__ import annotations
 
 from enum import StrEnum
 
+CELSIUS_ALIASES = {"°c", "c", "celsius", "℃"}
+FAHRENHEIT_ALIASES = {"°f", "f", "fahrenheit", "℉"}
+
 
 class DPType(StrEnum):
     """Data point types."""

@@ -1,0 +1,48 @@
+"""Tuya binary sensor definition."""
+
+from __future__ import annotations
+
+from dataclasses import dataclass
+from typing import TYPE_CHECKING
+
+from ..device_wrapper import DeviceWrapper
+from ..device_wrapper.binary_sensor import (
+    DPCodeBitmapBitWrapper,
+    DPCodeInSetWrapper,
+)
+from ..device_wrapper.common import DPCodeBooleanWrapper
+
+if TYPE_CHECKING:
+    from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
+
+
+@dataclass
+class TuyaBinarySensorDefinition:
+    binary_sensor_wrapper: DeviceWrapper[bool]
+
+
+def get_default_definition(
+    device: CustomerDevice,
+    dpcode: str,
+    bitmap_key: str | None,
+    on_value: bool | float | int | str | set[bool | float | int | str],
+) -> TuyaBinarySensorDefinition | None:
+    if bitmap_key is not None:
+        if bitmap_wrapper := DPCodeBitmapBitWrapper.find_dpcode(
+            device, dpcode, bitmap_key=bitmap_key
+        ):
+            return TuyaBinarySensorDefinition(bitmap_wrapper)
+        return None
+
+    if bool_type := DPCodeBooleanWrapper.find_dpcode(device, dpcode):
+        return TuyaBinarySensorDefinition(bool_type)
+
+    # Legacy / compatibility
+    if dpcode not in device.status:
+        return None
+    return TuyaBinarySensorDefinition(
+        DPCodeInSetWrapper(
+            dpcode,
+            on_value if isinstance(on_value, set) else {on_value},
+        )
+    )

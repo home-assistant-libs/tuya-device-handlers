@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
 from typing import TYPE_CHECKING, Any, Self
 
 from ..helpers.homeassistant import TuyaVacuumAction, TuyaVacuumActivity
@@ -11,13 +10,6 @@ from .common import DPCodeBooleanWrapper, DPCodeEnumWrapper
 
 if TYPE_CHECKING:
     from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
-
-
-@dataclass
-class TuyaVacuumDefinition:
-    action_wrapper: DeviceWrapper[TuyaVacuumAction] | None
-    activity_wrapper: DeviceWrapper[TuyaVacuumActivity] | None
-    fan_speed_wrapper: DeviceWrapper[str] | None
 
 
 class VacuumActivityWrapper(DeviceWrapper[TuyaVacuumActivity]):

@@ -2,12 +2,10 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
 import logging
 from typing import TYPE_CHECKING
 
 from ..raw_data_model import ElectricityData
-from .base import DeviceWrapper
 from .common import (
     DPCodeEnumWrapper,
     DPCodeIntegerWrapper,
@@ -19,11 +17,6 @@ if TYPE_CHECKING:
     from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
 
 _LOGGER = logging.getLogger(__name__)
-
-
-@dataclass
-class TuyaSensorDefinition:
-    sensor_wrapper: DeviceWrapper[str | int | float]
 
 
 class WindDirectionEnumWrapper(DPCodeEnumWrapper[float]):
