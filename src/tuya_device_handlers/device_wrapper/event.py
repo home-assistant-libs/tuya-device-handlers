@@ -3,12 +3,11 @@
 from __future__ import annotations
 
 import base64
-from typing import TYPE_CHECKING, Any
+from typing import Any
+
+from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
 
 from .common import DPCodeEnumWrapper, DPCodeRawWrapper, DPCodeStringWrapper
-
-if TYPE_CHECKING:
-    from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
 
 
 class SimpleEventEnumWrapper(DPCodeEnumWrapper[tuple[str, None]]):

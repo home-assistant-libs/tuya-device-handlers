@@ -2,10 +2,9 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any
+from typing import Any
 
-if TYPE_CHECKING:
-    from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
+from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
 
 
 class DeviceWrapper[T]:

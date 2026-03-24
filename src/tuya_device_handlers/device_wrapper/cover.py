@@ -2,15 +2,12 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
 
 from ..helpers.homeassistant import TuyaCoverAction
 from ..type_information import EnumTypeInformation
 from .common import DPCodeBooleanWrapper, DPCodeEnumWrapper
 from .extended import DPCodePercentageWrapper
-
-if TYPE_CHECKING:
-    from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
 
 
 class ControlBackModePercentageMappingWrapper(DPCodePercentageWrapper):

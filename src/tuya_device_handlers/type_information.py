@@ -4,12 +4,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 import json
-from typing import TYPE_CHECKING, Any, ClassVar, Self, cast
+from typing import Any, ClassVar, Self, cast
+
+from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
 
 from .const import DPType
-
-if TYPE_CHECKING:
-    from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
 
 
 @dataclass(kw_only=True)

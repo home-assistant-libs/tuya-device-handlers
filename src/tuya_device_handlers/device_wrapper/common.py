@@ -7,6 +7,8 @@ import json
 import logging
 from typing import TYPE_CHECKING, Any, Self
 
+from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
+
 from ..type_information import (
     BitmapTypeInformation,
     BooleanTypeInformation,
@@ -20,10 +22,6 @@ from ..type_information import (
 from .base import DeviceWrapper
 from .const import DEVICE_WARNINGS
 from .exception import SetValueOutOfRangeError
-
-if TYPE_CHECKING:
-    from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
-
 
 _LOGGER = logging.getLogger(__name__)
 

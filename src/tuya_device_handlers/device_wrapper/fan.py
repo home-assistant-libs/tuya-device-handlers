@@ -2,15 +2,14 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any
+from typing import Any
+
+from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
 
 from ..helpers.homeassistant import TuyaFanDirection
 from ..type_information import EnumTypeInformation, IntegerTypeInformation
 from .common import DPCodeEnumWrapper
 from .extended import DPCodeRemappedIntegerWrapper
-
-if TYPE_CHECKING:
-    from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
 
 
 class FanDirectionEnumWrapper(DPCodeEnumWrapper[TuyaFanDirection]):

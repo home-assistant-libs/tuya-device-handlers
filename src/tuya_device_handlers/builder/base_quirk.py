@@ -8,6 +8,8 @@ import inspect
 import pathlib
 from typing import TYPE_CHECKING, Any, Self
 
+from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
+
 from tuya_device_handlers.const import DPType
 from tuya_device_handlers.device_wrapper import DeviceWrapper
 from tuya_device_handlers.helpers import (
@@ -20,8 +22,6 @@ from tuya_device_handlers.helpers import (
 )
 
 if TYPE_CHECKING:
-    from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
-
     from tuya_device_handlers.registry import QuirksRegistry
 
 

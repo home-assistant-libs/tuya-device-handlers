@@ -4,16 +4,14 @@ from __future__ import annotations
 
 import collections
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Any, Self
+from typing import Any, Self
+
+from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
 
 from ..helpers.homeassistant import TuyaClimateHVACMode, TuyaClimateSwingMode
 from ..type_information import EnumTypeInformation
 from .base import DeviceWrapper
 from .common import DPCodeBooleanWrapper, DPCodeEnumWrapper
-
-if TYPE_CHECKING:
-    from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
-
 
 _DEFAULT_DEVICE_MODE_TO_HVACMODE = {
     "auto": TuyaClimateHVACMode.HEAT_COOL,

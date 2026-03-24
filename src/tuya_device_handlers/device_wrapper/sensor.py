@@ -3,7 +3,8 @@
 from __future__ import annotations
 
 import logging
-from typing import TYPE_CHECKING
+
+from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
 
 from ..raw_data_model import ElectricityData
 from .common import (
@@ -12,9 +13,6 @@ from .common import (
     DPCodeJsonWrapper,
     DPCodeRawWrapper,
 )
-
-if TYPE_CHECKING:
-    from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
 
 _LOGGER = logging.getLogger(__name__)
 

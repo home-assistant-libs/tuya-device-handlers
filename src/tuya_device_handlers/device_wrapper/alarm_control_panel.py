@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 import base64
-from typing import TYPE_CHECKING, Any
+from typing import Any
+
+from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
 
 from ..helpers.homeassistant import (
     TuyaAlarmControlPanelAction,
@@ -11,9 +13,6 @@ from ..helpers.homeassistant import (
 )
 from ..type_information import EnumTypeInformation
 from .common import DPCodeEnumWrapper, DPCodeRawWrapper
-
-if TYPE_CHECKING:
-    from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
 
 
 class AlarmChangedByWrapper(DPCodeRawWrapper[str]):

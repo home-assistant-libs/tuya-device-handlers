@@ -5,9 +5,9 @@ from __future__ import annotations
 import logging
 from typing import TYPE_CHECKING, Self
 
-if TYPE_CHECKING:
-    from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
+from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
 
+if TYPE_CHECKING:
     from tuya_device_handlers.builder import TuyaDeviceQuirk
 
 _LOGGER = logging.getLogger(__name__)
