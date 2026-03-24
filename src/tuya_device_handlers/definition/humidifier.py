@@ -19,14 +19,18 @@ class TuyaHumidifierDefinition:
 
 def get_default_definition(
     device: CustomerDevice,
-    switch_dpcode: str,
     *,
+    switch_dpcode: str | tuple[str, ...],
     current_humidity_dpcode: str | None,
     humidity_dpcode: str | None,
 ) -> TuyaHumidifierDefinition | None:
     properties_to_check: set[str | None] = {
         # Main control switch
-        switch_dpcode,
+        *(
+            switch_dpcode
+            if isinstance(switch_dpcode, tuple)
+            else (switch_dpcode,)
+        ),
         # Other humidity properties
         current_humidity_dpcode,
         humidity_dpcode,

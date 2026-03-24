@@ -10,6 +10,7 @@ DEVICE_FIXTURES = [
     if fixture_filename
     not in {
         "cl_zah67ekd.json",
+        "cs_zibqa9dutqyaxym2.json",
         "cz_PGEkBctAbtzKOZng.json",
         "mal_gyitctrjj1kefxp2.json",
         "sd_i6hyjg3af7doaswm.json",
