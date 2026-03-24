@@ -1,11 +1,11 @@
 """Tuya light definition."""
 
-from __future__ import annotations
-
 from dataclasses import dataclass
 from enum import StrEnum
 import json
-from typing import TYPE_CHECKING, Any, cast
+from typing import Any, cast
+
+from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
 
 from ..device_wrapper import DeviceWrapper
 from ..device_wrapper.common import (
@@ -22,9 +22,6 @@ from ..device_wrapper.light import (
     ColorTempWrapper,
 )
 from ..utils import RemapHelper
-
-if TYPE_CHECKING:
-    from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
 
 
 @dataclass

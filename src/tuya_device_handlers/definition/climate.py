@@ -1,7 +1,8 @@
 """Tuya climate definition."""
 
 from dataclasses import dataclass
-from typing import TYPE_CHECKING
+
+from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
 
 from ..const import CELSIUS_ALIASES, FAHRENHEIT_ALIASES
 from ..device_wrapper import DeviceWrapper
@@ -21,9 +22,6 @@ from ..helpers.homeassistant import (
     TuyaClimateSwingMode,
     TuyaUnitOfTemperature,
 )
-
-if TYPE_CHECKING:
-    from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
 
 
 @dataclass

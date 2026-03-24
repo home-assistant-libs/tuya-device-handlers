@@ -1,17 +1,13 @@
 """Tuya vacuum definition."""
 
-from __future__ import annotations
-
 from dataclasses import dataclass
-from typing import TYPE_CHECKING
+
+from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
 
 from ..device_wrapper import DeviceWrapper
 from ..device_wrapper.common import DPCodeEnumWrapper
 from ..device_wrapper.vacuum import VacuumActionWrapper, VacuumActivityWrapper
 from ..helpers.homeassistant import TuyaVacuumAction, TuyaVacuumActivity
-
-if TYPE_CHECKING:
-    from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
 
 
 @dataclass

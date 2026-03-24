@@ -1,9 +1,8 @@
 """Tuya alarm control panel definition."""
 
-from __future__ import annotations
-
 from dataclasses import dataclass
-from typing import TYPE_CHECKING
+
+from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
 
 from ..device_wrapper import DeviceWrapper
 from ..device_wrapper.alarm_control_panel import (
@@ -16,9 +15,6 @@ from ..helpers.homeassistant import (
     TuyaAlarmControlPanelState,
 )
 from ..type_information import EnumTypeInformation
-
-if TYPE_CHECKING:
-    from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
 
 
 @dataclass
