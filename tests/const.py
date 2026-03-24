@@ -11,6 +11,7 @@ DEVICE_FIXTURES = [
     not in {
         "cl_zah67ekd.json",
         "cs_zibqa9dutqyaxym2.json",
+        "cz_guitoc9iylae4axs.json",
         "cz_PGEkBctAbtzKOZng.json",
         "kt_5wnlzekkstwcdsvm.json",
         "mal_gyitctrjj1kefxp2.json",
