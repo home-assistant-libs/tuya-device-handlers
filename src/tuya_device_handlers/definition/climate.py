@@ -140,7 +140,7 @@ def _get_temperature_wrappers(
 
 def get_default_definition(
     device: CustomerDevice, system_temperature_unit: TuyaUnitOfTemperature
-) -> TuyaClimateDefinition | None:
+) -> TuyaClimateDefinition:
     temperature_wrappers = _get_temperature_wrappers(
         device, system_temperature_unit
     )
