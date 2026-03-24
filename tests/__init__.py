@@ -50,7 +50,11 @@ def create_device(fixture_filename: str) -> CustomerDevice:
         key: DeviceFunction(
             code=value.get("code"),
             type=value["type"],
-            values=json.dumps(value["value"]),
+            values=(
+                values
+                if isinstance(values := value["value"], str)
+                else json.dumps(value["value"])
+            ),
         )
         for key, value in details["function"].items()
     }
@@ -58,7 +62,11 @@ def create_device(fixture_filename: str) -> CustomerDevice:
         key: DeviceStatusRange(
             code=value.get("code"),
             type=value["type"],
-            values=json.dumps(value["value"]),
+            values=(
+                values
+                if isinstance(values := value["value"], str)
+                else json.dumps(value["value"])
+            ),
             report_type=value.get("report_type"),
         )
         for key, value in details["status_range"].items()

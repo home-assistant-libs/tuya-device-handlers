@@ -12,11 +12,13 @@ DEVICE_FIXTURES = [
         "cl_zah67ekd.json",
         "cs_zibqa9dutqyaxym2.json",
         "cz_PGEkBctAbtzKOZng.json",
+        "kt_5wnlzekkstwcdsvm.json",
         "mal_gyitctrjj1kefxp2.json",
         "sd_i6hyjg3af7doaswm.json",
         "sd_lr33znaodtyarrrz.json",
         "sfkzq_ed7frwissyqrejic.json",
         "sp_rudejjigkywujjvs.json",
         "sp_sdd5f5f2dl5wydjf.json",
+        "wk_B0eP8qYAdpUo4yR9.json",
     }
 ]
