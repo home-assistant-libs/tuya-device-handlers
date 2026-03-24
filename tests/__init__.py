@@ -43,6 +43,7 @@ def create_device(fixture_filename: str) -> CustomerDevice:
     if device.update_time:
         device.update_time = _date_as_timestamp(device.update_time)
     device.support_local = details.get("support_local")
+    device.local_strategy = details.get("local_strategy")
     device.mqtt_connected = details.get("mqtt_connected")
 
     device.function = {
@@ -70,6 +71,9 @@ def create_device(fixture_filename: str) -> CustomerDevice:
             (dp_type := device.status_range.get(key)) and dp_type.type == "Json"
         ) or ((dp_type := device.function.get(key)) and dp_type.type == "Json"):
             device.status[key] = json.dumps(value)
+        if value == "**REDACTED**":
+            # It was redacted, which may cause issue with b64decode
+            device.status[key] = ""
     return device
 
 
