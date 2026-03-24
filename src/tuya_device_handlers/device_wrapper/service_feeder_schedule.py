@@ -4,8 +4,7 @@ import base64
 from collections.abc import Callable
 from typing import TYPE_CHECKING, Any
 
-if TYPE_CHECKING:
-    from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
+from tuya_sharing import CustomerDevice
 
 
 # Internal representation of a feeding time entry to keep it easier to tell what we expect.

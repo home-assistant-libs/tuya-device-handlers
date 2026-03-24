@@ -6,7 +6,7 @@ import pytest
 from syrupy.assertion import SnapshotAssertion
 from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
 
-from tuya_device_handlers.device_wrapper.feeder_schedule import (
+from tuya_device_handlers.device_wrapper.service_feeder_schedule import (
     Base64Encoder,
     get_meal_plan_serializer,
 )
