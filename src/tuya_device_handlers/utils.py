@@ -1,12 +1,9 @@
 """Tuya device wrapper."""
 
-from __future__ import annotations
-
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Any
+from typing import Any, Self
 
-if TYPE_CHECKING:
-    from .type_information import IntegerTypeInformation
+from .type_information import IntegerTypeInformation
 
 
 @dataclass(kw_only=True)
@@ -24,7 +21,7 @@ class RemapHelper:
         type_information: IntegerTypeInformation,
         target_min: float,
         target_max: float,
-    ) -> RemapHelper:
+    ) -> Self:
         """Create RemapHelper from IntegerTypeInformation."""
         return cls(
             source_min=type_information.min,
@@ -36,7 +33,7 @@ class RemapHelper:
     @classmethod
     def from_function_data(
         cls, function_data: dict[str, Any], target_min: int, target_max: int
-    ) -> RemapHelper:
+    ) -> Self:
         """Create RemapHelper from function_data."""
         return cls(
             source_min=function_data["min"],

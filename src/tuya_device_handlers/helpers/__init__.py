@@ -1,7 +1,5 @@
 """Tuya models."""
 
-from __future__ import annotations
-
 from .homeassistant import (
     TuyaClimateHVACMode,
     TuyaCoverDeviceClass,

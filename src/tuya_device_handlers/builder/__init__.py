@@ -1,7 +1,5 @@
 """Tuya device handler."""
 
-from __future__ import annotations
-
 from .base_quirk import (
     TuyaClimateDefinition,
     TuyaCoverDefinition,

@@ -1,7 +1,5 @@
 """Common utility functions for Tuya quirks."""
 
-from __future__ import annotations
-
 from enum import StrEnum
 
 
