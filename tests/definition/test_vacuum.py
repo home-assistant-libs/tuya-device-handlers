@@ -2,11 +2,7 @@
 
 from tests import create_device
 from tuya_device_handlers.definition.vacuum import get_default_definition
-from tuya_device_handlers.device_wrapper.common import DPCodeEnumWrapper
-from tuya_device_handlers.device_wrapper.vacuum import (
-    VacuumActionWrapper,
-    VacuumActivityWrapper,
-)
+from tuya_device_handlers.device_wrapper.vacuum import VacuumActionWrapper
 
 
 def test_get_default_definition() -> None:
@@ -14,5 +10,5 @@ def test_get_default_definition() -> None:
     device = create_device("sd_i6hyjg3af7doaswm.json")
     assert (definition := get_default_definition(device))
     assert isinstance(definition.action_wrapper, VacuumActionWrapper)
-    assert isinstance(definition.activity_wrapper, VacuumActivityWrapper)
-    assert isinstance(definition.fan_speed_wrapper, DPCodeEnumWrapper)
+    assert not definition.activity_wrapper
+    assert not definition.fan_speed_wrapper
