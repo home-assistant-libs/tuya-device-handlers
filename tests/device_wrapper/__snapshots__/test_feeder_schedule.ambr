@@ -1,0 +1,77 @@
+# serializer version: 1
+# name: test_get_meal_data
+  dict({
+    'data': list([
+      dict({
+        'days': list([
+          'monday',
+          'tuesday',
+          'wednesday',
+          'thursday',
+          'friday',
+          'saturday',
+          'sunday',
+        ]),
+        'enabled': 1,
+        'portion': 1,
+        'time': '09:00',
+      }),
+      dict({
+        'days': list([
+          'monday',
+          'tuesday',
+          'wednesday',
+          'thursday',
+          'friday',
+          'saturday',
+          'sunday',
+        ]),
+        'enabled': 1,
+        'portion': 1,
+        'time': '09:30',
+      }),
+      dict({
+        'days': list([
+          'monday',
+          'tuesday',
+          'wednesday',
+          'thursday',
+          'friday',
+          'saturday',
+          'sunday',
+        ]),
+        'enabled': 1,
+        'portion': 1,
+        'time': '12:00',
+      }),
+      dict({
+        'days': list([
+          'monday',
+          'tuesday',
+          'wednesday',
+          'thursday',
+          'friday',
+          'saturday',
+          'sunday',
+        ]),
+        'enabled': 1,
+        'portion': 2,
+        'time': '15:00',
+      }),
+      dict({
+        'days': list([
+          'monday',
+          'tuesday',
+          'wednesday',
+          'thursday',
+          'friday',
+          'saturday',
+          'sunday',
+        ]),
+        'enabled': 1,
+        'portion': 2,
+        'time': '21:00',
+      }),
+    ]),
+  })
+# ---
