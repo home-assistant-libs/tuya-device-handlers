@@ -1,7 +1,5 @@
 """Tuya device wrapper."""
 
-from __future__ import annotations
-
 from typing import Any, Self
 
 from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]

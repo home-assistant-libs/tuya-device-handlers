@@ -1,7 +1,5 @@
 """Tuya device wrapper."""
 
-from __future__ import annotations
-
 from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
 
 from ..helpers.homeassistant import TuyaCoverAction
