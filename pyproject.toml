@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tuya-device-handlers"
-version = "0.0.13"
+version = "0.0.14"
 description = "Tuya quirks library"
 authors = ["epenet"]
 license = "MIT"
