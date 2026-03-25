@@ -4,12 +4,13 @@ from typing import Any
 
 import pytest
 from syrupy.assertion import SnapshotAssertion
-from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
 
 from tuya_device_handlers.device_wrapper.service_feeder_schedule import (
     Base64Encoder,
     get_meal_plan_serializer,
 )
+
+from .. import create_device
 
 
 def decoded_meal_plan() -> list[dict[str, Any]]:
@@ -93,87 +94,74 @@ def decoded_meal_plan() -> list[dict[str, Any]]:
     ]
 
 
-def test_get_meal_plan_serializer(
-    mock_device: CustomerDevice,
-) -> None:
+def test_get_meal_plan_serializer() -> None:
     """Test get_meal_plan_serializer returns correct serializer."""
-    mock_device.product_id = "wfkzyy0evslzsmoi"
-    serializer = get_meal_plan_serializer(mock_device)
+    device = create_device("cwwsq_wfkzyy0evslzsmoi.json")
+    serializer = get_meal_plan_serializer(device)
     assert isinstance(serializer, Base64Encoder)
 
 
 def test_get_meal_data(
-    mock_device: CustomerDevice,
     snapshot: SnapshotAssertion,
 ) -> None:
     """Test get_meal_data decodes meal plan correctly."""
-    mock_device.product_id = "wfkzyy0evslzsmoi"
-    # Set up device with encoded meal plan
-    mock_device.status["meal_plan"] = "fwkAAQF/CR4BAX8MAAEBfw8AAgF/FQACAQ=="
-    mock_device.function["meal_plan"] = True  # Mock function presence
+    device = create_device("cwwsq_wfkzyy0evslzsmoi.json")
 
-    serializer = get_meal_plan_serializer(mock_device)
+    serializer = get_meal_plan_serializer(device)
     assert serializer is not None
 
-    result = serializer.get_meal_data(mock_device)
+    result = serializer.get_meal_data(device)
     assert result == snapshot
 
 
-def test_get_meal_plan_update_commands(
-    mock_device: CustomerDevice,
-) -> None:
+def test_get_meal_plan_update_commands() -> None:
     """Test get_meal_plan_update_commands encodes data correctly."""
-    mock_device.product_id = "wfkzyy0evslzsmoi"
-    mock_device.function["meal_plan"] = True  # Mock function presence
+    device = create_device("cwwsq_wfkzyy0evslzsmoi.json")
 
-    serializer = get_meal_plan_serializer(mock_device)
+    serializer = get_meal_plan_serializer(device)
     assert serializer is not None
 
     commands = serializer.get_meal_plan_update_commands(
-        mock_device, decoded_meal_plan()
+        device, decoded_meal_plan()
     )
     assert commands == [
         {"code": "meal_plan", "value": "fwkAAQF/CR4BAX8MAAEBfw8AAgF/FQACAQ=="}
     ]
 
 
-def test_get_meal_data_invalid_data(
-    mock_device: CustomerDevice,
-) -> None:
+def test_get_meal_data_invalid_data() -> None:
     """Test get_meal_data with invalid data."""
-    mock_device.product_id = "wfkzyy0evslzsmoi"
+    device = create_device("cwwsq_wfkzyy0evslzsmoi.json")
     # No meal_plan in status
-    mock_device.status.pop("meal_plan", None)
-    mock_device.function["meal_plan"] = True
+    device.status.pop("meal_plan", None)
 
-    serializer = get_meal_plan_serializer(mock_device)
+    serializer = get_meal_plan_serializer(device)
     assert serializer is not None
 
     with pytest.raises(ValueError, match="Invalid Base64 meal plan data"):
-        serializer.get_meal_data(mock_device)
+        serializer.get_meal_data(device)
 
     # Invalid meal_plan value
-    mock_device.status["meal_plan"] = "unknown"
+    device.status["meal_plan"] = "unknown"
 
     with pytest.raises(ValueError, match="Invalid Base64 meal plan data"):
-        serializer.get_meal_data(mock_device)
+        serializer.get_meal_data(device)
 
 
-def test_get_meal_plan_update_commands_no_function(
-    mock_device: CustomerDevice,
-) -> None:
+def test_get_meal_plan_update_commands_no_function() -> None:
     """Test get_meal_plan_update_commands when meal_plan function not supported."""
-    mock_device.product_id = "wfkzyy0evslzsmoi"
+    device = create_device("cwwsq_wfkzyy0evslzsmoi.json")
     # Remove meal_plan from function
-    mock_device.function.pop("meal_plan", None)
+    device.function.pop("meal_plan", None)
 
-    serializer = get_meal_plan_serializer(mock_device)
+    serializer = get_meal_plan_serializer(device)
     assert serializer is not None
 
     with pytest.raises(
         ValueError,
-        match="Feeder with ID device_id does not support meal plan functionality",
+        match=(
+            "Feeder with ID iomszlsve0yyzkfw "
+            "does not support meal plan functionality"
+        ),
     ):
-        serializer.get_meal_plan_update_commands(
-            mock_device, decoded_meal_plan()
-        )
+        serializer.get_meal_plan_update_commands(device, decoded_meal_plan())
