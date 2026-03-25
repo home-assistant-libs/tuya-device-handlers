@@ -101,6 +101,16 @@ def test_read_device_status(
     assert wrapper.read_device_status(device) == snapshot
 
 
+def test_no_data() -> None:
+    """Test wrapper returns None for unsupported devices."""
+    device = create_device("cwwsq_wfkzyy0evslzsmoi.json")
+    device.status["meal_plan"] = None
+
+    wrapper = get_feeder_schedule_wrapper(device)
+    assert wrapper is not None
+    assert wrapper.read_device_status(device) is None
+
+
 def test_no_wrapper() -> None:
     """Test wrapper returns None for unsupported devices."""
     device = create_device("cl_zah67ekd.json")
