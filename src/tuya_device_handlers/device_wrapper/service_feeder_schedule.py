@@ -1,6 +1,7 @@
 """Device quirks for Tuya devices."""
 
 import base64
+from enum import IntFlag
 from typing import Any, Literal, TypedDict
 
 from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
@@ -93,21 +94,23 @@ _DAYS_OF_WEEK = [
 ]
 
 
+class _DaysOfWeek(IntFlag):
+    """Bitmask for days of the week."""
+
+    MONDAY = 1
+    TUESDAY = 2
+    WEDNESDAY = 4
+    THURSDAY = 8
+    FRIDAY = 16
+    SATURDAY = 32
+    SUNDAY = 64
+
+
 class _InternalFeederSchedule(TypedDict):
     """Internal class for representation of a feeder schedule entry."""
 
-    days: int
-    """Days bitmap.
-
-    1 = monday
-    2 = tuesday
-    4 = wednesday
-    8 = thursday
-    16 = friday
-    32 = saturday
-    64 = sunday
-    127 = monday-sunday
-    """
+    days: _DaysOfWeek
+    """Days bitmap. Bit 0 is Monday, bit 1 is Tuesday, ..., bit 6 is Sunday."""
     hour: int
     """Hour in 24h format."""
     minute: int
@@ -128,7 +131,7 @@ def _home_assistant_list_to_internal(
     """
     result: list[_InternalFeederSchedule] = []
     for item in entries:
-        days_bitmask = 0
+        days_bitmask = _DaysOfWeek(0)
         for day in item["days"]:
             days_bitmask |= 1 << _DAYS_OF_WEEK.index(day)
         hour, minute = map(int, item["time"].split(":"))
@@ -184,13 +187,13 @@ class _DayTransformer:
         for internal, device in self._mapping:
             if entry["days"] & (1 << internal):
                 val |= 1 << device
-        entry["days"] = val & 0x7F
+        entry["days"] = _DaysOfWeek(val & 0x7F)
         return entry
 
     def decode_entry(
         self, entry: _InternalFeederSchedule
     ) -> _InternalFeederSchedule:
-        val = 0
+        val = _DaysOfWeek(0)
         masked = entry["days"] & 0x7F
         for internal, device in self._mapping:
             if masked & (1 << device):
@@ -234,12 +237,15 @@ class _TemplateEncoder:
     def parse_entry(self, chunk: str) -> _InternalFeederSchedule:
         """Parse a single meal plan entry from hex string."""
         entry = _InternalFeederSchedule(
-            days=0, hour=0, minute=0, portion=0, enabled=0
+            days=_DaysOfWeek(0), hour=0, minute=0, portion=0, enabled=0
         )
         pos = 0
         for field, width in self._template:
             segment = chunk[pos : pos + width]
             pos += width
             if segment:
-                entry[field] = int(segment, 16)
+                if field == "days":
+                    entry[field] = _DaysOfWeek(int(segment, 16))
+                else:
+                    entry[field] = int(segment, 16)
         return self._day_transformer.decode_entry(entry)
