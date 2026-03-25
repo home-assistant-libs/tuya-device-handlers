@@ -82,7 +82,7 @@ _TEMPLATE_FULL: list[tuple[_TEMPLATE_KEY, int]] = [
 ]
 _DAY_MAPPING = [(i, i) for i in range(7)]
 
-_DAYS = [
+_DAYS_OF_WEEK = [
     "monday",
     "tuesday",
     "wednesday",
@@ -130,8 +130,7 @@ def _home_assistant_list_to_internal(
     for item in entries:
         days_bitmask = 0
         for day in item["days"]:
-            if day in _DAYS:
-                days_bitmask |= 1 << _DAYS.index(day)
+            days_bitmask |= 1 << _DAYS_OF_WEEK.index(day)
         hour, minute = map(int, item["time"].split(":"))
         result.append(
             _InternalFeederSchedule(
@@ -158,7 +157,11 @@ def _internal_list_to_home_assistant(
     for item in entries:
         result.append(
             FeederSchedule(
-                days=[_DAYS[i] for i in range(7) if item["days"] & (1 << i)],
+                days=[
+                    _DAYS_OF_WEEK[i]
+                    for i in range(7)
+                    if item["days"] & (1 << i)
+                ],
                 time=f"{item['hour']:02d}:{item['minute']:02d}",
                 portion=item["portion"],
                 enabled=bool(item["enabled"]),
