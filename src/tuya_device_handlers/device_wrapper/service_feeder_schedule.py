@@ -43,12 +43,9 @@ class _DefaultFeederScheduleWrapper(DPCodeRawWrapper[list[FeederSchedule]]):
         if (data := self._read_dpcode_value(device)) is None:
             return None
         hex_str = "".join(f"{byte:02x}" for byte in data)
-        return [
-            FeederSchedule(**entry)
-            for entry in _internal_list_to_home_assistant(
-                self._template_encoder.decode(hex_str)
-            )
-        ]
+        return _internal_list_to_home_assistant(
+            self._template_encoder.decode(hex_str)
+        )
 
     def _convert_value_to_raw_value(
         self, device: CustomerDevice, value: list[FeederSchedule]
