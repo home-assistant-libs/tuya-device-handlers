@@ -90,16 +90,23 @@ _SAMPLE_MEAL_PLAN = [
         "cwwsq_wfkzyy0evslzsmoi.json",
     ],
 )
-def test_get_meal_data(
-    fixture_filename: str,
-    snapshot: SnapshotAssertion,
+def test_read_device_status(
+    fixture_filename: str, snapshot: SnapshotAssertion
 ) -> None:
-    """Test get_meal_data decodes meal plan correctly."""
+    """Test read_device_status decodes meal plan correctly."""
     device = create_device(fixture_filename)
 
     wrapper = get_feeder_schedule_wrapper(device)
     assert wrapper is not None
     assert wrapper.read_device_status(device) == snapshot
+
+
+def test_no_wrapper() -> None:
+    """Test wrapper returns None for unsupported devices."""
+    device = create_device("cl_zah67ekd.json")
+
+    wrapper = get_feeder_schedule_wrapper(device)
+    assert wrapper is None
 
 
 @pytest.mark.parametrize(
@@ -112,10 +119,10 @@ def test_get_meal_data(
         ),
     ],
 )
-def test_get_meal_plan_update_commands(
+def test_get_update_commands(
     fixture_filename: str, dpcode: str, expected_value: str
 ) -> None:
-    """Test get_meal_plan_update_commands encodes data correctly."""
+    """Test get_update_commands encodes data correctly."""
     device = create_device(fixture_filename)
 
     wrapper = get_feeder_schedule_wrapper(device)

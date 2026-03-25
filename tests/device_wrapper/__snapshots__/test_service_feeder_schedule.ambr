@@ -1,5 +1,5 @@
 # serializer version: 1
-# name: test_get_meal_data[cwwsq_wfkzyy0evslzsmoi.json]
+# name: test_read_device_status[cwwsq_wfkzyy0evslzsmoi.json]
   list([
     dict({
       'days': list([
