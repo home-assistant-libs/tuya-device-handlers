@@ -85,30 +85,36 @@ _SAMPLE_MEAL_PLAN = [
 
 
 @pytest.mark.parametrize(
-    "fixture_filename",
+    ("fixture_filename", "data"),
     [
-        "cwwsq_wfkzyy0evslzsmoi.json",
+        (
+            "cwwsq_wfkzyy0evslzsmoi.json",
+            "fwQAAgB/BgABAH8JAAIBfwwAAQB/DwACAX8VAAIBfxcAAQAIEgABAQ==",
+        ),
+        (
+            "cwwsq_wfkzyy0evslzsmoi.json",
+            "fwkAAQF/CR4BAX8MAAEBfw8AAgF/FQACAQ==",
+        ),
+        (
+            "cwwsq_wfkzyy0evslzsmoi.json",
+            "",
+        ),
+        (
+            "cwwsq_wfkzyy0evslzsmoi.json",
+            None,
+        ),
     ],
 )
 def test_read_device_status(
-    fixture_filename: str, snapshot: SnapshotAssertion
+    fixture_filename: str, data: str | None, snapshot: SnapshotAssertion
 ) -> None:
     """Test read_device_status decodes meal plan correctly."""
     device = create_device(fixture_filename)
+    device.status["meal_plan"] = data
 
     wrapper = get_feeder_schedule_wrapper(device)
     assert wrapper is not None
     assert wrapper.read_device_status(device) == snapshot
-
-
-def test_no_data() -> None:
-    """Test wrapper returns None for unsupported devices."""
-    device = create_device("cwwsq_wfkzyy0evslzsmoi.json")
-    device.status["meal_plan"] = None
-
-    wrapper = get_feeder_schedule_wrapper(device)
-    assert wrapper is not None
-    assert wrapper.read_device_status(device) is None
 
 
 def test_no_wrapper() -> None:
