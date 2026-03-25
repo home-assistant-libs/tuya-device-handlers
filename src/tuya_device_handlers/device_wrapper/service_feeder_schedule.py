@@ -161,9 +161,9 @@ def _internal_list_to_home_assistant(
         result.append(
             FeederSchedule(
                 days=[
-                    _DAYS_OF_WEEK[i]
-                    for i in range(7)
-                    if item["days"] & (1 << i)
+                    i.name.lower()  # type: ignore[union-attr]
+                    for i in _DaysOfWeek
+                    if item["days"] & i
                 ],
                 time=f"{item['hour']:02d}:{item['minute']:02d}",
                 portion=item["portion"],
