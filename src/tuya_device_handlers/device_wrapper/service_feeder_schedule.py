@@ -83,16 +83,6 @@ _TEMPLATE_FULL: list[tuple[_TEMPLATE_KEY, int]] = [
 ]
 _DAY_MAPPING = [(i, i) for i in range(7)]
 
-_DAYS_OF_WEEK = [
-    "monday",
-    "tuesday",
-    "wednesday",
-    "thursday",
-    "friday",
-    "saturday",
-    "sunday",
-]
-
 
 class _DaysOfWeek(IntFlag):
     """Bitmask for days of the week."""
@@ -132,8 +122,9 @@ def _home_assistant_list_to_internal(
     result: list[_InternalFeederSchedule] = []
     for item in entries:
         days_bitmask = _DaysOfWeek(0)
-        for day in item["days"]:
-            days_bitmask |= 1 << _DAYS_OF_WEEK.index(day)
+        for i in _DaysOfWeek:
+            if i.name.lower() in item["days"]:  # type: ignore[union-attr]
+                days_bitmask |= i
         hour, minute = map(int, item["time"].split(":"))
         result.append(
             _InternalFeederSchedule(
