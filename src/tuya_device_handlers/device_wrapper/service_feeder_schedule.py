@@ -205,11 +205,11 @@ class _TemplateEncoder:
     def __init__(
         self,
         template: list[tuple[_TEMPLATE_KEY, int]],
-        transformer: _DayTransformer,
+        day_transformer: _DayTransformer,
     ) -> None:
         """Initialize TemplateEncoder."""
-        self.tokens = template
-        self.transformer = transformer
+        self._template = template
+        self._day_transformer = day_transformer
 
     def encode(self, data: list[_InternalFeederSchedule]) -> str:
         """Encode meal plan data to hex string."""
@@ -217,9 +217,7 @@ class _TemplateEncoder:
 
     def decode(self, data: str) -> list[_InternalFeederSchedule]:
         """Decode hex string to meal plan data."""
-        chunk_len = sum(width for _, width in self.tokens)
-        if len(data) % chunk_len != 0:
-            raise ValueError("Invalid templated meal plan length")
+        chunk_len = sum(width for _, width in self._template)
         return [
             self.parse_entry(data[i : i + chunk_len])
             for i in range(0, len(data), chunk_len)
@@ -227,9 +225,10 @@ class _TemplateEncoder:
 
     def serialize_entry(self, data: _InternalFeederSchedule) -> str:
         """Serialize a single meal plan entry to hex string."""
-        entry = self.transformer.encode_entry(data)
+        entry = self._day_transformer.encode_entry(data)
         return "".join(
-            f"{entry.get(field, 0):0{width}x}" for field, width in self.tokens
+            f"{entry.get(field, 0):0{width}x}"
+            for field, width in self._template
         )
 
     def parse_entry(self, chunk: str) -> _InternalFeederSchedule:
@@ -238,9 +237,9 @@ class _TemplateEncoder:
             days=0, hour=0, minute=0, portion=0, enabled=0
         )
         pos = 0
-        for field, width in self.tokens:
+        for field, width in self._template:
             segment = chunk[pos : pos + width]
             pos += width
             if segment:
                 entry[field] = int(segment, 16)
-        return self.transformer.decode_entry(entry)
+        return self._day_transformer.decode_entry(entry)
