@@ -24,7 +24,7 @@ class FeederSchedule(TypedDict):
     """True or False."""
 
 
-class DefaultFeederScheduleWrapper(DPCodeRawWrapper[list[FeederSchedule]]):
+class _DefaultFeederScheduleWrapper(DPCodeRawWrapper[list[FeederSchedule]]):
     """Wrapper for a schedule received in a base64 DPCode."""
 
     def __init__(
@@ -65,7 +65,7 @@ def get_feeder_schedule_wrapper(
     device: CustomerDevice,
 ) -> DeviceWrapper[list[FeederSchedule]] | None:
     if device.product_id == "wfkzyy0evslzsmoi":
-        return DefaultFeederScheduleWrapper.find_dpcode(
+        return _DefaultFeederScheduleWrapper.find_dpcode(
             device, "meal_plan", prefer_function=True
         )
     return None
