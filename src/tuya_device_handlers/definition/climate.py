@@ -1,5 +1,6 @@
 """Tuya climate definition."""
 
+from collections.abc import Callable
 from dataclasses import dataclass
 
 from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
@@ -22,6 +23,7 @@ from ..helpers.homeassistant import (
     TuyaClimateSwingMode,
     TuyaUnitOfTemperature,
 )
+from .base import BaseEntityQuirk
 
 
 @dataclass
@@ -36,6 +38,16 @@ class TuyaClimateDefinition:
     switch_wrapper: DeviceWrapper[bool] | None
     target_humidity_wrapper: DeviceWrapper[int] | None
     temperature_unit: TuyaUnitOfTemperature
+
+
+@dataclass(kw_only=True)
+class ClimateQuirk(BaseEntityQuirk):
+    """Quirk for a climate entity."""
+
+    definition_fn: Callable[
+        [CustomerDevice, TuyaUnitOfTemperature],
+        TuyaClimateDefinition | None,
+    ]
 
 
 def _get_temperature_wrapper(
