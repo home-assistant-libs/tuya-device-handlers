@@ -15,3 +15,4 @@ class BaseEntityQuirk:
     entity_category: TuyaEntityCategory | None = None
     entity_registry_enabled_default: bool = True
     translation_key: str | None = None
+    translation_placeholders: dict[str, str] | None = None

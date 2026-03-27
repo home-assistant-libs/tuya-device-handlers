@@ -1,5 +1,6 @@
 """Tuya cover definition."""
 
+from collections.abc import Callable
 from dataclasses import dataclass
 
 from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
@@ -7,7 +8,8 @@ from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
 from ..device_wrapper import DeviceWrapper
 from ..device_wrapper.common import DPCodeTypeInformationWrapper
 from ..device_wrapper.cover import CoverInstructionBooleanWrapper
-from ..helpers.homeassistant import TuyaCoverAction
+from ..helpers.homeassistant import TuyaCoverAction, TuyaCoverDeviceClass
+from .base import BaseEntityQuirk
 
 
 @dataclass
@@ -17,6 +19,18 @@ class TuyaCoverDefinition:
     instruction_wrapper: DeviceWrapper[TuyaCoverAction] | None
     set_position_wrapper: DeviceWrapper[int] | None
     tilt_position_wrapper: DeviceWrapper[int] | None
+
+
+@dataclass(kw_only=True)
+class CoverQuirk(BaseEntityQuirk):
+    """Quirk for a cover entity."""
+
+    device_class: TuyaCoverDeviceClass | None = None
+
+    definition_fn: Callable[
+        [CustomerDevice],
+        TuyaCoverDefinition | None,
+    ]
 
 
 def get_default_definition(
