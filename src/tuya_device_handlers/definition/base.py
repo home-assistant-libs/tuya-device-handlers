@@ -13,4 +13,5 @@ class BaseEntityQuirk:
 
     device_class: str | None = None
     entity_category: TuyaEntityCategory | None = None
+    entity_registry_enabled_default: bool = True
     translation_key: str | None = None
