@@ -9,10 +9,7 @@ from syrupy.filters import props
 from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
 
 from tuya_device_handlers.definition.cover import TuyaCoverDefinition
-from tuya_device_handlers.device_wrapper.common import (
-    DPCodeIntegerWrapper,
-    DPCodeWrapper,
-)
+from tuya_device_handlers.device_wrapper.base import DeviceWrapper
 from tuya_device_handlers.registry import QuirksRegistry
 
 from . import create_device
@@ -23,40 +20,13 @@ def _get_entity_details(
     definition: TuyaCoverDefinition, device: CustomerDevice
 ) -> dict[str, Any]:
     """Generate snapshot details."""
-    entity_details: dict[str, Any] = {
-        "get_state_dp_code": None,
-        "set_state_dp_code": None,
-        "get_position_dp_code": None,
-        "set_position_dp_code": None,
-        "state": None,
-    }
+    entity_details: dict[str, Any] = {}
 
-    get_state_dp_type = definition.get_state_dp_type(device)
-    set_state_dp_type = definition.set_state_dp_type(device)
-    get_position_dp_type = definition.get_position_dp_type(device)
-    set_position_dp_type = definition.set_position_dp_type(device)
-
-    if get_state_dp_type and isinstance(get_state_dp_type, DPCodeWrapper):
-        entity_details["get_state_dp_code"] = get_state_dp_type.dpcode
-        if (status := device.status.get(get_state_dp_type.dpcode)) is not None:
-            entity_details["state"] = status
-
-    if set_state_dp_type and isinstance(set_state_dp_type, DPCodeWrapper):
-        entity_details["set_state_dp_code"] = set_state_dp_type.dpcode
-
-    if get_position_dp_type and isinstance(
-        get_position_dp_type, DPCodeIntegerWrapper
-    ):
-        entity_details["get_position_dp_code"] = get_position_dp_type.dpcode
-        if (
-            status := device.status.get(get_position_dp_type.dpcode)
-        ) is not None:
-            entity_details["position"] = (
-                get_position_dp_type.type_information.scale_value(status)
-            )
-
-    if set_position_dp_type and isinstance(set_position_dp_type, DPCodeWrapper):
-        entity_details["set_position_dp_code"] = set_position_dp_type.dpcode
+    wrapper: DeviceWrapper[Any] | None
+    if (wrapper := definition.current_position_wrapper) is not None:
+        entity_details["current_position"] = wrapper.read_device_status(device)
+    if (wrapper := definition.current_state_wrapper) is not None:
+        entity_details["current_state"] = wrapper.read_device_status(device)
 
     return entity_details
 

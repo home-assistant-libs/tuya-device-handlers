@@ -19,10 +19,11 @@ def _get_entity_details(
     definition: TuyaSwitchDefinition, device: CustomerDevice
 ) -> dict[str, Any]:
     """Generate snapshot details."""
-    entity_details = {}
-    value = device.status.get(definition.key)
+    entity_details: dict[str, Any] = {}
 
-    entity_details["state"] = value
+    if (wrapper := definition.switch_wrapper) is not None:
+        entity_details["state"] = wrapper.read_device_status(device)
+
     return entity_details
 
 
