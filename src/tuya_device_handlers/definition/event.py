@@ -1,5 +1,6 @@
 """Tuya event definition."""
 
+from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Any
 
@@ -7,11 +8,22 @@ from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
 
 from ..device_wrapper import DeviceWrapper
 from ..device_wrapper.common import DPCodeTypeInformationWrapper
+from .base import BaseEntityQuirk
 
 
 @dataclass
 class TuyaEventDefinition:
     event_wrapper: DeviceWrapper[tuple[str, dict[str, Any] | None]]
+
+
+@dataclass(kw_only=True)
+class EventQuirk(BaseEntityQuirk):
+    """Quirk for an event entity."""
+
+    definition_fn: Callable[
+        [CustomerDevice],
+        TuyaEventDefinition | None,
+    ]
 
 
 def get_default_definition(
