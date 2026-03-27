@@ -1,5 +1,6 @@
 """Tuya humidifier definition."""
 
+from collections.abc import Callable
 from dataclasses import dataclass
 
 from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
@@ -7,6 +8,8 @@ from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
 from ..device_wrapper import DeviceWrapper
 from ..device_wrapper.common import DPCodeBooleanWrapper, DPCodeEnumWrapper
 from ..device_wrapper.extended import DPCodeRoundedIntegerWrapper
+from ..helpers.homeassistant import TuyaHumidifierDeviceClass
+from .base import BaseEntityQuirk
 
 
 @dataclass
@@ -15,6 +18,18 @@ class TuyaHumidifierDefinition:
     mode_wrapper: DeviceWrapper[str] | None = None
     switch_wrapper: DeviceWrapper[bool] | None = None
     target_humidity_wrapper: DeviceWrapper[int] | None = None
+
+
+@dataclass(kw_only=True)
+class HumidifierQuirk(BaseEntityQuirk):
+    """Quirk for a humidifier entity."""
+
+    device_class: TuyaHumidifierDeviceClass | None = None
+
+    definition_fn: Callable[
+        [CustomerDevice],
+        TuyaHumidifierDefinition | None,
+    ]
 
 
 def get_default_definition(

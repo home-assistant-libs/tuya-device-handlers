@@ -1,5 +1,6 @@
 """Tuya sensor definition."""
 
+from collections.abc import Callable
 from dataclasses import dataclass
 
 from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
@@ -11,12 +12,27 @@ from ..device_wrapper.common import (
     DPCodeTypeInformationWrapper,
 )
 from ..device_wrapper.sensor import DeltaIntegerWrapper
+from ..helpers.homeassistant import TuyaSensorDeviceClass
 from ..type_information import IntegerTypeInformation
+from .base import BaseEntityQuirk
 
 
 @dataclass
 class TuyaSensorDefinition:
     sensor_wrapper: DeviceWrapper[str | int | float]
+
+
+@dataclass(kw_only=True)
+class SensorQuirk(BaseEntityQuirk):
+    """Quirk for a sensor entity."""
+
+    device_class: TuyaSensorDeviceClass | None = None
+    suggested_unit: str | None = None
+
+    definition_fn: Callable[
+        [CustomerDevice],
+        TuyaSensorDefinition | None,
+    ]
 
 
 def get_default_definition(

@@ -1,5 +1,6 @@
 """Tuya light definition."""
 
+from collections.abc import Callable
 from dataclasses import dataclass
 from enum import StrEnum
 import json
@@ -22,6 +23,7 @@ from ..device_wrapper.light import (
     ColorTempWrapper,
 )
 from ..utils import RemapHelper
+from .base import BaseEntityQuirk
 
 
 @dataclass
@@ -31,6 +33,16 @@ class TuyaLightDefinition:
     color_mode_wrapper: DeviceWrapper[str] | None
     color_temp_wrapper: DeviceWrapper[int] | None
     switch_wrapper: DeviceWrapper[bool]
+
+
+@dataclass(kw_only=True)
+class LightQuirk(BaseEntityQuirk):
+    """Quirk for a light entity."""
+
+    definition_fn: Callable[
+        [CustomerDevice],
+        TuyaLightDefinition | None,
+    ]
 
 
 class FallbackColorDataMode(StrEnum):

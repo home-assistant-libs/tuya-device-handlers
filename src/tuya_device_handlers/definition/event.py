@@ -8,6 +8,7 @@ from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
 
 from ..device_wrapper import DeviceWrapper
 from ..device_wrapper.common import DPCodeTypeInformationWrapper
+from ..helpers.homeassistant import TuyaEventDeviceClass
 from .base import BaseEntityQuirk
 
 
@@ -19,6 +20,8 @@ class TuyaEventDefinition:
 @dataclass(kw_only=True)
 class EventQuirk(BaseEntityQuirk):
     """Quirk for an event entity."""
+
+    device_class: TuyaEventDeviceClass | None = None
 
     definition_fn: Callable[
         [CustomerDevice],
