@@ -50,7 +50,7 @@ def test_entities(
 
     quirk = filled_quirks_registry.get_quirk_for_device(device)
     assert quirk is not None
-    for definition in quirk.select_definitions:
+    for definition in quirk.select_quirks or ():
         assert dataclasses.asdict(definition) == snapshot(
             name=f"{definition.key}-definition",
             exclude=props("dp_type"),
