@@ -1,5 +1,6 @@
 """Tuya alarm control panel definition."""
 
+from collections.abc import Callable
 from dataclasses import dataclass
 
 from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
@@ -15,6 +16,7 @@ from ..helpers.homeassistant import (
     TuyaAlarmControlPanelState,
 )
 from ..type_information import EnumTypeInformation
+from .base import BaseEntityQuirk
 
 
 @dataclass
@@ -22,6 +24,16 @@ class TuyaAlarmControlPanelDefinition:
     action_wrapper: DeviceWrapper[TuyaAlarmControlPanelAction]
     changed_by_wrapper: DeviceWrapper[str] | None
     state_wrapper: DeviceWrapper[TuyaAlarmControlPanelState]
+
+
+@dataclass(kw_only=True)
+class AlarmControlPanelQuirk(BaseEntityQuirk):
+    """Quirk for an alarm control panel entity."""
+
+    definition_fn: Callable[
+        [CustomerDevice],
+        TuyaAlarmControlPanelDefinition | None,
+    ]
 
 
 def get_default_definition(

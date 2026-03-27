@@ -1,5 +1,6 @@
 """Tuya binary sensor definition."""
 
+from collections.abc import Callable
 from dataclasses import dataclass
 
 from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
@@ -10,11 +11,25 @@ from ..device_wrapper.binary_sensor import (
     DPCodeInSetWrapper,
 )
 from ..device_wrapper.common import DPCodeBooleanWrapper
+from ..helpers.homeassistant import TuyaBinarySensorDeviceClass
+from .base import BaseEntityQuirk
 
 
 @dataclass
 class TuyaBinarySensorDefinition:
     binary_sensor_wrapper: DeviceWrapper[bool]
+
+
+@dataclass(kw_only=True)
+class BinarySensorQuirk(BaseEntityQuirk):
+    """Quirk for a binary sensor entity."""
+
+    device_class: TuyaBinarySensorDeviceClass | None = None
+
+    definition_fn: Callable[
+        [CustomerDevice],
+        TuyaBinarySensorDefinition | None,
+    ]
 
 
 def get_default_definition(
