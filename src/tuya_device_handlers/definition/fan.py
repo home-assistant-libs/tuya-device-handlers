@@ -1,5 +1,6 @@
 """Tuya fan definition."""
 
+from collections.abc import Callable
 from dataclasses import dataclass
 
 from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
@@ -12,6 +13,7 @@ from ..device_wrapper.fan import (
     FanSpeedIntegerWrapper,
 )
 from ..helpers.homeassistant import TuyaFanDirection
+from .base import BaseEntityQuirk
 
 
 @dataclass
@@ -21,6 +23,16 @@ class TuyaFanDefinition:
     oscillate_wrapper: DeviceWrapper[bool] | None
     speed_wrapper: DeviceWrapper[int] | None
     switch_wrapper: DeviceWrapper[bool] | None
+
+
+@dataclass(kw_only=True)
+class FanQuirk(BaseEntityQuirk):
+    """Quirk for a fan entity."""
+
+    definition_fn: Callable[
+        [CustomerDevice],
+        TuyaFanDefinition | None,
+    ]
 
 
 _DIRECTION_DPCODES = ("fan_direction",)
