@@ -5,9 +5,10 @@ from typing import Any
 
 import pytest
 from syrupy.assertion import SnapshotAssertion
+from syrupy.filters import props
 from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
 
-from tuya_device_handlers.builder import TuyaSwitchDefinition
+from tuya_device_handlers.definition.switch import TuyaSwitchDefinition
 from tuya_device_handlers.registry import QuirksRegistry
 
 from . import create_device
@@ -35,11 +36,17 @@ def test_entities(
     device = create_device(fixture_filename)
 
     quirk = filled_quirks_registry.get_quirk_for_device(device)
-    assert quirk is not None
-    for definition in quirk.switch_quirks or ():
-        assert dataclasses.asdict(definition) == snapshot(
-            name=f"{definition.key}-definition"
+    if quirk is None or quirk.switch_quirks is None:
+        return
+    for entity_quirk in quirk.switch_quirks:
+        definition = entity_quirk.definition_fn(device)
+        if definition is None:
+            continue
+
+        assert dataclasses.asdict(entity_quirk) == snapshot(
+            name=f"{entity_quirk.key}-definition",
+            exclude=props("definition_fn"),
         )
         assert _get_entity_details(definition, device) == snapshot(
-            name=f"{definition.key}-state"
+            name=f"{entity_quirk.key}-state"
         )

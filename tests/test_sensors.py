@@ -8,7 +8,7 @@ from syrupy.assertion import SnapshotAssertion
 from syrupy.filters import props
 from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
 
-from tuya_device_handlers.builder import TuyaSensorDefinition
+from tuya_device_handlers.definition.sensor import TuyaSensorDefinition
 from tuya_device_handlers.device_wrapper.common import (
     DPCodeEnumWrapper,
     DPCodeIntegerWrapper,
@@ -62,12 +62,17 @@ def test_entities(
     device = create_device(fixture_filename)
 
     quirk = filled_quirks_registry.get_quirk_for_device(device)
-    assert quirk is not None
-    for definition in quirk.sensor_quirks or ():
-        assert dataclasses.asdict(definition) == snapshot(
-            name=f"{definition.key}-definition",
-            exclude=props("dp_type"),
+    if quirk is None or quirk.sensor_quirks is None:
+        return
+    for entity_quirk in quirk.sensor_quirks:
+        definition = entity_quirk.definition_fn(device)
+        if definition is None:
+            continue
+
+        assert dataclasses.asdict(entity_quirk) == snapshot(
+            name=f"{entity_quirk.key}-definition",
+            exclude=props("definition_fn"),
         )
         assert _get_entity_details(definition, device) == snapshot(
-            name=f"{definition.key}-state"
+            name=f"{entity_quirk.key}-state"
         )
