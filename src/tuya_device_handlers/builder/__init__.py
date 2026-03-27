@@ -1,19 +1,7 @@
 """Tuya device handler."""
 
-from .base_quirk import (
-    TuyaClimateDefinition,
-    TuyaCoverDefinition,
-    TuyaDeviceQuirk,
-    TuyaSelectDefinition,
-    TuyaSensorDefinition,
-    TuyaSwitchDefinition,
-)
+from .device_quirk import DeviceQuirk
 
 __all__ = [
-    "TuyaClimateDefinition",
-    "TuyaCoverDefinition",
-    "TuyaDeviceQuirk",
-    "TuyaSelectDefinition",
-    "TuyaSensorDefinition",
-    "TuyaSwitchDefinition",
+    "DeviceQuirk",
 ]

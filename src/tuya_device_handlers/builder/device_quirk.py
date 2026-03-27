@@ -28,9 +28,7 @@ from tuya_device_handlers.definition.siren import SirenQuirk
 from tuya_device_handlers.definition.switch import SwitchQuirk
 from tuya_device_handlers.definition.vacuum import VacuumQuirk
 from tuya_device_handlers.definition.valve import ValveQuirk
-
-if TYPE_CHECKING:
-    from tuya_device_handlers.registry import QuirksRegistry
+from tuya_device_handlers.registry import DeviceQuirkProtocol, QuirksRegistry
 
 
 @dataclass(kw_only=True)
@@ -45,7 +43,7 @@ class DatapointDefinition:
     label_range: list[str] | None = None
 
 
-class TuyaDeviceQuirk:
+class DeviceQuirk(DeviceQuirkProtocol):
     """Quirk for Tuya device."""
 
     _alarm_control_panel: list[AlarmControlPanelQuirk] | None = None
@@ -78,8 +76,13 @@ class TuyaDeviceQuirk:
         caller = current_frame.f_back
         if TYPE_CHECKING:
             assert caller is not None
-        self.quirk_file = pathlib.Path(caller.f_code.co_filename)
-        self.quirk_file_line = caller.f_lineno
+        self._quirk_file = pathlib.Path(caller.f_code.co_filename)
+        self._quirk_file_line = caller.f_lineno
+
+    @property
+    def quirk_file(self) -> pathlib.Path:
+        """Get the file path of the quirk."""
+        return self._quirk_file
 
     def applies_to(self, *, category: str, product_id: str) -> Self:
         """Set the device type the quirk applies to."""
