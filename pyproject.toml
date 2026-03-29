@@ -31,7 +31,7 @@ tuya-device-sharing-sdk = ">=0.2.8"
 click = { version = ">=8.0.1", optional = true }
 
 [tool.poetry.group.dev.dependencies]
-Pygments = "==2.19.2"
+Pygments = "==2.20.0"
 ruff = "==0.15.8"
 coverage = {extras = ["toml"], version = "==7.13.5"}
 darglint = "==1.8.1"
