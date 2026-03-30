@@ -42,13 +42,14 @@ def create_device(fixture_filename: str) -> CustomerDevice:
     device.update_time = details.get("update_time")
     if device.update_time:
         device.update_time = _date_as_timestamp(device.update_time)
+    device.set_up = details.get("set_up")
     device.support_local = details.get("support_local")
     device.local_strategy = details.get("local_strategy")
     device.mqtt_connected = details.get("mqtt_connected")
 
     device.function = {
         key: DeviceFunction(
-            code=value.get("code"),
+            code=value.get("code", key),
             type=value["type"],
             values=(
                 values
@@ -60,7 +61,7 @@ def create_device(fixture_filename: str) -> CustomerDevice:
     }
     device.status_range = {
         key: DeviceStatusRange(
-            code=value.get("code"),
+            code=value.get("code", key),
             type=value["type"],
             values=(
                 values
