@@ -1,3 +1,5 @@
+"""Helpers for diagnostics and debugging."""
+
 import datetime as dt
 from typing import Any
 
