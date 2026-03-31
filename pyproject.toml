@@ -84,7 +84,7 @@ show_error_codes = true
 show_error_context = true
 
 [[tool.mypy.overrides]]
-module = 'defusedxml.*'
+module = 'tuya_sharing.*'
 ignore_missing_imports = true
 
 [tool.ruff]
