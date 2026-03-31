@@ -16,13 +16,17 @@ from ..helpers.homeassistant import TuyaFanDirection
 from .base import BaseEntityQuirk
 
 
-@dataclass
-class TuyaFanDefinition:
+@dataclass(kw_only=True)
+class FanDefinition:
     direction_wrapper: DeviceWrapper[TuyaFanDirection] | None
     mode_wrapper: DeviceWrapper[str] | None
     oscillate_wrapper: DeviceWrapper[bool] | None
     speed_wrapper: DeviceWrapper[int] | None
     switch_wrapper: DeviceWrapper[bool] | None
+
+
+# Deprecated alias for backward compatibility
+TuyaFanDefinition = FanDefinition
 
 
 @dataclass(kw_only=True)
@@ -31,7 +35,7 @@ class FanQuirk(BaseEntityQuirk):
 
     definition_fn: Callable[
         [CustomerDevice],
-        TuyaFanDefinition | None,
+        FanDefinition | None,
     ]
 
 
@@ -42,7 +46,7 @@ _SPEED_DPCODES = ("fan_speed_percent", "fan_speed", "speed", "fan_speed_enum")
 _SWITCH_DPCODES = ("switch_fan", "fan_switch", "switch")
 
 
-def get_default_definition(device: CustomerDevice) -> TuyaFanDefinition | None:
+def get_default_definition(device: CustomerDevice) -> FanDefinition | None:
     properties_to_check: set[str] = {
         # Main control switch
         *_SWITCH_DPCODES,
@@ -60,7 +64,7 @@ def get_default_definition(device: CustomerDevice) -> TuyaFanDefinition | None:
         for code in properties_to_check
     ):
         return None
-    return TuyaFanDefinition(
+    return FanDefinition(
         direction_wrapper=FanDirectionEnumWrapper.find_dpcode(
             device, _DIRECTION_DPCODES, prefer_function=True
         ),

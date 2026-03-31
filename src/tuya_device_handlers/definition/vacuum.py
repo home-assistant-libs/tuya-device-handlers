@@ -12,11 +12,15 @@ from ..helpers.homeassistant import TuyaVacuumAction, TuyaVacuumActivity
 from .base import BaseEntityQuirk
 
 
-@dataclass
-class TuyaVacuumDefinition:
+@dataclass(kw_only=True)
+class VacuumDefinition:
     action_wrapper: DeviceWrapper[TuyaVacuumAction] | None
     activity_wrapper: DeviceWrapper[TuyaVacuumActivity] | None
     fan_speed_wrapper: DeviceWrapper[str] | None
+
+
+# Deprecated alias for backward compatibility
+TuyaVacuumDefinition = VacuumDefinition
 
 
 @dataclass(kw_only=True)
@@ -25,12 +29,12 @@ class VacuumQuirk(BaseEntityQuirk):
 
     definition_fn: Callable[
         [CustomerDevice],
-        TuyaVacuumDefinition | None,
+        VacuumDefinition | None,
     ]
 
 
-def get_default_definition(device: CustomerDevice) -> TuyaVacuumDefinition:
-    return TuyaVacuumDefinition(
+def get_default_definition(device: CustomerDevice) -> VacuumDefinition:
+    return VacuumDefinition(
         action_wrapper=VacuumActionWrapper.find_dpcode(device),
         activity_wrapper=VacuumActivityWrapper.find_dpcode(device),
         fan_speed_wrapper=DPCodeEnumWrapper.find_dpcode(

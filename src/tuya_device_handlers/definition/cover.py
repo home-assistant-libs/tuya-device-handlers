@@ -12,13 +12,17 @@ from ..helpers.homeassistant import TuyaCoverAction, TuyaCoverDeviceClass
 from .base import BaseEntityQuirk
 
 
-@dataclass
-class TuyaCoverDefinition:
+@dataclass(kw_only=True)
+class CoverDefinition:
     current_position_wrapper: DeviceWrapper[int] | None
     current_state_wrapper: DeviceWrapper[bool] | None
     instruction_wrapper: DeviceWrapper[TuyaCoverAction] | None
     set_position_wrapper: DeviceWrapper[int] | None
     tilt_position_wrapper: DeviceWrapper[int] | None
+
+
+# Deprecated alias for backward compatibility
+TuyaCoverDefinition = CoverDefinition
 
 
 @dataclass(kw_only=True)
@@ -29,7 +33,7 @@ class CoverQuirk(BaseEntityQuirk):
 
     definition_fn: Callable[
         [CustomerDevice],
-        TuyaCoverDefinition | None,
+        CoverDefinition | None,
     ]
 
 
@@ -43,14 +47,14 @@ def get_default_definition(
     current_state_wrapper: type[DPCodeTypeInformationWrapper],  # type: ignore[type-arg]
     instruction_wrapper: type[DPCodeTypeInformationWrapper],  # type: ignore[type-arg]
     position_wrapper: type[DPCodeTypeInformationWrapper],  # type: ignore[type-arg]
-) -> TuyaCoverDefinition | None:
+) -> CoverDefinition | None:
     if not (
         instruction_dpcode in device.function
         or instruction_dpcode in device.status_range
     ):
         return None
 
-    return TuyaCoverDefinition(
+    return CoverDefinition(
         current_position_wrapper=position_wrapper.find_dpcode(
             device, current_position_dpcode
         ),

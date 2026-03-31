@@ -26,13 +26,17 @@ from ..utils import RemapHelper
 from .base import BaseEntityQuirk
 
 
-@dataclass
-class TuyaLightDefinition:
+@dataclass(kw_only=True)
+class LightDefinition:
     brightness_wrapper: DeviceWrapper[int] | None
     color_data_wrapper: DeviceWrapper[tuple[float, float, float]] | None
     color_mode_wrapper: DeviceWrapper[str] | None
     color_temp_wrapper: DeviceWrapper[int] | None
     switch_wrapper: DeviceWrapper[bool]
+
+
+# Deprecated alias for backward compatibility
+TuyaLightDefinition = LightDefinition
 
 
 @dataclass(kw_only=True)
@@ -41,7 +45,7 @@ class LightQuirk(BaseEntityQuirk):
 
     definition_fn: Callable[
         [CustomerDevice],
-        TuyaLightDefinition | None,
+        LightDefinition | None,
     ]
 
 
@@ -65,7 +69,7 @@ def get_default_definition(
     color_mode_dpcode: str | None,
     color_temp_dpcode: str | tuple[str, ...] | None,
     fallback_color_data_mode: FallbackColorDataMode,
-) -> TuyaLightDefinition | None:
+) -> LightDefinition | None:
     if not (
         switch_wrapper := DPCodeBooleanWrapper.find_dpcode(
             device, switch_dpcode, prefer_function=True
@@ -78,7 +82,7 @@ def get_default_definition(
         brightness_max_dpcode=brightness_max_dpcode,
         brightness_min_dpcode=brightness_min_dpcode,
     )
-    return TuyaLightDefinition(
+    return LightDefinition(
         brightness_wrapper=brightness_wrapper,
         color_data_wrapper=_get_color_data_wrapper(
             device,

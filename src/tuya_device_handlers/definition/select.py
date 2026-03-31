@@ -10,9 +10,13 @@ from ..device_wrapper.common import DPCodeEnumWrapper
 from .base import BaseEntityQuirk
 
 
-@dataclass
-class TuyaSelectDefinition:
+@dataclass(kw_only=True)
+class SelectDefinition:
     select_wrapper: DeviceWrapper[str]
+
+
+# Deprecated alias for backward compatibility
+TuyaSelectDefinition = SelectDefinition
 
 
 @dataclass(kw_only=True)
@@ -21,15 +25,15 @@ class SelectQuirk(BaseEntityQuirk):
 
     definition_fn: Callable[
         [CustomerDevice],
-        TuyaSelectDefinition | None,
+        SelectDefinition | None,
     ]
 
 
 def get_default_definition(
     device: CustomerDevice, dpcode: str
-) -> TuyaSelectDefinition | None:
+) -> SelectDefinition | None:
     if wrapper := DPCodeEnumWrapper.find_dpcode(
         device, dpcode, prefer_function=True
     ):
-        return TuyaSelectDefinition(select_wrapper=wrapper)
+        return SelectDefinition(select_wrapper=wrapper)
     return None

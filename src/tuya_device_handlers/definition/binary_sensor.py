@@ -15,9 +15,13 @@ from ..helpers.homeassistant import TuyaBinarySensorDeviceClass
 from .base import BaseEntityQuirk
 
 
-@dataclass
-class TuyaBinarySensorDefinition:
+@dataclass(kw_only=True)
+class BinarySensorDefinition:
     binary_sensor_wrapper: DeviceWrapper[bool]
+
+
+# Deprecated alias for backward compatibility
+TuyaBinarySensorDefinition = BinarySensorDefinition
 
 
 @dataclass(kw_only=True)
@@ -28,7 +32,7 @@ class BinarySensorQuirk(BaseEntityQuirk):
 
     definition_fn: Callable[
         [CustomerDevice],
-        TuyaBinarySensorDefinition | None,
+        BinarySensorDefinition | None,
     ]
 
 
@@ -37,22 +41,22 @@ def get_default_definition(
     dpcode: str,
     bitmap_key: str | None,
     on_value: bool | float | int | str | set[bool | float | int | str],
-) -> TuyaBinarySensorDefinition | None:
+) -> BinarySensorDefinition | None:
     if bitmap_key is not None:
         if bitmap_wrapper := DPCodeBitmapBitWrapper.find_dpcode(
             device, dpcode, bitmap_key=bitmap_key
         ):
-            return TuyaBinarySensorDefinition(bitmap_wrapper)
+            return BinarySensorDefinition(binary_sensor_wrapper=bitmap_wrapper)
         return None
 
     if bool_type := DPCodeBooleanWrapper.find_dpcode(device, dpcode):
-        return TuyaBinarySensorDefinition(bool_type)
+        return BinarySensorDefinition(binary_sensor_wrapper=bool_type)
 
     # Legacy / compatibility
     if dpcode not in device.status:
         return None
-    return TuyaBinarySensorDefinition(
-        DPCodeInSetWrapper(
+    return BinarySensorDefinition(
+        binary_sensor_wrapper=DPCodeInSetWrapper(
             dpcode,
             on_value if isinstance(on_value, set) else {on_value},
         )

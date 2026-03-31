@@ -10,10 +10,14 @@ from ..device_wrapper.common import DPCodeBooleanWrapper
 from .base import BaseEntityQuirk
 
 
-@dataclass
-class TuyaCameraDefinition:
+@dataclass(kw_only=True)
+class CameraDefinition:
     motion_detection_switch: DeviceWrapper[bool] | None
     recording_status: DeviceWrapper[bool] | None
+
+
+# Deprecated alias for backward compatibility
+TuyaCameraDefinition = CameraDefinition
 
 
 @dataclass(kw_only=True)
@@ -22,12 +26,12 @@ class CameraQuirk(BaseEntityQuirk):
 
     definition_fn: Callable[
         [CustomerDevice],
-        TuyaCameraDefinition | None,
+        CameraDefinition | None,
     ]
 
 
-def get_default_definition(device: CustomerDevice) -> TuyaCameraDefinition:
-    return TuyaCameraDefinition(
+def get_default_definition(device: CustomerDevice) -> CameraDefinition:
+    return CameraDefinition(
         motion_detection_switch=DPCodeBooleanWrapper.find_dpcode(
             device, "motion_switch", prefer_function=True
         ),

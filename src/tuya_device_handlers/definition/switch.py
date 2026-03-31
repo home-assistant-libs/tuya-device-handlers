@@ -11,9 +11,13 @@ from ..helpers.homeassistant import TuyaSwitchDeviceClass
 from .base import BaseEntityQuirk
 
 
-@dataclass
-class TuyaSwitchDefinition:
+@dataclass(kw_only=True)
+class SwitchDefinition:
     switch_wrapper: DeviceWrapper[bool]
+
+
+# Deprecated alias for backward compatibility
+TuyaSwitchDefinition = SwitchDefinition
 
 
 @dataclass(kw_only=True)
@@ -24,15 +28,15 @@ class SwitchQuirk(BaseEntityQuirk):
 
     definition_fn: Callable[
         [CustomerDevice],
-        TuyaSwitchDefinition | None,
+        SwitchDefinition | None,
     ]
 
 
 def get_default_definition(
     device: CustomerDevice, dpcode: str
-) -> TuyaSwitchDefinition | None:
+) -> SwitchDefinition | None:
     if wrapper := DPCodeBooleanWrapper.find_dpcode(
         device, dpcode, prefer_function=True
     ):
-        return TuyaSwitchDefinition(switch_wrapper=wrapper)
+        return SwitchDefinition(switch_wrapper=wrapper)
     return None

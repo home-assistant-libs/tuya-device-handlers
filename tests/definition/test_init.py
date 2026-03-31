@@ -5,26 +5,24 @@ def test_import() -> None:
     """Test import of definitions"""
     # ruff: disable[F401, PLC0415]
     from tuya_device_handlers.definition.alarm_control_panel import (
-        TuyaAlarmControlPanelDefinition,
+        AlarmControlPanelDefinition,
     )
     from tuya_device_handlers.definition.binary_sensor import (
-        TuyaBinarySensorDefinition,
+        BinarySensorDefinition,
     )
-    from tuya_device_handlers.definition.button import TuyaButtonDefinition
-    from tuya_device_handlers.definition.camera import TuyaCameraDefinition
-    from tuya_device_handlers.definition.climate import TuyaClimateDefinition
-    from tuya_device_handlers.definition.cover import TuyaCoverDefinition
-    from tuya_device_handlers.definition.event import TuyaEventDefinition
-    from tuya_device_handlers.definition.fan import TuyaFanDefinition
-    from tuya_device_handlers.definition.humidifier import (
-        TuyaHumidifierDefinition,
-    )
-    from tuya_device_handlers.definition.light import TuyaLightDefinition
-    from tuya_device_handlers.definition.number import TuyaNumberDefinition
-    from tuya_device_handlers.definition.select import TuyaSelectDefinition
-    from tuya_device_handlers.definition.sensor import TuyaSensorDefinition
-    from tuya_device_handlers.definition.siren import TuyaSirenDefinition
-    from tuya_device_handlers.definition.switch import TuyaSwitchDefinition
-    from tuya_device_handlers.definition.vacuum import TuyaVacuumDefinition
-    from tuya_device_handlers.definition.valve import TuyaValveDefinition
+    from tuya_device_handlers.definition.button import ButtonDefinition
+    from tuya_device_handlers.definition.camera import CameraDefinition
+    from tuya_device_handlers.definition.climate import ClimateDefinition
+    from tuya_device_handlers.definition.cover import CoverDefinition
+    from tuya_device_handlers.definition.event import EventDefinition
+    from tuya_device_handlers.definition.fan import FanDefinition
+    from tuya_device_handlers.definition.humidifier import HumidifierDefinition
+    from tuya_device_handlers.definition.light import LightDefinition
+    from tuya_device_handlers.definition.number import NumberDefinition
+    from tuya_device_handlers.definition.select import SelectDefinition
+    from tuya_device_handlers.definition.sensor import SensorDefinition
+    from tuya_device_handlers.definition.siren import SirenDefinition
+    from tuya_device_handlers.definition.switch import SwitchDefinition
+    from tuya_device_handlers.definition.vacuum import VacuumDefinition
+    from tuya_device_handlers.definition.valve import ValveDefinition
     # ruff: enable[F401, PLC0415]

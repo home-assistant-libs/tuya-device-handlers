@@ -12,12 +12,16 @@ from ..helpers.homeassistant import TuyaHumidifierDeviceClass
 from .base import BaseEntityQuirk
 
 
-@dataclass
-class TuyaHumidifierDefinition:
+@dataclass(kw_only=True)
+class HumidifierDefinition:
     current_humidity_wrapper: DeviceWrapper[int] | None = None
     mode_wrapper: DeviceWrapper[str] | None = None
     switch_wrapper: DeviceWrapper[bool] | None = None
     target_humidity_wrapper: DeviceWrapper[int] | None = None
+
+
+# Deprecated alias for backward compatibility
+TuyaHumidifierDefinition = HumidifierDefinition
 
 
 @dataclass(kw_only=True)
@@ -28,7 +32,7 @@ class HumidifierQuirk(BaseEntityQuirk):
 
     definition_fn: Callable[
         [CustomerDevice],
-        TuyaHumidifierDefinition | None,
+        HumidifierDefinition | None,
     ]
 
 
@@ -38,7 +42,7 @@ def get_default_definition(
     switch_dpcode: str | tuple[str, ...],
     current_humidity_dpcode: str | None,
     humidity_dpcode: str | None,
-) -> TuyaHumidifierDefinition | None:
+) -> HumidifierDefinition | None:
     properties_to_check: set[str | None] = {
         # Main control switch
         *(
@@ -60,7 +64,7 @@ def get_default_definition(
         if code is not None
     ):
         return None
-    return TuyaHumidifierDefinition(
+    return HumidifierDefinition(
         current_humidity_wrapper=DPCodeRoundedIntegerWrapper.find_dpcode(
             device, current_humidity_dpcode
         ),

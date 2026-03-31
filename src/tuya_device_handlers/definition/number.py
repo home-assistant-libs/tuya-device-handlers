@@ -11,9 +11,13 @@ from ..helpers.homeassistant import TuyaNumberDeviceClass
 from .base import BaseEntityQuirk
 
 
-@dataclass
-class TuyaNumberDefinition:
+@dataclass(kw_only=True)
+class NumberDefinition:
     number_wrapper: DeviceWrapper[float]
+
+
+# Deprecated alias for backward compatibility
+TuyaNumberDefinition = NumberDefinition
 
 
 @dataclass(kw_only=True)
@@ -24,15 +28,15 @@ class NumberQuirk(BaseEntityQuirk):
 
     definition_fn: Callable[
         [CustomerDevice],
-        TuyaNumberDefinition | None,
+        NumberDefinition | None,
     ]
 
 
 def get_default_definition(
     device: CustomerDevice, dpcode: str
-) -> TuyaNumberDefinition | None:
+) -> NumberDefinition | None:
     if wrapper := DPCodeIntegerWrapper.find_dpcode(
         device, dpcode, prefer_function=True
     ):
-        return TuyaNumberDefinition(number_wrapper=wrapper)
+        return NumberDefinition(number_wrapper=wrapper)
     return None

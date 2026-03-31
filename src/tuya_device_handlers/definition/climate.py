@@ -26,8 +26,8 @@ from ..helpers.homeassistant import (
 from .base import BaseEntityQuirk
 
 
-@dataclass
-class TuyaClimateDefinition:
+@dataclass(kw_only=True)
+class ClimateDefinition:
     current_humidity_wrapper: DeviceWrapper[int] | None
     current_temperature_wrapper: DeviceWrapper[float] | None
     fan_mode_wrapper: DeviceWrapper[str] | None
@@ -40,13 +40,17 @@ class TuyaClimateDefinition:
     temperature_unit: TuyaUnitOfTemperature
 
 
+# Deprecated alias for backward compatibility
+TuyaClimateDefinition = ClimateDefinition
+
+
 @dataclass(kw_only=True)
 class ClimateQuirk(BaseEntityQuirk):
     """Quirk for a climate entity."""
 
     definition_fn: Callable[
         [CustomerDevice, TuyaUnitOfTemperature],
-        TuyaClimateDefinition | None,
+        ClimateDefinition | None,
     ]
 
 
@@ -152,11 +156,11 @@ def _get_temperature_wrappers(
 
 def get_default_definition(
     device: CustomerDevice, system_temperature_unit: TuyaUnitOfTemperature
-) -> TuyaClimateDefinition:
+) -> ClimateDefinition:
     temperature_wrappers = _get_temperature_wrappers(
         device, system_temperature_unit
     )
-    return TuyaClimateDefinition(
+    return ClimateDefinition(
         current_humidity_wrapper=DPCodeRoundedIntegerWrapper.find_dpcode(
             device, "humidity_current"
         ),

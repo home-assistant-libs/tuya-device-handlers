@@ -11,9 +11,13 @@ from ..helpers.homeassistant import TuyaValveDeviceClass
 from .base import BaseEntityQuirk
 
 
-@dataclass
-class TuyaValveDefinition:
+@dataclass(kw_only=True)
+class ValveDefinition:
     control_wrapper: DeviceWrapper[bool]
+
+
+# Deprecated alias for backward compatibility
+TuyaValveDefinition = ValveDefinition
 
 
 @dataclass(kw_only=True)
@@ -24,15 +28,15 @@ class ValveQuirk(BaseEntityQuirk):
 
     definition_fn: Callable[
         [CustomerDevice],
-        TuyaValveDefinition | None,
+        ValveDefinition | None,
     ]
 
 
 def get_default_definition(
     device: CustomerDevice, dpcode: str
-) -> TuyaValveDefinition | None:
+) -> ValveDefinition | None:
     if wrapper := DPCodeBooleanWrapper.find_dpcode(
         device, dpcode, prefer_function=True
     ):
-        return TuyaValveDefinition(control_wrapper=wrapper)
+        return ValveDefinition(control_wrapper=wrapper)
     return None

@@ -10,9 +10,13 @@ from ..device_wrapper.common import DPCodeBooleanWrapper
 from .base import BaseEntityQuirk
 
 
-@dataclass
-class TuyaSirenDefinition:
+@dataclass(kw_only=True)
+class SirenDefinition:
     siren_wrapper: DeviceWrapper[bool]
+
+
+# Deprecated alias for backward compatibility
+TuyaSirenDefinition = SirenDefinition
 
 
 @dataclass(kw_only=True)
@@ -21,15 +25,15 @@ class SirenQuirk(BaseEntityQuirk):
 
     definition_fn: Callable[
         [CustomerDevice],
-        TuyaSirenDefinition | None,
+        SirenDefinition | None,
     ]
 
 
 def get_default_definition(
     device: CustomerDevice, dpcode: str
-) -> TuyaSirenDefinition | None:
+) -> SirenDefinition | None:
     if wrapper := DPCodeBooleanWrapper.find_dpcode(
         device, dpcode, prefer_function=True
     ):
-        return TuyaSirenDefinition(siren_wrapper=wrapper)
+        return SirenDefinition(siren_wrapper=wrapper)
     return None

@@ -10,9 +10,13 @@ from ..device_wrapper.common import DPCodeBooleanWrapper
 from .base import BaseEntityQuirk
 
 
-@dataclass
-class TuyaButtonDefinition:
+@dataclass(kw_only=True)
+class ButtonDefinition:
     button_wrapper: DeviceWrapper[bool]
+
+
+# Deprecated alias for backward compatibility
+TuyaButtonDefinition = ButtonDefinition
 
 
 @dataclass(kw_only=True)
@@ -21,15 +25,15 @@ class ButtonQuirk(BaseEntityQuirk):
 
     definition_fn: Callable[
         [CustomerDevice],
-        TuyaButtonDefinition | None,
+        ButtonDefinition | None,
     ]
 
 
 def get_default_definition(
     device: CustomerDevice, dpcode: str
-) -> TuyaButtonDefinition | None:
+) -> ButtonDefinition | None:
     if wrapper := DPCodeBooleanWrapper.find_dpcode(
         device, dpcode, prefer_function=True
     ):
-        return TuyaButtonDefinition(button_wrapper=wrapper)
+        return ButtonDefinition(button_wrapper=wrapper)
     return None

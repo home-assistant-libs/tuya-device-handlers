@@ -19,11 +19,15 @@ from ..type_information import EnumTypeInformation
 from .base import BaseEntityQuirk
 
 
-@dataclass
-class TuyaAlarmControlPanelDefinition:
+@dataclass(kw_only=True)
+class AlarmControlPanelDefinition:
     action_wrapper: DeviceWrapper[TuyaAlarmControlPanelAction]
     changed_by_wrapper: DeviceWrapper[str] | None
     state_wrapper: DeviceWrapper[TuyaAlarmControlPanelState]
+
+
+# Deprecated alias for backward compatibility
+TuyaAlarmControlPanelDefinition = AlarmControlPanelDefinition
 
 
 @dataclass(kw_only=True)
@@ -32,20 +36,20 @@ class AlarmControlPanelQuirk(BaseEntityQuirk):
 
     definition_fn: Callable[
         [CustomerDevice],
-        TuyaAlarmControlPanelDefinition | None,
+        AlarmControlPanelDefinition | None,
     ]
 
 
 def get_default_definition(
     device: CustomerDevice,
-) -> TuyaAlarmControlPanelDefinition | None:
+) -> AlarmControlPanelDefinition | None:
     if not (
         master_mode := EnumTypeInformation.find_dpcode(
             device, "master_mode", prefer_function=True
         )
     ):
         return None
-    return TuyaAlarmControlPanelDefinition(
+    return AlarmControlPanelDefinition(
         action_wrapper=AlarmActionWrapper(master_mode.dpcode, master_mode),
         changed_by_wrapper=AlarmChangedByWrapper.find_dpcode(
             device, "alarm_msg"
