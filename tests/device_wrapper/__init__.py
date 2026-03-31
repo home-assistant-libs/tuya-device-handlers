@@ -2,11 +2,7 @@
 
 from typing import Any
 
-from tuya_sharing import (  # type: ignore[import-untyped]
-    CustomerDevice,
-    DeviceFunction,
-    DeviceStatusRange,
-)
+from tuya_sharing import CustomerDevice, DeviceFunction, DeviceStatusRange
 
 from tuya_device_handlers.device_wrapper.base import DeviceWrapper
 

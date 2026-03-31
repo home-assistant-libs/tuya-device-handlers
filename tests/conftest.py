@@ -3,11 +3,7 @@
 from unittest.mock import Mock
 
 import pytest
-from tuya_sharing import (  # type: ignore[import-untyped]
-    CustomerDevice,
-    DeviceFunction,
-    DeviceStatusRange,
-)
+from tuya_sharing import CustomerDevice, DeviceFunction, DeviceStatusRange
 
 from tuya_device_handlers import TUYA_QUIRKS_REGISTRY
 from tuya_device_handlers.devices import register_tuya_quirks
