@@ -1,6 +1,6 @@
 """Test utils"""
 
-from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
+from tuya_sharing import CustomerDevice
 
 from tuya_device_handlers.type_information import IntegerTypeInformation
 from tuya_device_handlers.utils import RemapHelper

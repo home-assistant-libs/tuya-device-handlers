@@ -5,7 +5,7 @@ import json
 import logging
 from typing import TYPE_CHECKING, Any, Self
 
-from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
+from tuya_sharing import CustomerDevice
 
 from ..type_information import (
     BitmapTypeInformation,

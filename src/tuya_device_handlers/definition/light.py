@@ -6,7 +6,7 @@ from enum import StrEnum
 import json
 from typing import Any, cast
 
-from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
+from tuya_sharing import CustomerDevice
 
 from ..device_wrapper import DeviceWrapper
 from ..device_wrapper.common import (

@@ -2,7 +2,7 @@
 
 from typing import Self
 
-from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
+from tuya_sharing import CustomerDevice
 
 from ..type_information import BitmapTypeInformation
 from .common import DPCodeBitmapWrapper, DPCodeWrapper

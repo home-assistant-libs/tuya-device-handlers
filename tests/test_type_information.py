@@ -4,7 +4,7 @@ import dataclasses
 
 import pytest
 from syrupy.assertion import SnapshotAssertion
-from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
+from tuya_sharing import CustomerDevice
 
 from tuya_device_handlers.type_information import (
     BitmapTypeInformation,

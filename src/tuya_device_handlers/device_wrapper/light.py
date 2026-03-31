@@ -3,7 +3,7 @@
 import json
 from typing import Any
 
-from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
+from tuya_sharing import CustomerDevice
 
 from ..type_information import IntegerTypeInformation
 from ..utils import RemapHelper

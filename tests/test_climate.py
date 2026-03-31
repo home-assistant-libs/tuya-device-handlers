@@ -6,7 +6,7 @@ from typing import Any
 import pytest
 from syrupy.assertion import SnapshotAssertion
 from syrupy.filters import props
-from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
+from tuya_sharing import CustomerDevice
 
 from tuya_device_handlers.definition.climate import TuyaClimateDefinition
 from tuya_device_handlers.device_wrapper.base import DeviceWrapper

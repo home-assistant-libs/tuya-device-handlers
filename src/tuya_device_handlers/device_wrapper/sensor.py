@@ -2,7 +2,7 @@
 
 import logging
 
-from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
+from tuya_sharing import CustomerDevice
 
 from ..raw_data_model import ElectricityData
 from .common import (

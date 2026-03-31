@@ -4,7 +4,7 @@ import collections
 from dataclasses import dataclass
 from typing import Any, Self
 
-from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
+from tuya_sharing import CustomerDevice
 
 from ..helpers.homeassistant import TuyaClimateHVACMode, TuyaClimateSwingMode
 from ..type_information import EnumTypeInformation

@@ -2,7 +2,7 @@
 
 from typing import Any, Self
 
-from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
+from tuya_sharing import CustomerDevice
 
 from ..helpers.homeassistant import TuyaVacuumAction, TuyaVacuumActivity
 from .base import DeviceWrapper

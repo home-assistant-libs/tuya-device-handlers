@@ -1,6 +1,6 @@
 """Tuya device wrapper."""
 
-from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
+from tuya_sharing import CustomerDevice
 
 from ..helpers.homeassistant import TuyaCoverAction
 from ..type_information import EnumTypeInformation

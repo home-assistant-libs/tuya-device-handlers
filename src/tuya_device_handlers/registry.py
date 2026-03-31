@@ -5,7 +5,7 @@ import logging
 import pathlib
 from typing import Protocol, Self
 
-from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
+from tuya_sharing import CustomerDevice
 
 from tuya_device_handlers.definition.alarm_control_panel import (
     AlarmControlPanelQuirk,

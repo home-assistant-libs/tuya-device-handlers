@@ -4,7 +4,7 @@ from dataclasses import dataclass
 import json
 from typing import Any, ClassVar, Self, cast
 
-from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
+from tuya_sharing import CustomerDevice
 
 from .const import DPType
 

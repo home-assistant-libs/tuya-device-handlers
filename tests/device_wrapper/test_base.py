@@ -1,6 +1,6 @@
 """Test DeviceWrapper classes"""
 
-from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
+from tuya_sharing import CustomerDevice
 
 from tuya_device_handlers.device_wrapper.base import DeviceWrapper
 

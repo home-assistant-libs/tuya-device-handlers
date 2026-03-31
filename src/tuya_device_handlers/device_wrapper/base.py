@@ -2,7 +2,7 @@
 
 from typing import Any
 
-from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
+from tuya_sharing import CustomerDevice
 
 
 class DeviceWrapper[T]:

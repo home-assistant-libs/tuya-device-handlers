@@ -4,7 +4,7 @@ import base64
 from enum import IntFlag
 from typing import Any, Literal, TypedDict
 
-from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
+from tuya_sharing import CustomerDevice
 
 from tuya_device_handlers.type_information import RawTypeInformation
 

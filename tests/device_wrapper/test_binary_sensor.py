@@ -3,7 +3,7 @@
 from typing import Any
 
 import pytest
-from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
+from tuya_sharing import CustomerDevice
 
 from tuya_device_handlers.device_wrapper.binary_sensor import (
     DPCodeBitmapBitWrapper,

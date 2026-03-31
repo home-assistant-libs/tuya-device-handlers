@@ -3,7 +3,7 @@
 from collections.abc import Callable
 from dataclasses import dataclass
 
-from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
+from tuya_sharing import CustomerDevice
 
 from ..const import CELSIUS_ALIASES, FAHRENHEIT_ALIASES
 from ..device_wrapper import DeviceWrapper
