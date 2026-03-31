@@ -76,6 +76,7 @@
     'online': True,
     'product_id': 'ed7frwissyqrejic',
     'product_name': '接HA水阀',
+    'quirk': None,
     'set_up': True,
     'status': dict({
       'battery_percentage': 0,

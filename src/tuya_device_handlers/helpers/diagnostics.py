@@ -5,6 +5,7 @@ from typing import Any
 
 from tuya_sharing import CustomerDevice  # type: ignore[import-untyped]
 
+from tuya_device_handlers import TUYA_QUIRKS_REGISTRY
 from tuya_device_handlers.device_wrapper import DEVICE_WARNINGS
 
 
@@ -34,8 +35,14 @@ def customer_device_as_dict(device: CustomerDevice) -> dict[str, Any]:
         "set_up": device.set_up,
         "support_local": device.support_local,
         "local_strategy": device.local_strategy,
+        "quirk": (
+            f"{quirk.quirk_file}:{quirk.quirk_file_line}"
+            if (quirk := TUYA_QUIRKS_REGISTRY.get_quirk_for_device(device))
+            else None
+        ),
         "warnings": DEVICE_WARNINGS.get(device.id),
     }
+
     # Gather Tuya states
     for dpcode, value in device.status.items():
         data["status"][dpcode] = value
