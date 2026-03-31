@@ -72,6 +72,8 @@ class DeviceQuirkProtocol(Protocol):
 
     @property
     def quirk_file(self) -> pathlib.Path: ...
+    @property
+    def quirk_file_line(self) -> int: ...
 
 
 class QuirksRegistry:
