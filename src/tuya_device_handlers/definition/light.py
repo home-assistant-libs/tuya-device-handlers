@@ -62,13 +62,13 @@ def get_default_definition(
     device: CustomerDevice,
     *,
     switch_dpcode: str,
-    brightness_dpcode: str | tuple[str, ...] | None,
-    brightness_max_dpcode: str | None,
-    brightness_min_dpcode: str | None,
-    color_data_dpcode: str | tuple[str, ...] | None,
-    color_mode_dpcode: str | None,
-    color_temp_dpcode: str | tuple[str, ...] | None,
-    fallback_color_data_mode: FallbackColorDataMode,
+    brightness_dpcode: str | tuple[str, ...] | None = None,
+    brightness_max_dpcode: str | None = None,
+    brightness_min_dpcode: str | None = None,
+    color_data_dpcode: str | tuple[str, ...] | None = None,
+    color_mode_dpcode: str | None = None,
+    color_temp_dpcode: str | tuple[str, ...] | None = None,
+    fallback_color_data_mode: FallbackColorDataMode = FallbackColorDataMode.V1,
 ) -> LightDefinition | None:
     if not (
         switch_wrapper := DPCodeBooleanWrapper.find_dpcode(
