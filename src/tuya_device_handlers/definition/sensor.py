@@ -32,7 +32,7 @@ class SensorQuirk(BaseEntityQuirk):
 
     device_class: TuyaSensorDeviceClass | None = None
     state_class: TuyaSensorStateClass | None = None
-    suggested_unit: str | None = None
+    suggested_unit_of_measurement: str | None = None
 
     definition_fn: Callable[
         [CustomerDevice],
