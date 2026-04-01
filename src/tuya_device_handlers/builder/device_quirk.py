@@ -2,6 +2,7 @@
 
 from collections.abc import Callable, Sequence
 from dataclasses import dataclass
+import functools
 import inspect
 import pathlib
 from typing import TYPE_CHECKING, Any, Self
@@ -234,13 +235,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
     ) -> Self:
         """Add alarm control panel definition."""
         if definition_fn is None:
-
-            def _definition_fn(
-                device: CustomerDevice,
-            ) -> AlarmControlPanelDefinition | None:
-                return get_alarm_control_panel_default_definition(device)
-
-            definition_fn = _definition_fn
+            definition_fn = get_alarm_control_panel_default_definition
 
         quirk = AlarmControlPanelQuirk(
             key=key,
@@ -269,13 +264,9 @@ class DeviceQuirk(DeviceQuirkProtocol):
     ) -> Self:
         """Add binary sensor definition."""
         if definition_fn is None:
-
-            def _definition_fn(
-                device: CustomerDevice,
-            ) -> BinarySensorDefinition | None:
-                return get_binary_sensor_default_definition(device, key)
-
-            definition_fn = _definition_fn
+            definition_fn = functools.partial(
+                get_binary_sensor_default_definition, dpcode=key
+            )
 
         quirk = BinarySensorQuirk(
             key=key,
@@ -305,13 +296,9 @@ class DeviceQuirk(DeviceQuirkProtocol):
     ) -> Self:
         """Add button definition."""
         if definition_fn is None:
-
-            def _definition_fn(
-                device: CustomerDevice,
-            ) -> ButtonDefinition | None:
-                return get_button_default_definition(device, key)
-
-            definition_fn = _definition_fn
+            definition_fn = functools.partial(
+                get_button_default_definition, dpcode=key
+            )
 
         quirk = ButtonQuirk(
             key=key,
@@ -340,13 +327,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
     ) -> Self:
         """Add camera definition."""
         if definition_fn is None:
-
-            def _definition_fn(
-                device: CustomerDevice,
-            ) -> CameraDefinition | None:
-                return get_camera_default_definition(device)
-
-            definition_fn = _definition_fn
+            definition_fn = get_camera_default_definition
 
         quirk = CameraQuirk(
             key=key,
@@ -378,13 +359,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
     ) -> Self:
         """Add climate definition."""
         if definition_fn is None:
-
-            def _definition_fn(
-                device: CustomerDevice, unit: TuyaUnitOfTemperature
-            ) -> ClimateDefinition | None:
-                return get_climate_default_definition(device, unit)
-
-            definition_fn = _definition_fn
+            definition_fn = get_climate_default_definition
 
         quirk = ClimateQuirk(
             key=key,
@@ -413,15 +388,9 @@ class DeviceQuirk(DeviceQuirkProtocol):
     ) -> Self:
         """Add cover definition."""
         if definition_fn is None:
-
-            def _definition_fn(
-                device: CustomerDevice,
-            ) -> CoverDefinition | None:
-                return get_cover_default_definition(
-                    device, instruction_dpcode=key
-                )
-
-            definition_fn = _definition_fn
+            definition_fn = functools.partial(
+                get_cover_default_definition, instruction_dpcode=key
+            )
 
         quirk = CoverQuirk(
             key=key,
@@ -450,13 +419,9 @@ class DeviceQuirk(DeviceQuirkProtocol):
     ) -> Self:
         """Add event definition."""
         if definition_fn is None:
-
-            def _definition_fn(
-                device: CustomerDevice,
-            ) -> EventDefinition | None:
-                return get_event_default_definition(device, key)
-
-            definition_fn = _definition_fn
+            definition_fn = functools.partial(
+                get_event_default_definition, dpcode=key
+            )
 
         quirk = EventQuirk(
             key=key,
@@ -485,13 +450,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
     ) -> Self:
         """Add fan definition."""
         if definition_fn is None:
-
-            def _definition_fn(
-                device: CustomerDevice,
-            ) -> FanDefinition | None:
-                return get_fan_default_definition(device)
-
-            definition_fn = _definition_fn
+            definition_fn = get_fan_default_definition
 
         quirk = FanQuirk(
             key=key,
@@ -523,15 +482,9 @@ class DeviceQuirk(DeviceQuirkProtocol):
     ) -> Self:
         """Add humidifier definition."""
         if definition_fn is None:
-
-            def _definition_fn(
-                device: CustomerDevice,
-            ) -> HumidifierDefinition | None:
-                return get_humidifier_default_definition(
-                    device, switch_dpcode=key
-                )
-
-            definition_fn = _definition_fn
+            definition_fn = functools.partial(
+                get_humidifier_default_definition, switch_dpcode=key
+            )
 
         quirk = HumidifierQuirk(
             key=key,
@@ -563,13 +516,9 @@ class DeviceQuirk(DeviceQuirkProtocol):
     ) -> Self:
         """Add light definition."""
         if definition_fn is None:
-
-            def _definition_fn(
-                device: CustomerDevice,
-            ) -> LightDefinition | None:
-                return get_light_default_definition(device, switch_dpcode=key)
-
-            definition_fn = _definition_fn
+            definition_fn = functools.partial(
+                get_light_default_definition, switch_dpcode=key
+            )
 
         quirk = LightQuirk(
             key=key,
@@ -601,13 +550,9 @@ class DeviceQuirk(DeviceQuirkProtocol):
     ) -> Self:
         """Add number definition."""
         if definition_fn is None:
-
-            def _definition_fn(
-                device: CustomerDevice,
-            ) -> NumberDefinition | None:
-                return get_number_default_definition(device, key)
-
-            definition_fn = _definition_fn
+            definition_fn = functools.partial(
+                get_number_default_definition, dpcode=key
+            )
 
         quirk = NumberQuirk(
             key=key,
@@ -639,13 +584,9 @@ class DeviceQuirk(DeviceQuirkProtocol):
     ) -> Self:
         """Add select definition."""
         if definition_fn is None:
-
-            def _definition_fn(
-                device: CustomerDevice,
-            ) -> SelectDefinition | None:
-                return get_select_default_definition(device, key)
-
-            definition_fn = _definition_fn
+            definition_fn = functools.partial(
+                get_select_default_definition, dpcode=key
+            )
 
         quirk = SelectQuirk(
             key=key,
@@ -677,13 +618,9 @@ class DeviceQuirk(DeviceQuirkProtocol):
     ) -> Self:
         """Add sensor definition."""
         if definition_fn is None:
-
-            def _definition_fn(
-                device: CustomerDevice,
-            ) -> SensorDefinition | None:
-                return get_sensor_default_definition(device, key)
-
-            definition_fn = _definition_fn
+            definition_fn = functools.partial(
+                get_sensor_default_definition, dpcode=key
+            )
 
         quirk = SensorQuirk(
             key=key,
@@ -715,13 +652,9 @@ class DeviceQuirk(DeviceQuirkProtocol):
     ) -> Self:
         """Add siren definition."""
         if definition_fn is None:
-
-            def _definition_fn(
-                device: CustomerDevice,
-            ) -> SirenDefinition | None:
-                return get_siren_default_definition(device, key)
-
-            definition_fn = _definition_fn
+            definition_fn = functools.partial(
+                get_siren_default_definition, dpcode=key
+            )
 
         quirk = SirenQuirk(
             key=key,
@@ -753,13 +686,9 @@ class DeviceQuirk(DeviceQuirkProtocol):
     ) -> Self:
         """Add switch definition."""
         if definition_fn is None:
-
-            def _definition_fn(
-                device: CustomerDevice,
-            ) -> SwitchDefinition | None:
-                return get_switch_default_definition(device, key)
-
-            definition_fn = _definition_fn
+            definition_fn = functools.partial(
+                get_switch_default_definition, dpcode=key
+            )
 
         quirk = SwitchQuirk(
             key=key,
@@ -791,13 +720,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
     ) -> Self:
         """Add vacuum definition."""
         if definition_fn is None:
-
-            def _definition_fn(
-                device: CustomerDevice,
-            ) -> VacuumDefinition | None:
-                return get_vacuum_default_definition(device)
-
-            definition_fn = _definition_fn
+            definition_fn = get_vacuum_default_definition
 
         quirk = VacuumQuirk(
             key=key,
@@ -829,13 +752,9 @@ class DeviceQuirk(DeviceQuirkProtocol):
     ) -> Self:
         """Add valve definition."""
         if definition_fn is None:
-
-            def _definition_fn(
-                device: CustomerDevice,
-            ) -> ValveDefinition | None:
-                return get_valve_default_definition(device, key)
-
-            definition_fn = _definition_fn
+            definition_fn = functools.partial(
+                get_valve_default_definition, dpcode=key
+            )
 
         quirk = ValveQuirk(
             key=key,
