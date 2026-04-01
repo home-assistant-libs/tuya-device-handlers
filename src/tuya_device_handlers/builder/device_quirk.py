@@ -152,6 +152,11 @@ class DeviceQuirk(DeviceQuirkProtocol):
         """Get the file path of the quirk."""
         return self._quirk_file
 
+    @property
+    def quirk_file_line(self) -> int:
+        """Get the line number of the quirk."""
+        return self._quirk_file_line
+
     def applies_to(self, *, category: str, product_id: str) -> Self:
         """Set the device type the quirk applies to."""
         self._applies_to.append((category, product_id))
