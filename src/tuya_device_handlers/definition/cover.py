@@ -49,15 +49,15 @@ def get_default_definition(
     current_state_dpcode: str | tuple[str, ...] | None = None,
     instruction_dpcode: str,
     set_position_dpcode: str | None = None,
-    current_state_wrapper: type[
+    current_state_wrapper: type[  # type: ignore[type-arg]
         DPCodeTypeInformationWrapper
-    ] = CoverClosedEnumWrapper,  # type: ignore[type-arg]
-    instruction_wrapper: type[
+    ] = CoverClosedEnumWrapper,
+    instruction_wrapper: type[  # type: ignore[type-arg]
         DPCodeTypeInformationWrapper
-    ] = CoverInstructionEnumWrapper,  # type: ignore[type-arg]
-    position_wrapper: type[
+    ] = CoverInstructionEnumWrapper,
+    position_wrapper: type[  # type: ignore[type-arg]
         DPCodeTypeInformationWrapper
-    ] = DPCodeInvertedPercentageWrapper,  # type: ignore[type-arg]
+    ] = DPCodeInvertedPercentageWrapper,
 ) -> CoverDefinition | None:
     if not (
         instruction_dpcode in device.function
