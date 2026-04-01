@@ -95,7 +95,19 @@ from tuya_device_handlers.definition.valve import (
     ValveQuirk,
     get_default_definition as get_valve_default_definition,
 )
-from tuya_device_handlers.helpers.homeassistant import TuyaUnitOfTemperature
+from tuya_device_handlers.helpers.homeassistant import (
+    TuyaBinarySensorDeviceClass,
+    TuyaCoverDeviceClass,
+    TuyaEntityCategory,
+    TuyaEventDeviceClass,
+    TuyaHumidifierDeviceClass,
+    TuyaNumberDeviceClass,
+    TuyaSensorDeviceClass,
+    TuyaSensorStateClass,
+    TuyaSwitchDeviceClass,
+    TuyaUnitOfTemperature,
+    TuyaValveDeviceClass,
+)
 from tuya_device_handlers.registry import DeviceQuirkProtocol, QuirksRegistry
 
 
@@ -266,6 +278,10 @@ class DeviceQuirk(DeviceQuirkProtocol):
         *,
         definition_fn: Callable[[CustomerDevice], BinarySensorDefinition | None]
         | None = None,
+        device_class: TuyaBinarySensorDeviceClass | None = None,
+        entity_category: TuyaEntityCategory | None = None,
+        translation_key: str | None = None,
+        translation_placeholders: dict[str, str] | None = None,
     ) -> Self:
         """Add binary sensor definition."""
         if definition_fn is None:
@@ -276,6 +292,10 @@ class DeviceQuirk(DeviceQuirkProtocol):
         quirk = BinarySensorQuirk(
             key=key,
             definition_fn=definition_fn,
+            device_class=device_class,
+            entity_category=entity_category,
+            translation_key=translation_key,
+            translation_placeholders=translation_placeholders,
         )
         return self._add_binary_sensor_quirk(quirk)
 
@@ -298,6 +318,9 @@ class DeviceQuirk(DeviceQuirkProtocol):
         *,
         definition_fn: Callable[[CustomerDevice], ButtonDefinition | None]
         | None = None,
+        entity_category: TuyaEntityCategory | None = None,
+        entity_registry_enabled_default: bool = True,
+        translation_key: str | None = None,
     ) -> Self:
         """Add button definition."""
         if definition_fn is None:
@@ -308,6 +331,9 @@ class DeviceQuirk(DeviceQuirkProtocol):
         quirk = ButtonQuirk(
             key=key,
             definition_fn=definition_fn,
+            entity_category=entity_category,
+            entity_registry_enabled_default=entity_registry_enabled_default,
+            translation_key=translation_key,
         )
         return self._add_button_quirk(quirk)
 
@@ -390,6 +416,8 @@ class DeviceQuirk(DeviceQuirkProtocol):
         *,
         definition_fn: Callable[[CustomerDevice], CoverDefinition | None]
         | None = None,
+        device_class: TuyaCoverDeviceClass | None = None,
+        translation_key: str | None = None,
     ) -> Self:
         """Add cover definition."""
         if definition_fn is None:
@@ -400,6 +428,8 @@ class DeviceQuirk(DeviceQuirkProtocol):
         quirk = CoverQuirk(
             key=key,
             definition_fn=definition_fn,
+            device_class=device_class,
+            translation_key=translation_key,
         )
         return self._add_cover_quirk(quirk)
 
@@ -421,6 +451,9 @@ class DeviceQuirk(DeviceQuirkProtocol):
         *,
         definition_fn: Callable[[CustomerDevice], EventDefinition | None]
         | None = None,
+        device_class: TuyaEventDeviceClass | None = None,
+        translation_key: str | None = None,
+        translation_placeholders: dict[str, str] | None = None,
     ) -> Self:
         """Add event definition."""
         if definition_fn is None:
@@ -431,6 +464,9 @@ class DeviceQuirk(DeviceQuirkProtocol):
         quirk = EventQuirk(
             key=key,
             definition_fn=definition_fn,
+            device_class=device_class,
+            translation_key=translation_key,
+            translation_placeholders=translation_placeholders,
         )
         return self._add_event_quirk(quirk)
 
@@ -484,6 +520,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
             HumidifierDefinition | None,
         ]
         | None = None,
+        device_class: TuyaHumidifierDeviceClass | None = None,
     ) -> Self:
         """Add humidifier definition."""
         if definition_fn is None:
@@ -494,6 +531,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
         quirk = HumidifierQuirk(
             key=key,
             definition_fn=definition_fn,
+            device_class=device_class,
         )
         return self._add_humidifier_quirk(quirk)
 
@@ -518,6 +556,9 @@ class DeviceQuirk(DeviceQuirkProtocol):
             LightDefinition | None,
         ]
         | None = None,
+        entity_category: TuyaEntityCategory | None = None,
+        translation_key: str | None = None,
+        translation_placeholders: dict[str, str] | None = None,
     ) -> Self:
         """Add light definition."""
         if definition_fn is None:
@@ -528,6 +569,9 @@ class DeviceQuirk(DeviceQuirkProtocol):
         quirk = LightQuirk(
             key=key,
             definition_fn=definition_fn,
+            entity_category=entity_category,
+            translation_key=translation_key,
+            translation_placeholders=translation_placeholders,
         )
         return self._add_light_quirk(quirk)
 
@@ -552,6 +596,10 @@ class DeviceQuirk(DeviceQuirkProtocol):
             NumberDefinition | None,
         ]
         | None = None,
+        device_class: TuyaNumberDeviceClass | None = None,
+        entity_category: TuyaEntityCategory | None = None,
+        translation_key: str | None = None,
+        translation_placeholders: dict[str, str] | None = None,
     ) -> Self:
         """Add number definition."""
         if definition_fn is None:
@@ -562,6 +610,10 @@ class DeviceQuirk(DeviceQuirkProtocol):
         quirk = NumberQuirk(
             key=key,
             definition_fn=definition_fn,
+            device_class=device_class,
+            entity_category=entity_category,
+            translation_key=translation_key,
+            translation_placeholders=translation_placeholders,
         )
         return self._add_number_quirk(quirk)
 
@@ -586,6 +638,10 @@ class DeviceQuirk(DeviceQuirkProtocol):
             SelectDefinition | None,
         ]
         | None = None,
+        entity_category: TuyaEntityCategory | None = None,
+        icon: str | None = None,
+        translation_key: str | None = None,
+        translation_placeholders: dict[str, str] | None = None,
     ) -> Self:
         """Add select definition."""
         if definition_fn is None:
@@ -596,6 +652,10 @@ class DeviceQuirk(DeviceQuirkProtocol):
         quirk = SelectQuirk(
             key=key,
             definition_fn=definition_fn,
+            entity_category=entity_category,
+            icon=icon,
+            translation_key=translation_key,
+            translation_placeholders=translation_placeholders,
         )
         return self._add_select_quirk(quirk)
 
@@ -620,6 +680,13 @@ class DeviceQuirk(DeviceQuirkProtocol):
             SensorDefinition | None,
         ]
         | None = None,
+        device_class: TuyaSensorDeviceClass | None = None,
+        entity_category: TuyaEntityCategory | None = None,
+        entity_registry_enabled_default: bool = True,
+        state_class: TuyaSensorStateClass | None = None,
+        suggested_unit_of_measurement: str | None = None,
+        translation_key: str | None = None,
+        translation_placeholders: dict[str, str] | None = None,
     ) -> Self:
         """Add sensor definition."""
         if definition_fn is None:
@@ -630,6 +697,13 @@ class DeviceQuirk(DeviceQuirkProtocol):
         quirk = SensorQuirk(
             key=key,
             definition_fn=definition_fn,
+            device_class=device_class,
+            entity_category=entity_category,
+            entity_registry_enabled_default=entity_registry_enabled_default,
+            state_class=state_class,
+            suggested_unit_of_measurement=suggested_unit_of_measurement,
+            translation_key=translation_key,
+            translation_placeholders=translation_placeholders,
         )
         return self._add_sensor_quirk(quirk)
 
@@ -654,6 +728,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
             SirenDefinition | None,
         ]
         | None = None,
+        entity_category: TuyaEntityCategory | None = None,
     ) -> Self:
         """Add siren definition."""
         if definition_fn is None:
@@ -664,6 +739,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
         quirk = SirenQuirk(
             key=key,
             definition_fn=definition_fn,
+            entity_category=entity_category,
         )
         return self._add_siren_quirk(quirk)
 
@@ -688,6 +764,11 @@ class DeviceQuirk(DeviceQuirkProtocol):
             SwitchDefinition | None,
         ]
         | None = None,
+        device_class: TuyaSwitchDeviceClass | None = None,
+        entity_category: TuyaEntityCategory | None = None,
+        icon: str | None = None,
+        translation_key: str | None = None,
+        translation_placeholders: dict[str, str] | None = None,
     ) -> Self:
         """Add switch definition."""
         if definition_fn is None:
@@ -698,6 +779,11 @@ class DeviceQuirk(DeviceQuirkProtocol):
         quirk = SwitchQuirk(
             key=key,
             definition_fn=definition_fn,
+            device_class=device_class,
+            entity_category=entity_category,
+            icon=icon,
+            translation_key=translation_key,
+            translation_placeholders=translation_placeholders,
         )
         return self._add_switch_quirk(quirk)
 
@@ -754,6 +840,9 @@ class DeviceQuirk(DeviceQuirkProtocol):
             ValveDefinition | None,
         ]
         | None = None,
+        device_class: TuyaValveDeviceClass | None = None,
+        translation_key: str | None = None,
+        translation_placeholders: dict[str, str] | None = None,
     ) -> Self:
         """Add valve definition."""
         if definition_fn is None:
@@ -764,5 +853,8 @@ class DeviceQuirk(DeviceQuirkProtocol):
         quirk = ValveQuirk(
             key=key,
             definition_fn=definition_fn,
+            device_class=device_class,
+            translation_key=translation_key,
+            translation_placeholders=translation_placeholders,
         )
         return self._add_valve_quirk(quirk)

@@ -12,7 +12,7 @@ from ..device_wrapper.common import (
     DPCodeTypeInformationWrapper,
 )
 from ..device_wrapper.sensor import DeltaIntegerWrapper
-from ..helpers.homeassistant import TuyaSensorDeviceClass
+from ..helpers.homeassistant import TuyaSensorDeviceClass, TuyaSensorStateClass
 from ..type_information import IntegerTypeInformation
 from .base import BaseEntityQuirk
 
@@ -31,6 +31,7 @@ class SensorQuirk(BaseEntityQuirk):
     """Quirk for a sensor entity."""
 
     device_class: TuyaSensorDeviceClass | None = None
+    state_class: TuyaSensorStateClass | None = None
     suggested_unit: str | None = None
 
     definition_fn: Callable[
