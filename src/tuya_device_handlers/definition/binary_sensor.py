@@ -39,8 +39,8 @@ class BinarySensorQuirk(BaseEntityQuirk):
 def get_default_definition(
     device: CustomerDevice,
     dpcode: str,
-    bitmap_key: str | None,
-    on_value: bool | float | int | str | set[bool | float | int | str],
+    bitmap_key: str | None = None,
+    on_value: bool | float | int | str | set[bool | float | int | str] = True,
 ) -> BinarySensorDefinition | None:
     if bitmap_key is not None:
         if bitmap_wrapper := DPCodeBitmapBitWrapper.find_dpcode(

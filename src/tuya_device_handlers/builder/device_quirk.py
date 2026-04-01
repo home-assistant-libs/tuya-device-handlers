@@ -1,31 +1,100 @@
 """Base quirk definition."""
 
-from collections.abc import Sequence
+from collections.abc import Callable, Sequence
 from dataclasses import dataclass
 import inspect
 import pathlib
 from typing import TYPE_CHECKING, Any, Self
 
+from tuya_sharing import CustomerDevice
+
 from tuya_device_handlers.const import DPType
 from tuya_device_handlers.definition.alarm_control_panel import (
+    AlarmControlPanelDefinition,
     AlarmControlPanelQuirk,
+    get_default_definition as get_alarm_control_panel_default_definition,
 )
-from tuya_device_handlers.definition.binary_sensor import BinarySensorQuirk
-from tuya_device_handlers.definition.button import ButtonQuirk
-from tuya_device_handlers.definition.camera import CameraQuirk
-from tuya_device_handlers.definition.climate import ClimateQuirk
-from tuya_device_handlers.definition.cover import CoverQuirk
-from tuya_device_handlers.definition.event import EventQuirk
-from tuya_device_handlers.definition.fan import FanQuirk
-from tuya_device_handlers.definition.humidifier import HumidifierQuirk
-from tuya_device_handlers.definition.light import LightQuirk
-from tuya_device_handlers.definition.number import NumberQuirk
-from tuya_device_handlers.definition.select import SelectQuirk
-from tuya_device_handlers.definition.sensor import SensorQuirk
-from tuya_device_handlers.definition.siren import SirenQuirk
-from tuya_device_handlers.definition.switch import SwitchQuirk
-from tuya_device_handlers.definition.vacuum import VacuumQuirk
-from tuya_device_handlers.definition.valve import ValveQuirk
+from tuya_device_handlers.definition.binary_sensor import (
+    BinarySensorDefinition,
+    BinarySensorQuirk,
+    get_default_definition as get_binary_sensor_default_definition,
+)
+from tuya_device_handlers.definition.button import (
+    ButtonDefinition,
+    ButtonQuirk,
+    get_default_definition as get_button_default_definition,
+)
+from tuya_device_handlers.definition.camera import (
+    CameraDefinition,
+    CameraQuirk,
+    get_default_definition as get_camera_default_definition,
+)
+from tuya_device_handlers.definition.climate import (
+    ClimateDefinition,
+    ClimateQuirk,
+    get_default_definition as get_climate_default_definition,
+)
+from tuya_device_handlers.definition.cover import (
+    CoverDefinition,
+    CoverQuirk,
+    get_default_definition as get_cover_default_definition,
+)
+from tuya_device_handlers.definition.event import (
+    EventDefinition,
+    EventQuirk,
+    get_default_definition as get_event_default_definition,
+)
+from tuya_device_handlers.definition.fan import (
+    FanDefinition,
+    FanQuirk,
+    get_default_definition as get_fan_default_definition,
+)
+from tuya_device_handlers.definition.humidifier import (
+    HumidifierDefinition,
+    HumidifierQuirk,
+    get_default_definition as get_humidifier_default_definition,
+)
+from tuya_device_handlers.definition.light import (
+    LightDefinition,
+    LightQuirk,
+    get_default_definition as get_light_default_definition,
+)
+from tuya_device_handlers.definition.number import (
+    NumberDefinition,
+    NumberQuirk,
+    get_default_definition as get_number_default_definition,
+)
+from tuya_device_handlers.definition.select import (
+    SelectDefinition,
+    SelectQuirk,
+    get_default_definition as get_select_default_definition,
+)
+from tuya_device_handlers.definition.sensor import (
+    SensorDefinition,
+    SensorQuirk,
+    get_default_definition as get_sensor_default_definition,
+)
+from tuya_device_handlers.definition.siren import (
+    SirenDefinition,
+    SirenQuirk,
+    get_default_definition as get_siren_default_definition,
+)
+from tuya_device_handlers.definition.switch import (
+    SwitchDefinition,
+    SwitchQuirk,
+    get_default_definition as get_switch_default_definition,
+)
+from tuya_device_handlers.definition.vacuum import (
+    VacuumDefinition,
+    VacuumQuirk,
+    get_default_definition as get_vacuum_default_definition,
+)
+from tuya_device_handlers.definition.valve import (
+    ValveDefinition,
+    ValveQuirk,
+    get_default_definition as get_valve_default_definition,
+)
+from tuya_device_handlers.helpers.homeassistant import TuyaUnitOfTemperature
 from tuya_device_handlers.registry import DeviceQuirkProtocol, QuirksRegistry
 
 
@@ -153,6 +222,32 @@ class DeviceQuirk(DeviceQuirkProtocol):
         self._alarm_control_panel.append(quirk)
         return self
 
+    def add_alarm_control_panel(
+        self,
+        key: str,
+        *,
+        definition_fn: Callable[
+            [CustomerDevice],
+            AlarmControlPanelDefinition | None,
+        ]
+        | None = None,
+    ) -> Self:
+        """Add alarm control panel definition."""
+        if definition_fn is None:
+
+            def _definition_fn(
+                device: CustomerDevice,
+            ) -> AlarmControlPanelDefinition | None:
+                return get_alarm_control_panel_default_definition(device)
+
+            definition_fn = _definition_fn
+
+        quirk = AlarmControlPanelQuirk(
+            key=key,
+            definition_fn=definition_fn,
+        )
+        return self._add_alarm_control_panel_quirk(quirk)
+
     @property
     def binary_sensor_quirks(self) -> Sequence[BinarySensorQuirk] | None:
         """Get binary sensor quirks."""
@@ -164,6 +259,29 @@ class DeviceQuirk(DeviceQuirkProtocol):
             self._binary_sensor = []
         self._binary_sensor.append(quirk)
         return self
+
+    def add_binary_sensor(
+        self,
+        key: str,
+        *,
+        definition_fn: Callable[[CustomerDevice], BinarySensorDefinition | None]
+        | None = None,
+    ) -> Self:
+        """Add binary sensor definition."""
+        if definition_fn is None:
+
+            def _definition_fn(
+                device: CustomerDevice,
+            ) -> BinarySensorDefinition | None:
+                return get_binary_sensor_default_definition(device, key)
+
+            definition_fn = _definition_fn
+
+        quirk = BinarySensorQuirk(
+            key=key,
+            definition_fn=definition_fn,
+        )
+        return self._add_binary_sensor_quirk(quirk)
 
     @property
     def button_quirks(self) -> Sequence[ButtonQuirk] | None:
@@ -178,6 +296,29 @@ class DeviceQuirk(DeviceQuirkProtocol):
 
         return self
 
+    def add_button(
+        self,
+        key: str,
+        *,
+        definition_fn: Callable[[CustomerDevice], ButtonDefinition | None]
+        | None = None,
+    ) -> Self:
+        """Add button definition."""
+        if definition_fn is None:
+
+            def _definition_fn(
+                device: CustomerDevice,
+            ) -> ButtonDefinition | None:
+                return get_button_default_definition(device, key)
+
+            definition_fn = _definition_fn
+
+        quirk = ButtonQuirk(
+            key=key,
+            definition_fn=definition_fn,
+        )
+        return self._add_button_quirk(quirk)
+
     @property
     def camera_quirks(self) -> Sequence[CameraQuirk] | None:
         """Get camera quirks."""
@@ -189,6 +330,29 @@ class DeviceQuirk(DeviceQuirkProtocol):
             self._camera = []
         self._camera.append(quirk)
         return self
+
+    def add_camera(
+        self,
+        key: str,
+        *,
+        definition_fn: Callable[[CustomerDevice], CameraDefinition | None]
+        | None = None,
+    ) -> Self:
+        """Add camera definition."""
+        if definition_fn is None:
+
+            def _definition_fn(
+                device: CustomerDevice,
+            ) -> CameraDefinition | None:
+                return get_camera_default_definition(device)
+
+            definition_fn = _definition_fn
+
+        quirk = CameraQuirk(
+            key=key,
+            definition_fn=definition_fn,
+        )
+        return self._add_camera_quirk(quirk)
 
     @property
     def climate_quirks(self) -> Sequence[ClimateQuirk] | None:
@@ -202,6 +366,32 @@ class DeviceQuirk(DeviceQuirkProtocol):
         self._climate.append(quirk)
         return self
 
+    def add_climate(
+        self,
+        key: str,
+        *,
+        definition_fn: Callable[
+            [CustomerDevice, TuyaUnitOfTemperature],
+            ClimateDefinition | None,
+        ]
+        | None = None,
+    ) -> Self:
+        """Add climate definition."""
+        if definition_fn is None:
+
+            def _definition_fn(
+                device: CustomerDevice, unit: TuyaUnitOfTemperature
+            ) -> ClimateDefinition | None:
+                return get_climate_default_definition(device, unit)
+
+            definition_fn = _definition_fn
+
+        quirk = ClimateQuirk(
+            key=key,
+            definition_fn=definition_fn,
+        )
+        return self._add_climate_quirk(quirk)
+
     @property
     def cover_quirks(self) -> Sequence[CoverQuirk] | None:
         """Get cover quirks."""
@@ -213,6 +403,31 @@ class DeviceQuirk(DeviceQuirkProtocol):
             self._cover = []
         self._cover.append(quirk)
         return self
+
+    def add_cover(
+        self,
+        key: str,
+        *,
+        definition_fn: Callable[[CustomerDevice], CoverDefinition | None]
+        | None = None,
+    ) -> Self:
+        """Add cover definition."""
+        if definition_fn is None:
+
+            def _definition_fn(
+                device: CustomerDevice,
+            ) -> CoverDefinition | None:
+                return get_cover_default_definition(
+                    device, instruction_dpcode=key
+                )
+
+            definition_fn = _definition_fn
+
+        quirk = CoverQuirk(
+            key=key,
+            definition_fn=definition_fn,
+        )
+        return self._add_cover_quirk(quirk)
 
     @property
     def event_quirks(self) -> Sequence[EventQuirk] | None:
@@ -226,6 +441,29 @@ class DeviceQuirk(DeviceQuirkProtocol):
         self._event.append(quirk)
         return self
 
+    def add_event(
+        self,
+        key: str,
+        *,
+        definition_fn: Callable[[CustomerDevice], EventDefinition | None]
+        | None = None,
+    ) -> Self:
+        """Add event definition."""
+        if definition_fn is None:
+
+            def _definition_fn(
+                device: CustomerDevice,
+            ) -> EventDefinition | None:
+                return get_event_default_definition(device, key)
+
+            definition_fn = _definition_fn
+
+        quirk = EventQuirk(
+            key=key,
+            definition_fn=definition_fn,
+        )
+        return self._add_event_quirk(quirk)
+
     @property
     def fan_quirks(self) -> Sequence[FanQuirk] | None:
         """Get fan quirks."""
@@ -237,6 +475,29 @@ class DeviceQuirk(DeviceQuirkProtocol):
             self._fan = []
         self._fan.append(quirk)
         return self
+
+    def add_fan(
+        self,
+        key: str,
+        *,
+        definition_fn: Callable[[CustomerDevice], FanDefinition | None]
+        | None = None,
+    ) -> Self:
+        """Add fan definition."""
+        if definition_fn is None:
+
+            def _definition_fn(
+                device: CustomerDevice,
+            ) -> FanDefinition | None:
+                return get_fan_default_definition(device)
+
+            definition_fn = _definition_fn
+
+        quirk = FanQuirk(
+            key=key,
+            definition_fn=definition_fn,
+        )
+        return self._add_fan_quirk(quirk)
 
     @property
     def humidifier_quirks(self) -> Sequence[HumidifierQuirk] | None:
@@ -250,6 +511,34 @@ class DeviceQuirk(DeviceQuirkProtocol):
         self._humidifier.append(quirk)
         return self
 
+    def add_humidifier(
+        self,
+        key: str,
+        *,
+        definition_fn: Callable[
+            [CustomerDevice],
+            HumidifierDefinition | None,
+        ]
+        | None = None,
+    ) -> Self:
+        """Add humidifier definition."""
+        if definition_fn is None:
+
+            def _definition_fn(
+                device: CustomerDevice,
+            ) -> HumidifierDefinition | None:
+                return get_humidifier_default_definition(
+                    device, switch_dpcode=key
+                )
+
+            definition_fn = _definition_fn
+
+        quirk = HumidifierQuirk(
+            key=key,
+            definition_fn=definition_fn,
+        )
+        return self._add_humidifier_quirk(quirk)
+
     @property
     def light_quirks(self) -> Sequence[LightQuirk] | None:
         """Get light quirks."""
@@ -261,6 +550,32 @@ class DeviceQuirk(DeviceQuirkProtocol):
             self._light = []
         self._light.append(quirk)
         return self
+
+    def add_light(
+        self,
+        key: str,
+        *,
+        definition_fn: Callable[
+            [CustomerDevice],
+            LightDefinition | None,
+        ]
+        | None = None,
+    ) -> Self:
+        """Add light definition."""
+        if definition_fn is None:
+
+            def _definition_fn(
+                device: CustomerDevice,
+            ) -> LightDefinition | None:
+                return get_light_default_definition(device, switch_dpcode=key)
+
+            definition_fn = _definition_fn
+
+        quirk = LightQuirk(
+            key=key,
+            definition_fn=definition_fn,
+        )
+        return self._add_light_quirk(quirk)
 
     @property
     def number_quirks(self) -> Sequence[NumberQuirk] | None:
@@ -274,6 +589,32 @@ class DeviceQuirk(DeviceQuirkProtocol):
         self._number.append(quirk)
         return self
 
+    def add_number(
+        self,
+        key: str,
+        *,
+        definition_fn: Callable[
+            [CustomerDevice],
+            NumberDefinition | None,
+        ]
+        | None = None,
+    ) -> Self:
+        """Add number definition."""
+        if definition_fn is None:
+
+            def _definition_fn(
+                device: CustomerDevice,
+            ) -> NumberDefinition | None:
+                return get_number_default_definition(device, key)
+
+            definition_fn = _definition_fn
+
+        quirk = NumberQuirk(
+            key=key,
+            definition_fn=definition_fn,
+        )
+        return self._add_number_quirk(quirk)
+
     @property
     def select_quirks(self) -> Sequence[SelectQuirk] | None:
         """Get select quirks."""
@@ -285,6 +626,32 @@ class DeviceQuirk(DeviceQuirkProtocol):
             self._select = []
         self._select.append(quirk)
         return self
+
+    def add_select(
+        self,
+        key: str,
+        *,
+        definition_fn: Callable[
+            [CustomerDevice],
+            SelectDefinition | None,
+        ]
+        | None = None,
+    ) -> Self:
+        """Add select definition."""
+        if definition_fn is None:
+
+            def _definition_fn(
+                device: CustomerDevice,
+            ) -> SelectDefinition | None:
+                return get_select_default_definition(device, key)
+
+            definition_fn = _definition_fn
+
+        quirk = SelectQuirk(
+            key=key,
+            definition_fn=definition_fn,
+        )
+        return self._add_select_quirk(quirk)
 
     @property
     def sensor_quirks(self) -> Sequence[SensorQuirk] | None:
@@ -298,6 +665,32 @@ class DeviceQuirk(DeviceQuirkProtocol):
         self._sensor.append(quirk)
         return self
 
+    def add_sensor(
+        self,
+        key: str,
+        *,
+        definition_fn: Callable[
+            [CustomerDevice],
+            SensorDefinition | None,
+        ]
+        | None = None,
+    ) -> Self:
+        """Add sensor definition."""
+        if definition_fn is None:
+
+            def _definition_fn(
+                device: CustomerDevice,
+            ) -> SensorDefinition | None:
+                return get_sensor_default_definition(device, key)
+
+            definition_fn = _definition_fn
+
+        quirk = SensorQuirk(
+            key=key,
+            definition_fn=definition_fn,
+        )
+        return self._add_sensor_quirk(quirk)
+
     @property
     def siren_quirks(self) -> Sequence[SirenQuirk] | None:
         """Get siren quirks."""
@@ -309,6 +702,32 @@ class DeviceQuirk(DeviceQuirkProtocol):
             self._siren = []
         self._siren.append(quirk)
         return self
+
+    def add_siren(
+        self,
+        key: str,
+        *,
+        definition_fn: Callable[
+            [CustomerDevice],
+            SirenDefinition | None,
+        ]
+        | None = None,
+    ) -> Self:
+        """Add siren definition."""
+        if definition_fn is None:
+
+            def _definition_fn(
+                device: CustomerDevice,
+            ) -> SirenDefinition | None:
+                return get_siren_default_definition(device, key)
+
+            definition_fn = _definition_fn
+
+        quirk = SirenQuirk(
+            key=key,
+            definition_fn=definition_fn,
+        )
+        return self._add_siren_quirk(quirk)
 
     @property
     def switch_quirks(self) -> Sequence[SwitchQuirk] | None:
@@ -322,6 +741,32 @@ class DeviceQuirk(DeviceQuirkProtocol):
         self._switch.append(quirk)
         return self
 
+    def add_switch(
+        self,
+        key: str,
+        *,
+        definition_fn: Callable[
+            [CustomerDevice],
+            SwitchDefinition | None,
+        ]
+        | None = None,
+    ) -> Self:
+        """Add switch definition."""
+        if definition_fn is None:
+
+            def _definition_fn(
+                device: CustomerDevice,
+            ) -> SwitchDefinition | None:
+                return get_switch_default_definition(device, key)
+
+            definition_fn = _definition_fn
+
+        quirk = SwitchQuirk(
+            key=key,
+            definition_fn=definition_fn,
+        )
+        return self._add_switch_quirk(quirk)
+
     @property
     def vacuum_quirks(self) -> Sequence[VacuumQuirk] | None:
         """Get vacuum quirks."""
@@ -334,6 +779,32 @@ class DeviceQuirk(DeviceQuirkProtocol):
         self._vacuum.append(quirk)
         return self
 
+    def add_vacuum(
+        self,
+        key: str,
+        *,
+        definition_fn: Callable[
+            [CustomerDevice],
+            VacuumDefinition | None,
+        ]
+        | None = None,
+    ) -> Self:
+        """Add vacuum definition."""
+        if definition_fn is None:
+
+            def _definition_fn(
+                device: CustomerDevice,
+            ) -> VacuumDefinition | None:
+                return get_vacuum_default_definition(device)
+
+            definition_fn = _definition_fn
+
+        quirk = VacuumQuirk(
+            key=key,
+            definition_fn=definition_fn,
+        )
+        return self._add_vacuum_quirk(quirk)
+
     @property
     def valve_quirks(self) -> Sequence[ValveQuirk] | None:
         """Get valve quirks."""
@@ -345,3 +816,29 @@ class DeviceQuirk(DeviceQuirkProtocol):
             self._valve = []
         self._valve.append(quirk)
         return self
+
+    def add_valve(
+        self,
+        key: str,
+        *,
+        definition_fn: Callable[
+            [CustomerDevice],
+            ValveDefinition | None,
+        ]
+        | None = None,
+    ) -> Self:
+        """Add valve definition."""
+        if definition_fn is None:
+
+            def _definition_fn(
+                device: CustomerDevice,
+            ) -> ValveDefinition | None:
+                return get_valve_default_definition(device, key)
+
+            definition_fn = _definition_fn
+
+        quirk = ValveQuirk(
+            key=key,
+            definition_fn=definition_fn,
+        )
+        return self._add_valve_quirk(quirk)

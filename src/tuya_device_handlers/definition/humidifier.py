@@ -40,8 +40,8 @@ def get_default_definition(
     device: CustomerDevice,
     *,
     switch_dpcode: str | tuple[str, ...],
-    current_humidity_dpcode: str | None,
-    humidity_dpcode: str | None,
+    current_humidity_dpcode: str | None = None,
+    humidity_dpcode: str | None = None,
 ) -> HumidifierDefinition | None:
     properties_to_check: set[str | None] = {
         # Main control switch

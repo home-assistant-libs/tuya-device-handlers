@@ -7,7 +7,12 @@ from tuya_sharing import CustomerDevice
 
 from ..device_wrapper import DeviceWrapper
 from ..device_wrapper.common import DPCodeTypeInformationWrapper
-from ..device_wrapper.cover import CoverInstructionBooleanWrapper
+from ..device_wrapper.cover import (
+    CoverClosedEnumWrapper,
+    CoverInstructionBooleanWrapper,
+    CoverInstructionEnumWrapper,
+)
+from ..device_wrapper.extended import DPCodeInvertedPercentageWrapper
 from ..helpers.homeassistant import TuyaCoverAction, TuyaCoverDeviceClass
 from .base import BaseEntityQuirk
 
@@ -40,13 +45,19 @@ class CoverQuirk(BaseEntityQuirk):
 def get_default_definition(
     device: CustomerDevice,
     *,
-    current_position_dpcode: str | tuple[str, ...] | None,
-    current_state_dpcode: str | tuple[str, ...] | None,
+    current_position_dpcode: str | tuple[str, ...] | None = None,
+    current_state_dpcode: str | tuple[str, ...] | None = None,
     instruction_dpcode: str,
-    set_position_dpcode: str | None,
-    current_state_wrapper: type[DPCodeTypeInformationWrapper],  # type: ignore[type-arg]
-    instruction_wrapper: type[DPCodeTypeInformationWrapper],  # type: ignore[type-arg]
-    position_wrapper: type[DPCodeTypeInformationWrapper],  # type: ignore[type-arg]
+    set_position_dpcode: str | None = None,
+    current_state_wrapper: type[
+        DPCodeTypeInformationWrapper
+    ] = CoverClosedEnumWrapper,  # type: ignore[type-arg]
+    instruction_wrapper: type[
+        DPCodeTypeInformationWrapper
+    ] = CoverInstructionEnumWrapper,  # type: ignore[type-arg]
+    position_wrapper: type[
+        DPCodeTypeInformationWrapper
+    ] = DPCodeInvertedPercentageWrapper,  # type: ignore[type-arg]
 ) -> CoverDefinition | None:
     if not (
         instruction_dpcode in device.function
