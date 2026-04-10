@@ -8,7 +8,6 @@ from tuya_sharing import CustomerDevice
 from ..device_wrapper import DeviceWrapper
 from ..device_wrapper.common import DPCodeBooleanWrapper, DPCodeEnumWrapper
 from ..device_wrapper.extended import DPCodeRoundedIntegerWrapper
-from ..helpers.homeassistant import TuyaHumidifierDeviceClass
 from .base import BaseEntityQuirk
 
 
@@ -27,8 +26,6 @@ TuyaHumidifierDefinition = HumidifierDefinition
 @dataclass(kw_only=True)
 class HumidifierQuirk(BaseEntityQuirk):
     """Quirk for a humidifier entity."""
-
-    device_class: TuyaHumidifierDeviceClass | None = None
 
     definition_fn: Callable[
         [CustomerDevice],

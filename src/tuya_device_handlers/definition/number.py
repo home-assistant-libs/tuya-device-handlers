@@ -7,7 +7,6 @@ from tuya_sharing import CustomerDevice
 
 from ..device_wrapper import DeviceWrapper
 from ..device_wrapper.common import DPCodeIntegerWrapper
-from ..helpers.homeassistant import TuyaNumberDeviceClass
 from .base import BaseEntityQuirk
 
 
@@ -23,8 +22,6 @@ TuyaNumberDefinition = NumberDefinition
 @dataclass(kw_only=True)
 class NumberQuirk(BaseEntityQuirk):
     """Quirk for a number entity."""
-
-    device_class: TuyaNumberDeviceClass | None = None
 
     definition_fn: Callable[
         [CustomerDevice],

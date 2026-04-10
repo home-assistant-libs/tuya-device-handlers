@@ -13,7 +13,7 @@ from ..device_wrapper.cover import (
     CoverInstructionEnumWrapper,
 )
 from ..device_wrapper.extended import DPCodeInvertedPercentageWrapper
-from ..helpers.homeassistant import TuyaCoverAction, TuyaCoverDeviceClass
+from ..helpers.homeassistant import TuyaCoverAction
 from .base import BaseEntityQuirk
 
 
@@ -33,8 +33,6 @@ TuyaCoverDefinition = CoverDefinition
 @dataclass(kw_only=True)
 class CoverQuirk(BaseEntityQuirk):
     """Quirk for a cover entity."""
-
-    device_class: TuyaCoverDeviceClass | None = None
 
     definition_fn: Callable[
         [CustomerDevice],

@@ -11,7 +11,6 @@ from ..device_wrapper.binary_sensor import (
     DPCodeInSetWrapper,
 )
 from ..device_wrapper.common import DPCodeBooleanWrapper
-from ..helpers.homeassistant import TuyaBinarySensorDeviceClass
 from .base import BaseEntityQuirk
 
 
@@ -27,8 +26,6 @@ TuyaBinarySensorDefinition = BinarySensorDefinition
 @dataclass(kw_only=True)
 class BinarySensorQuirk(BaseEntityQuirk):
     """Quirk for a binary sensor entity."""
-
-    device_class: TuyaBinarySensorDeviceClass | None = None
 
     definition_fn: Callable[
         [CustomerDevice],
