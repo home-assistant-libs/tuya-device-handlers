@@ -41,6 +41,10 @@ def create_device(fixture_filename: str) -> CustomerDevice:
     device.set_up = details.get("set_up")
     device.support_local = details.get("support_local")
     device.local_strategy = details.get("local_strategy")
+    if device.local_strategy:
+        device.local_strategy = {
+            int(dpid): strategy for dpid, strategy in device.local_strategy.items()
+        }
     device.mqtt_connected = details.get("mqtt_connected")
 
     device.function = {
