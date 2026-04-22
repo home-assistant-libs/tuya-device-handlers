@@ -4,8 +4,9 @@ from collections.abc import Callable, Sequence
 from dataclasses import dataclass
 import functools
 import inspect
+import json
 import pathlib
-from typing import TYPE_CHECKING, Any, Self
+from typing import TYPE_CHECKING, Self
 
 from tuya_sharing import CustomerDevice
 
@@ -107,9 +108,8 @@ class DatapointDefinition:
     dpcode: str
     dpmode: DPMode
     dptype: DPType
-    enum_range: list[str] | None = None
-    int_range: dict[str, Any] | None = None
-    label_range: list[str] | None = None
+    values: str | None = None
+    report_type: str | None = None
 
 
 class DeviceQuirk(DeviceQuirkProtocol):
@@ -179,7 +179,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
             dpcode=dpcode,
             dpmode=dpmode,
             dptype=DPType.BITMAP,
-            label_range=label_range,
+            values=json.dumps({"label": label_range}),
         )
         return self
 
@@ -192,6 +192,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
             dpcode=dpcode,
             dpmode=dpmode,
             dptype=DPType.BOOLEAN,
+            values="{}",
         )
         return self
 
@@ -204,7 +205,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
             dpcode=dpcode,
             dpmode=dpmode,
             dptype=DPType.ENUM,
-            enum_range=enum_range,
+            values=json.dumps({"range": enum_range}),
         )
         return self
 
@@ -214,7 +215,12 @@ class DeviceQuirk(DeviceQuirkProtocol):
         dpid: int,
         dpcode: str,
         dpmode: DPMode,
-        int_range: dict[str, Any],
+        unit: str,
+        min: int,
+        max: int,
+        scale: int,
+        step: int,
+        report_type: str | None = None,
     ) -> Self:
         """Add datapoint Integer definition."""
         self._datapoint_definitions[(dpid, dpcode)] = DatapointDefinition(
@@ -222,7 +228,16 @@ class DeviceQuirk(DeviceQuirkProtocol):
             dpcode=dpcode,
             dpmode=dpmode,
             dptype=DPType.INTEGER,
-            int_range=int_range,
+            report_type=report_type,
+            values=json.dumps(
+                {
+                    "unit": unit,
+                    "min": min,
+                    "max": max,
+                    "scale": scale,
+                    "step": step,
+                }
+            ),
         )
         return self
 
