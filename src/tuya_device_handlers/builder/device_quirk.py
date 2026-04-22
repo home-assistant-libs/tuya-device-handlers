@@ -175,6 +175,11 @@ class DeviceQuirk(DeviceQuirkProtocol):
                 device.status_range.pop(dpcode, None)
                 continue
 
+            if definition.dpmode is DPMode.READ_ONLY:
+                device.function.pop(dpcode, None)
+            elif definition.dpmode is DPMode.WRITE_ONLY:
+                device.status_range.pop(dpcode, None)
+
     def applies_to(self, *, product_id: str) -> Self:
         """Set the device type the quirk applies to."""
         self._applies_to.append(product_id)
