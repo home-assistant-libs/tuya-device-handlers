@@ -79,7 +79,7 @@ class DeviceQuirkProtocol(Protocol):
     @property
     def quirk_file_line(self) -> int: ...
 
-    def post_init_device(self, device: CustomerDevice) -> None: ...
+    def initialise_device(self, device: CustomerDevice) -> None: ...
 
 
 class QuirksRegistry:
@@ -112,6 +112,11 @@ class QuirksRegistry:
     ) -> DeviceQuirkProtocol | None:
         """Get the quirk for a specific device."""
         return self._quirks.get(device.product_id)
+
+    def initialise_device_quirk(self, device: CustomerDevice) -> None:
+        """Apply the quirk to a specific device."""
+        if quirk := self._quirks.get(device.product_id):
+            quirk.initialise_device(device)
 
     def purge_custom_quirks(self, custom_quirks_root: str) -> None:
         """Purge custom quirks from the registry."""
