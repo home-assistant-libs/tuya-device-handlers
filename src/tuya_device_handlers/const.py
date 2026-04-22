@@ -2,18 +2,17 @@
 
 from __future__ import annotations
 
-from enum import StrEnum
+from enum import IntFlag, StrEnum
 
 CELSIUS_ALIASES = {"°c", "c", "celsius", "℃"}
 FAHRENHEIT_ALIASES = {"°f", "f", "fahrenheit", "℉"}
 
 
-class DPMode(StrEnum):
+class DPMode(IntFlag):
     """Data point modes."""
 
-    READ_ONLY = "read_only"
-    WRITE_ONLY = "write_only"
-    READ_WRITE = "read_write"
+    READ = 1
+    WRITE = 2
 
 
 class DPType(StrEnum):

@@ -4,10 +4,11 @@ from collections.abc import Callable, Sequence
 from dataclasses import dataclass
 import functools
 import inspect
+import json
 import pathlib
-from typing import TYPE_CHECKING, Any, Self
+from typing import TYPE_CHECKING, Self
 
-from tuya_sharing import CustomerDevice
+from tuya_sharing import CustomerDevice, DeviceFunction, DeviceStatusRange
 
 from tuya_device_handlers.const import DPMode, DPType
 from tuya_device_handlers.definition.alarm_control_panel import (
@@ -107,9 +108,24 @@ class DatapointDefinition:
     dpcode: str
     dpmode: DPMode
     dptype: DPType
-    enum_range: list[str] | None = None
-    int_range: dict[str, Any] | None = None
-    label_range: list[str] | None = None
+    values: str | None = None
+    report_type: str | None = None
+
+    def to_function(self) -> DeviceFunction:
+        """Convert to DeviceFunction."""
+        return DeviceFunction(
+            code=self.dpcode,
+            type=self.dptype.value,
+            values=self.values,
+        )
+
+    def to_status_range(self) -> DeviceStatusRange:
+        """Convert to DeviceStatusRange."""
+        return DeviceStatusRange(
+            code=self.dpcode,
+            type=self.dptype.value,
+            values=self.values,
+        )
 
 
 class DeviceQuirk(DeviceQuirkProtocol):
@@ -168,6 +184,8 @@ class DeviceQuirk(DeviceQuirkProtocol):
 
         for key, definition in self._datapoint_definitions.items():
             dpid, dpcode = key
+
+            # Remove definition if explicit None
             if definition is None:
                 device.function.pop(dpcode, None)
                 device.local_strategy.pop(dpid, None)
@@ -175,10 +193,18 @@ class DeviceQuirk(DeviceQuirkProtocol):
                 device.status_range.pop(dpcode, None)
                 continue
 
-            if definition.dpmode is DPMode.READ_ONLY:
-                device.function.pop(dpcode, None)
-            elif definition.dpmode is DPMode.WRITE_ONLY:
-                device.status_range.pop(dpcode, None)
+            # Add or remove function/status_range attributes
+            if DPMode.READ in definition.dpmode:
+                device.status_range[definition.dpcode] = (
+                    definition.to_status_range()
+                )
+            else:
+                device.status_range.pop(definition.dpcode, None)
+
+            if DPMode.WRITE in definition.dpmode:
+                device.function[definition.dpcode] = definition.to_function()
+            else:
+                device.function.pop(definition.dpcode, None)
 
     def applies_to(self, *, product_id: str) -> Self:
         """Set the device type the quirk applies to."""
@@ -199,7 +225,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
             dpcode=dpcode,
             dpmode=dpmode,
             dptype=DPType.BITMAP,
-            label_range=label_range,
+            values=json.dumps({"label": label_range}),
         )
         return self
 
@@ -224,7 +250,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
             dpcode=dpcode,
             dpmode=dpmode,
             dptype=DPType.ENUM,
-            enum_range=enum_range,
+            values=json.dumps({"range": enum_range}),
         )
         return self
 
@@ -234,7 +260,12 @@ class DeviceQuirk(DeviceQuirkProtocol):
         dpid: int,
         dpcode: str,
         dpmode: DPMode,
-        int_range: dict[str, Any],
+        unit: str,
+        min: int,
+        max: int,
+        scale: int,
+        step: int,
+        report_type: str | None = None,
     ) -> Self:
         """Add datapoint Integer definition."""
         self._datapoint_definitions[(dpid, dpcode)] = DatapointDefinition(
@@ -242,7 +273,16 @@ class DeviceQuirk(DeviceQuirkProtocol):
             dpcode=dpcode,
             dpmode=dpmode,
             dptype=DPType.INTEGER,
-            int_range=int_range,
+            report_type=report_type,
+            values=json.dumps(
+                {
+                    "unit": unit,
+                    "min": min,
+                    "max": max,
+                    "scale": scale,
+                    "step": step,
+                }
+            ),
         )
         return self
 
