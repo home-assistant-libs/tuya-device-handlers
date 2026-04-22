@@ -8,6 +8,14 @@ CELSIUS_ALIASES = {"°c", "c", "celsius", "℃"}
 FAHRENHEIT_ALIASES = {"°f", "f", "fahrenheit", "℉"}
 
 
+class DPMode(StrEnum):
+    """Data point modes."""
+
+    READ_ONLY = "read_only"
+    WRITE_ONLY = "write_only"
+    READ_WRITE = "read_write"
+
+
 class DPType(StrEnum):
     """Data point types."""
 

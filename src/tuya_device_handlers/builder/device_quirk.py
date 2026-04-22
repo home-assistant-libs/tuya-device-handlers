@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING, Any, Self
 
 from tuya_sharing import CustomerDevice
 
-from tuya_device_handlers.const import DPType
+from tuya_device_handlers.const import DPMode, DPType
 from tuya_device_handlers.definition.alarm_control_panel import (
     AlarmControlPanelDefinition,
     AlarmControlPanelQuirk,
@@ -105,6 +105,7 @@ class DatapointDefinition:
 
     dpid: int
     dpcode: str
+    dpmode: DPMode
     dptype: DPType
     enum_range: list[str] | None = None
     int_range: dict[str, Any] | None = None
@@ -170,45 +171,56 @@ class DeviceQuirk(DeviceQuirkProtocol):
             registry.register(product_id, self)
 
     def add_dpid_bitmap(
-        self, *, dpid: int, dpcode: str, label_range: list[str]
+        self, *, dpid: int, dpcode: str, dpmode: DPMode, label_range: list[str]
     ) -> Self:
         """Add datapoint Bitmap definition."""
         self._datapoint_definitions[(dpid, dpcode)] = DatapointDefinition(
             dpid=dpid,
             dpcode=dpcode,
+            dpmode=dpmode,
             dptype=DPType.BITMAP,
             label_range=label_range,
         )
         return self
 
-    def add_dpid_boolean(self, *, dpid: int, dpcode: str) -> Self:
+    def add_dpid_boolean(
+        self, *, dpid: int, dpcode: str, dpmode: DPMode
+    ) -> Self:
         """Add datapoint Boolean definition."""
         self._datapoint_definitions[(dpid, dpcode)] = DatapointDefinition(
             dpid=dpid,
             dpcode=dpcode,
+            dpmode=dpmode,
             dptype=DPType.BOOLEAN,
         )
         return self
 
     def add_dpid_enum(
-        self, *, dpid: int, dpcode: str, enum_range: list[str]
+        self, *, dpid: int, dpcode: str, dpmode: DPMode, enum_range: list[str]
     ) -> Self:
         """Add datapoint Enum definition."""
         self._datapoint_definitions[(dpid, dpcode)] = DatapointDefinition(
             dpid=dpid,
             dpcode=dpcode,
+            dpmode=dpmode,
             dptype=DPType.ENUM,
             enum_range=enum_range,
         )
         return self
 
     def add_dpid_integer(
-        self, *, dpid: int, dpcode: str, int_range: dict[str, Any]
+        self,
+        *,
+        dpid: int,
+        dpcode: str,
+        dpmode: DPMode,
+        int_range: dict[str, Any],
     ) -> Self:
         """Add datapoint Integer definition."""
         self._datapoint_definitions[(dpid, dpcode)] = DatapointDefinition(
             dpid=dpid,
             dpcode=dpcode,
+            dpmode=dpmode,
             dptype=DPType.INTEGER,
             int_range=int_range,
         )
