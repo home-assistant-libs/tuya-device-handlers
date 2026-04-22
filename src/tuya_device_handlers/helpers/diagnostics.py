@@ -3,21 +3,14 @@
 import datetime as dt
 from typing import Any
 
-from tuya_sharing import CustomerDevice
+from tuya_sharing import CustomerDevice, DeviceFunction, DeviceStatusRange
 
 from tuya_device_handlers import TUYA_QUIRKS_REGISTRY
 from tuya_device_handlers.device_wrapper import DEVICE_WARNINGS
-from tuya_device_handlers.registry import DeviceQuirkProtocol
 
 
-def _get_function(
-    device: CustomerDevice, quirk: DeviceQuirkProtocol | None
-) -> dict[str, Any]:
+def _format_functions(functions: dict[str, DeviceFunction]) -> dict[str, Any]:
     """Represent a Tuya device as a dictionary."""
-    functions = device.function
-    if quirk and hasattr(quirk, "original_function"):
-        functions = quirk.original_function
-
     return {
         function.code: {
             "type": function.type,
@@ -27,30 +20,10 @@ def _get_function(
     }
 
 
-def _get_local_strategy(
-    device: CustomerDevice, quirk: DeviceQuirkProtocol | None
-) -> dict[int, dict[str, Any]] | None:
-    """Represent a Tuya device as a dictionary."""
-    local_strategy = device.local_strategy
-    if quirk and hasattr(quirk, "original_local_strategy"):
-        local_strategy = quirk.original_local_strategy
-
-    if local_strategy is None:
-        # Shouldn't happen - but some test fixtures don't have
-        # local_strategy, so handle this gracefully
-        return None
-
-    return {**local_strategy}
-
-
-def _get_status_range(
-    device: CustomerDevice, quirk: DeviceQuirkProtocol | None
+def _format_status_ranges(
+    status_range: dict[str, DeviceStatusRange],
 ) -> dict[str, Any]:
     """Represent a Tuya device as a dictionary."""
-    status_range = device.status_range
-    if quirk and hasattr(quirk, "original_status_range"):
-        status_range = quirk.original_status_range
-
     return {
         status_range.code: {
             "type": status_range.type,
@@ -83,10 +56,10 @@ def customer_device_as_dict(device: CustomerDevice) -> dict[str, Any]:
         "update_time": dt.datetime.fromtimestamp(
             device.update_time, tz=dt.UTC
         ).isoformat(),
-        "function": _get_function(device, quirk),
-        "local_strategy": _get_local_strategy(device, quirk),
-        "status_range": _get_status_range(device, quirk),
-        "status": {**device.status},
+        "function": _format_functions(device.functions),
+        "local_strategy": device.local_strategy,
+        "status_range": _format_status_ranges(device.status_range),
+        "status": device.status,
         "set_up": device.set_up,
         "support_local": device.support_local,
         "quirk": (
@@ -94,5 +67,16 @@ def customer_device_as_dict(device: CustomerDevice) -> dict[str, Any]:
         ),
         "warnings": DEVICE_WARNINGS.get(device.id),
     }
+    if quirk:
+        if hasattr(quirk, "original_function"):
+            data["original_function"] = _format_functions(
+                quirk.original_function
+            )
+        if hasattr(quirk, "original_local_strategy"):
+            data["original_local_strategy"] = quirk.original_local_strategy
+        if hasattr(quirk, "original_status_range"):
+            data["original_status_range"] = _format_status_ranges(
+                quirk.original_status_range
+            )
 
     return data
