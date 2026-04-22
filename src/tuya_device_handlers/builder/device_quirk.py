@@ -157,6 +157,12 @@ class DeviceQuirk(DeviceQuirkProtocol):
         """Get the line number of the quirk."""
         return self._quirk_file_line
 
+    def post_init_device(self, device: CustomerDevice) -> None:
+        """Run post-initialization steps for a device."""
+        self.original_function = device.function
+        self.original_local_strategy = device.local_strategy
+        self.original_status_range = device.status_range
+
     def applies_to(self, *, category: str, product_id: str) -> Self:
         """Set the device type the quirk applies to."""
         self._applies_to.append((category, product_id))
