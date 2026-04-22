@@ -29,14 +29,17 @@ def _get_function(
 
 def _get_local_strategy(
     device: CustomerDevice, quirk: DeviceQuirkProtocol | None
-) -> dict[int, dict[str, Any]]:
+) -> dict[int, dict[str, Any]] | None:
     """Represent a Tuya device as a dictionary."""
     local_strategy = device.local_strategy
     if quirk and hasattr(quirk, "original_local_strategy"):
         local_strategy = quirk.original_local_strategy
 
     if local_strategy is None:
-        return None  # type: ignore[return-value]
+        # Shouldn't happen - but some test fixtures don't have
+        # local_strategy, so handle this gracefully
+        return None
+
     return {**local_strategy}
 
 
