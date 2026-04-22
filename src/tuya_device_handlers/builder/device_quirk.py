@@ -238,6 +238,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
             dpcode=dpcode,
             dpmode=dpmode,
             dptype=DPType.BOOLEAN,
+            values="{}",
         )
         return self
 
