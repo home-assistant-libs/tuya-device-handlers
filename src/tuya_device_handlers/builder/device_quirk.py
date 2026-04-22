@@ -161,9 +161,9 @@ class DeviceQuirk(DeviceQuirkProtocol):
 
     def post_init_device(self, device: CustomerDevice) -> None:
         """Run post-initialization steps for a device."""
-        self.original_function = {**device.function}
-        self.original_local_strategy = {**device.local_strategy}
-        self.original_status_range = {**device.status_range}
+        self.original_function = device.function.copy()
+        self.original_local_strategy = device.local_strategy.copy()
+        self.original_status_range = device.status_range.copy()
 
         for key, definition in self._datapoint_definitions.items():
             dpid, dpcode = key
