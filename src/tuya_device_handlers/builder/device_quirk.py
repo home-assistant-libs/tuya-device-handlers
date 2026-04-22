@@ -136,9 +136,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
         """Initialize the quirk."""
         self._applies_to: list[str] = []
 
-        self.datapoint_definitions: dict[
-            tuple[int, str], DatapointDefinition
-        ] = {}
+        self.datapoint_definitions: dict[int, DatapointDefinition] = {}
 
         current_frame = inspect.currentframe()
         if TYPE_CHECKING:
@@ -173,7 +171,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
         self, *, dpid: int, dpcode: str, label_range: list[str]
     ) -> Self:
         """Add datapoint Bitmap definition."""
-        self.datapoint_definitions[(dpid, dpcode)] = DatapointDefinition(
+        self.datapoint_definitions[dpid] = DatapointDefinition(
             dpid=dpid,
             dpcode=dpcode,
             dptype=DPType.BITMAP,
@@ -183,7 +181,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
 
     def add_dpid_boolean(self, *, dpid: int, dpcode: str) -> Self:
         """Add datapoint Boolean definition."""
-        self.datapoint_definitions[(dpid, dpcode)] = DatapointDefinition(
+        self.datapoint_definitions[dpid] = DatapointDefinition(
             dpid=dpid,
             dpcode=dpcode,
             dptype=DPType.BOOLEAN,
@@ -194,7 +192,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
         self, *, dpid: int, dpcode: str, enum_range: list[str]
     ) -> Self:
         """Add datapoint Enum definition."""
-        self.datapoint_definitions[(dpid, dpcode)] = DatapointDefinition(
+        self.datapoint_definitions[dpid] = DatapointDefinition(
             dpid=dpid,
             dpcode=dpcode,
             dptype=DPType.ENUM,
@@ -206,7 +204,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
         self, *, dpid: int, dpcode: str, int_range: dict[str, Any]
     ) -> Self:
         """Add datapoint Integer definition."""
-        self.datapoint_definitions[(dpid, dpcode)] = DatapointDefinition(
+        self.datapoint_definitions[dpid] = DatapointDefinition(
             dpid=dpid,
             dpcode=dpcode,
             dptype=DPType.INTEGER,
