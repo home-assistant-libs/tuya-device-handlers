@@ -109,7 +109,7 @@ class QuirksRegistry:
 
     def purge_custom_quirks(self, custom_quirks_root: str) -> None:
         """Purge custom quirks from the registry."""
-        to_remove: list = [
+        to_remove = [
             product_id
             for product_id, quirk in self._quirks.items()
             if quirk.quirk_file.is_relative_to(custom_quirks_root)
