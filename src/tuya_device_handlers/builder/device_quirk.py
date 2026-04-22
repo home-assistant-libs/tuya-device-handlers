@@ -6,7 +6,7 @@ import functools
 import inspect
 import json
 import pathlib
-from typing import TYPE_CHECKING, Self
+from typing import TYPE_CHECKING, Any, Self
 
 from tuya_sharing import CustomerDevice, DeviceFunction, DeviceStatusRange
 
@@ -119,6 +119,20 @@ class DatapointDefinition:
             values=self.values,
         )
 
+    def to_local_strategy(self, product_id: str) -> dict[str, Any]:
+        """Convert to LocalStrategy."""
+        return {
+            "value_convert": "default",
+            "status_code": self.dpcode,
+            "config_item": {
+                "statusFormat": json.dumps({self.dpcode: "$"}),
+                "valueDesc": self.values,
+                "valueType": self.dptype.value,
+                "enumMappingMap": {},
+                "pid": product_id,
+            },
+        }
+
     def to_status_range(self) -> DeviceStatusRange:
         """Convert to DeviceStatusRange."""
         return DeviceStatusRange(
@@ -205,6 +219,13 @@ class DeviceQuirk(DeviceQuirkProtocol):
                 device.function[definition.dpcode] = definition.to_function()
             else:
                 device.function.pop(definition.dpcode, None)
+
+            if device.support_local:
+                device.local_strategy[definition.dpid] = (
+                    definition.to_local_strategy(device.product_id)
+                )
+            else:
+                device.local_strategy.pop(definition.dpid, None)
 
     def applies_to(self, *, product_id: str) -> Self:
         """Set the device type the quirk applies to."""
