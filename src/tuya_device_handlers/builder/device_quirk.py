@@ -134,7 +134,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
 
     def __init__(self) -> None:
         """Initialize the quirk."""
-        self._applies_to: list[tuple[str, str]] = []
+        self._applies_to: list[str] = []
 
         self.datapoint_definitions: dict[int, DatapointDefinition] = {}
 
@@ -163,15 +163,16 @@ class DeviceQuirk(DeviceQuirkProtocol):
         self.original_local_strategy = device.local_strategy
         self.original_status_range = device.status_range
 
-    def applies_to(self, *, category: str, product_id: str) -> Self:
+
+    def applies_to(self, *, product_id: str) -> Self:
         """Set the device type the quirk applies to."""
-        self._applies_to.append((category, product_id))
+        self._applies_to.append(product_id)
         return self
 
     def register(self, registry: QuirksRegistry) -> None:
         """Register the quirk in the registry."""
-        for category, product_id in self._applies_to:
-            registry.register(category, product_id, self)
+        for product_id in self._applies_to:
+            registry.register(product_id, self)
 
     def add_dpid_bitmap(
         self, *, dpid: int, dpcode: str, label_range: list[str]

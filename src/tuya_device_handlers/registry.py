@@ -87,7 +87,7 @@ class QuirksRegistry:
 
     instance: Self
 
-    _quirks: dict[str, dict[str, DeviceQuirkProtocol]]
+    _quirks: dict[str, DeviceQuirkProtocol]
 
     def __new__(cls) -> Self:
         """Create a new class."""
@@ -101,27 +101,26 @@ class QuirksRegistry:
 
     def register(
         self,
-        category: str,
         product_id: str,
         quirk: DeviceQuirkProtocol,
     ) -> None:
         """Register a quirk for a specific device type."""
-        self._quirks.setdefault(category, {})[product_id] = quirk
+        self._quirks[product_id] = quirk
 
     def get_quirk_for_device(
         self, device: CustomerDevice
     ) -> DeviceQuirkProtocol | None:
         """Get the quirk for a specific device."""
-        return self._quirks.get(device.category, {}).get(device.product_id)
+        return self._quirks.get(device.product_id)
 
     def purge_custom_quirks(self, custom_quirks_root: str) -> None:
         """Purge custom quirks from the registry."""
-        for category_quirks in self._quirks.values():
-            to_remove = []
-            for product_id, quirk in category_quirks.items():
-                if quirk.quirk_file.is_relative_to(custom_quirks_root):
-                    to_remove.append(product_id)
+        to_remove = [
+            product_id
+            for product_id, quirk in self._quirks.items()
+            if quirk.quirk_file.is_relative_to(custom_quirks_root)
+        ]
 
-            for product_id in to_remove:
-                _LOGGER.debug("Removing stale custom quirk: %s", product_id)
-                category_quirks.pop(product_id)
+        for product_id in to_remove:
+            _LOGGER.debug("Removing stale custom quirk: %s", product_id)
+            self._quirks.pop(product_id, None)
