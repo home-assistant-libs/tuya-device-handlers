@@ -161,10 +161,18 @@ class DeviceQuirk(DeviceQuirkProtocol):
 
     def post_init_device(self, device: CustomerDevice) -> None:
         """Run post-initialization steps for a device."""
-        self.original_function = device.function
-        self.original_local_strategy = device.local_strategy
-        self.original_status_range = device.status_range
+        self.original_function = {**device.function}
+        self.original_local_strategy = {**device.local_strategy}
+        self.original_status_range = {**device.status_range}
 
+        for key, definition in self._datapoint_definitions.items():
+            dpid, dpcode = key
+            if definition is None:
+                device.function.pop(dpcode, None)
+                device.local_strategy.pop(dpid, None)
+                device.status.pop(dpcode, None)
+                device.status_range.pop(dpcode, None)
+                continue
 
     def applies_to(self, *, product_id: str) -> Self:
         """Set the device type the quirk applies to."""
