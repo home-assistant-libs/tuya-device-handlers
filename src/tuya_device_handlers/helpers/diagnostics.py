@@ -56,7 +56,7 @@ def customer_device_as_dict(device: CustomerDevice) -> dict[str, Any]:
         "update_time": dt.datetime.fromtimestamp(
             device.update_time, tz=dt.UTC
         ).isoformat(),
-        "function": _format_functions(device.functions),
+        "function": _format_functions(device.function),
         "local_strategy": device.local_strategy,
         "status_range": _format_status_ranges(device.status_range),
         "status": device.status,
