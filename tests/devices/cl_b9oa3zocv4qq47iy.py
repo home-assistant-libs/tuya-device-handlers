@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from tuya_device_handlers.registry import QuirksRegistry
 
-from . import create_device
+from .. import create_device
 
 
 def test_am45_plus_suppresses_percent_state(
