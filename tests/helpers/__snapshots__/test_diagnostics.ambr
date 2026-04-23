@@ -1,5 +1,5 @@
 # serializer version: 1
-# name: test_get_default_definition_fails
+# name: test_customer_device_as_dict
   dict({
     'active_time': '2025-07-14T06:32:48+00:00',
     'category': 'sfkzq',
