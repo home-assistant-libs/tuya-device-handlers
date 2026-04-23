@@ -4,37 +4,41 @@
   "product_id": "b9oa3zocv4qq47iy",
   "product_name": "WiFi tubular motor",
   "online": true,
-  "support_local": true,
   "function": {
     "control": {
       "type": "Enum",
-      "value": { "range": ["open", "stop", "close", "continue"] }
+      "value": "{\"range\":[\"open\",\"stop\",\"close\",\"continue\"]}"
     },
     "percent_control": {
       "type": "Integer",
-      "value": { "unit": "%", "min": 0, "max": 100, "scale": 0, "step": 1 }
+      "value": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}"
     }
   },
   "status_range": {
     "control": {
       "type": "Enum",
-      "value": { "range": ["open", "stop", "close", "continue"] }
+      "value": "{\"range\":[\"open\",\"stop\",\"close\",\"continue\"]}",
+      "report_type": null
     },
     "percent_control": {
       "type": "Integer",
-      "value": { "unit": "%", "min": 0, "max": 100, "scale": 0, "step": 1 }
+      "value": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+      "report_type": null
     },
     "percent_state": {
       "type": "Integer",
-      "value": { "unit": "%", "min": 0, "max": 100, "scale": 0, "step": 1 }
+      "value": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+      "report_type": null
     },
     "work_state": {
       "type": "Enum",
-      "value": { "range": ["opening", "closing"] }
+      "value": "{\"range\":[\"opening\",\"closing\"]}",
+      "report_type": null
     },
     "fault": {
       "type": "Bitmap",
-      "value": { "label": ["motor_fault"] }
+      "value": "{\"label\":[\"motor_fault\"]}",
+      "report_type": null
     }
   },
   "status": {
@@ -44,6 +48,7 @@
     "work_state": "opening",
     "fault": 0
   },
+  "support_local": true,
   "local_strategy": {
     "1": {
       "value_convert": "default",
