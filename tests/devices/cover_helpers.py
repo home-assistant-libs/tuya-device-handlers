@@ -34,7 +34,7 @@ def get_cover_default_definitions(
     device: CustomerDevice,
 ) -> list[cover_definition.CoverDefinition]:
     """Get the default cover definition for a device."""
-    values: list[cover_definition.CoverDefinition] = []
+    values: list[cover_definition.CoverDefinition | None] = []
     if device.category == "cl":
         values.extend(_get_cl_cover_default_definitions(device))
     return [definition for definition in values if definition]
