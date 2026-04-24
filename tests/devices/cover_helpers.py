@@ -4,11 +4,7 @@ from tuya_sharing import CustomerDevice
 
 from tuya_device_handlers.definition import cover as cover_definition
 from tuya_device_handlers.device_wrapper.cover import (
-    CoverClosedEnumWrapper,
-    CoverInstructionEnumWrapper,
-)
-from tuya_device_handlers.device_wrapper.extended import (
-    DPCodeInvertedPercentageWrapper,
+    CoverInstructionSpecialEnumWrapper,
 )
 
 
@@ -19,14 +15,36 @@ def _get_cl_cover_default_definitions(
     return [
         cover_definition.get_default_definition(
             device,
-            current_position_dpcode=("percent_state", "percent_control"),
-            current_state_dpcode=("situation_set", "control"),
-            current_state_wrapper=CoverClosedEnumWrapper,
             instruction_dpcode="control",
-            instruction_wrapper=CoverInstructionEnumWrapper,
-            position_wrapper=DPCodeInvertedPercentageWrapper,
+            current_state_dpcode=("situation_set", "control"),
+            current_position_dpcode=("percent_state", "percent_control"),
             set_position_dpcode="percent_control",
-        )
+        ),
+        cover_definition.get_default_definition(
+            device,
+            instruction_dpcode="control_2",
+            current_position_dpcode="percent_state_2",
+            set_position_dpcode="percent_control_2",
+        ),
+        cover_definition.get_default_definition(
+            device,
+            instruction_dpcode="control_3",
+            current_position_dpcode="percent_state_3",
+            set_position_dpcode="percent_control_3",
+        ),
+        cover_definition.get_default_definition(
+            device,
+            instruction_dpcode="mach_operate",
+            current_position_dpcode="position",
+            set_position_dpcode="position",
+            instruction_wrapper=CoverInstructionSpecialEnumWrapper,
+        ),
+        cover_definition.get_default_definition(
+            device,
+            instruction_dpcode="switch_1",
+            current_position_dpcode="percent_control",
+            set_position_dpcode="percent_control",
+        ),
     ]
 
 
