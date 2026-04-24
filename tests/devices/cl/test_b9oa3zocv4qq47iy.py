@@ -42,6 +42,8 @@ def test_cover_definition(filled_quirks_registry: QuirksRegistry) -> None:
     """
     device = create_device("cl_b9oa3zocv4qq47iy.json")
 
+    # Default without quirk would be DPCodeInvertedPercentageWrapper
+    # with dpcode "percent_state"
     definitions = get_cover_default_definitions(device)
     assert len(definitions) == 1
     definition = definitions[0]
@@ -52,6 +54,8 @@ def test_cover_definition(filled_quirks_registry: QuirksRegistry) -> None:
 
     filled_quirks_registry.initialise_device_quirk(device)
 
+    # With quirk applied it is still DPCodeInvertedPercentageWrapper
+    # but with dpcode "percent_control"
     definitions = get_cover_default_definitions(device)
     assert len(definitions) == 1
     definition = definitions[0]
