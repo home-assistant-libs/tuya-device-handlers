@@ -1,4 +1,4 @@
-"""Tests for device quirks."""
+"""Helpers for quirk cover tests."""
 
 from tuya_sharing import CustomerDevice
 

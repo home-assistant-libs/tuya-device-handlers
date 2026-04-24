@@ -1,1 +1,1 @@
-"""Tests for device quirks."""
+"""Tests for Tuya CL category (curtain) quirks."""
