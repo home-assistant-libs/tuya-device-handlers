@@ -1,31 +1,10 @@
 """Quirks registry."""
 
-from collections.abc import Sequence
 import logging
 import pathlib
 from typing import Any, Protocol, Self
 
 from tuya_sharing import CustomerDevice, DeviceFunction, DeviceStatusRange
-
-from tuya_device_handlers.definition.alarm_control_panel import (
-    AlarmControlPanelQuirk,
-)
-from tuya_device_handlers.definition.binary_sensor import BinarySensorQuirk
-from tuya_device_handlers.definition.button import ButtonQuirk
-from tuya_device_handlers.definition.camera import CameraQuirk
-from tuya_device_handlers.definition.climate import ClimateQuirk
-from tuya_device_handlers.definition.cover import CoverQuirk
-from tuya_device_handlers.definition.event import EventQuirk
-from tuya_device_handlers.definition.fan import FanQuirk
-from tuya_device_handlers.definition.humidifier import HumidifierQuirk
-from tuya_device_handlers.definition.light import LightQuirk
-from tuya_device_handlers.definition.number import NumberQuirk
-from tuya_device_handlers.definition.select import SelectQuirk
-from tuya_device_handlers.definition.sensor import SensorQuirk
-from tuya_device_handlers.definition.siren import SirenQuirk
-from tuya_device_handlers.definition.switch import SwitchQuirk
-from tuya_device_handlers.definition.vacuum import VacuumQuirk
-from tuya_device_handlers.definition.valve import ValveQuirk
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -36,43 +15,6 @@ class DeviceQuirkProtocol(Protocol):
     original_function: dict[str, DeviceFunction]
     original_local_strategy: dict[int, dict[str, Any]]
     original_status_range: dict[str, DeviceStatusRange]
-
-    @property
-    def alarm_control_panel_quirks(
-        self,
-    ) -> Sequence[AlarmControlPanelQuirk] | None: ...
-    @property
-    def binary_sensor_quirks(self) -> Sequence[BinarySensorQuirk] | None: ...
-    @property
-    def button_quirks(self) -> Sequence[ButtonQuirk] | None: ...
-    @property
-    def camera_quirks(self) -> Sequence[CameraQuirk] | None: ...
-    @property
-    def climate_quirks(self) -> Sequence[ClimateQuirk] | None: ...
-    @property
-    def cover_quirks(self) -> Sequence[CoverQuirk] | None: ...
-    @property
-    def event_quirks(self) -> Sequence[EventQuirk] | None: ...
-    @property
-    def fan_quirks(self) -> Sequence[FanQuirk] | None: ...
-    @property
-    def humidifier_quirks(self) -> Sequence[HumidifierQuirk] | None: ...
-    @property
-    def light_quirks(self) -> Sequence[LightQuirk] | None: ...
-    @property
-    def number_quirks(self) -> Sequence[NumberQuirk] | None: ...
-    @property
-    def select_quirks(self) -> Sequence[SelectQuirk] | None: ...
-    @property
-    def sensor_quirks(self) -> Sequence[SensorQuirk] | None: ...
-    @property
-    def siren_quirks(self) -> Sequence[SirenQuirk] | None: ...
-    @property
-    def switch_quirks(self) -> Sequence[SwitchQuirk] | None: ...
-    @property
-    def vacuum_quirks(self) -> Sequence[VacuumQuirk] | None: ...
-    @property
-    def valve_quirks(self) -> Sequence[ValveQuirk] | None: ...
 
     @property
     def quirk_file(self) -> pathlib.Path: ...
