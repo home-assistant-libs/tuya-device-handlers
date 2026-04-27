@@ -47,6 +47,48 @@ def test_valid_type_information(
 
 
 @pytest.mark.parametrize(
+    ("type_information_type", "dpcode"),
+    [
+        # Invalid (missing type details)
+        (BitmapTypeInformation, "demo_bitmap_missing_values"),
+        (EnumTypeInformation, "demo_enum_missing_values"),
+        (IntegerTypeInformation, "demo_integer_missing_values"),
+        # Invalid => return None
+        (BitmapTypeInformation, "invalid"),
+        (BooleanTypeInformation, "invalid"),
+        (EnumTypeInformation, "invalid"),
+        (IntegerTypeInformation, "invalid"),
+        (JsonTypeInformation, "invalid"),
+        (RawTypeInformation, "invalid"),
+        (StringTypeInformation, "invalid"),
+        (StringTypeInformation, ("some",)),
+        (StringTypeInformation, None),
+    ],
+)
+def test_invalid_type_information(
+    dpcode: str | tuple[str] | None,
+    type_information_type: type[TypeInformation[Any]],
+    mock_device: CustomerDevice,
+) -> None:
+    """Test find_dpcode."""
+    type_information = type_information_type.find_dpcode(mock_device, dpcode)
+
+    assert type_information is None
+
+
+def test_integer_scaling(mock_device: CustomerDevice) -> None:
+    """Test scale_value/scale_value_back."""
+    type_information = IntegerTypeInformation.find_dpcode(
+        mock_device, "demo_integer"
+    )
+
+    assert type_information
+    assert type_information.scale == 1
+    assert type_information.scale_value(150) == 15
+    assert type_information.scale_value_back(15) == 150
+
+
+@pytest.mark.parametrize(
     (
         "type_information_type",
         "dpcode",
@@ -126,44 +168,7 @@ def test_log_invalid_value(
         assert warning_key in DEVICE_WARNINGS[mock_device.id]
     assert warning_diplayed in caplog.text
 
-
-@pytest.mark.parametrize(
-    ("type_information_type", "dpcode"),
-    [
-        # Invalid (missing type details)
-        (BitmapTypeInformation, "demo_bitmap_missing_values"),
-        (EnumTypeInformation, "demo_enum_missing_values"),
-        (IntegerTypeInformation, "demo_integer_missing_values"),
-        # Invalid => return None
-        (BitmapTypeInformation, "invalid"),
-        (BooleanTypeInformation, "invalid"),
-        (EnumTypeInformation, "invalid"),
-        (IntegerTypeInformation, "invalid"),
-        (JsonTypeInformation, "invalid"),
-        (RawTypeInformation, "invalid"),
-        (StringTypeInformation, "invalid"),
-        (StringTypeInformation, ("some",)),
-        (StringTypeInformation, None),
-    ],
-)
-def test_invalid_type_information(
-    dpcode: str | tuple[str] | None,
-    type_information_type: type[TypeInformation[Any]],
-    mock_device: CustomerDevice,
-) -> None:
-    """Test find_dpcode."""
-    type_information = type_information_type.find_dpcode(mock_device, dpcode)
-
-    assert type_information is None
-
-
-def test_integer_scaling(mock_device: CustomerDevice) -> None:
-    """Test scale_value/scale_value_back."""
-    type_information = IntegerTypeInformation.find_dpcode(
-        mock_device, "demo_integer"
-    )
-
-    assert type_information
-    assert type_information.scale == 1
-    assert type_information.scale_value(150) == 15
-    assert type_information.scale_value_back(15) == 150
+    # Second read should not fail (but also not log again)
+    caplog.clear()
+    assert type_information.read_device_value(mock_device) is None
+    assert warning_diplayed not in caplog.text

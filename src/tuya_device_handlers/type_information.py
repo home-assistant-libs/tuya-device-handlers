@@ -291,16 +291,16 @@ class JsonTypeInformation(TypeInformation[dict[str, Any]]):
         try:
             return cast(dict[str, Any], json.loads(raw_value))
         except json.JSONDecodeError:
-            _should_log_warning(device.id, f"invalid_json|{self.dpcode}")
-            _LOGGER.warning(
-                "Found invalid JSON value `%s` (%s) for datapoint `%s` in "
-                "product id `%s`; %s",
-                raw_value,
-                type(raw_value),
-                self.dpcode,
-                device.product_id,
-                _LOG_OR_QUIRK,
-            )
+            if _should_log_warning(device.id, f"invalid_json|{self.dpcode}"):
+                _LOGGER.warning(
+                    "Found invalid JSON value `%s` (%s) for datapoint `%s` in "
+                    "product id `%s`; %s",
+                    raw_value,
+                    type(raw_value),
+                    self.dpcode,
+                    device.product_id,
+                    _LOG_OR_QUIRK,
+                )
         return None
 
 
@@ -316,16 +316,16 @@ class RawTypeInformation(TypeInformation[bytes]):
         try:
             return base64.b64decode(raw_value)
         except (binascii.Error, TypeError):
-            _should_log_warning(device.id, f"invalid_raw|{self.dpcode}")
-            _LOGGER.warning(
-                "Found invalid RAW value `%s` (%s) for datapoint `%s` in "
-                "product id `%s`; %s",
-                raw_value,
-                type(raw_value),
-                self.dpcode,
-                device.product_id,
-                _LOG_OR_QUIRK,
-            )
+            if _should_log_warning(device.id, f"invalid_raw|{self.dpcode}"):
+                _LOGGER.warning(
+                    "Found invalid RAW value `%s` (%s) for datapoint `%s` in "
+                    "product id `%s`; %s",
+                    raw_value,
+                    type(raw_value),
+                    self.dpcode,
+                    device.product_id,
+                    _LOG_OR_QUIRK,
+                )
         return None
 
 
