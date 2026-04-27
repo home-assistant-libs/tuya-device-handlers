@@ -53,7 +53,7 @@ except ImportError:
 )
 def test_read_device_status(
     dpcode: str,
-    wrapper_type: type[DPCodeTypeInformationWrapper[Any, Any]],
+    wrapper_type: type[DPCodeTypeInformationWrapper[Any, Any, Any]],
     status: Any,
     expected_device_status: Any,
     mock_device: CustomerDevice,

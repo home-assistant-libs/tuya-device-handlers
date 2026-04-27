@@ -123,7 +123,7 @@ def _inject_default_light(mock_device: CustomerDevice) -> None:
 )
 def test_read_device_status(
     sample: str,
-    wrapper_type: type[DPCodeTypeInformationWrapper[Any, Any]],
+    wrapper_type: type[DPCodeTypeInformationWrapper[Any, Any, Any]],
     dpcode: str,
     status_updates: dict[str, Any],
     expected_device_status: Any,
@@ -279,7 +279,7 @@ def test_read_device_status(
 )
 def test_light_action_command(
     sample: str,
-    wrapper_type: type[DPCodeTypeInformationWrapper[Any, Any]],
+    wrapper_type: type[DPCodeTypeInformationWrapper[Any, Any, Any]],
     dpcode: str,
     action: str,
     expected: list[dict[str, Any]],

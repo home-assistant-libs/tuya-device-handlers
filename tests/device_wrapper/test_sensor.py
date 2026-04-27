@@ -101,7 +101,7 @@ def _snapshot_sensor(
     ],
 )
 def test_sensor_wrapper(
-    wrapper_type: type[DPCodeTypeInformationWrapper[Any, Any]],
+    wrapper_type: type[DPCodeTypeInformationWrapper[Any, Any, Any]],
     dpcode: str,
     status_range: str,
     status: Any,
@@ -171,7 +171,7 @@ def test_sensor_wrapper(
     ],
 )
 def test_sensor_invalid_value(
-    wrapper_type: type[DPCodeTypeInformationWrapper[Any, Any]],
+    wrapper_type: type[DPCodeTypeInformationWrapper[Any, Any, Any]],
     dpcode: str,
     status_range: str,
     status: str,

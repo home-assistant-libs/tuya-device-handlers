@@ -57,7 +57,7 @@ def test_dpcode_not_found(
 )
 def test_read_device_status(
     dpcode: str,
-    wrapper_type: type[DPCodeTypeInformationWrapper[Any, Any]],
+    wrapper_type: type[DPCodeTypeInformationWrapper[Any, Any, Any]],
     expected_device_status: Any,
     mock_device: CustomerDevice,
 ) -> None:
@@ -102,7 +102,7 @@ def test_read_device_status(
 @patch.dict(DEVICE_WARNINGS, {}, clear=True)
 def test_read_invalid_device_status(
     dpcode: str,
-    wrapper_type: type[DPCodeTypeInformationWrapper[Any, Any]],
+    wrapper_type: type[DPCodeTypeInformationWrapper[Any, Any, Any]],
     status: Any,
     warning_key: str,
     mock_device: CustomerDevice,
@@ -154,7 +154,7 @@ def test_read_invalid_device_status(
 )
 def test_get_update_commands(
     dpcode: str,
-    wrapper_type: type[DPCodeTypeInformationWrapper[Any, Any]],
+    wrapper_type: type[DPCodeTypeInformationWrapper[Any, Any, Any]],
     value: Any,
     expected: list[dict[str, Any]],
     mock_device: CustomerDevice,
@@ -176,7 +176,7 @@ def test_get_update_commands(
 )
 def test_get_update_commands_value_error(
     dpcode: str,
-    wrapper_type: type[DPCodeTypeInformationWrapper[Any, Any]],
+    wrapper_type: type[DPCodeTypeInformationWrapper[Any, Any, Any]],
     value: Any,
     mock_device: CustomerDevice,
 ) -> None:

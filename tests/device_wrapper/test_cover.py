@@ -75,7 +75,7 @@ except ImportError:
 )
 def test_read_device_status(
     dpcode: str,
-    wrapper_type: type[DPCodeTypeInformationWrapper[Any, Any]],
+    wrapper_type: type[DPCodeTypeInformationWrapper[Any, Any, Any]],
     status_updates: dict[str, Any],
     expected_device_status: Any,
     mock_device: CustomerDevice,
@@ -165,7 +165,7 @@ def test_read_device_status(
     ],
 )
 def test_cover_action_command(
-    wrapper_type: type[DPCodeTypeInformationWrapper[Any, Any]],
+    wrapper_type: type[DPCodeTypeInformationWrapper[Any, Any, Any]],
     dpcode: str,
     action: TuyaCoverAction,
     expected: list[dict[str, Any]],
