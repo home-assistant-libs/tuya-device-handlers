@@ -10,8 +10,7 @@ from typing import Any, ClassVar, Self, cast
 
 from tuya_sharing import CustomerDevice
 
-from .const import DPType
-from .device_wrapper import DEVICE_WARNINGS
+from .const import DEVICE_WARNINGS, DPType
 
 _LOGGER = logging.getLogger(__name__)
 

@@ -6,7 +6,7 @@ from typing import Any
 from tuya_sharing import CustomerDevice, DeviceFunction, DeviceStatusRange
 
 from tuya_device_handlers import TUYA_QUIRKS_REGISTRY
-from tuya_device_handlers.device_wrapper import DEVICE_WARNINGS
+from tuya_device_handlers.const import DEVICE_WARNINGS
 
 
 def _format_functions(functions: dict[str, DeviceFunction]) -> dict[str, Any]:
