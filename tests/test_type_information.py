@@ -1,6 +1,7 @@
 """Test TypeInformation classes"""
 
 import dataclasses
+from typing import Any
 
 import pytest
 from syrupy.assertion import SnapshotAssertion
@@ -32,7 +33,7 @@ from tuya_device_handlers.type_information import (
 )
 def test_valid_type_information(
     dpcode: str | tuple[str] | None,
-    type_information_type: type[TypeInformation],
+    type_information_type: type[TypeInformation[Any]],
     snapshot: SnapshotAssertion,
     mock_device: CustomerDevice,
 ) -> None:
@@ -64,7 +65,7 @@ def test_valid_type_information(
 )
 def test_invalid_type_information(
     dpcode: str | tuple[str] | None,
-    type_information_type: type[TypeInformation],
+    type_information_type: type[TypeInformation[Any]],
     mock_device: CustomerDevice,
 ) -> None:
     """Test find_dpcode."""
