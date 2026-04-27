@@ -81,9 +81,9 @@ class DPCodeWrapper[T](DeviceWrapper[T]):
 
 class DPCodeTypeInformationWrapper[
     TypeInformationT: TypeInformation[Any],
-    InputT,
-    OutputT,
-](DPCodeWrapper[OutputT]):
+    UnderlyingT,
+    T,
+](DPCodeWrapper[T]):
     """Base DPCode wrapper with Type Information."""
 
     _DPTYPE: type[TypeInformationT]
@@ -112,7 +112,7 @@ class DPCodeTypeInformationWrapper[
             )
         return None
 
-    def _read_dpcode_value(self, device: CustomerDevice) -> InputT | None:
+    def _read_dpcode_value(self, device: CustomerDevice) -> UnderlyingT | None:
         """Read and process raw value against this type information."""
         return self.type_information.read_device_value(device)
 
