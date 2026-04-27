@@ -8,7 +8,7 @@ import pytest
 from syrupy.assertion import SnapshotAssertion
 from tuya_sharing import CustomerDevice
 
-from tuya_device_handlers.device_wrapper import DEVICE_WARNINGS
+from tuya_device_handlers.const import DEVICE_WARNINGS
 from tuya_device_handlers.type_information import (
     BitmapTypeInformation,
     BooleanTypeInformation,
