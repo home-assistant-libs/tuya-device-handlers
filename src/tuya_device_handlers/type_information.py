@@ -2,6 +2,7 @@
 
 import abc
 import base64
+import binascii
 from dataclasses import dataclass
 import json
 import logging
@@ -130,7 +131,7 @@ class BitmapTypeInformation(TypeInformation[int]):
             device.id, f"invalid_bitmap|{self.dpcode}|{raw_value}"
         ):
             _LOGGER.warning(
-                "Found invalid bitmap (integer) value `%s` (%s) for datapoint `%s` in "
+                "Found invalid BITMAP value `%s` (%s) for datapoint `%s` in "
                 "product id `%s`; %s",
                 raw_value,
                 type(raw_value),
@@ -157,7 +158,7 @@ class BooleanTypeInformation(TypeInformation[bool]):
             device.id, f"boolean_out_range|{self.dpcode}|{raw_value}"
         ):
             _LOGGER.warning(
-                "Found invalid boolean value `%s` (%s) for datapoint `%s` in "
+                "Found invalid BOOLEAN value `%s` (%s) for datapoint `%s` in "
                 "product id `%s`; %s",
                 raw_value,
                 type(raw_value),
@@ -200,7 +201,7 @@ class EnumTypeInformation(TypeInformation[str]):
             device.id, f"enum_out_range|{self.dpcode}|{raw_value}"
         ):
             _LOGGER.warning(
-                "Found invalid enum value `%s` (%s) for datapoint `%s` in "
+                "Found invalid ENUM value `%s` (%s) for datapoint `%s` in "
                 "product id `%s`, expected one of `%s`; %s",
                 raw_value,
                 type(raw_value),
@@ -262,8 +263,8 @@ class IntegerTypeInformation(TypeInformation[float]):
             device.id, f"integer_out_range|{self.dpcode}|{raw_value}"
         ):
             _LOGGER.warning(
-                "Found invalid integer value `%s` (%s) for datapoint `%s` in "
-                "product id `%s`, expected integer value between %s and %s; %s",
+                "Found invalid INTEGER value `%s` (%s) for datapoint `%s` in "
+                "product id `%s`, expected value between %s and %s; %s",
                 raw_value,
                 type(raw_value),
                 self.dpcode,
@@ -287,7 +288,20 @@ class JsonTypeInformation(TypeInformation[dict[str, Any]]):
     ) -> dict[str, Any] | None:
         if (raw_value := device.status.get(self.dpcode)) is None:
             return None
-        return cast(dict[str, Any], json.loads(raw_value))
+        try:
+            return cast(dict[str, Any], json.loads(raw_value))
+        except json.JSONDecodeError:
+            _should_log_warning(device.id, f"invalid_json|{self.dpcode}")
+            _LOGGER.warning(
+                "Found invalid JSON value `%s` (%s) for datapoint `%s` in "
+                "product id `%s`; %s",
+                raw_value,
+                type(raw_value),
+                self.dpcode,
+                device.product_id,
+                _LOG_OR_QUIRK,
+            )
+        return None
 
 
 @dataclass(kw_only=True)
@@ -299,7 +313,20 @@ class RawTypeInformation(TypeInformation[bytes]):
     def read_device_value(self, device: CustomerDevice) -> bytes | None:
         if (raw_value := device.status.get(self.dpcode)) is None:
             return None
-        return base64.b64decode(raw_value)
+        try:
+            return base64.b64decode(raw_value)
+        except (binascii.Error, TypeError):
+            _should_log_warning(device.id, f"invalid_raw|{self.dpcode}")
+            _LOGGER.warning(
+                "Found invalid RAW value `%s` (%s) for datapoint `%s` in "
+                "product id `%s`; %s",
+                raw_value,
+                type(raw_value),
+                self.dpcode,
+                device.product_id,
+                _LOG_OR_QUIRK,
+            )
+        return None
 
 
 @dataclass(kw_only=True)
