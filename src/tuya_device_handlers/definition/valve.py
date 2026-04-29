@@ -15,10 +15,6 @@ class ValveDefinition:
     control_wrapper: DeviceWrapper[bool]
 
 
-# Deprecated alias for backward compatibility
-TuyaValveDefinition = ValveDefinition
-
-
 @dataclass(kw_only=True)
 class ValveQuirk(BaseEntityQuirk):
     """Quirk for a valve entity."""

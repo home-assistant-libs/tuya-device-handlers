@@ -25,10 +25,6 @@ class FanDefinition:
     switch_wrapper: DeviceWrapper[bool] | None
 
 
-# Deprecated alias for backward compatibility
-TuyaFanDefinition = FanDefinition
-
-
 @dataclass(kw_only=True)
 class FanQuirk(BaseEntityQuirk):
     """Quirk for a fan entity."""

@@ -40,10 +40,6 @@ class ClimateDefinition:
     temperature_unit: TuyaUnitOfTemperature
 
 
-# Deprecated alias for backward compatibility
-TuyaClimateDefinition = ClimateDefinition
-
-
 @dataclass(kw_only=True)
 class ClimateQuirk(BaseEntityQuirk):
     """Quirk for a climate entity."""

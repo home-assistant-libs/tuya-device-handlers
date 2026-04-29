@@ -17,10 +17,6 @@ class EventDefinition:
     event_wrapper: DeviceWrapper[tuple[str, dict[str, Any] | None]]
 
 
-# Deprecated alias for backward compatibility
-TuyaEventDefinition = EventDefinition
-
-
 @dataclass(kw_only=True)
 class EventQuirk(BaseEntityQuirk):
     """Quirk for an event entity."""

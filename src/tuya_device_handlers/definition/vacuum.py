@@ -19,10 +19,6 @@ class VacuumDefinition:
     fan_speed_wrapper: DeviceWrapper[str] | None
 
 
-# Deprecated alias for backward compatibility
-TuyaVacuumDefinition = VacuumDefinition
-
-
 @dataclass(kw_only=True)
 class VacuumQuirk(BaseEntityQuirk):
     """Quirk for a vacuum entity."""

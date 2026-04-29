@@ -15,10 +15,6 @@ class NumberDefinition:
     number_wrapper: DeviceWrapper[float]
 
 
-# Deprecated alias for backward compatibility
-TuyaNumberDefinition = NumberDefinition
-
-
 @dataclass(kw_only=True)
 class NumberQuirk(BaseEntityQuirk):
     """Quirk for a number entity."""
