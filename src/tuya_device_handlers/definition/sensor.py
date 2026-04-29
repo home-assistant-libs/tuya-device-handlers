@@ -21,9 +21,6 @@ class SensorDefinition:
     sensor_wrapper: DeviceWrapper[str | int | float]
 
 
-# Deprecated alias for backward compatibility
-TuyaSensorDefinition = SensorDefinition
-
 
 @dataclass(kw_only=True)
 class SensorQuirk(BaseEntityQuirk):

@@ -26,9 +26,6 @@ class CoverDefinition:
     tilt_position_wrapper: DeviceWrapper[int] | None
 
 
-# Deprecated alias for backward compatibility
-TuyaCoverDefinition = CoverDefinition
-
 
 @dataclass(kw_only=True)
 class CoverQuirk(BaseEntityQuirk):
