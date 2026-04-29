@@ -612,6 +612,7 @@ description = "A utility for ensuring Google-style docstrings stay up to date wi
 optional = false
 python-versions = ">=3.6,<4.0"
 groups = ["dev"]
+markers = "python_version < \"4.0\""
 files = [
     {file = "darglint-1.8.1-py3-none-any.whl", hash = "sha256:5ae11c259c17b0701618a20c3da343a3eb98b3bc4b5a83d31cdd94f5ebdced8d"},
     {file = "darglint-1.8.1.tar.gz", hash = "sha256:080d5106df149b199822e7ee7deb9c012b49891538f14a11be681044f0bb20da"},
@@ -2658,5 +2659,5 @@ files = [
 
 [metadata]
 lock-version = "2.1"
-python-versions = ">=3.12,<4.0"
-content-hash = "c0ef7b74b2fd3290b64195b0c5c8bbe038c64b19b9fa9cc1c5ac9bf3f76055fd"
+python-versions = ">=3.12"
+content-hash = "f73033d1318fec4d05af5c1f26f733fe96b59822e13a48bd692428a7c41ddf34"
