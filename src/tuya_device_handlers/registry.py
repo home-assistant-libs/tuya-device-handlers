@@ -39,7 +39,8 @@ class QuirksRegistry:
 
     def __init__(self) -> None:
         """Initialize the registry."""
-        self._quirks = {}
+        if not hasattr(self, "_quirks"):
+            self._quirks = {}
 
     def register(
         self,
