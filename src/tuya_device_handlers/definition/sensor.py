@@ -21,7 +21,6 @@ class SensorDefinition:
     sensor_wrapper: DeviceWrapper[str | int | float]
 
 
-
 @dataclass(kw_only=True)
 class SensorQuirk(BaseEntityQuirk):
     """Quirk for a sensor entity."""

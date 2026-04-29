@@ -35,7 +35,6 @@ class LightDefinition:
     switch_wrapper: DeviceWrapper[bool]
 
 
-
 @dataclass(kw_only=True)
 class LightQuirk(BaseEntityQuirk):
     """Quirk for a light entity."""

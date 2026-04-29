@@ -26,7 +26,6 @@ class CoverDefinition:
     tilt_position_wrapper: DeviceWrapper[int] | None
 
 
-
 @dataclass(kw_only=True)
 class CoverQuirk(BaseEntityQuirk):
     """Quirk for a cover entity."""
