@@ -62,5 +62,5 @@ def register_tuya_quirks(custom_quirks_path: str | None = None) -> None:
 
     if loaded:
         _LOGGER.warning(
-            "Loaded custom quirks. Please contribute them to https://github.com/TBD"
+            "Loaded custom quirks. Please contribute them to https://github.com/home-assistant-libs/tuya-device-handlers"
         )
