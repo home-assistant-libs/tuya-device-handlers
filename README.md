@@ -107,4 +107,4 @@ This project was generated from [@cjolowicz]'s [Hypermodern Python Cookiecutter]
 <!-- github-only -->
 
 [license]: https://github.com/home-assistant-libs/tuya-device-handlers/blob/main/LICENSE
-[contributor guide]: https://github.com/home-assistant-libs/tuya-device-handlers/blob/main/CONTRIBUTING.md
+[contributor guide]: https://github.com/home-assistant-libs/tuya-device-handlers/blob/main/.github/CONTRIBUTING.md
