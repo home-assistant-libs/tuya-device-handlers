@@ -30,6 +30,7 @@ Changelog = "https://github.com/home-assistant-libs/tuya-device-handlers/release
 [tool.poetry.group.dev.dependencies]
 Pygments = "2.20.0"
 ruff = "0.15.9"
+covdefaults = "2.3.0"
 coverage = { version = "7.13.5", extras = ["toml"] }
 darglint = { version = "1.8.1", python = "<4.0" }
 ty = "0.0.32"
@@ -49,22 +50,13 @@ sphinx = { version = "9.1.0", python = ">=3.14" }
 sphinx-autobuild = { version = "2025.8.25", python = ">=3.14" }
 sphinx-click = { version = "6.2.0", python = ">=3.14" }
 
-[tool.coverage.paths]
-source = ["src", "*/site-packages"]
-tests = ["tests", "*/tests"]
-
 [tool.coverage.run]
-branch = true
+plugins = ["covdefaults"]
 source = ["tuya_device_handlers"]
 
 [tool.coverage.report]
 show_missing = true
-exclude_lines = [
-  # Don't complain if tests don't hit defensive assertion code:
-  "raise NotImplementedError",
-  # TYPE_CHECKING blocks are never executed during pytest run
-  "if TYPE_CHECKING:",
-]
+fail_under = 90
 
 [tool.ty.environment]
 python-version = "3.13"
