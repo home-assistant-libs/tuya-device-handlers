@@ -43,13 +43,13 @@ def get_default_definition(
     current_state_dpcode: str | tuple[str, ...] | None = None,
     instruction_dpcode: str,
     set_position_dpcode: str | None = None,
-    current_state_wrapper: type[  # type: ignore[type-arg]
+    current_state_wrapper: type[
         DPCodeTypeInformationWrapper
     ] = CoverClosedEnumWrapper,
-    instruction_wrapper: type[  # type: ignore[type-arg]
+    instruction_wrapper: type[
         DPCodeTypeInformationWrapper
     ] = CoverInstructionEnumWrapper,
-    position_wrapper: type[  # type: ignore[type-arg]
+    position_wrapper: type[
         DPCodeTypeInformationWrapper
     ] = DPCodeInvertedPercentageWrapper,
 ) -> CoverDefinition | None:

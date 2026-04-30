@@ -34,7 +34,7 @@ class SensorQuirk(BaseEntityQuirk):
 def get_default_definition(
     device: CustomerDevice,
     dpcode: str,
-    wrapper_class: tuple[type[DPCodeTypeInformationWrapper], ...] | None = None,  # type: ignore[type-arg]
+    wrapper_class: tuple[type[DPCodeTypeInformationWrapper], ...] | None = None,
 ) -> SensorDefinition | None:
     """Get DPCode wrapper for an entity description."""
     if wrapper_class:
@@ -47,7 +47,7 @@ def get_default_definition(
     if type_information := IntegerTypeInformation.find_dpcode(device, dpcode):
         if type_information.report_type == "sum":
             return SensorDefinition(
-                sensor_wrapper=DeltaIntegerWrapper(  # type: ignore[arg-type]
+                sensor_wrapper=DeltaIntegerWrapper(  # ty: ignore[invalid-argument-type]
                     type_information.dpcode, type_information
                 )
             )
@@ -58,5 +58,5 @@ def get_default_definition(
         )
 
     if wrapper := DPCodeEnumWrapper.find_dpcode(device, dpcode):
-        return SensorDefinition(sensor_wrapper=wrapper)  # type: ignore[arg-type]
+        return SensorDefinition(sensor_wrapper=wrapper)  # ty: ignore[invalid-argument-type]
     return None

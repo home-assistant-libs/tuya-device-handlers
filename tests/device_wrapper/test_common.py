@@ -19,11 +19,11 @@ from tuya_device_handlers.device_wrapper.common import (
 )
 
 try:
-    from typeguard import suppress_type_checks  # type: ignore[import-not-found]
+    from typeguard import suppress_type_checks  # ty: ignore[unresolved-import]
 except ImportError:
     from contextlib import nullcontext
 
-    suppress_type_checks = nullcontext
+    suppress_type_checks: Any = nullcontext
 
 
 def test_dpcode_not_found(

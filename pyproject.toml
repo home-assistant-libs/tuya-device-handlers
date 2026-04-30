@@ -32,7 +32,7 @@ Pygments = "2.20.0"
 ruff = "0.15.9"
 coverage = { version = "7.13.5", extras = ["toml"] }
 darglint = { version = "1.8.1", python = "<4.0" }
-mypy = "1.20.0"
+ty = "0.0.32"
 pre-commit = "4.5.1"
 pre-commit-hooks = "6.0.0"
 pytest = "9.0.3"
@@ -66,17 +66,8 @@ exclude_lines = [
   "if TYPE_CHECKING:",
 ]
 
-[tool.mypy]
-strict = true
-warn_unreachable = true
-pretty = true
-show_column_numbers = true
-show_error_codes = true
-show_error_context = true
-
-[[tool.mypy.overrides]]
-module = 'tuya_sharing.*'
-ignore_missing_imports = true
+[tool.ty.environment]
+python-version = "3.13"
 
 [tool.ruff]
 line-length = 80

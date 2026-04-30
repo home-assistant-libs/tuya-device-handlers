@@ -18,11 +18,11 @@ from tuya_device_handlers.helpers.homeassistant import (
 from . import inject_dpcode
 
 try:
-    from typeguard import suppress_type_checks  # type: ignore[import-not-found]
+    from typeguard import suppress_type_checks  # ty: ignore[unresolved-import]
 except ImportError:
     from contextlib import nullcontext
 
-    suppress_type_checks = nullcontext
+    suppress_type_checks: Any = nullcontext
 
 
 def _inject_default_alarm_codes(mock_device: CustomerDevice) -> None:
@@ -166,4 +166,4 @@ def test_invalid_update_commands(
     with pytest.raises(
         ValueError, match="Unsupported value 12 for master_mode"
     ):
-        assert wrapper.get_update_commands(mock_device, "12")  # type: ignore[arg-type]
+        assert wrapper.get_update_commands(mock_device, "12")  # ty: ignore[invalid-argument-type]

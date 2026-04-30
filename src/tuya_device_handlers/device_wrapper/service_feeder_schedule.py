@@ -121,7 +121,7 @@ def _home_assistant_list_to_internal(
     for item in entries:
         days_bitmask = _DaysOfWeek(0)
         for i in _DaysOfWeek:
-            if i.name.lower() in item["days"]:  # type: ignore[union-attr]
+            if i.name.lower() in item["days"]:
                 days_bitmask |= i
         hour, minute = map(int, item["time"].split(":"))
         result.append(
@@ -149,11 +149,7 @@ def _internal_list_to_home_assistant(
     for item in entries:
         result.append(
             FeederSchedule(
-                days=[
-                    i.name.lower()  # type: ignore[union-attr]
-                    for i in _DaysOfWeek
-                    if item["days"] & i
-                ],
+                days=[i.name.lower() for i in _DaysOfWeek if item["days"] & i],
                 time=f"{item['hour']:02d}:{item['minute']:02d}",
                 portion=item["portion"],
                 enabled=bool(item["enabled"]),

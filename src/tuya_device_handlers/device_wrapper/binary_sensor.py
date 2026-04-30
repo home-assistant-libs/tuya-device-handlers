@@ -25,7 +25,7 @@ class DPCodeBitmapBitWrapper(DPCodeBitmapWrapper[bool]):
         return (raw_value & (1 << self._mask)) != 0
 
     @classmethod
-    def find_dpcode(  # type: ignore[override]
+    def find_dpcode(  # ty: ignore[invalid-method-override]
         cls,
         device: CustomerDevice,
         dpcodes: str | tuple[str, ...] | None,

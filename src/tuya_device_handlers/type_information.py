@@ -227,11 +227,11 @@ class IntegerTypeInformation(TypeInformation[float]):
 
     def scale_value(self, value: int) -> float:
         """Scale a value."""
-        return value / (10**self.scale)  # type: ignore[no-any-return]
+        return value / (10**self.scale)
 
     def scale_value_back(self, value: float) -> int:
         """Return raw value for scaled."""
-        return round(value * (10**self.scale))  # type: ignore[no-any-return]
+        return round(value * (10**self.scale))
 
     @classmethod
     def _from_json(
