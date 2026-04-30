@@ -120,7 +120,6 @@ def precommit(session: Session) -> None:
         "--show-diff-on-failure",
     ]
     session.install(
-        "darglint",
         "pre-commit",
         "pre-commit-hooks",
         "ruff",

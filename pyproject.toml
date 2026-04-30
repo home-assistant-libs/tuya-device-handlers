@@ -31,7 +31,6 @@ Changelog = "https://github.com/home-assistant-libs/tuya-device-handlers/release
 Pygments = "2.20.0"
 ruff = "0.15.9"
 coverage = { version = "7.13.5", extras = ["toml"] }
-darglint = { version = "1.8.1", python = "<4.0" }
 ty = "0.0.32"
 pre-commit = "4.5.1"
 pre-commit-hooks = "6.0.0"
