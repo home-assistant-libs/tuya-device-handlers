@@ -16,7 +16,6 @@ classifiers = [
     "Topic :: Home Automation",
 ]
 dynamic = ["dependencies"]
-packages = [{ include = "tuya_device_handlers", from = "src" }]
 dependencies = ['tuya-device-sharing-sdk (>=0.2.8)']
 
 [tool.poetry]
