@@ -158,6 +158,7 @@ def tests(session: Session) -> None:
     """Run the test suite."""
     session.install(".[cli]")
     session.install(
+        "covdefaults",
         "coverage[toml]",
         "pytest",
         "pygments",
@@ -179,7 +180,7 @@ def coverage(session: Session) -> None:
     """Produce the coverage report."""
     args = session.posargs or ["report"]
 
-    session.install("coverage[toml]")
+    session.install("covdefaults", "coverage[toml]")
 
     if not session.posargs and any(Path().glob(".coverage.*")):
         session.run("coverage", "combine")
