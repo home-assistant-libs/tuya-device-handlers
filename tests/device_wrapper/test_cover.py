@@ -23,13 +23,6 @@ from tuya_device_handlers.helpers.homeassistant import TuyaCoverAction
 
 from . import inject_dpcode
 
-try:
-    from typeguard import suppress_type_checks  # ty: ignore[unresolved-import]
-except ImportError:
-    from contextlib import nullcontext
-
-    suppress_type_checks: Any = nullcontext
-
 
 @pytest.mark.parametrize(
     ("wrapper_type", "dpcode", "status_updates", "expected_device_status"),

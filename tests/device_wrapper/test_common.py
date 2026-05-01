@@ -1,6 +1,7 @@
 """Test DeviceWrapper classes"""
 
 import base64
+from contextlib import nullcontext as suppress_type_checks
 from typing import Any
 
 import pytest
@@ -17,13 +18,6 @@ from tuya_device_handlers.device_wrapper.common import (
     DPCodeStringWrapper,
     DPCodeTypeInformationWrapper,
 )
-
-try:
-    from typeguard import suppress_type_checks  # ty: ignore[unresolved-import]
-except ImportError:
-    from contextlib import nullcontext
-
-    suppress_type_checks: Any = nullcontext
 
 
 def test_dpcode_not_found(

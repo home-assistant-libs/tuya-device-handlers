@@ -17,13 +17,6 @@ from tuya_device_handlers.helpers.homeassistant import (
 
 from . import inject_dpcode
 
-try:
-    from typeguard import suppress_type_checks  # ty: ignore[unresolved-import]
-except ImportError:
-    from contextlib import nullcontext
-
-    suppress_type_checks: Any = nullcontext
-
 
 def _inject_default_alarm_codes(mock_device: CustomerDevice) -> None:
     inject_dpcode(mock_device, "alarm_msg", "**REDACTED**", dptype="Raw")
