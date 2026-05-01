@@ -1,7 +1,6 @@
 """Test DeviceWrapper classes"""
 
 import base64
-from contextlib import nullcontext as suppress_type_checks
 from typing import Any
 
 import pytest
@@ -121,7 +120,7 @@ def test_get_update_commands_value_error(
     wrapper = wrapper_type.find_dpcode(mock_device, dpcode)
 
     assert wrapper
-    with suppress_type_checks(), pytest.raises(SetValueOutOfRangeError):
+    with pytest.raises(SetValueOutOfRangeError):
         wrapper.get_update_commands(mock_device, value)
 
 
