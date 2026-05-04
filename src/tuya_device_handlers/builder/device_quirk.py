@@ -70,7 +70,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
 
     def __init__(self) -> None:
         """Initialize the quirk."""
-        self._applies_to: list[str] = []
+        self._applies_to: str | None = None
 
         self._datapoint_definitions = {}
         self._get_wrapper_functions = {}
@@ -131,15 +131,28 @@ class DeviceQuirk(DeviceQuirkProtocol):
             else:
                 device.local_strategy.pop(definition.dpid, None)
 
-    def applies_to(self, *, product_id: str) -> Self:
+    def applies_to(
+        self,
+        *,
+        product_id: str,
+        manufacturer: str | None = None,
+        model: str | None = None,
+    ) -> Self:
         """Set the device type the quirk applies to."""
-        self._applies_to.append(product_id)
+        if self._applies_to is not None:
+            raise ValueError("DeviceQuirk already has an applies_to condition")
+        self._applies_to = product_id
+        self.manufacturer = manufacturer
+        self.model = model
         return self
 
     def register(self, registry: QuirksRegistry) -> None:
         """Register the quirk in the registry."""
-        for product_id in self._applies_to:
-            registry.register(product_id, self)
+        if self._applies_to is None:
+            raise ValueError(
+                "DeviceQuirk does not have an applies_to condition"
+            )
+        registry.register(self._applies_to, self)
 
     def add_dpid_bitmap(
         self, *, dpid: int, dpcode: str, dpmode: DPMode, label_range: list[str]
