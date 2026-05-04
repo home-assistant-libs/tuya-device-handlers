@@ -155,13 +155,6 @@ def test_get_feeder_schedule_wrapper_unknown() -> None:
     assert wrapper is None
 
 
-def test_get_fallback_feeder_schedule_wrapper() -> None:
-    """Test get_feeder_schedule_wrapper returns the fallback wrapper."""
-    device = create_device("cwwsq_wfkzyy0evslzsmoi.json")
-    wrapper = get_feeder_schedule_wrapper(device)
-    assert isinstance(wrapper, DefaultFeederScheduleWrapper)
-
-
 def test_get_quirk_feeder_schedule_wrapper(mock_device: CustomerDevice) -> None:
     """Test get_feeder_schedule_wrapper returns the quirk wrapper."""
     wrapper = get_feeder_schedule_wrapper(mock_device)

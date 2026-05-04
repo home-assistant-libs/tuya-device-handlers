@@ -76,11 +76,6 @@ def get_feeder_schedule_wrapper(
     if (quirk := TUYA_QUIRKS_REGISTRY.get_quirk_for_device(device)) is not None:
         return quirk.get_feeder_schedules_wrapper(device)
 
-    # Fallback for devices that haven't been added to the registry yet
-    if device.product_id == "wfkzyy0evslzsmoi":
-        return DefaultFeederScheduleWrapper.find_dpcode(
-            device, "meal_plan", prefer_function=True
-        )
     return None
 
 

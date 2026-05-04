@@ -1,0 +1,192 @@
+# serializer version: 1
+# name: test_read_device_status[cwwsq_wfkzyy0evslzsmoi.json-None]
+  None
+# ---
+# name: test_read_device_status[cwwsq_wfkzyy0evslzsmoi.json-]
+  list([
+  ])
+# ---
+# name: test_read_device_status[cwwsq_wfkzyy0evslzsmoi.json-fwQAAgB/BgABAH8JAAIBfwwAAQB/DwACAX8VAAIBfxcAAQAIEgABAQ==]
+  list([
+    dict({
+      'days': list([
+        'monday',
+        'tuesday',
+        'wednesday',
+        'thursday',
+        'friday',
+        'saturday',
+        'sunday',
+      ]),
+      'enabled': False,
+      'portion': 2,
+      'time': '04:00',
+    }),
+    dict({
+      'days': list([
+        'monday',
+        'tuesday',
+        'wednesday',
+        'thursday',
+        'friday',
+        'saturday',
+        'sunday',
+      ]),
+      'enabled': False,
+      'portion': 1,
+      'time': '06:00',
+    }),
+    dict({
+      'days': list([
+        'monday',
+        'tuesday',
+        'wednesday',
+        'thursday',
+        'friday',
+        'saturday',
+        'sunday',
+      ]),
+      'enabled': True,
+      'portion': 2,
+      'time': '09:00',
+    }),
+    dict({
+      'days': list([
+        'monday',
+        'tuesday',
+        'wednesday',
+        'thursday',
+        'friday',
+        'saturday',
+        'sunday',
+      ]),
+      'enabled': False,
+      'portion': 1,
+      'time': '12:00',
+    }),
+    dict({
+      'days': list([
+        'monday',
+        'tuesday',
+        'wednesday',
+        'thursday',
+        'friday',
+        'saturday',
+        'sunday',
+      ]),
+      'enabled': True,
+      'portion': 2,
+      'time': '15:00',
+    }),
+    dict({
+      'days': list([
+        'monday',
+        'tuesday',
+        'wednesday',
+        'thursday',
+        'friday',
+        'saturday',
+        'sunday',
+      ]),
+      'enabled': True,
+      'portion': 2,
+      'time': '21:00',
+    }),
+    dict({
+      'days': list([
+        'monday',
+        'tuesday',
+        'wednesday',
+        'thursday',
+        'friday',
+        'saturday',
+        'sunday',
+      ]),
+      'enabled': False,
+      'portion': 1,
+      'time': '23:00',
+    }),
+    dict({
+      'days': list([
+        'thursday',
+      ]),
+      'enabled': True,
+      'portion': 1,
+      'time': '18:00',
+    }),
+  ])
+# ---
+# name: test_read_device_status[cwwsq_wfkzyy0evslzsmoi.json-fwkAAQF/CR4BAX8MAAEBfw8AAgF/FQACAQ==]
+  list([
+    dict({
+      'days': list([
+        'monday',
+        'tuesday',
+        'wednesday',
+        'thursday',
+        'friday',
+        'saturday',
+        'sunday',
+      ]),
+      'enabled': True,
+      'portion': 1,
+      'time': '09:00',
+    }),
+    dict({
+      'days': list([
+        'monday',
+        'tuesday',
+        'wednesday',
+        'thursday',
+        'friday',
+        'saturday',
+        'sunday',
+      ]),
+      'enabled': True,
+      'portion': 1,
+      'time': '09:30',
+    }),
+    dict({
+      'days': list([
+        'monday',
+        'tuesday',
+        'wednesday',
+        'thursday',
+        'friday',
+        'saturday',
+        'sunday',
+      ]),
+      'enabled': True,
+      'portion': 1,
+      'time': '12:00',
+    }),
+    dict({
+      'days': list([
+        'monday',
+        'tuesday',
+        'wednesday',
+        'thursday',
+        'friday',
+        'saturday',
+        'sunday',
+      ]),
+      'enabled': True,
+      'portion': 2,
+      'time': '15:00',
+    }),
+    dict({
+      'days': list([
+        'monday',
+        'tuesday',
+        'wednesday',
+        'thursday',
+        'friday',
+        'saturday',
+        'sunday',
+      ]),
+      'enabled': True,
+      'portion': 2,
+      'time': '21:00',
+    }),
+  ])
+# ---
