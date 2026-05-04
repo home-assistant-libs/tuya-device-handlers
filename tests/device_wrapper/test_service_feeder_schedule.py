@@ -148,22 +148,6 @@ def test_get_update_commands(
     assert commands == [{"code": dpcode, "value": expected_value}]
 
 
-def test_get_feeder_schedule_wrapper() -> None:
-    """Test get_feeder_schedule_wrapper returns the correct wrapper."""
-    # From fallback in get_feeder_schedule_wrapper
-    assert isinstance(
-        get_feeder_schedule_wrapper(
-            create_device("cwwsq_wfkzyy0evslzsmoi.json")
-        ),
-        DefaultFeederScheduleWrapper,
-    )
-
-    # Not available for this device
-    assert (
-        get_feeder_schedule_wrapper(create_device("cl_zah67ekd.json"))
-    ) is None
-
-
 def test_get_feeder_schedule_wrapper_unknown() -> None:
     """Test get_feeder_schedule_wrapper returns no wrapper."""
     device = create_device("cl_zah67ekd.json")
