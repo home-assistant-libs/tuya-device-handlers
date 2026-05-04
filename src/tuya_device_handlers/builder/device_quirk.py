@@ -121,9 +121,17 @@ class DeviceQuirk(DeviceQuirkProtocol):
             else:
                 device.local_strategy.pop(definition.dpid, None)
 
-    def applies_to(self, *, product_id: str) -> Self:
+    def applies_to(
+        self,
+        *,
+        product_id: str,
+        manufacturer: str | None = None,
+        model: str | None = None,
+    ) -> Self:
         """Set the device type the quirk applies to."""
         self._applies_to.append(product_id)
+        self.manufacturer = manufacturer
+        self.model = model
         return self
 
     def register(self, registry: QuirksRegistry) -> None:
