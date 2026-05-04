@@ -184,7 +184,7 @@ def test_get_quirk_feeder_schedule_wrapper(mock_device: CustomerDevice) -> None:
     assert isinstance(wrapper, DefaultFeederScheduleWrapper)
 
 
-def test_get_quirk_feeder_schedule_wrapper_unknown(
+def test_get_quirk_feeder_schedule_wrapper_invalid(
     mock_device: CustomerDevice,
 ) -> None:
     """Test get_feeder_schedule_wrapper returns the quirk wrapper."""
@@ -201,6 +201,23 @@ def test_get_quirk_feeder_schedule_wrapper_unknown(
                 )
             )
         )
+        .register(TUYA_QUIRKS_REGISTRY)
+    )
+
+    wrapper = get_feeder_schedule_wrapper(mock_device)
+    assert wrapper is None
+
+
+def test_get_quirk_feeder_schedule_wrapper_not_set(
+    mock_device: CustomerDevice,
+) -> None:
+    """Test get_feeder_schedule_wrapper returns the quirk wrapper."""
+    wrapper = get_feeder_schedule_wrapper(mock_device)
+    assert wrapper is None
+
+    (
+        DeviceQuirk()
+        .applies_to(product_id=mock_device.product_id)
         .register(TUYA_QUIRKS_REGISTRY)
     )
 
