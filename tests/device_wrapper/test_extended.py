@@ -15,13 +15,6 @@ from tuya_device_handlers.device_wrapper.extended import (
     DPCodeRoundedIntegerWrapper,
 )
 
-try:
-    from typeguard import suppress_type_checks  # type: ignore[import-not-found]
-except ImportError:
-    from contextlib import nullcontext
-
-    suppress_type_checks = nullcontext
-
 
 @pytest.mark.parametrize(
     ("wrapper_type", "dpcode", "status", "expected_device_status"),
@@ -38,7 +31,7 @@ except ImportError:
 )
 def test_read_device_status(
     dpcode: str,
-    wrapper_type: type[DPCodeTypeInformationWrapper[Any, Any]],
+    wrapper_type: type[DPCodeTypeInformationWrapper[Any, Any, Any]],
     status: Any,
     expected_device_status: Any,
     mock_device: CustomerDevice,
@@ -84,7 +77,7 @@ def test_read_device_status(
 )
 def test_get_update_commands(
     dpcode: str,
-    wrapper_type: type[DPCodeTypeInformationWrapper[Any, Any]],
+    wrapper_type: type[DPCodeTypeInformationWrapper[Any, Any, Any]],
     value: Any,
     expected: list[dict[str, Any]],
     mock_device: CustomerDevice,

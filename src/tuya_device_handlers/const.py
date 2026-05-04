@@ -4,6 +4,11 @@ from __future__ import annotations
 
 from enum import IntFlag, StrEnum
 
+# Dictionary to track logged warnings to avoid spamming logs
+# Keyed by device ID
+DEVICE_WARNINGS: dict[str, set[str]] = {}
+
+# Aliases for temperature units to handle variations in device reporting
 CELSIUS_ALIASES = {"°c", "c", "celsius", "℃"}
 FAHRENHEIT_ALIASES = {"°f", "f", "fahrenheit", "℉"}
 

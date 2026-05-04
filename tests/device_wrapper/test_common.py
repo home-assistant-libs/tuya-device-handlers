@@ -2,15 +2,11 @@
 
 import base64
 from typing import Any
-from unittest.mock import patch
 
 import pytest
 from tuya_sharing import CustomerDevice
 
-from tuya_device_handlers.device_wrapper import (
-    DEVICE_WARNINGS,
-    SetValueOutOfRangeError,
-)
+from tuya_device_handlers.device_wrapper import SetValueOutOfRangeError
 from tuya_device_handlers.device_wrapper.common import (
     DPCodeBitmapWrapper,
     DPCodeBooleanWrapper,
@@ -21,13 +17,6 @@ from tuya_device_handlers.device_wrapper.common import (
     DPCodeStringWrapper,
     DPCodeTypeInformationWrapper,
 )
-
-try:
-    from typeguard import suppress_type_checks  # type: ignore[import-not-found]
-except ImportError:
-    from contextlib import nullcontext
-
-    suppress_type_checks = nullcontext
 
 
 def test_dpcode_not_found(
@@ -57,7 +46,7 @@ def test_dpcode_not_found(
 )
 def test_read_device_status(
     dpcode: str,
-    wrapper_type: type[DPCodeTypeInformationWrapper[Any, Any]],
+    wrapper_type: type[DPCodeTypeInformationWrapper[Any, Any, Any]],
     expected_device_status: Any,
     mock_device: CustomerDevice,
 ) -> None:
@@ -74,59 +63,6 @@ def test_read_device_status(
     # All wrappers return None if status is missing
     mock_device.status.pop(dpcode)
     assert wrapper.read_device_status(mock_device) is None
-
-
-@pytest.mark.parametrize(
-    ("wrapper_type", "dpcode", "status", "warning_key"),
-    [
-        (
-            DPCodeBooleanWrapper,
-            "demo_boolean",
-            "hot",
-            "boolean_out_range|demo_boolean|hot",
-        ),
-        (
-            DPCodeEnumWrapper,
-            "demo_enum",
-            "hot",
-            "enum_out_range|demo_enum|hot",
-        ),
-        (
-            DPCodeIntegerWrapper,
-            "demo_integer",
-            1230,
-            "integer_out_range|demo_integer|1230",
-        ),
-    ],
-)
-@patch.dict(DEVICE_WARNINGS, {}, clear=True)
-def test_read_invalid_device_status(
-    dpcode: str,
-    wrapper_type: type[DPCodeTypeInformationWrapper[Any, Any]],
-    status: Any,
-    warning_key: str,
-    mock_device: CustomerDevice,
-    caplog: pytest.LogCaptureFixture,
-) -> None:
-    """Test read_device_status."""
-    mock_device.status[dpcode] = status
-    wrapper = wrapper_type.find_dpcode(mock_device, dpcode)
-
-    expected_log = "please report this defect to Tuya support"
-
-    assert not DEVICE_WARNINGS
-    assert expected_log not in caplog.text
-
-    assert wrapper
-    assert wrapper.read_device_status(mock_device) is None
-    assert (dev_warnings := DEVICE_WARNINGS.get(mock_device.id))
-    assert warning_key in dev_warnings  # warning added
-    assert expected_log in caplog.text  # first log entry
-
-    caplog.clear()
-    assert wrapper.read_device_status(mock_device) is None
-    assert len(dev_warnings) == 1  # no added warning
-    assert expected_log not in caplog.text  # no second log entry
 
 
 @pytest.mark.parametrize(
@@ -154,7 +90,7 @@ def test_read_invalid_device_status(
 )
 def test_get_update_commands(
     dpcode: str,
-    wrapper_type: type[DPCodeTypeInformationWrapper[Any, Any]],
+    wrapper_type: type[DPCodeTypeInformationWrapper[Any, Any, Any]],
     value: Any,
     expected: list[dict[str, Any]],
     mock_device: CustomerDevice,
@@ -176,7 +112,7 @@ def test_get_update_commands(
 )
 def test_get_update_commands_value_error(
     dpcode: str,
-    wrapper_type: type[DPCodeTypeInformationWrapper[Any, Any]],
+    wrapper_type: type[DPCodeTypeInformationWrapper[Any, Any, Any]],
     value: Any,
     mock_device: CustomerDevice,
 ) -> None:
@@ -184,7 +120,7 @@ def test_get_update_commands_value_error(
     wrapper = wrapper_type.find_dpcode(mock_device, dpcode)
 
     assert wrapper
-    with suppress_type_checks(), pytest.raises(SetValueOutOfRangeError):
+    with pytest.raises(SetValueOutOfRangeError):
         wrapper.get_update_commands(mock_device, value)
 
 

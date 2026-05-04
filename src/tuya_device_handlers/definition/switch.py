@@ -15,10 +15,6 @@ class SwitchDefinition:
     switch_wrapper: DeviceWrapper[bool]
 
 
-# Deprecated alias for backward compatibility
-TuyaSwitchDefinition = SwitchDefinition
-
-
 @dataclass(kw_only=True)
 class SwitchQuirk(BaseEntityQuirk):
     """Definition for a switch entity."""

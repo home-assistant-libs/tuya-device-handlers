@@ -19,10 +19,6 @@ class BinarySensorDefinition:
     binary_sensor_wrapper: DeviceWrapper[bool]
 
 
-# Deprecated alias for backward compatibility
-TuyaBinarySensorDefinition = BinarySensorDefinition
-
-
 @dataclass(kw_only=True)
 class BinarySensorQuirk(BaseEntityQuirk):
     """Quirk for a binary sensor entity."""

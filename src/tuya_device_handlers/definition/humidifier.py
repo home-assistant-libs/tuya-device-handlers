@@ -19,10 +19,6 @@ class HumidifierDefinition:
     target_humidity_wrapper: DeviceWrapper[int] | None = None
 
 
-# Deprecated alias for backward compatibility
-TuyaHumidifierDefinition = HumidifierDefinition
-
-
 @dataclass(kw_only=True)
 class HumidifierQuirk(BaseEntityQuirk):
     """Quirk for a humidifier entity."""

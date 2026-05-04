@@ -15,10 +15,6 @@ class SirenDefinition:
     siren_wrapper: DeviceWrapper[bool]
 
 
-# Deprecated alias for backward compatibility
-TuyaSirenDefinition = SirenDefinition
-
-
 @dataclass(kw_only=True)
 class SirenQuirk(BaseEntityQuirk):
     """Quirk for a siren entity."""

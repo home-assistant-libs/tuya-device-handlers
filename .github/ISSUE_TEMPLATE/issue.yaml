@@ -1,0 +1,63 @@
+---
+name: Issue
+description: Report an issue with the tuya-device-handlers library.
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report an issue!
+
+        To help us investigate, we need information about your device's
+        data points, functions, and status ranges. If you are using
+        Home Assistant, the easiest way to provide this is by downloading
+        the **diagnostics data** for the affected device.
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: >-
+        A clear description of what the issue is. What did you expect
+        to happen, and what happened instead?
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: tuya-device-handlers version
+      description: >-
+        The version of tuya-device-handlers you are using.
+      placeholder: e.g., 0.0.18
+    validations:
+      required: true
+  - type: input
+    id: ha-version
+    attributes:
+      label: Home Assistant version
+      description: >-
+        If you are using Home Assistant, provide your version.
+        Found in **Settings → About**.
+      placeholder: e.g., 2026.4.0
+    validations:
+      required: false
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Device diagnostics data
+      description: >-
+        Provide the device's data points, functions, and status ranges.
+        If you are using Home Assistant, you can download this as
+        diagnostics data: go to **Settings → Devices & Services → Tuya →
+        your device → three-dot menu → Download diagnostics**. Sensitive
+        data like device IDs is automatically redacted by Home Assistant.
+      render: json
+    validations:
+      required: false
+  - type: textarea
+    id: additional-information
+    attributes:
+      label: Additional information
+      description: >-
+        Any additional context, logs, screenshots, or other information
+        that might help.
+    validations:
+      required: false

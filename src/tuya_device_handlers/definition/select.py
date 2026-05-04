@@ -15,10 +15,6 @@ class SelectDefinition:
     select_wrapper: DeviceWrapper[str]
 
 
-# Deprecated alias for backward compatibility
-TuyaSelectDefinition = SelectDefinition
-
-
 @dataclass(kw_only=True)
 class SelectQuirk(BaseEntityQuirk):
     """Quirk for a select entity."""

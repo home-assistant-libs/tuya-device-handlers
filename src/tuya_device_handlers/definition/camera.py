@@ -16,10 +16,6 @@ class CameraDefinition:
     recording_status: DeviceWrapper[bool] | None
 
 
-# Deprecated alias for backward compatibility
-TuyaCameraDefinition = CameraDefinition
-
-
 @dataclass(kw_only=True)
 class CameraQuirk(BaseEntityQuirk):
     """Quirk for a camera entity."""

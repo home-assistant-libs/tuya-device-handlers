@@ -17,10 +17,6 @@ class EventDefinition:
     event_wrapper: DeviceWrapper[tuple[str, dict[str, Any] | None]]
 
 
-# Deprecated alias for backward compatibility
-TuyaEventDefinition = EventDefinition
-
-
 @dataclass(kw_only=True)
 class EventQuirk(BaseEntityQuirk):
     """Quirk for an event entity."""
@@ -34,7 +30,7 @@ class EventQuirk(BaseEntityQuirk):
 def get_default_definition(
     device: CustomerDevice,
     dpcode: str,
-    wrapper_class: type[DPCodeTypeInformationWrapper] = SimpleEventEnumWrapper,  # type: ignore[type-arg]
+    wrapper_class: type[DPCodeTypeInformationWrapper] = SimpleEventEnumWrapper,
 ) -> EventDefinition | None:
     if wrapper := wrapper_class.find_dpcode(device, dpcode):
         return EventDefinition(

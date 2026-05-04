@@ -35,10 +35,6 @@ class LightDefinition:
     switch_wrapper: DeviceWrapper[bool]
 
 
-# Deprecated alias for backward compatibility
-TuyaLightDefinition = LightDefinition
-
-
 @dataclass(kw_only=True)
 class LightQuirk(BaseEntityQuirk):
     """Quirk for a light entity."""

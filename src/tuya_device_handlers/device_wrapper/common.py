@@ -1,8 +1,5 @@
 """Tuya device wrapper."""
 
-import base64
-import json
-import logging
 from typing import TYPE_CHECKING, Any, Self
 
 from tuya_sharing import CustomerDevice
@@ -18,24 +15,7 @@ from ..type_information import (
     TypeInformation,
 )
 from .base import DeviceWrapper
-from .const import DEVICE_WARNINGS
 from .exception import SetValueOutOfRangeError
-
-_LOGGER = logging.getLogger(__name__)
-
-
-def _should_log_warning(device_id: str, warning_key: str) -> bool:
-    """Check if a warning has already been logged for a device and add it if not.
-
-    Returns: True if the warning should be logged, False if it was already logged.
-    """
-    if (device_warnings := DEVICE_WARNINGS.get(device_id)) is None:
-        device_warnings = set()
-        DEVICE_WARNINGS[device_id] = device_warnings
-    if warning_key in device_warnings:
-        return False
-    DEVICE_WARNINGS[device_id].add(warning_key)
-    return True
 
 
 class DPCodeWrapper[T](DeviceWrapper[T]):
@@ -99,9 +79,11 @@ class DPCodeWrapper[T](DeviceWrapper[T]):
         ]
 
 
-class DPCodeTypeInformationWrapper[TypeInformationT: TypeInformation, T](
-    DPCodeWrapper[T]
-):
+class DPCodeTypeInformationWrapper[
+    TypeInformationT: TypeInformation[Any],
+    UnderlyingT,
+    T,
+](DPCodeWrapper[T]):
     """Base DPCode wrapper with Type Information."""
 
     _DPTYPE: type[TypeInformationT]
@@ -130,50 +112,25 @@ class DPCodeTypeInformationWrapper[TypeInformationT: TypeInformation, T](
             )
         return None
 
+    def _read_dpcode_value(self, device: CustomerDevice) -> UnderlyingT | None:
+        """Read and process raw value against this type information."""
+        return self.type_information.read_device_value(device)
+
 
 class DPCodeBitmapWrapper[T = int](
-    DPCodeTypeInformationWrapper[BitmapTypeInformation, T]
+    DPCodeTypeInformationWrapper[BitmapTypeInformation, int, T]
 ):
     """Simple wrapper for BitmapTypeInformation values."""
 
     _DPTYPE = BitmapTypeInformation
 
-    def _read_dpcode_value(self, device: CustomerDevice) -> int | None:
-        """Read and process raw value against this type information."""
-        if (raw_value := device.status.get(self.dpcode)) is None:
-            return None
-        if TYPE_CHECKING:
-            assert isinstance(raw_value, int)
-        return raw_value
-
 
 class DPCodeBooleanWrapper[T = bool](
-    DPCodeTypeInformationWrapper[BooleanTypeInformation, T]
+    DPCodeTypeInformationWrapper[BooleanTypeInformation, bool, T]
 ):
     """Simple wrapper for BooleanTypeInformation values."""
 
     _DPTYPE = BooleanTypeInformation
-
-    def _read_dpcode_value(self, device: CustomerDevice) -> bool | None:
-        """Read and process raw value against this type information."""
-        if (raw_value := device.status.get(self.dpcode)) is None:
-            return None
-        # Validate input against defined range
-        if raw_value not in (True, False):
-            if _should_log_warning(
-                device.id, f"boolean_out_range|{self.dpcode}|{raw_value}"
-            ):
-                _LOGGER.warning(
-                    "Found invalid boolean value `%s` for datapoint `%s` in product "
-                    "id `%s`, expected one of `%s`; please report this defect to "
-                    "Tuya support",
-                    raw_value,
-                    self.dpcode,
-                    device.product_id,
-                    (True, False),
-                )
-            return None
-        return raw_value  # type: ignore[no-any-return]
 
     def _convert_value_to_raw_value(
         self, device: CustomerDevice, value: Any
@@ -190,7 +147,7 @@ class DPCodeBooleanWrapper[T = bool](
 
 
 class DPCodeEnumWrapper[T = str](
-    DPCodeTypeInformationWrapper[EnumTypeInformation, T]
+    DPCodeTypeInformationWrapper[EnumTypeInformation, str, T]
 ):
     """Simple wrapper for EnumTypeInformation values."""
 
@@ -203,27 +160,6 @@ class DPCodeEnumWrapper[T = str](
         """Init DPCodeEnumWrapper."""
         super().__init__(dpcode, type_information)
         self.options = type_information.range
-
-    def _read_dpcode_value(self, device: CustomerDevice) -> str | None:
-        """Read and process raw value against this type information."""
-        if (raw_value := device.status.get(self.dpcode)) is None:
-            return None
-        # Validate input against defined range
-        if raw_value not in self.type_information.range:
-            if _should_log_warning(
-                device.id, f"enum_out_range|{self.dpcode}|{raw_value}"
-            ):
-                _LOGGER.warning(
-                    "Found invalid enum value `%s` for datapoint `%s` in product "
-                    "id `%s`, expected one of `%s`; please report this defect to "
-                    "Tuya support",
-                    raw_value,
-                    self.dpcode,
-                    device.product_id,
-                    self.type_information.range,
-                )
-            return None
-        return raw_value  # type: ignore[no-any-return]
 
     def _convert_value_to_raw_value(
         self, device: CustomerDevice, value: Any
@@ -242,7 +178,7 @@ class DPCodeEnumWrapper[T = str](
 
 
 class DPCodeIntegerWrapper[T = float](
-    DPCodeTypeInformationWrapper[IntegerTypeInformation, T]
+    DPCodeTypeInformationWrapper[IntegerTypeInformation, float, T]
 ):
     """Simple wrapper for IntegerTypeInformation values."""
 
@@ -260,31 +196,6 @@ class DPCodeIntegerWrapper[T = float](
             type_information.step
         )
 
-    def _read_dpcode_value(self, device: CustomerDevice) -> float | None:
-        """Read and process raw value against this type information."""
-        if (raw_value := device.status.get(self.dpcode)) is None:
-            return None
-        # Validate input against defined range
-        if not isinstance(raw_value, int) or not (
-            self.type_information.min <= raw_value <= self.type_information.max
-        ):
-            if _should_log_warning(
-                device.id, f"integer_out_range|{self.dpcode}|{raw_value}"
-            ):
-                _LOGGER.warning(
-                    "Found invalid integer value `%s` for datapoint `%s` in product "
-                    "id `%s`, expected integer value between %s and %s; please report "
-                    "this defect to Tuya support",
-                    raw_value,
-                    self.dpcode,
-                    device.product_id,
-                    self.type_information.min,
-                    self.type_information.max,
-                )
-
-            return None
-        return self.type_information.scale_value(raw_value)
-
     def _convert_value_to_raw_value(
         self, device: CustomerDevice, value: Any
     ) -> int:
@@ -301,37 +212,23 @@ class DPCodeIntegerWrapper[T = float](
 
 
 class DPCodeJsonWrapper[T = dict[str, Any]](
-    DPCodeTypeInformationWrapper[JsonTypeInformation, T]
+    DPCodeTypeInformationWrapper[JsonTypeInformation, dict[str, Any], T]
 ):
     """Simple wrapper for JsonTypeInformation values."""
 
     _DPTYPE = JsonTypeInformation
 
-    def _read_dpcode_value(
-        self, device: CustomerDevice
-    ) -> dict[str, Any] | None:
-        """Read and process raw value against this type information."""
-        if (raw_value := device.status.get(self.dpcode)) is None:
-            return None
-        return json.loads(raw_value)  # type: ignore[no-any-return]
-
 
 class DPCodeRawWrapper[T = bytes](
-    DPCodeTypeInformationWrapper[RawTypeInformation, T]
+    DPCodeTypeInformationWrapper[RawTypeInformation, bytes, T]
 ):
     """Simple wrapper for RawTypeInformation values."""
 
     _DPTYPE = RawTypeInformation
 
-    def _read_dpcode_value(self, device: CustomerDevice) -> bytes | None:
-        """Read and process raw value against this type information."""
-        if (raw_value := device.status.get(self.dpcode)) is None:
-            return None
-        return base64.b64decode(raw_value)
-
 
 class DPCodeStringWrapper[T = str](
-    DPCodeTypeInformationWrapper[StringTypeInformation, T]
+    DPCodeTypeInformationWrapper[StringTypeInformation, str, T]
 ):
     """Simple wrapper for StringTypeInformation values."""
 

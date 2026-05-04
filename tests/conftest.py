@@ -1,6 +1,7 @@
 """Test fixtures"""
 
-from unittest.mock import Mock
+from collections.abc import Generator
+from unittest.mock import Mock, patch
 
 import pytest
 from tuya_sharing import CustomerDevice, DeviceFunction, DeviceStatusRange
@@ -8,6 +9,13 @@ from tuya_sharing import CustomerDevice, DeviceFunction, DeviceStatusRange
 from tuya_device_handlers import TUYA_QUIRKS_REGISTRY
 from tuya_device_handlers.devices import register_tuya_quirks
 from tuya_device_handlers.registry import QuirksRegistry
+
+
+@pytest.fixture(autouse=True)
+def auto_reset_quirks() -> Generator[None]:
+    """Ensure that quirks are reset before each test."""
+    with patch.dict(TUYA_QUIRKS_REGISTRY._quirks):
+        yield
 
 
 @pytest.fixture(scope="module")

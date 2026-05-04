@@ -15,10 +15,6 @@ class ButtonDefinition:
     button_wrapper: DeviceWrapper[bool]
 
 
-# Deprecated alias for backward compatibility
-TuyaButtonDefinition = ButtonDefinition
-
-
 @dataclass(kw_only=True)
 class ButtonQuirk(BaseEntityQuirk):
     """Quirk for a button entity."""

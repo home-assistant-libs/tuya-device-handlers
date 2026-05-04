@@ -25,7 +25,7 @@ class FeederSchedule(TypedDict):
     """True or False."""
 
 
-class _DefaultFeederScheduleWrapper(DPCodeRawWrapper[list[FeederSchedule]]):
+class DefaultFeederScheduleWrapper(DPCodeRawWrapper[list[FeederSchedule]]):
     """Wrapper for a schedule received in a base64 DPCode."""
 
     def __init__(
@@ -71,8 +71,14 @@ class _DefaultFeederScheduleWrapper(DPCodeRawWrapper[list[FeederSchedule]]):
 def get_feeder_schedule_wrapper(
     device: CustomerDevice,
 ) -> DeviceWrapper[list[FeederSchedule]] | None:
+    from tuya_device_handlers import TUYA_QUIRKS_REGISTRY  # noqa: PLC0415
+
+    if (quirk := TUYA_QUIRKS_REGISTRY.get_quirk_for_device(device)) is not None:
+        return quirk.get_feeder_schedules_wrapper(device)
+
+    # Fallback for devices that haven't been added to the registry yet
     if device.product_id == "wfkzyy0evslzsmoi":
-        return _DefaultFeederScheduleWrapper.find_dpcode(
+        return DefaultFeederScheduleWrapper.find_dpcode(
             device, "meal_plan", prefer_function=True
         )
     return None
@@ -121,7 +127,7 @@ def _home_assistant_list_to_internal(
     for item in entries:
         days_bitmask = _DaysOfWeek(0)
         for i in _DaysOfWeek:
-            if i.name.lower() in item["days"]:  # type: ignore[union-attr]
+            if i.name.lower() in item["days"]:
                 days_bitmask |= i
         hour, minute = map(int, item["time"].split(":"))
         result.append(
@@ -149,11 +155,7 @@ def _internal_list_to_home_assistant(
     for item in entries:
         result.append(
             FeederSchedule(
-                days=[
-                    i.name.lower()  # type: ignore[union-attr]
-                    for i in _DaysOfWeek
-                    if item["days"] & i
-                ],
+                days=[i.name.lower() for i in _DaysOfWeek if item["days"] & i],
                 time=f"{item['hour']:02d}:{item['minute']:02d}",
                 portion=item["portion"],
                 enabled=bool(item["enabled"]),

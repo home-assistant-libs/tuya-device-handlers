@@ -26,10 +26,6 @@ class AlarmControlPanelDefinition:
     state_wrapper: DeviceWrapper[TuyaAlarmControlPanelState]
 
 
-# Deprecated alias for backward compatibility
-TuyaAlarmControlPanelDefinition = AlarmControlPanelDefinition
-
-
 @dataclass(kw_only=True)
 class AlarmControlPanelQuirk(BaseEntityQuirk):
     """Quirk for an alarm control panel entity."""

@@ -45,7 +45,7 @@ def register_tuya_quirks(custom_quirks_path: str | None = None) -> None:
         _LOGGER.debug("Loading custom quirk module %r", modname)
 
         try:
-            spec = importer.find_spec(modname)  # type: ignore[call-arg]
+            spec = importer.find_spec(modname)  # ty: ignore[missing-argument]
             if TYPE_CHECKING:
                 assert spec is not None
                 assert spec.loader is not None
@@ -62,5 +62,5 @@ def register_tuya_quirks(custom_quirks_path: str | None = None) -> None:
 
     if loaded:
         _LOGGER.warning(
-            "Loaded custom quirks. Please contribute them to https://github.com/TBD"
+            "Loaded custom quirks. Please contribute them to https://github.com/home-assistant-libs/tuya-device-handlers"
         )
