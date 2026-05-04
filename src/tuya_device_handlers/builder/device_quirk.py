@@ -1,5 +1,6 @@
 """Base quirk definition."""
 
+from collections.abc import Callable
 from dataclasses import dataclass
 import inspect
 import json
@@ -9,6 +10,10 @@ from typing import TYPE_CHECKING, Any, Self
 from tuya_sharing import CustomerDevice, DeviceFunction, DeviceStatusRange
 
 from tuya_device_handlers.const import DPMode, DPType
+from tuya_device_handlers.device_wrapper.base import DeviceWrapper
+from tuya_device_handlers.device_wrapper.service_feeder_schedule import (
+    FeederSchedule,
+)
 from tuya_device_handlers.registry import DeviceQuirkProtocol, QuirksRegistry
 
 
@@ -57,13 +62,18 @@ class DatapointDefinition:
 class DeviceQuirk(DeviceQuirkProtocol):
     """Quirk for Tuya device."""
 
+    _datapoint_definitions: dict[tuple[int, str], DatapointDefinition | None]
+    _get_wrapper_functions: dict[
+        str,
+        Callable[[CustomerDevice], DeviceWrapper | None],
+    ]
+
     def __init__(self) -> None:
         """Initialize the quirk."""
         self._applies_to: list[str] = []
 
-        self._datapoint_definitions: dict[
-            tuple[int, str], DatapointDefinition | None
-        ] = {}
+        self._datapoint_definitions = {}
+        self._get_wrapper_functions = {}
 
         current_frame = inspect.currentframe()
         if TYPE_CHECKING:
@@ -206,3 +216,24 @@ class DeviceQuirk(DeviceQuirkProtocol):
         """Remove datapoint definition."""
         self._datapoint_definitions[(dpid, dpcode)] = None
         return self
+
+    def map_feeder_schedules_wrapper(
+        self,
+        *,
+        wrapper_function: Callable[
+            [CustomerDevice], DeviceWrapper[list[FeederSchedule]] | None
+        ],
+    ) -> Self:
+        """Map feeder schedule service."""
+        self._get_wrapper_functions["feeder_schedules"] = wrapper_function
+        return self
+
+    def get_feeder_schedules_wrapper(
+        self, device: CustomerDevice
+    ) -> DeviceWrapper[list[FeederSchedule]] | None:
+        if get_wrapper_function := self._get_wrapper_functions.get(
+            "feeder_schedules"
+        ):
+            return get_wrapper_function(device)
+
+        return None
