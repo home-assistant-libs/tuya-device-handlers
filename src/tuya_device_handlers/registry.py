@@ -21,6 +21,9 @@ class DeviceQuirkProtocol(Protocol):
     original_local_strategy: dict[int, dict[str, Any]]
     original_status_range: dict[str, DeviceStatusRange]
 
+    manufacturer: str | None
+    model: str | None
+
     @property
     def quirk_file(self) -> pathlib.Path: ...
     @property
