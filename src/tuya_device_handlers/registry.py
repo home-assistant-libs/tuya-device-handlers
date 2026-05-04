@@ -30,8 +30,7 @@ class DeviceQuirkProtocol(Protocol):
 
     def get_feeder_schedules_wrapper(
         self, device: CustomerDevice
-    ) -> DeviceWrapper[list[FeederSchedule]] | None:
-        raise NotImplementedError
+    ) -> DeviceWrapper[list[FeederSchedule]] | None: ...
 
 
 class QuirksRegistry:
