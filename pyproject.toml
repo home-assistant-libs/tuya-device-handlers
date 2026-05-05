@@ -1,6 +1,6 @@
 [project]
 name = "tuya-device-handlers"
-version = "0.0.18"
+version = "0.0.19"
 description = "Tuya quirks library"
 authors = [{ name = "epenet" }]
 license = "MIT"
