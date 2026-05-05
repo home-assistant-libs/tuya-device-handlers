@@ -210,10 +210,12 @@ def test_applies_to_records_manufacturer_and_model() -> None:
     quirk = DeviceQuirk().applies_to(
         product_id="abc",
         manufacturer="Acme",
-        model="Widget-1",
+        model="Widget",
+        model_id="Wid-1",
     )
     assert quirk.manufacturer == "Acme"
-    assert quirk.model == "Widget-1"
+    assert quirk.model == "Widget"
+    assert quirk.model_id == "Wid-1"
 
 
 def test_applies_to_called_twice_raises() -> None:
