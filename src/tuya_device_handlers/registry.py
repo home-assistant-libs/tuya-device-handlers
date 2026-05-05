@@ -23,6 +23,7 @@ class DeviceQuirkProtocol(Protocol):
 
     manufacturer: str | None
     model: str | None
+    model_id: str | None
 
     @property
     def quirk_file(self) -> pathlib.Path: ...

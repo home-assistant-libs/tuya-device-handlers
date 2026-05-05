@@ -137,6 +137,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
         product_id: str,
         manufacturer: str | None = None,
         model: str | None = None,
+        model_id: str | None = None,
     ) -> Self:
         """Set the device type the quirk applies to."""
         if self._applies_to is not None:
@@ -144,6 +145,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
         self._applies_to = product_id
         self.manufacturer = manufacturer
         self.model = model
+        self.model_id = model_id
         return self
 
     def register(self, registry: QuirksRegistry) -> None:
