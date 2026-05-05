@@ -9,7 +9,10 @@ from tuya_device_handlers.device_wrapper.service_feeder_schedule import (
 (
     DeviceQuirk()
     .applies_to(
-        product_id="wfkzyy0evslzsmoi", manufacturer="Cleverio", model="PF100"
+        product_id="wfkzyy0evslzsmoi",
+        manufacturer="Cleverio",
+        model="Automatic pet feeder",
+        model_id="PF100",
     )
     .map_feeder_schedules_wrapper(
         wrapper_function=lambda device: (
