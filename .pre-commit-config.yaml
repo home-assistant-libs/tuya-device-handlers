@@ -5,41 +5,110 @@ repos:
         name: Check for added large files
         entry: check-added-large-files
         language: system
+      - id: check-ast
+        name: Check Python AST
+        language: system
+        types: [python]
+        entry: poetry run check-ast
+      - id: check-case-conflict
+        name: Check for case conflicts
+        language: system
+        entry: poetry run check-case-conflict
+      - id: check-docstring-first
+        name: Check docstring is first
+        language: system
+        types: [python]
+        entry: poetry run check-docstring-first
+      - id: check-executables-have-shebangs
+        name: Check that executables have shebangs
+        language: system
+        types: [text, executable]
+        entry: poetry run check-executables-have-shebangs
+        stages: [pre-commit, pre-push, manual]
+      - id: check-json
+        name: Check JSON files
+        language: system
+        types: [json]
+        entry: poetry run check-json
+      - id: check-merge-conflict
+        name: Check for merge conflicts
+        language: system
+        types: [text]
+        entry: poetry run check-merge-conflict
+      - id: check-symlinks
+        name: Check for broken symlinks
+        language: system
+        types: [symlink]
+        entry: poetry run check-symlinks
       - id: check-toml
-        name: Check Toml
-        entry: check-toml
+        name: Check TOML files
+        entry: poetry run check-toml
         language: system
         types: [toml]
       - id: check-yaml
-        name: Check Yaml
-        entry: check-yaml
+        name: Check YAML files
+        entry: poetry run check-yaml
         language: system
         types: [yaml]
+      - id: codespell
+        name: Check code for common misspellings
+        language: system
+        types: [text]
+        exclude: ^poetry\.lock$
+        entry: poetry run codespell
+      - id: detect-private-key
+        name: Detect Private Keys
+        language: system
+        types: [text]
+        entry: poetry run detect-private-key
       - id: end-of-file-fixer
         name: Fix End of Files
-        entry: end-of-file-fixer
+        entry: poetry run end-of-file-fixer
         language: system
         types: [text]
         stages: [pre-commit, pre-push, manual]
+      - id: no-commit-to-branch
+        name: Don't commit to main branch
+        language: system
+        entry: poetry run no-commit-to-branch
+        pass_filenames: false
+        always_run: true
+        args:
+          - --branch=main
+      - id: poetry
+        name: Check pyproject with Poetry
+        language: system
+        entry: poetry check
+        pass_filenames: false
+        always_run: true
       - id: ruff-check
-        name: Lint code with Ruff
-        entry: ruff check --fix
+        name: Ruff Linter
+        entry: poetry run ruff check --fix
         language: system
         types: [python]
         require_serial: true
+        stages: [pre-commit, pre-push, manual]
       - id: ruff-format
-        name: Format code with Ruff
-        entry: ruff format
+        name: Ruff Formatter
+        entry: poetry run ruff format
         language: system
         types: [python]
         require_serial: true
+        stages: [pre-commit, pre-push, manual]
+      - id: prettier
+        name: Prettier
+        language: system
+        types: [yaml, json, markdown]
+        entry: npm run prettier
+        pass_filenames: false
       - id: trailing-whitespace
         name: Trim Trailing Whitespace
-        entry: trailing-whitespace-fixer
+        entry: poetry run trailing-whitespace-fixer
         language: system
         types: [text]
         stages: [pre-commit, pre-push, manual]
-  - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: v2.6.0
-    hooks:
-      - id: prettier
+      - id: yamllint
+        name: Check YAML files with yamllint
+        language: system
+        types: [yaml]
+        entry: poetry run yamllint

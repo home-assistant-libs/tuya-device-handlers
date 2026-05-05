@@ -1,9 +1,13 @@
 name: Release
 
+# yamllint disable-line rule:truthy
 on:
   push:
     branches:
       - main
+
+permissions:
+  contents: read
 
 jobs:
   release:
@@ -15,35 +19,29 @@ jobs:
       # Needed for salsify/action-detect-and-tag-new-version
       contents: write
     steps:
-      - name: Check out the repository
-        uses: actions/checkout@v6.0.2
+      - name: ⤵️ Check out code from GitHub
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           fetch-depth: 2
+          persist-credentials: false
 
-      - name: Set up Python
-        uses: actions/setup-python@v6.2.0
+      - name: 🏗 Set up Python
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
-          python-version: "3.14.4"
+          python-version: "3.14"
 
-      - name: Upgrade pip
-        run: |
-          pip install --constraint=.github/workflows/constraints.txt pip
-          pip --version
-
-      - name: Install Poetry
-        run: |
-          pip install --constraint=.github/workflows/constraints.txt poetry
-          poetry --version
+      - name: 🏗 Install Poetry
+        run: pipx install poetry
 
       - name: Check if there is a parent commit
         id: check-parent-commit
         run: |
-          echo "sha=$(git rev-parse --verify --quiet HEAD^)" >> $GITHUB_OUTPUT
+          echo "sha=$(git rev-parse --verify --quiet HEAD^)" >> "$GITHUB_OUTPUT"
 
       - name: Detect and tag new version
         id: check-version
         if: steps.check-parent-commit.outputs.sha
-        uses: salsify/action-detect-and-tag-new-version@v2.0.3
+        uses: salsify/action-detect-and-tag-new-version@2e972ec550a624c846f9f37e87376a6f9f6a682a # v2.0.3
         with:
           version-command: |
             bash -o pipefail -c "poetry version | awk '{ print \$2 }'"
@@ -55,23 +53,24 @@ jobs:
           version=$(poetry version | awk '{ print $2 }') &&
           poetry version $version.dev.$(date +%s)
 
-      - name: Build package
+      - name: 🏗 Build package
         run: |
           poetry build --ansi
 
-      - name: Publish package on PyPI
+      - name: 🚀 Publish package on PyPI
         if: steps.check-version.outputs.tag
-        uses: pypa/gh-action-pypi-publish@v1.13.0
+        uses: pypa/gh-action-pypi-publish@6733eb7d741f0b11ec6a39b58540dab7590f9b7d # v1.14.0
 
-      - name: Publish package on TestPyPI
+      - name: 🚀 Publish package on TestPyPI
         if: "! steps.check-version.outputs.tag"
-        uses: pypa/gh-action-pypi-publish@v1.13.0
+        uses: pypa/gh-action-pypi-publish@6733eb7d741f0b11ec6a39b58540dab7590f9b7d # v1.14.0
         with:
           repository-url: https://test.pypi.org/legacy/
 
-      - name: Publish release notes
-        uses: release-drafter/release-drafter@v7.1.1
+      - name: 📝 Publish release notes
+        uses: release-drafter/release-drafter@ec0763817cb51182ef86848b090642f2a47902aa # v7.2.1
         with:
           publish: ${{ steps.check-version.outputs.tag != '' }}
           tag: ${{ steps.check-version.outputs.tag }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

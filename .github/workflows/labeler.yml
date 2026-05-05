@@ -1,18 +1,27 @@
 name: Labeler
 
+# yamllint disable-line rule:truthy
 on:
   push:
     branches:
       - main
 
+permissions:
+  contents: read
+
 jobs:
   labeler:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
     steps:
-      - name: Check out the repository
-        uses: actions/checkout@v6.0.2
+      - name: ⤵️ Check out code from GitHub
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
 
-      - name: Run Labeler
-        uses: crazy-max/ghaction-github-labeler@v6.0.0
+      - name: 🚀 Run Labeler
+        uses: crazy-max/ghaction-github-labeler@548a7c3603594ec17c819e1239f281a3b801ab4d # v6.0.0
         with:
           skip-delete: true
