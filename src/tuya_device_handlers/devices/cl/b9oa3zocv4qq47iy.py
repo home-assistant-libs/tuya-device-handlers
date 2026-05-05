@@ -18,7 +18,8 @@ from tuya_device_handlers.builder import DeviceQuirk
     .applies_to(
         product_id="b9oa3zocv4qq47iy",
         manufacturer="A-OK",
-        model="AM45 Plus Wi-Fi",
+        model="Tubular motor",
+        model_id="AM45 Plus Wi-Fi",
     )
     .remove_dpid(dpid=3, dpcode="percent_state")
     .register(TUYA_QUIRKS_REGISTRY)
