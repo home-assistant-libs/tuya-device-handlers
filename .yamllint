@@ -1,0 +1,14 @@
+ignore:
+  - .venv/
+
+rules:
+  braces:
+    max-spaces-inside: 1
+  comments:
+    level: error
+    min-spaces-from-content: 1
+  comments-indentation:
+    level: error
+  line-length: disable
+  truthy:
+    level: error

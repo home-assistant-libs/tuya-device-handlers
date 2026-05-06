@@ -1,6 +1,6 @@
 [project]
 name = "tuya-device-handlers"
-version = "0.0.18"
+version = "0.0.19"
 description = "Tuya quirks library"
 authors = [{ name = "epenet" }]
 license = "MIT"
@@ -24,47 +24,79 @@ requires-poetry = '>=2.0'
 [project.urls]
 homepage = "https://github.com/home-assistant-libs/tuya-device-handlers"
 repository = "https://github.com/home-assistant-libs/tuya-device-handlers"
-documentation = "https://tuya-device-handlers.readthedocs.io"
+documentation = "https://github.com/home-assistant-libs/tuya-device-handlers"
 Changelog = "https://github.com/home-assistant-libs/tuya-device-handlers/releases"
 
 [tool.poetry.group.dev.dependencies]
-ruff = "0.15.9"
+codespell = "2.4.2"
+covdefaults = "2.3.0"
 coverage = { version = "7.13.5", extras = ["toml"] }
-ty = "0.0.32"
-pre-commit = "4.5.1"
 pre-commit-hooks = "6.0.0"
+prek = "0.3.11"
+pylint = "4.0.5"
 pytest = "9.0.3"
 pytest-asyncio = "1.3.0"
 pytest-cov = "7.1.0"
+ruff = "0.15.9"
 safety = "3.7.0"
 syrupy = "5.1.0"
+ty = "0.0.32"
+yamllint = "1.38.0"
+zizmor = "1.24.1"
 
-# docs (Python >= 3.14)
-furo = { version = "2025.12.19", python = ">=3.14" }
-myst-parser = { version = "5.0.0", python = ">=3.14" }
-sphinx = { version = "9.1.0", python = ">=3.14" }
-sphinx-autobuild = { version = "2025.8.25", python = ">=3.14" }
-sphinx-click = { version = "6.2.0", python = ">=3.14" }
-
-[tool.coverage.paths]
-source = ["src", "*/site-packages"]
-tests = ["tests", "*/tests"]
 
 [tool.coverage.run]
-branch = true
+plugins = ["covdefaults"]
 source = ["tuya_device_handlers"]
 
 [tool.coverage.report]
 show_missing = true
-exclude_lines = [
-  # Don't complain if tests don't hit defensive assertion code:
-  "raise NotImplementedError",
-  # TYPE_CHECKING blocks are never executed during pytest run
-  "if TYPE_CHECKING:",
-]
+fail_under = 90
 
 [tool.ty.environment]
 python-version = "3.13"
+
+[tool.codespell]
+skip = "node_modules,poetry.lock"
+
+[tool.pylint.MASTER]
+ignore = ["tests"]
+
+[tool.pylint.BASIC]
+good-names = ["_", "ex", "fp", "i", "id", "j", "k", "on", "Run", "T"]
+
+[tool.pylint.DESIGN]
+max-attributes = 15
+
+[tool.pylint."MESSAGES CONTROL"]
+disable = [
+    "abstract-method",
+    "arguments-differ",
+    "invalid-name",
+    "broad-exception-caught",
+    "cyclic-import",
+    "duplicate-code",
+    "format",
+    "import-outside-toplevel",
+    "missing-class-docstring",
+    "missing-function-docstring",
+    "redefined-builtin",
+    "too-many-arguments",
+    "too-many-boolean-expressions",
+    "too-many-positional-arguments",
+    "too-many-return-statements",
+    "unsubscriptable-object",
+    "unused-argument",
+]
+
+[tool.pylint.SIMILARITIES]
+ignore-imports = true
+
+[tool.pylint.FORMAT]
+max-line-length = 80
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
 
 [tool.ruff]
 line-length = 80
