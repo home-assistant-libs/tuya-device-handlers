@@ -5,19 +5,25 @@ from dataclasses import dataclass
 
 from tuya_sharing import CustomerDevice
 
-from ..device_wrapper import DeviceWrapper
-from ..device_wrapper.common import DPCodeBooleanWrapper, DPCodeEnumWrapper
-from ..device_wrapper.fan import (
+from tuya_device_handlers.device_wrapper import DeviceWrapper
+from tuya_device_handlers.device_wrapper.common import (
+    DPCodeBooleanWrapper,
+    DPCodeEnumWrapper,
+)
+from tuya_device_handlers.device_wrapper.fan import (
     FanDirectionEnumWrapper,
     FanSpeedEnumWrapper,
     FanSpeedIntegerWrapper,
 )
-from ..helpers.homeassistant import TuyaFanDirection
+from tuya_device_handlers.helpers.homeassistant import TuyaFanDirection
+
 from .base import BaseEntityQuirk
 
 
 @dataclass(kw_only=True)
 class FanDefinition:
+    """Definition for a fan entity."""
+
     direction_wrapper: DeviceWrapper[TuyaFanDirection] | None
     mode_wrapper: DeviceWrapper[str] | None
     oscillate_wrapper: DeviceWrapper[bool] | None
@@ -43,6 +49,7 @@ _SWITCH_DPCODES = ("switch_fan", "fan_switch", "switch")
 
 
 def get_default_definition(device: CustomerDevice) -> FanDefinition | None:
+    """Get the default fan definition for a device."""
     properties_to_check: set[str] = {
         # Main control switch
         *_SWITCH_DPCODES,

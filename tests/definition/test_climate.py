@@ -16,7 +16,7 @@ from tuya_device_handlers.helpers.homeassistant import TuyaUnitOfTemperature
     "unit", [TuyaUnitOfTemperature.CELSIUS, TuyaUnitOfTemperature.FAHRENHEIT]
 )
 def test_get_default_definition(unit: TuyaUnitOfTemperature) -> None:
-    """Test get_default_definition"""
+    """Test get_default_definition."""
     device = create_device("kt_5wnlzekkstwcdsvm.json")
     assert (definition := get_default_definition(device, unit))
     assert not definition.current_humidity_wrapper
@@ -38,7 +38,7 @@ def test_get_default_definition(unit: TuyaUnitOfTemperature) -> None:
 def test_get_default_definition_with_convert(
     unit: TuyaUnitOfTemperature,
 ) -> None:
-    """Test get_default_definition"""
+    """Test get_default_definition."""
     device = create_device("wk_B0eP8qYAdpUo4yR9.json")
     assert (definition := get_default_definition(device, unit))
     assert not definition.current_humidity_wrapper

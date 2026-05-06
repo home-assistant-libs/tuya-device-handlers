@@ -1,4 +1,4 @@
-"""Test DeviceWrapper classes"""
+"""Test DeviceWrapper classes."""
 
 from typing import Any
 

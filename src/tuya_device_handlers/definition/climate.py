@@ -5,29 +5,34 @@ from dataclasses import dataclass
 
 from tuya_sharing import CustomerDevice
 
-from ..const import CELSIUS_ALIASES, FAHRENHEIT_ALIASES
-from ..device_wrapper import DeviceWrapper
-from ..device_wrapper.climate import (
+from tuya_device_handlers.const import CELSIUS_ALIASES, FAHRENHEIT_ALIASES
+from tuya_device_handlers.device_wrapper import DeviceWrapper
+from tuya_device_handlers.device_wrapper.climate import (
     DefaultHVACModeWrapper,
     DefaultPresetModeWrapper,
     SwingModeCompositeWrapper,
 )
-from ..device_wrapper.common import (
+from tuya_device_handlers.device_wrapper.common import (
     DPCodeBooleanWrapper,
     DPCodeEnumWrapper,
     DPCodeIntegerWrapper,
 )
-from ..device_wrapper.extended import DPCodeRoundedIntegerWrapper
-from ..helpers.homeassistant import (
+from tuya_device_handlers.device_wrapper.extended import (
+    DPCodeRoundedIntegerWrapper,
+)
+from tuya_device_handlers.helpers.homeassistant import (
     TuyaClimateHVACMode,
     TuyaClimateSwingMode,
     TuyaUnitOfTemperature,
 )
+
 from .base import BaseEntityQuirk
 
 
 @dataclass(kw_only=True)
 class ClimateDefinition:
+    """Definition for a climate entity."""
+
     current_humidity_wrapper: DeviceWrapper[int] | None
     current_temperature_wrapper: DeviceWrapper[float] | None
     fan_mode_wrapper: DeviceWrapper[str] | None
@@ -95,7 +100,7 @@ def get_temperature_wrappers(
     )
 
     # Return early if we have the right wrappers for the system unit
-    if system_temperature_unit == TuyaUnitOfTemperature.FAHRENHEIT:
+    if system_temperature_unit == TuyaUnitOfTemperature.FAHRENHEIT:  # noqa: SIM102
         if (
             (current_fahrenheit and set_fahrenheit)
             or (current_fahrenheit and not set_celsius)
@@ -175,6 +180,7 @@ def _get_default_temperature_wrappers(
 def get_default_definition(
     device: CustomerDevice, system_temperature_unit: TuyaUnitOfTemperature
 ) -> ClimateDefinition:
+    """Get the default climate definition for a device."""
     current_temperature_wrapper, set_temperature_wrapper, temperature_unit = (
         _get_default_temperature_wrappers(device, system_temperature_unit)
     )

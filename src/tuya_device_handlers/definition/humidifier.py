@@ -5,14 +5,22 @@ from dataclasses import dataclass
 
 from tuya_sharing import CustomerDevice
 
-from ..device_wrapper import DeviceWrapper
-from ..device_wrapper.common import DPCodeBooleanWrapper, DPCodeEnumWrapper
-from ..device_wrapper.extended import DPCodeRoundedIntegerWrapper
+from tuya_device_handlers.device_wrapper import DeviceWrapper
+from tuya_device_handlers.device_wrapper.common import (
+    DPCodeBooleanWrapper,
+    DPCodeEnumWrapper,
+)
+from tuya_device_handlers.device_wrapper.extended import (
+    DPCodeRoundedIntegerWrapper,
+)
+
 from .base import BaseEntityQuirk
 
 
 @dataclass(kw_only=True)
 class HumidifierDefinition:
+    """Definition for a humidifier entity."""
+
     current_humidity_wrapper: DeviceWrapper[int] | None = None
     mode_wrapper: DeviceWrapper[str] | None = None
     switch_wrapper: DeviceWrapper[bool] | None = None
@@ -36,6 +44,7 @@ def get_default_definition(
     current_humidity_dpcode: str | None = None,
     humidity_dpcode: str | None = None,
 ) -> HumidifierDefinition | None:
+    """Get the default humidifier definition for a device."""
     properties_to_check: set[str | None] = {
         # Main control switch
         *(

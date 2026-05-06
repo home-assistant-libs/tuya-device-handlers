@@ -5,17 +5,20 @@ from dataclasses import dataclass
 
 from tuya_sharing import CustomerDevice
 
-from ..device_wrapper import DeviceWrapper
-from ..device_wrapper.binary_sensor import (
+from tuya_device_handlers.device_wrapper import DeviceWrapper
+from tuya_device_handlers.device_wrapper.binary_sensor import (
     DPCodeBitmapBitWrapper,
     DPCodeInSetWrapper,
 )
-from ..device_wrapper.common import DPCodeBooleanWrapper
+from tuya_device_handlers.device_wrapper.common import DPCodeBooleanWrapper
+
 from .base import BaseEntityQuirk
 
 
 @dataclass(kw_only=True)
 class BinarySensorDefinition:
+    """Definition for a binary sensor entity."""
+
     binary_sensor_wrapper: DeviceWrapper[bool]
 
 
@@ -33,8 +36,9 @@ def get_default_definition(
     device: CustomerDevice,
     dpcode: str,
     bitmap_key: str | None = None,
-    on_value: bool | float | int | str | set[bool | float | int | str] = True,
+    on_value: bool | float | str | set[bool | float | int | str] = True,
 ) -> BinarySensorDefinition | None:
+    """Get the default binary sensor definition for a device."""
     if bitmap_key is not None:
         if bitmap_wrapper := DPCodeBitmapBitWrapper.find_dpcode(
             device, dpcode, bitmap_key=bitmap_key

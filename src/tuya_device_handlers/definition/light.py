@@ -8,13 +8,13 @@ from typing import Any, cast
 
 from tuya_sharing import CustomerDevice
 
-from ..device_wrapper import DeviceWrapper
-from ..device_wrapper.common import (
+from tuya_device_handlers.device_wrapper import DeviceWrapper
+from tuya_device_handlers.device_wrapper.common import (
     DPCodeBooleanWrapper,
     DPCodeEnumWrapper,
     DPCodeIntegerWrapper,
 )
-from ..device_wrapper.light import (
+from tuya_device_handlers.device_wrapper.light import (
     DEFAULT_H_TYPE_V2,
     DEFAULT_S_TYPE_V2,
     DEFAULT_V_TYPE_V2,
@@ -22,12 +22,15 @@ from ..device_wrapper.light import (
     ColorDataWrapper,
     ColorTempWrapper,
 )
-from ..utils import RemapHelper
+from tuya_device_handlers.utils import RemapHelper
+
 from .base import BaseEntityQuirk
 
 
 @dataclass(kw_only=True)
 class LightDefinition:
+    """Definition for a light entity."""
+
     brightness_wrapper: DeviceWrapper[int] | None
     color_data_wrapper: DeviceWrapper[tuple[float, float, float]] | None
     color_mode_wrapper: DeviceWrapper[str] | None
@@ -66,6 +69,7 @@ def get_default_definition(
     color_temp_dpcode: str | tuple[str, ...] | None = None,
     fallback_color_data_mode: FallbackColorDataMode = FallbackColorDataMode.V1,
 ) -> LightDefinition | None:
+    """Get the default light definition for a device."""
     if not (
         switch_wrapper := DPCodeBooleanWrapper.find_dpcode(
             device, switch_dpcode, prefer_function=True

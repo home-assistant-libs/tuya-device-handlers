@@ -13,7 +13,7 @@ from .common import DPCodeRawWrapper
 
 
 class FeederSchedule(TypedDict):
-    """Public class for Home Assistant representation of a feeder schedule entry."""
+    """HA representation of a feeder schedule entry."""
 
     days: list[str]
     """Days (monday-sunday)."""
@@ -31,6 +31,7 @@ class DefaultFeederScheduleWrapper(DPCodeRawWrapper[list[FeederSchedule]]):
     def __init__(
         self, dpcode: str, type_information: RawTypeInformation
     ) -> None:
+        """Initialize DefaultFeederScheduleWrapper."""
         super().__init__(dpcode, type_information)
         template: list[tuple[_TEMPLATE_KEY, int]] = [
             ("days", 2),
@@ -71,7 +72,10 @@ class DefaultFeederScheduleWrapper(DPCodeRawWrapper[list[FeederSchedule]]):
 def get_feeder_schedule_wrapper(
     device: CustomerDevice,
 ) -> DeviceWrapper[list[FeederSchedule]] | None:
-    from tuya_device_handlers import TUYA_QUIRKS_REGISTRY  # noqa: PLC0415
+    """Get the feeder schedules wrapper for a device."""
+    from tuya_device_handlers import (  # noqa: PLC0415  # pylint: disable=import-outside-toplevel
+        TUYA_QUIRKS_REGISTRY,
+    )
 
     if (quirk := TUYA_QUIRKS_REGISTRY.get_quirk_for_device(device)) is not None:
         return quirk.get_feeder_schedules_wrapper(device)
@@ -84,8 +88,9 @@ def get_feeder_schedule_wrapper(
     return None
 
 
-# Internal representation of a feeding time entry to keep it easier to tell what we expect.
-_TEMPLATE_KEY = Literal["days", "hour", "minute", "portion", "enabled"]
+# Internal representation of a feeding time entry to keep it
+# easier to tell what we expect.
+_TEMPLATE_KEY = Literal["days", "hour", "minute", "portion", "enabled"]  # pylint: disable=invalid-name
 
 
 class _DaysOfWeek(IntFlag):
@@ -150,18 +155,15 @@ def _internal_list_to_home_assistant(
     Days are converted from bitmap integer to list of day names.
     Time is merged from separate hour and minute integers to "hh:mm" string.
     """
-
-    result: list[FeederSchedule] = []
-    for item in entries:
-        result.append(
-            FeederSchedule(
-                days=[i.name.lower() for i in _DaysOfWeek if item["days"] & i],
-                time=f"{item['hour']:02d}:{item['minute']:02d}",
-                portion=item["portion"],
-                enabled=bool(item["enabled"]),
-            )
+    return [
+        FeederSchedule(
+            days=[i.name.lower() for i in _DaysOfWeek if item["days"] & i],
+            time=f"{item['hour']:02d}:{item['minute']:02d}",
+            portion=item["portion"],
+            enabled=bool(item["enabled"]),
         )
-    return result
+        for item in entries
+    ]
 
 
 class _DayTransformer:
@@ -174,6 +176,7 @@ class _DayTransformer:
     def encode_entry(
         self, entry: _InternalFeederSchedule
     ) -> _InternalFeederSchedule:
+        """Encode day bitmask from internal to device order."""
         val = 0
         for internal, device in self._day_mapping:
             if entry["days"] & (1 << internal):
@@ -184,6 +187,7 @@ class _DayTransformer:
     def decode_entry(
         self, entry: _InternalFeederSchedule
     ) -> _InternalFeederSchedule:
+        """Decode day bitmask from device to internal order."""
         val = _DaysOfWeek(0)
         masked = entry["days"] & 0x7F
         for internal, device in self._day_mapping:

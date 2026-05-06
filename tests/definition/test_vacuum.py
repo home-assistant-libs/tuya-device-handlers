@@ -6,7 +6,7 @@ from tuya_device_handlers.device_wrapper.vacuum import VacuumActionWrapper
 
 
 def test_get_default_definition() -> None:
-    """Test get_default_definition"""
+    """Test get_default_definition."""
     device = create_device("sd_i6hyjg3af7doaswm.json")
     assert (definition := get_default_definition(device))
     assert isinstance(definition.action_wrapper, VacuumActionWrapper)

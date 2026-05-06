@@ -22,10 +22,10 @@ from tuya_device_handlers.device_wrapper.common import DPCodeBooleanWrapper
 def test_get_default_definition(
     dpcode: str,
     bitmap_code: str | None,
-    on_values: bool | float | int | str | set[bool | float | int | str],
+    on_values: bool | float | str | set[bool | float | int | str],
     wrapper_type: type,
 ) -> None:
-    """Test get_default_definition"""
+    """Test get_default_definition."""
     device = create_device("cs_zibqa9dutqyaxym2.json")
     assert (
         definition := get_default_definition(
@@ -43,6 +43,6 @@ def test_get_default_definition(
     ],
 )
 def test_get_default_definition_fails(bitmap_code: str | None) -> None:
-    """Test get_default_definition"""
+    """Test get_default_definition."""
     device = create_device("cs_zibqa9dutqyaxym2.json")
     assert not get_default_definition(device, "bad", bitmap_code, True)

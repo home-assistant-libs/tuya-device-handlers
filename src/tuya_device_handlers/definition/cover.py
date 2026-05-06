@@ -5,20 +5,27 @@ from dataclasses import dataclass
 
 from tuya_sharing import CustomerDevice
 
-from ..device_wrapper import DeviceWrapper
-from ..device_wrapper.common import DPCodeTypeInformationWrapper
-from ..device_wrapper.cover import (
+from tuya_device_handlers.device_wrapper import DeviceWrapper
+from tuya_device_handlers.device_wrapper.common import (
+    DPCodeTypeInformationWrapper,
+)
+from tuya_device_handlers.device_wrapper.cover import (
     CoverClosedEnumWrapper,
     CoverInstructionBooleanWrapper,
     CoverInstructionEnumWrapper,
 )
-from ..device_wrapper.extended import DPCodeInvertedPercentageWrapper
-from ..helpers.homeassistant import TuyaCoverAction
+from tuya_device_handlers.device_wrapper.extended import (
+    DPCodeInvertedPercentageWrapper,
+)
+from tuya_device_handlers.helpers.homeassistant import TuyaCoverAction
+
 from .base import BaseEntityQuirk
 
 
 @dataclass(kw_only=True)
 class CoverDefinition:
+    """Definition for a cover entity."""
+
     current_position_wrapper: DeviceWrapper[int] | None
     current_state_wrapper: DeviceWrapper[bool] | None
     instruction_wrapper: DeviceWrapper[TuyaCoverAction] | None
@@ -53,6 +60,7 @@ def get_default_definition(
         DPCodeTypeInformationWrapper
     ] = DPCodeInvertedPercentageWrapper,
 ) -> CoverDefinition | None:
+    """Get the default cover definition for a device."""
     if not (
         instruction_dpcode in device.function
         or instruction_dpcode in device.status_range
