@@ -36,7 +36,7 @@ def get_default_definition(
     device: CustomerDevice,
     dpcode: str,
     bitmap_key: str | None = None,
-    on_value: bool | float | str | set[bool | float | int | str] = True,
+    on_value: bool | float | int | str | set[bool | float | int | str] = True,
 ) -> BinarySensorDefinition | None:
     """Get the default binary sensor definition for a device."""
     if bitmap_key is not None:

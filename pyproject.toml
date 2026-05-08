@@ -112,6 +112,7 @@ ignore = [
     "FBT002",  # Boolean default value positional argument
     "FBT003",  # Boolean positional value in call
     "PLR0913", # Too many arguments in function definition
+    "PYI041",  # Redundant numeric union (int is subtype of float, but keep for clarity)
     "RUF012",  # Mutable class default
     "TC006",   # Runtime cast value (stylistic, prefer unquoted)
     "TRY003",  # Raise vanilla args
