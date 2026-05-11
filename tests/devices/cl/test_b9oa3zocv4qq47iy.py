@@ -1,14 +1,11 @@
 """Test device-level quirk initialisation."""
 
-from __future__ import annotations
-
+from tests import create_device
+from tests.devices.cover_helpers import get_cover_default_definitions
 from tuya_device_handlers.device_wrapper.extended import (
     DPCodeInvertedPercentageWrapper,
 )
 from tuya_device_handlers.registry import QuirksRegistry
-
-from ... import create_device
-from ..cover_helpers import get_cover_default_definitions
 
 
 def test_suppresses_percent_state(
