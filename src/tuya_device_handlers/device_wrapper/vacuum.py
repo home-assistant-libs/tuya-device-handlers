@@ -4,7 +4,11 @@ from typing import Any, Self
 
 from tuya_sharing import CustomerDevice
 
-from ..helpers.homeassistant import TuyaVacuumAction, TuyaVacuumActivity
+from tuya_device_handlers.helpers.homeassistant import (
+    TuyaVacuumAction,
+    TuyaVacuumActivity,
+)
+
 from .base import DeviceWrapper
 from .common import DPCodeBooleanWrapper, DPCodeEnumWrapper
 
@@ -81,7 +85,7 @@ class VacuumActionWrapper(DeviceWrapper[TuyaVacuumAction]):
 
     _TUYA_MODE_RETURN_HOME = "chargego"
 
-    def __init__(
+    def __init__(  # pylint: disable=too-many-positional-arguments
         self,
         charge_wrapper: DPCodeBooleanWrapper | None,
         locate_wrapper: DPCodeBooleanWrapper | None,
@@ -127,7 +131,7 @@ class VacuumActionWrapper(DeviceWrapper[TuyaVacuumAction]):
             ),
         )
 
-    def get_update_commands(
+    def get_update_commands(  # noqa: PLR0911  # pylint: disable=too-many-return-statements
         self, device: CustomerDevice, value: TuyaVacuumAction
     ) -> list[dict[str, Any]]:
         """Get the commands for the action wrapper."""

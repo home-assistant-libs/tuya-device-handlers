@@ -1,4 +1,4 @@
-"""Test DeviceWrapper classes"""
+"""Test DeviceWrapper classes."""
 
 from typing import Any
 
@@ -74,7 +74,7 @@ def _inject_default_alarm_codes(mock_device: CustomerDevice) -> None:
                 "master_mode": "home",
                 "master_state": "alarm",
                 # "Sensor Low Battery Test Sensor" in UTF-16BE
-                "alarm_msg": "AFMAZQBuAHMAbwByACAATABvAHcAIABCAGEAdAB0AGUAcgB5ACAAVABlAHMAdAAgAFMAZQBuAHMAbwBy",
+                "alarm_msg": "AFMAZQBuAHMAbwByACAATABvAHcAIABCAGEAdAB0AGUAcgB5ACAAVABlAHMAdAAgAFMAZQBuAHMAbwBy",  # noqa: E501
             },
             TuyaAlarmControlPanelState.ARMED_HOME,
             "Sensor Low Battery Test Sensor",

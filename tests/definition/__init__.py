@@ -1,1 +1,1 @@
-"""Test entity definitions"""
+"""Test entity definitions."""

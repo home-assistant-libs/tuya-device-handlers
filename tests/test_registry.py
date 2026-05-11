@@ -9,7 +9,7 @@ from tuya_device_handlers.registry import QuirksRegistry
 
 
 def test_singleton_preserves_state() -> None:
-    """Test that re-instantiating QuirksRegistry does not wipe registered quirks."""
+    """Re-instantiating QuirksRegistry preserves quirks."""
     reg = QuirksRegistry()
 
     # Register a quirk
@@ -50,7 +50,7 @@ def test_initialise_device_quirk_no_match_is_noop() -> None:
 
 
 def test_purge_custom_quirks_removes_quirks_under_root() -> None:
-    """purge_custom_quirks drops quirks whose file lives under the given root."""
+    """purge_custom_quirks drops quirks under the given root."""
     reg = QuirksRegistry()
 
     custom_root = "/tmp/custom_quirks"

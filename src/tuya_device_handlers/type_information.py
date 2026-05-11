@@ -21,9 +21,10 @@ _LOG_OR_QUIRK = (
 
 
 def _should_log_warning(device_id: str, warning_key: str) -> bool:
-    """Check if a warning has already been logged for a device and add it if not.
+    """Check if a warning was already logged for a device.
 
-    Returns: True if the warning should be logged, False if it was already logged.
+    Returns: True if the warning should be logged,
+    False if it was already logged.
     """
     if (device_warnings := DEVICE_WARNINGS.get(device_id)) is None:
         device_warnings = set()
@@ -47,7 +48,11 @@ class TypeInformation[T](abc.ABC):
 
     @classmethod
     def _from_json(
-        cls, dpcode: str, type_data: str, *, report_type: str | None
+        cls,
+        dpcode: str,
+        type_data: str,
+        *,
+        report_type: str | None,  # noqa: ARG003
     ) -> Self | None:
         """Load JSON string and return a TypeInformation object."""
         return cls(dpcode=dpcode, type_data=type_data)
@@ -60,7 +65,7 @@ class TypeInformation[T](abc.ABC):
         *,
         prefer_function: bool = False,
     ) -> Self | None:
-        """Find type information for a matching DP code available for this device."""
+        """Find type information for a matching DP code."""
         if dpcodes is None:
             return None
 
@@ -110,7 +115,11 @@ class BitmapTypeInformation(TypeInformation[int]):
 
     @classmethod
     def _from_json(
-        cls, dpcode: str, type_data: str, *, report_type: str | None
+        cls,
+        dpcode: str,
+        type_data: str,
+        *,
+        report_type: str | None,  # noqa: ARG003
     ) -> Self | None:
         """Load JSON string and return a BitmapTypeInformation object."""
         if not (parsed := cast(dict[str, Any] | None, json.loads(type_data))):
@@ -122,6 +131,7 @@ class BitmapTypeInformation(TypeInformation[int]):
         )
 
     def read_device_value(self, device: CustomerDevice) -> int | None:
+        """Read the device value for this datapoint."""
         if (raw_value := device.status.get(self.dpcode)) is None:
             return None
         if isinstance(raw_value, int):
@@ -148,6 +158,7 @@ class BooleanTypeInformation(TypeInformation[bool]):
     _DPTYPE = DPType.BOOLEAN
 
     def read_device_value(self, device: CustomerDevice) -> bool | None:
+        """Read the device value for this datapoint."""
         if (raw_value := device.status.get(self.dpcode)) is None:
             return None
         if raw_value in (True, False):
@@ -178,7 +189,11 @@ class EnumTypeInformation(TypeInformation[str]):
 
     @classmethod
     def _from_json(
-        cls, dpcode: str, type_data: str, *, report_type: str | None
+        cls,
+        dpcode: str,
+        type_data: str,
+        *,
+        report_type: str | None,  # noqa: ARG003
     ) -> Self | None:
         """Load JSON string and return an EnumTypeInformation object."""
         if not (parsed := json.loads(type_data)):
@@ -190,6 +205,7 @@ class EnumTypeInformation(TypeInformation[str]):
         )
 
     def read_device_value(self, device: CustomerDevice) -> str | None:
+        """Read the device value for this datapoint."""
         if (raw_value := device.status.get(self.dpcode)) is None:
             return None
         # Validate input against defined range
@@ -253,6 +269,7 @@ class IntegerTypeInformation(TypeInformation[float]):
         )
 
     def read_device_value(self, device: CustomerDevice) -> float | None:
+        """Read the device value for this datapoint."""
         if (raw_value := device.status.get(self.dpcode)) is None:
             return None
         # Validate input against defined range
@@ -285,6 +302,7 @@ class JsonTypeInformation(TypeInformation[dict[str, Any]]):
     def read_device_value(
         self, device: CustomerDevice
     ) -> dict[str, Any] | None:
+        """Read the device value for this datapoint."""
         if (raw_value := device.status.get(self.dpcode)) is None:
             return None
         try:
@@ -310,6 +328,7 @@ class RawTypeInformation(TypeInformation[bytes]):
     _DPTYPE = DPType.RAW
 
     def read_device_value(self, device: CustomerDevice) -> bytes | None:
+        """Read the device value for this datapoint."""
         if (raw_value := device.status.get(self.dpcode)) is None:
             return None
         try:
@@ -335,4 +354,5 @@ class StringTypeInformation(TypeInformation[str]):
     _DPTYPE = DPType.STRING
 
     def read_device_value(self, device: CustomerDevice) -> str | None:
+        """Read the device value for this datapoint."""
         return cast(str, device.status.get(self.dpcode))

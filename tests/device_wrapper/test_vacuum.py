@@ -1,4 +1,4 @@
-"""Test DeviceWrapper classes"""
+"""Test DeviceWrapper classes."""
 
 from typing import Any
 
@@ -61,7 +61,7 @@ def test_read_device_status(
             "status",
             "charge_done",
             dptype="Enum",
-            values='{"range": ["standby","zone_clean","part_clean","cleaning","paused","goto_pos","pos_arrived","pos_unarrive","goto_charge","charging","charge_done","sleep"]}',
+            values='{"range": ["standby","zone_clean","part_clean","cleaning","paused","goto_pos","pos_arrived","pos_unarrive","goto_charge","charging","charge_done","sleep"]}',  # noqa: E501
         )
 
     mock_device.status.update(status_updates)

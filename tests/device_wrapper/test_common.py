@@ -1,4 +1,4 @@
-"""Test DeviceWrapper classes"""
+"""Test DeviceWrapper classes."""
 
 import base64
 from typing import Any

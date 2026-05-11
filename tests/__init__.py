@@ -8,7 +8,7 @@ from tuya_sharing import CustomerDevice, DeviceFunction, DeviceStatusRange
 
 
 def _date_as_timestamp(date_string: str | None) -> int:
-    # "2023-06-21T04:29:09+00:00"
+    # Expected format: "2023-06-21T04:29:09+00:00"
     if date_string is None:
         return 0
     return int(datetime.fromisoformat(date_string).timestamp())
@@ -108,13 +108,15 @@ def send_device_update(
     device: CustomerDevice,
     updated_status_properties: dict[str, Any] | None = None,
 ) -> None:
-    """Send device update"""
+    """Send device update."""
     property_list: list[str] = []
     if updated_status_properties:
         for key, value in updated_status_properties.items():
             if key not in device.status:
-                raise ValueError(
-                    f"Property {key} not found in device status: {device.status}"
+                msg = (
+                    f"Property {key} not found in "
+                    f"device status: {device.status}"
                 )
+                raise ValueError(msg)
             device.status[key] = value
             property_list.append(key)

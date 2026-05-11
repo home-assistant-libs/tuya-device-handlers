@@ -4,18 +4,19 @@
 [![Python Version](https://img.shields.io/pypi/pyversions/tuya-device-handlers)][python version]
 [![License](https://img.shields.io/pypi/l/tuya-device-handlers)][license]
 
-[![Read the documentation at https://tuya-device-handlers.readthedocs.io/](https://img.shields.io/readthedocs/tuya-device-handlers/latest.svg?label=Read%20the%20Docs)][read the docs]
-[![Tests](https://github.com/home-assistant-libs/tuya-device-handlers/workflows/Tests/badge.svg)][tests]
+[![Tests](https://github.com/home-assistant-libs/tuya-device-handlers/workflows/Testing/badge.svg)][tests]
 [![Codecov](https://codecov.io/gh/home-assistant-libs/tuya-device-handlers/branch/main/graph/badge.svg)][codecov]
+[![OpenSSF Scorecard][scorecard-shield]][scorecard]
 
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)][pre-commit]
 [![ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)][ruff]
 
 [pypi_]: https://pypi.org/project/tuya-device-handlers/
 [python version]: https://pypi.org/project/tuya-device-handlers
-[read the docs]: https://tuya-device-handlers.readthedocs.io/
 [tests]: https://github.com/home-assistant-libs/tuya-device-handlers/actions?workflow=Tests
 [codecov]: https://app.codecov.io/gh/home-assistant-libs/tuya-device-handlers
+[scorecard]: https://scorecard.dev/viewer/?uri=github.com/home-assistant-libs/tuya-device-handlers
+[scorecard-shield]: https://api.scorecard.dev/projects/github.com/home-assistant-libs/tuya-device-handlers/badge
 [pre-commit]: https://github.com/pre-commit/pre-commit
 [ruff]: https://github.com/astral-sh/ruff
 
@@ -75,10 +76,10 @@ Once your quirk works, please open a pull request so other Home Assistant users 
 5. Run the test suite locally:
 
    ```console
-   nox --session=tests
+   poetry run pytest --cov tuya_device_handlers tests
    ```
 
-6. Open a [pull request]. Coverage must stay at 100% and CI runs `pre-commit`, `mypy`, `tests`, `typeguard`, and `docs-build`.
+6. Open a [pull request].
 
 For broader contributor guidelines (issue reporting, dev setup, pre-commit hooks), see the [Contributor Guide].
 
@@ -92,15 +93,9 @@ _Tuya quirks library_ is free and open source software.
 If you encounter any problems,
 please [file an issue] along with a detailed description.
 
-## Credits
-
-This project was generated from [@cjolowicz]'s [Hypermodern Python Cookiecutter] template.
-
-[@cjolowicz]: https://github.com/cjolowicz
 [ha-tuya]: https://www.home-assistant.io/integrations/tuya/
 [tuya-categories]: https://developer.tuya.com/en/docs/iot/standarddescription?id=K9i5ql6waswzq
 [devices-dir]: https://github.com/home-assistant-libs/tuya-device-handlers/tree/main/src/tuya_device_handlers/devices
-[hypermodern python cookiecutter]: https://github.com/cjolowicz/cookiecutter-hypermodern-python
 [file an issue]: https://github.com/home-assistant-libs/tuya-device-handlers/issues
 [pull request]: https://github.com/home-assistant-libs/tuya-device-handlers/pulls
 

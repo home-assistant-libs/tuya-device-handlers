@@ -2,7 +2,7 @@
 
 
 def test_import() -> None:
-    """Test import of definitions"""
+    """Test import of definitions."""
     # ruff: disable[F401, PLC0415]
     from tuya_device_handlers.definition.alarm_control_panel import (
         AlarmControlPanelDefinition,

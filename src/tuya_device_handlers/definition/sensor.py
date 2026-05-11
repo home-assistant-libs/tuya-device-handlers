@@ -5,19 +5,22 @@ from dataclasses import dataclass
 
 from tuya_sharing import CustomerDevice
 
-from ..device_wrapper import DeviceWrapper
-from ..device_wrapper.common import (
+from tuya_device_handlers.device_wrapper import DeviceWrapper
+from tuya_device_handlers.device_wrapper.common import (
     DPCodeEnumWrapper,
     DPCodeIntegerWrapper,
     DPCodeTypeInformationWrapper,
 )
-from ..device_wrapper.sensor import DeltaIntegerWrapper
-from ..type_information import IntegerTypeInformation
+from tuya_device_handlers.device_wrapper.sensor import DeltaIntegerWrapper
+from tuya_device_handlers.type_information import IntegerTypeInformation
+
 from .base import BaseEntityQuirk
 
 
 @dataclass(kw_only=True)
 class SensorDefinition:
+    """Definition for a sensor entity."""
+
     sensor_wrapper: DeviceWrapper[str | int | float]
 
 

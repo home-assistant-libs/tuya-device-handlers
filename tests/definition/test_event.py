@@ -9,7 +9,7 @@ from tuya_device_handlers.device_wrapper.event import (
 
 
 def test_get_default_definition() -> None:
-    """Test get_default_definition"""
+    """Test get_default_definition."""
     device = create_device("sp_sdd5f5f2dl5wydjf.json")
     assert (
         definition := get_default_definition(
@@ -20,6 +20,6 @@ def test_get_default_definition() -> None:
 
 
 def test_get_default_definition_fails() -> None:
-    """Test get_default_definition"""
+    """Test get_default_definition."""
     device = create_device("sp_sdd5f5f2dl5wydjf.json")
     assert not get_default_definition(device, "bad", SimpleEventEnumWrapper)

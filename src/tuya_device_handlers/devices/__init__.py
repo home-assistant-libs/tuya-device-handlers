@@ -20,7 +20,6 @@ def register_tuya_quirks(custom_quirks_path: str | None = None) -> None:
     - add quirks from `devices` subfolder
     - add custom quirks from `custom_quirks_path`
     """
-
     if custom_quirks_path is not None:
         TUYA_QUIRKS_REGISTRY.purge_custom_quirks(custom_quirks_path)
 
@@ -40,7 +39,8 @@ def register_tuya_quirks(custom_quirks_path: str | None = None) -> None:
 
     loaded = False
 
-    # Treat the custom quirk path (e.g. `/config/tuya_quirks/`) itself as a module
+    # Treat the custom quirk path (e.g. `/config/tuya_quirks/`)
+    # itself as a module
     for importer, modname, _ispkg in pkgutil.walk_packages(path=[str(path)]):
         _LOGGER.debug("Loading custom quirk module %r", modname)
 
@@ -53,7 +53,7 @@ def register_tuya_quirks(custom_quirks_path: str | None = None) -> None:
             module = importlib.util.module_from_spec(spec)
             sys.modules[modname] = module
             spec.loader.exec_module(module)
-        except Exception:
+        except Exception:  # pylint: disable=broad-exception-caught
             _LOGGER.exception(
                 "Unexpected exception importing custom quirk %r", modname
             )

@@ -141,7 +141,8 @@ class DeviceQuirk(DeviceQuirkProtocol):
     ) -> Self:
         """Set the device type the quirk applies to."""
         if self._applies_to is not None:
-            raise ValueError("DeviceQuirk already has an applies_to condition")
+            msg = "DeviceQuirk already has an applies_to condition"
+            raise ValueError(msg)
         self._applies_to = product_id
         self.manufacturer = manufacturer
         self.model = model
@@ -151,9 +152,8 @@ class DeviceQuirk(DeviceQuirkProtocol):
     def register(self, registry: QuirksRegistry) -> None:
         """Register the quirk in the registry."""
         if self._applies_to is None:
-            raise ValueError(
-                "DeviceQuirk does not have an applies_to condition"
-            )
+            msg = "DeviceQuirk does not have an applies_to condition"
+            raise ValueError(msg)
         registry.register(self._applies_to, self)
 
     def add_dpid_bitmap(
@@ -202,8 +202,8 @@ class DeviceQuirk(DeviceQuirkProtocol):
         dpcode: str,
         dpmode: DPMode,
         unit: str,
-        min: int,
-        max: int,
+        min: int,  # noqa: A002  # pylint: disable=redefined-builtin
+        max: int,  # noqa: A002  # pylint: disable=redefined-builtin
         scale: int,
         step: int,
         report_type: str | None = None,
@@ -246,6 +246,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
     def get_feeder_schedules_wrapper(
         self, device: CustomerDevice
     ) -> DeviceWrapper[list[FeederSchedule]] | None:
+        """Get the feeder schedules wrapper for a device."""
         if get_wrapper_function := self._get_wrapper_functions.get(
             "feeder_schedules"
         ):

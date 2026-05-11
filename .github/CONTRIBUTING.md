@@ -7,13 +7,11 @@ welcomes contributions in the form of bug reports, feature requests, and pull re
 Here is a list of important resources for contributors:
 
 - [Source Code]
-- [Documentation]
 - [Issue Tracker]
 - [Code of Conduct]
 
 [mit license]: https://opensource.org/licenses/MIT
 [source code]: https://github.com/home-assistant-libs/tuya-device-handlers
-[documentation]: https://tuya-device-handlers.readthedocs.io/
 [issue tracker]: https://github.com/home-assistant-libs/tuya-device-handlers/issues
 
 ## How to report a bug
@@ -37,11 +35,7 @@ Request features on the [Issue Tracker].
 
 ## How to set up your development environment
 
-You need Python 3.13+ and the following tools:
-
-- [Poetry]
-- [Nox]
-- [nox-poetry]
+You need Python 3.13+ and [Poetry].
 
 Install the package with development requirements:
 
@@ -49,37 +43,21 @@ Install the package with development requirements:
 $ poetry install
 ```
 
-You can now run an interactive Python session,
-or the command-line interface:
-
-```console
-$ poetry run python
-$ poetry run tuya-device-handlers
-```
-
 [poetry]: https://python-poetry.org/
-[nox]: https://nox.thea.codes/
-[nox-poetry]: https://nox-poetry.readthedocs.io/
 
 ## How to test the project
 
-Run the full test suite:
+Run the test suite:
 
 ```console
-$ nox
+$ poetry run pytest --cov tuya_device_handlers tests
 ```
 
-List the available Nox sessions:
+Run linting and type checking:
 
 ```console
-$ nox --list-sessions
-```
-
-You can also run a specific Nox session.
-For example, invoke the unit test suite like this:
-
-```console
-$ nox --session=tests
+$ poetry run ruff check .
+$ poetry run ty check src tests
 ```
 
 Unit tests are located in the _tests_ directory,
@@ -93,16 +71,15 @@ Open a [pull request] to submit changes to this project.
 
 Your pull request needs to meet the following guidelines for acceptance:
 
-- The Nox test suite must pass without errors and warnings.
-- Include unit tests. This project maintains 100% code coverage.
-- If your changes add functionality, update the documentation accordingly.
+- The test suite must pass without errors and warnings.
+- Include unit tests.
 
 Feel free to submit early, though—we can always iterate on this.
 
-To run linting and code formatting checks before committing your change, you can install pre-commit as a Git hook by running the following command:
+To install pre-commit hooks for local development:
 
 ```console
-$ nox --session=pre-commit -- install
+$ poetry run prek install
 ```
 
 It is recommended to open an issue before starting work on anything.

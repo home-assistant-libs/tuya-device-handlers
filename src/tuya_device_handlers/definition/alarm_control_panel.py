@@ -5,22 +5,25 @@ from dataclasses import dataclass
 
 from tuya_sharing import CustomerDevice
 
-from ..device_wrapper import DeviceWrapper
-from ..device_wrapper.alarm_control_panel import (
+from tuya_device_handlers.device_wrapper import DeviceWrapper
+from tuya_device_handlers.device_wrapper.alarm_control_panel import (
     AlarmActionWrapper,
     AlarmChangedByWrapper,
     AlarmStateWrapper,
 )
-from ..helpers.homeassistant import (
+from tuya_device_handlers.helpers.homeassistant import (
     TuyaAlarmControlPanelAction,
     TuyaAlarmControlPanelState,
 )
-from ..type_information import EnumTypeInformation
+from tuya_device_handlers.type_information import EnumTypeInformation
+
 from .base import BaseEntityQuirk
 
 
 @dataclass(kw_only=True)
 class AlarmControlPanelDefinition:
+    """Definition for an alarm control panel entity."""
+
     action_wrapper: DeviceWrapper[TuyaAlarmControlPanelAction]
     changed_by_wrapper: DeviceWrapper[str] | None
     state_wrapper: DeviceWrapper[TuyaAlarmControlPanelState]
@@ -39,6 +42,7 @@ class AlarmControlPanelQuirk(BaseEntityQuirk):
 def get_default_definition(
     device: CustomerDevice,
 ) -> AlarmControlPanelDefinition | None:
+    """Get the default alarm control panel definition for a device."""
     if not (
         master_mode := EnumTypeInformation.find_dpcode(
             device, "master_mode", prefer_function=True

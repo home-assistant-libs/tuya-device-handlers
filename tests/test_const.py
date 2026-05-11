@@ -1,4 +1,4 @@
-"""Test constants"""
+"""Test constants."""
 
 import pytest
 

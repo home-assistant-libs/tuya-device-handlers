@@ -5,17 +5,19 @@ from typing import Any
 
 from tuya_sharing import CustomerDevice
 
-from ..type_information import IntegerTypeInformation
-from ..utils import RemapHelper
+from tuya_device_handlers.type_information import IntegerTypeInformation
+from tuya_device_handlers.utils import RemapHelper
+
 from .common import DPCodeIntegerWrapper, DPCodeJsonWrapper
 
 
 class BrightnessWrapper(DPCodeIntegerWrapper[int]):
     """Wrapper for brightness DP code.
 
-    Handles brightness value conversion between device scale and Home Assistant's
-    0-255 scale. Supports optional dynamic brightness_min and brightness_max
-    wrappers that allow the device to specify runtime brightness range limits.
+    Handles brightness value conversion between device scale
+    and Home Assistant's 0-255 scale. Supports optional dynamic
+    brightness_min and brightness_max wrappers that allow the
+    device to specify runtime brightness range limits.
     """
 
     brightness_min: DPCodeIntegerWrapper | None = None
@@ -78,7 +80,7 @@ class BrightnessWrapper(DPCodeIntegerWrapper[int]):
     def _convert_value_to_raw_value(
         self, device: CustomerDevice, value: float
     ) -> Any:
-        """Convert a Home Assistant value (0..255) back to a raw device value."""
+        """Convert HA value (0..255) to a raw device value."""
         # If there is a min/max value, the brightness is actually limited.
         # Meaning it is actually not on a 0-255 scale.
         if (
@@ -127,10 +129,12 @@ class ColorTempWrapper(DPCodeIntegerWrapper[int]):
 
     @staticmethod
     def kelvin_to_mired(kelvin: int) -> float:
+        """Convert Kelvin to Mired."""
         return 1000000 / kelvin
 
     @staticmethod
     def mired_to_kelvin(mired: float) -> int:
+        """Convert Mired to Kelvin."""
         return round(1000000 / mired)
 
     def __init__(
@@ -156,7 +160,7 @@ class ColorTempWrapper(DPCodeIntegerWrapper[int]):
     def _convert_value_to_raw_value(
         self, device: CustomerDevice, value: int
     ) -> Any:
-        """Convert a Home Assistant value (Kelvin) back to a raw device value."""
+        """Convert HA value (Kelvin) to a raw device value."""
         return round(
             self._remap_helper.remap_value_from(
                 self.kelvin_to_mired(value),
@@ -209,7 +213,7 @@ class ColorDataWrapper(DPCodeJsonWrapper[tuple[float, float, float]]):
     def _convert_value_to_raw_value(
         self, device: CustomerDevice, value: tuple[float, float, float]
     ) -> Any:
-        """Convert a Home Assistant tuple (H, S, V) back to a raw device value."""
+        """Convert HA tuple (H, S, V) to a raw device value."""
         hue, saturation, brightness = value
         return json.dumps(
             {

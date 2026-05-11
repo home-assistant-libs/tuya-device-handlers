@@ -130,7 +130,7 @@ def test_remove_dpid() -> None:
 def test_initialise_device_read_and_write_with_local(
     mock_device: CustomerDevice,
 ) -> None:
-    """READ adds status_range; WRITE adds function; support_local adds strategy."""
+    """READ adds status_range; WRITE adds function."""
     mock_device.support_local = True
     mock_device.local_strategy = {}
     quirk = DeviceQuirk().add_dpid_integer(
@@ -187,7 +187,7 @@ def test_initialise_device_write_only_clears_status_range(
 def test_initialise_device_none_definition_removes_everything(
     mock_device: CustomerDevice,
 ) -> None:
-    """remove_dpid: function, local_strategy, status, status_range all popped."""
+    """remove_dpid: function, strategy, status all popped."""
     mock_device.support_local = True
     mock_device.local_strategy = {7: {"some": "thing"}}
     mock_device.function["g"] = DeviceFunction(
@@ -226,7 +226,7 @@ def test_applies_to_called_twice_raises() -> None:
 
 
 def test_register_without_applies_to_raises() -> None:
-    """register raises ValueError when applies_to was never called."""
+    """Register raises ValueError when applies_to was never called."""
     quirk = DeviceQuirk()
     with pytest.raises(
         ValueError, match="does not have an applies_to condition"
