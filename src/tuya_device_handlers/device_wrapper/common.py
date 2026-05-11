@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING, Any, Self
 
 from tuya_sharing import CustomerDevice
 
-from ..type_information import (
+from tuya_device_handlers.type_information import (
     BitmapTypeInformation,
     BooleanTypeInformation,
     EnumTypeInformation,
@@ -14,6 +14,7 @@ from ..type_information import (
     StringTypeInformation,
     TypeInformation,
 )
+
 from .base import DeviceWrapper
 from .exception import SetValueOutOfRangeError
 
@@ -49,8 +50,9 @@ class DPCodeWrapper[T](DeviceWrapper[T]):
     def _read_dpcode_value(self, device: CustomerDevice) -> Any | None:
         """Read the DPCode value.
 
-        Base implementation returns the raw value, subclasses may override to provide
-        specific conversion or validation.
+        Base implementation returns the raw value, subclasses
+        may override to provide specific conversion or
+        validation.
         """
         return device.status.get(self.dpcode)
 
@@ -59,8 +61,8 @@ class DPCodeWrapper[T](DeviceWrapper[T]):
     ) -> Any:
         """Convert display value back to a raw device value.
 
-        Base implementation does no validation, subclasses may override to provide
-        specific validation.
+        Base implementation does no validation, subclasses may
+        override to provide specific validation.
         """
         raise NotImplementedError
 
@@ -102,7 +104,7 @@ class DPCodeTypeInformationWrapper[
         *,
         prefer_function: bool = False,
     ) -> Self | None:
-        """Find and return a DPCodeTypeInformationWrapper for the given DP codes."""
+        """Find a DPCodeTypeInformationWrapper for the given DP codes."""
         if type_information := cls._DPTYPE.find_dpcode(
             device, dpcodes, prefer_function=prefer_function
         ):
@@ -143,7 +145,8 @@ class DPCodeBooleanWrapper[T = bool](
             return value
         # Currently only called with boolean values
         # Safety net in case of future changes
-        raise SetValueOutOfRangeError(f"Invalid boolean value `{value}`")
+        msg = f"Invalid boolean value `{value}`"
+        raise SetValueOutOfRangeError(msg)
 
 
 class DPCodeEnumWrapper[T = str](
@@ -172,9 +175,10 @@ class DPCodeEnumWrapper[T = str](
             return value
         # Guarded by select option validation
         # Safety net in case of future changes
-        raise SetValueOutOfRangeError(
+        msg = (
             f"Enum value `{value}` out of range: {self.type_information.range}"
         )
+        raise SetValueOutOfRangeError(msg)
 
 
 class DPCodeIntegerWrapper[T = float](
@@ -205,10 +209,11 @@ class DPCodeIntegerWrapper[T = float](
             return new_value
         # Guarded by number validation
         # Safety net in case of future changes
-        raise SetValueOutOfRangeError(
+        msg = (
             f"Value `{new_value}` (converted from `{value}`) out of range:"
             f" ({self.type_information.min}-{self.type_information.max})"
         )
+        raise SetValueOutOfRangeError(msg)
 
 
 class DPCodeJsonWrapper[T = dict[str, Any]](

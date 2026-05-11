@@ -42,7 +42,7 @@ def test_get_default_definition(
     lookup_type: tuple[type, ...] | None,
     wrapper_type: type,
 ) -> None:
-    """Test get_default_definition"""
+    """Test get_default_definition."""
     device = create_device(fixture_filename)
     assert (definition := get_default_definition(device, dpcode, lookup_type))  # ty: ignore[invalid-argument-type]
     assert isinstance(definition.sensor_wrapper, wrapper_type)
@@ -58,6 +58,6 @@ def test_get_default_definition(
 def test_get_default_definition_fails(
     lookup_type: tuple[type, ...] | None,
 ) -> None:
-    """Test get_default_definition"""
+    """Test get_default_definition."""
     device = create_device("cs_zibqa9dutqyaxym2.json")
     assert not get_default_definition(device, "bad", lookup_type)  # ty: ignore[invalid-argument-type]

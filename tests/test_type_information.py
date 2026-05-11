@@ -1,4 +1,4 @@
-"""Test TypeInformation classes"""
+"""Test TypeInformation classes."""
 
 import dataclasses
 from typing import Any
@@ -145,7 +145,6 @@ def test_integer_scaling(mock_device: CustomerDevice) -> None:
             "Found invalid RAW value `some_string` (<class 'str'>) "
             "for datapoint `demo_raw` in product id `product_id`",
         ),
-        # (StringTypeInformation, "demo_string", "some_string", "", ""),
     ],
 )
 @patch.dict(DEVICE_WARNINGS, {}, clear=True)

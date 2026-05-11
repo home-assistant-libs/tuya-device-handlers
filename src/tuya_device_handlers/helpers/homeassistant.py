@@ -262,7 +262,7 @@ class TuyaNumberDeviceClass(StrEnum):
     CO = "carbon_monoxide"
     """Carbon Monoxide gas concentration.
 
-    Unit of measurement: `ppb` (parts per billion), `ppm` (parts per million), `mg/m³`, `μg/m³`
+    Unit of measurement: `ppb`, `ppm`, `mg/m³`, `μg/m³`
     """
 
     CO2 = "carbon_dioxide"
@@ -312,25 +312,33 @@ class TuyaNumberDeviceClass(StrEnum):
     ENERGY = "energy"
     """Energy.
 
-    Unit of measurement: `J`, `kJ`, `MJ`, `GJ`, `mWh`, `Wh`, `kWh`, `MWh`, `GWh`, `TWh`, `cal`, `kcal`, `Mcal`, `Gcal`
+    Unit of measurement: `J`, `kJ`, `MJ`, `GJ`, `mWh`,
+    `Wh`, `kWh`, `MWh`, `GWh`, `TWh`, `cal`, `kcal`,
+    `Mcal`, `Gcal`
     """
 
     ENERGY_DISTANCE = "energy_distance"
     """Energy distance.
 
-    Use this device class for sensors measuring energy by distance, for example the amount
-    of electric energy consumed by an electric car.
+    Use this device class for sensors measuring energy
+    by distance, for example the amount of electric
+    energy consumed by an electric car.
 
-    Unit of measurement: `kWh/100km`, `Wh/km`, `mi/kWh`, `km/kWh`
+    Unit of measurement: `kWh/100km`, `Wh/km`,
+    `mi/kWh`, `km/kWh`
     """
 
     ENERGY_STORAGE = "energy_storage"
     """Stored energy.
 
-    Use this device class for sensors measuring stored energy, for example the amount
-    of electric energy currently stored in a battery or the capacity of a battery.
+    Use this device class for sensors measuring stored
+    energy, for example the amount of electric energy
+    currently stored in a battery or the capacity of
+    a battery.
 
-    Unit of measurement: `J`, `kJ`, `MJ`, `GJ`, `mWh`, `Wh`, `kWh`, `MWh`, `GWh`, `TWh`, `cal`, `kcal`, `Mcal`, `Gcal`
+    Unit of measurement: `J`, `kJ`, `MJ`, `GJ`, `mWh`,
+    `Wh`, `kWh`, `MWh`, `GWh`, `TWh`, `cal`, `kcal`,
+    `Mcal`, `Gcal`
     """
 
     FREQUENCY = "frequency"
@@ -384,13 +392,13 @@ class TuyaNumberDeviceClass(StrEnum):
     NITROGEN_DIOXIDE = "nitrogen_dioxide"
     """Amount of NO2.
 
-    Unit of measurement: `ppb` (parts per billion), `ppm` (parts per million), `μg/m³`
+    Unit of measurement: `ppb`, `ppm`, `μg/m³`
     """
 
     NITROGEN_MONOXIDE = "nitrogen_monoxide"
     """Amount of NO.
 
-    Unit of measurement: `ppb` (parts per billion), `μg/m³`
+    Unit of measurement: `ppb`, `μg/m³`
     """
 
     NITROUS_OXIDE = "nitrous_oxide"
@@ -402,7 +410,7 @@ class TuyaNumberDeviceClass(StrEnum):
     OZONE = "ozone"
     """Amount of O3.
 
-    Unit of measurement: `ppb` (parts per billion), `ppm` (parts per million), `μg/m³`
+    Unit of measurement: `ppb`, `ppm`, `μg/m³`
     """
 
     PH = "ph"
@@ -548,28 +556,31 @@ class TuyaNumberDeviceClass(StrEnum):
 
     Unit of measurement: `VOLUME_*` units
     - SI / metric: `mL`, `L`, `m³`
-    - USCS / imperial: `ft³`, `CCF`, `MCF`, `fl. oz.`, `gal` (warning: volumes expressed in
-    USCS/imperial units are currently assumed to be US volumes)
+    - USCS / imperial: `ft³`, `CCF`, `MCF`,
+      `fl. oz.`, `gal`
     """
 
     VOLUME_STORAGE = "volume_storage"
     """Generic stored volume.
 
-    Use this device class for sensors measuring stored volume, for example the amount
-    of fuel in a fuel tank.
+    Use this device class for sensors measuring stored
+    volume, for example the amount of fuel in a fuel
+    tank.
 
     Unit of measurement: `VOLUME_*` units
     - SI / metric: `mL`, `L`, `m³`
-    - USCS / imperial: `ft³`, `CCF`, `MCF`, `fl. oz.`, `gal` (warning: volumes expressed in
-    USCS/imperial units are currently assumed to be US volumes)
+    - USCS / imperial: `ft³`, `CCF`, `MCF`,
+      `fl. oz.`, `gal`
     """
 
     VOLUME_FLOW_RATE = "volume_flow_rate"
     """Generic flow rate
 
     Unit of measurement: UnitOfVolumeFlowRate
-    - SI / metric: `m³/h`, `m³/min`, `m³/s`, `L/h`, `L/min`, `L/s`, `mL/s`
-    - USCS / imperial: `ft³/min`, `gal/min`, `gal/d`
+    - SI / metric: `m³/h`, `m³/min`, `m³/s`,
+      `L/h`, `L/min`, `L/s`, `mL/s`
+    - USCS / imperial: `ft³/min`, `gal/min`,
+      `gal/d`
     """
 
     WATER = "water"
@@ -577,14 +588,15 @@ class TuyaNumberDeviceClass(StrEnum):
 
     Unit of measurement:
     - SI / metric: `m³`, `L`
-    - USCS / imperial: `ft³`, `CCF`, `MCF`, `gal` (warning: volumes expressed in
-    USCS/imperial units are currently assumed to be US volumes)
+    - USCS / imperial: `ft³`, `CCF`, `MCF`, `gal`
     """
 
     WEIGHT = "weight"
-    """Generic weight, represents a measurement of an object's mass.
+    """Generic weight, represents a measurement of
+    an object's mass.
 
-    Weight is used instead of mass to fit with every day language.
+    Weight is used instead of mass to fit with
+    every day language.
 
     Unit of measurement: `MASS_*` units
     - SI / metric: `μg`, `mg`, `g`, `kg`
@@ -731,27 +743,36 @@ class TuyaSensorDeviceClass(StrEnum):
     ENERGY = "energy"
     """Energy.
 
-    Use this device class for sensors measuring energy consumption, for example
-    electric energy consumption.
-    Unit of measurement: `J`, `kJ`, `MJ`, `GJ`, `mWh`, `Wh`, `kWh`, `MWh`, `GWh`, `TWh`, `cal`, `kcal`, `Mcal`, `Gcal`
+    Use this device class for sensors measuring energy
+    consumption, for example electric energy consumption.
+
+    Unit of measurement: `J`, `kJ`, `MJ`, `GJ`, `mWh`,
+    `Wh`, `kWh`, `MWh`, `GWh`, `TWh`, `cal`, `kcal`,
+    `Mcal`, `Gcal`
     """
 
     ENERGY_DISTANCE = "energy_distance"
     """Energy distance.
 
-    Use this device class for sensors measuring energy by distance, for example the amount
-    of electric energy consumed by an electric car.
+    Use this device class for sensors measuring energy
+    by distance, for example the amount of electric
+    energy consumed by an electric car.
 
-    Unit of measurement: `kWh/100km`, `Wh/km`, `mi/kWh`, `km/kWh`
+    Unit of measurement: `kWh/100km`, `Wh/km`,
+    `mi/kWh`, `km/kWh`
     """
 
     ENERGY_STORAGE = "energy_storage"
     """Stored energy.
 
-    Use this device class for sensors measuring stored energy, for example the amount
-    of electric energy currently stored in a battery or the capacity of a battery.
+    Use this device class for sensors measuring stored
+    energy, for example the amount of electric energy
+    currently stored in a battery or the capacity of
+    a battery.
 
-    Unit of measurement: `J`, `kJ`, `MJ`, `GJ`, `mWh`, `Wh`, `kWh`, `MWh`, `GWh`, `TWh`, `cal`, `kcal`, `Mcal`, `Gcal`
+    Unit of measurement: `J`, `kJ`, `MJ`, `GJ`, `mWh`,
+    `Wh`, `kWh`, `MWh`, `GWh`, `TWh`, `cal`, `kcal`,
+    `Mcal`, `Gcal`
     """
 
     FREQUENCY = "frequency"
@@ -964,27 +985,29 @@ class TuyaSensorDeviceClass(StrEnum):
 
     Unit of measurement: `VOLUME_*` units
     - SI / metric: `mL`, `L`, `m³`
-    - USCS / imperial: `ft³`, `CCF`, `MCF`, `fl. oz.`, `gal` (warning: volumes expressed in
-    USCS/imperial units are currently assumed to be US volumes)
+    - USCS / imperial: `ft³`, `CCF`, `MCF`,
+      `fl. oz.`, `gal`
     """
 
     VOLUME_STORAGE = "volume_storage"
     """Generic stored volume.
 
-    Use this device class for sensors measuring stored volume, for example the amount
-    of fuel in a fuel tank.
+    Use this device class for sensors measuring stored
+    volume, for example the amount of fuel in a fuel
+    tank.
 
     Unit of measurement: `VOLUME_*` units
     - SI / metric: `mL`, `L`, `m³`
-    - USCS / imperial: `ft³`, `CCF`, `MCF`, `fl. oz.`, `gal` (warning: volumes expressed in
-    USCS/imperial units are currently assumed to be US volumes)
+    - USCS / imperial: `ft³`, `CCF`, `MCF`,
+      `fl. oz.`, `gal`
     """
 
     VOLUME_FLOW_RATE = "volume_flow_rate"
     """Generic flow rate
 
     Unit of measurement: UnitOfVolumeFlowRate
-    - SI / metric: `m³/h`, `m³/min`, `m³/s`, `L/h`, `L/min`, `L/s`, `mL/s`
+    - SI / metric: `m³/h`, `m³/min`, `m³/s`,
+      `L/h`, `L/min`, `L/s`, `mL/s`
     - USCS / imperial: `ft³/min`, `gal/min`
     """
 
@@ -993,14 +1016,15 @@ class TuyaSensorDeviceClass(StrEnum):
 
     Unit of measurement:
     - SI / metric: `m³`, `L`
-    - USCS / imperial: `ft³`, `CCF`, `MCF`, `gal` (warning: volumes expressed in
-    USCS/imperial units are currently assumed to be US volumes)
+    - USCS / imperial: `ft³`, `CCF`, `MCF`, `gal`
     """
 
     WEIGHT = "weight"
-    """Generic weight, represents a measurement of an object's mass.
+    """Generic weight, represents a measurement of
+    an object's mass.
 
-    Weight is used instead of mass to fit with every day language.
+    Weight is used instead of mass to fit with
+    every day language.
 
     Unit of measurement: `MASS_*` units
     - SI / metric: `μg`, `mg`, `g`, `kg`
@@ -1028,10 +1052,10 @@ class TuyaSensorStateClass(StrEnum):
     """State class for sensors."""
 
     MEASUREMENT = "measurement"
-    """The state represents a measurement in present time."""
+    """The state represents a measurement."""
 
     MEASUREMENT_ANGLE = "measurement_angle"
-    """The state represents a angle measurement in present time. Currently only degrees are supported."""
+    """Angle measurement. Only degrees supported."""
 
     TOTAL = "total"
     """The state represents a total amount.

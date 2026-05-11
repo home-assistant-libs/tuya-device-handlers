@@ -6,8 +6,12 @@ from typing import Any, Self
 
 from tuya_sharing import CustomerDevice
 
-from ..helpers.homeassistant import TuyaClimateHVACMode, TuyaClimateSwingMode
-from ..type_information import EnumTypeInformation
+from tuya_device_handlers.helpers.homeassistant import (
+    TuyaClimateHVACMode,
+    TuyaClimateSwingMode,
+)
+from tuya_device_handlers.type_information import EnumTypeInformation
+
 from .base import DeviceWrapper
 from .common import DPCodeBooleanWrapper, DPCodeEnumWrapper
 
@@ -130,10 +134,11 @@ class SwingModeCompositeWrapper(DeviceWrapper[TuyaClimateSwingMode]):
 def _filter_hvac_mode_mappings(
     tuya_range: list[str],
 ) -> dict[str, TuyaClimateHVACMode | None]:
-    """Filter TUYA_HVAC_TO_HA modes that are not in the range.
+    """Filter TUYA_HVAC_TO_HA modes not in the range.
 
-    If multiple Tuya modes map to the same HA mode, set the mapping to None to avoid
-    ambiguity when converting back from HA to Tuya modes.
+    If multiple Tuya modes map to the same HA mode, set the
+    mapping to None to avoid ambiguity when converting back
+    from HA to Tuya modes.
     """
     modes_in_range = {
         tuya_mode: _DEFAULT_DEVICE_MODE_TO_HVACMODE.get(tuya_mode)
@@ -149,7 +154,8 @@ def _filter_hvac_mode_mappings(
 class DefaultHVACModeWrapper(DPCodeEnumWrapper[TuyaClimateHVACMode]):
     """Wrapper for managing climate HVACMode."""
 
-    # Modes that do not map to HVAC modes are ignored (they are handled by PresetWrapper)
+    # Modes that do not map to HVAC modes are ignored
+    # (they are handled by PresetWrapper)
 
     def __init__(
         self, dpcode: str, type_information: EnumTypeInformation
@@ -189,7 +195,8 @@ class DefaultHVACModeWrapper(DPCodeEnumWrapper[TuyaClimateHVACMode]):
 class DefaultPresetModeWrapper(DPCodeEnumWrapper):
     """Wrapper for managing climate preset modes."""
 
-    # Modes that map to HVAC modes are ignored (they are handled by HVACModeWrapper)
+    # Modes that map to HVAC modes are ignored
+    # (they are handled by HVACModeWrapper)
 
     def __init__(
         self, dpcode: str, type_information: EnumTypeInformation

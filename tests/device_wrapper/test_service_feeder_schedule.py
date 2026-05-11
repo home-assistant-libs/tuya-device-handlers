@@ -1,9 +1,10 @@
-"""Test DeviceWrapper feeder schedule functionality"""
+"""Test DeviceWrapper feeder schedule functionality."""
 
 import pytest
 from syrupy.assertion import SnapshotAssertion
 from tuya_sharing import CustomerDevice
 
+from tests import create_device
 from tuya_device_handlers import TUYA_QUIRKS_REGISTRY
 from tuya_device_handlers.builder.device_quirk import DeviceQuirk
 from tuya_device_handlers.device_wrapper.service_feeder_schedule import (
@@ -11,8 +12,6 @@ from tuya_device_handlers.device_wrapper.service_feeder_schedule import (
     FeederSchedule,
     get_feeder_schedule_wrapper,
 )
-
-from .. import create_device
 
 _SAMPLE_MEAL_PLAN = [
     FeederSchedule(

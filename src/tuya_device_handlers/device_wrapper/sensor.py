@@ -4,7 +4,8 @@ import logging
 
 from tuya_sharing import CustomerDevice
 
-from ..raw_data_model import ElectricityData
+from tuya_device_handlers.raw_data_model import ElectricityData
+
 from .common import (
     DPCodeEnumWrapper,
     DPCodeIntegerWrapper,
@@ -63,7 +64,8 @@ class DeltaIntegerWrapper(DPCodeIntegerWrapper):
     ) -> bool:
         """Override skip_update to process delta updates.
 
-        Processes delta accumulation before determining if update should be skipped.
+        Processes delta accumulation before determining if
+        update should be skipped.
         """
         if (
             super().skip_update(

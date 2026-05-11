@@ -6,7 +6,7 @@ from tuya_device_handlers.device_wrapper.common import DPCodeBooleanWrapper
 
 
 def test_get_default_definition() -> None:
-    """Test get_default_definition"""
+    """Test get_default_definition."""
     device = create_device("sp_rudejjigkywujjvs.json")
     assert (definition := get_default_definition(device))
     assert isinstance(definition.motion_detection_switch, DPCodeBooleanWrapper)

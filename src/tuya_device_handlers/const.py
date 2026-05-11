@@ -33,6 +33,7 @@ class DPType(StrEnum):
 
     @staticmethod
     def try_parse(current_type: str) -> DPType | None:
+        """Try to parse a string into a DPType."""
         try:
             return DPType(current_type)
         except ValueError:

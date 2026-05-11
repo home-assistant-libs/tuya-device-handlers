@@ -12,7 +12,7 @@ from tuya_device_handlers.device_wrapper.alarm_control_panel import (
 
 
 def test_get_default_definition() -> None:
-    """Test get_default_definition"""
+    """Test get_default_definition."""
     device = create_device("mal_gyitctrjj1kefxp2.json")
     assert (definition := get_default_definition(device))
     assert isinstance(definition.action_wrapper, AlarmActionWrapper)
@@ -21,6 +21,6 @@ def test_get_default_definition() -> None:
 
 
 def test_get_default_definition_fails() -> None:
-    """Test get_default_definition"""
+    """Test get_default_definition."""
     device = create_device("sfkzq_ed7frwissyqrejic.json")
     assert not get_default_definition(device)
