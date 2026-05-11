@@ -1,16 +1,13 @@
 """Test device-level quirk initialisation."""
 
-from __future__ import annotations
-
 import pytest
 from syrupy.assertion import SnapshotAssertion
 
+from tests import create_device
 from tuya_device_handlers.device_wrapper.service_feeder_schedule import (
     FeederSchedule,
 )
 from tuya_device_handlers.registry import QuirksRegistry
-
-from ... import create_device
 
 _SAMPLE_MEAL_PLAN = [
     FeederSchedule(
@@ -130,8 +127,6 @@ def test_get_update_commands(filled_quirks_registry: QuirksRegistry) -> None:
     assert (quirk := filled_quirks_registry.get_quirk_for_device(device))
     assert (wrapper := quirk.get_feeder_schedules_wrapper(device))
 
-    commands = wrapper.get_update_commands(device, _SAMPLE_MEAL_PLAN)
-
-    assert commands == [
+    assert wrapper.get_update_commands(device, _SAMPLE_MEAL_PLAN) == [
         {"code": "meal_plan", "value": "fwkAAQF/CR4BAX8MAAEBfw8AAgF/FQACAQ=="}
     ]
