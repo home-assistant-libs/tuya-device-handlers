@@ -4,6 +4,7 @@ import pytest
 
 from tests import create_device
 from tuya_device_handlers.definition.sensor import get_default_definition
+from tuya_device_handlers.helpers.homeassistant import TuyaSensorDeviceClass
 from tuya_device_handlers.device_wrapper.common import (
     DPCodeEnumWrapper,
     DPCodeIntegerWrapper,
@@ -61,3 +62,17 @@ def test_get_default_definition_fails(
     """Test get_default_definition."""
     device = create_device("cs_zibqa9dutqyaxym2.json")
     assert not get_default_definition(device, "bad", lookup_type)  # ty: ignore[invalid-argument-type]
+
+
+def test_sensor_device_class_override_tdq() -> None:
+    """TDQ quirk registers explicit sensor device classes."""
+    device = create_device("tdq_x3o8epevyeo3z3oa.json")
+    temp = get_default_definition(device, "temp_current")
+    assert temp is not None
+    assert temp.device_class == TuyaSensorDeviceClass.TEMPERATURE
+    humidity = get_default_definition(device, "humidity_value")
+    assert humidity is not None
+    assert humidity.device_class == TuyaSensorDeviceClass.HUMIDITY
+    battery = get_default_definition(device, "battery_state")
+    assert battery is not None
+    assert battery.device_class == TuyaSensorDeviceClass.ENUM

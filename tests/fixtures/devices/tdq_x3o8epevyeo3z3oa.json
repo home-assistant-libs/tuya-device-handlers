@@ -13,85 +13,9 @@
   "active_time": "2026-05-07T00:36:45+00:00",
   "create_time": "2026-05-07T00:36:45+00:00",
   "update_time": "2026-05-07T00:36:45+00:00",
-  "function": {
-    "temp_unit_convert": {
-      "type": "Enum",
-      "value": "{\"range\": [\"c\", \"f\"]}"
-    }
-  },
-  "status_range": {
-    "temp_unit_convert": {
-      "type": "Enum",
-      "value": "{\"range\": [\"c\", \"f\"]}",
-      "report_type": null
-    },
-    "temp_current": {
-      "type": "Integer",
-      "value": "{\"unit\": \"\\u2103\", \"min\": -200, \"max\": 600, \"scale\": 1, \"step\": 1}",
-      "report_type": null
-    },
-    "humidity_value": {
-      "type": "Integer",
-      "value": "{\"unit\": \"%\", \"min\": 0, \"max\": 100, \"scale\": 0, \"step\": 1}",
-      "report_type": null
-    },
-    "battery_state": {
-      "type": "Enum",
-      "value": "{\"range\": [\"low\", \"middle\", \"high\"]}",
-      "report_type": null
-    }
-  },
-  "status": {
-    "temp_current": 193,
-    "humidity_value": 71,
-    "battery_state": "middle"
-  },
-  "set_up": true,
-  "support_local": true,
-  "local_strategy": {
-    "20": {
-      "value_convert": "default",
-      "status_code": "temp_unit_convert",
-      "config_item": {
-        "statusFormat": "{\"temp_unit_convert\": \"$\"}",
-        "valueDesc": "{\"range\": [\"c\", \"f\"]}",
-        "valueType": "Enum",
-        "enumMappingMap": {},
-        "pid": "x3o8epevyeo3z3oa"
-      }
-    },
-    "27": {
-      "value_convert": "default",
-      "status_code": "temp_current",
-      "config_item": {
-        "statusFormat": "{\"temp_current\": \"$\"}",
-        "valueDesc": "{\"unit\": \"\\u2103\", \"min\": -200, \"max\": 600, \"scale\": 1, \"step\": 1}",
-        "valueType": "Integer",
-        "enumMappingMap": {},
-        "pid": "x3o8epevyeo3z3oa"
-      }
-    },
-    "46": {
-      "value_convert": "default",
-      "status_code": "humidity_value",
-      "config_item": {
-        "statusFormat": "{\"humidity_value\": \"$\"}",
-        "valueDesc": "{\"unit\": \"%\", \"min\": 0, \"max\": 100, \"scale\": 0, \"step\": 1}",
-        "valueType": "Integer",
-        "enumMappingMap": {},
-        "pid": "x3o8epevyeo3z3oa"
-      }
-    },
-    "101": {
-      "value_convert": "default",
-      "status_code": "battery_state",
-      "config_item": {
-        "statusFormat": "{\"battery_state\": \"$\"}",
-        "valueDesc": "{\"range\": [\"low\", \"middle\", \"high\"]}",
-        "valueType": "Enum",
-        "enumMappingMap": {},
-        "pid": "x3o8epevyeo3z3oa"
-      }
-    }
-  }
+  "function": {},
+  "status_range": {},
+  "status": {},
+  "set_up": false,
+  "support_local": true
 }
