@@ -1,0 +1,592 @@
+{
+  "home_assistant": {
+    "arch": "x86_64",
+    "dev": false,
+    "docker": true,
+    "hassio": false,
+    "installation_type": "Home Assistant Container",
+    "os_name": "Linux",
+    "os_version": "6.8.0-111-generic",
+    "python_version": "3.14.2",
+    "timezone": "Europe/Amsterdam",
+    "version": "2026.5.1",
+    "virtualenv": false,
+    "container_arch": "amd64",
+    "run_as_root": true
+  },
+  "custom_components": {
+    "iphonedetect": {
+      "documentation": "https://github.com/mudape/iphonedetect",
+      "version": "2.4.1",
+      "requirements": [
+        "pyroute2==0.7.5"
+      ]
+    },
+    "google_cloud_stt": {
+      "documentation": "https://github.com/chatziko/ha-google-cloud-stt",
+      "version": "0.3.1",
+      "requirements": [
+        "google-cloud-speech"
+      ]
+    },
+    "p2000": {
+      "documentation": "https://github.com/cyberjunky/home-assistant-p2000",
+      "version": "1.0.23",
+      "requirements": [
+        "feedparser"
+      ]
+    },
+    "aio_energy_management": {
+      "documentation": "https://github.com/kotope/aio_energy_management",
+      "version": "1.0.0",
+      "requirements": []
+    },
+    "hacs": {
+      "documentation": "https://hacs.xyz/docs/use/",
+      "version": "2.0.5",
+      "requirements": [
+        "aiogithubapi>=22.10.1"
+      ]
+    },
+    "battery_notes": {
+      "documentation": "https://andrew-codechimp.github.io/HA-Battery-Notes/",
+      "version": "2.3.9",
+      "requirements": []
+    },
+    "hpprinter": {
+      "documentation": "https://github.com/elad-bar/ha-hpprinter",
+      "version": "2.0.6",
+      "requirements": [
+        "xmltodict~=0.13.0",
+        "flatten_json",
+        "defusedxml"
+      ]
+    },
+    "edge_tts": {
+      "documentation": "https://github.com/hasscc/hass-edge-tts",
+      "version": "0.7.7",
+      "requirements": [
+        "edge-tts>=7.2.0"
+      ]
+    },
+    "knmi": {
+      "documentation": "https://github.com/golles/ha-knmi/blob/main/README.md",
+      "version": "3.0.5",
+      "requirements": [
+        "weerlive-api==0.2.2"
+      ]
+    },
+    "buienalarm": {
+      "documentation": "https://github.com/HiDiHo01/Buienalarm",
+      "version": "2026.5.5",
+      "requirements": []
+    },
+    "powercalc": {
+      "documentation": "https://docs.powercalc.nl",
+      "version": "v1.20.14",
+      "requirements": [
+        "numpy>=1.21.1"
+      ]
+    },
+    "nordpool": {
+      "documentation": "https://github.com/custom-components/nordpool/",
+      "version": "0.0.14",
+      "requirements": [
+        "nordpool>=0.2",
+        "backoff"
+      ]
+    },
+    "spook_inverse": {
+      "documentation": "https://spook.boo",
+      "version": "4.0.1",
+      "requirements": []
+    },
+    "gree": {
+      "documentation": "https://github.com/RobHofmann/HomeAssistant-GreeClimateComponent",
+      "version": "3.6.0",
+      "requirements": [
+        "pycryptodome",
+        "aiofiles"
+      ]
+    },
+    "homeconnect_ws": {
+      "documentation": "https://github.com/chris-mc1/homeconnect_local_hass",
+      "version": "1.0.4",
+      "requirements": [
+        "homeconnect-websocket==1.3.6"
+      ]
+    },
+    "afvalwijzer": {
+      "documentation": "https://github.com/xirixiz/homeassistant-afvalwijzer/blob/main/README.md",
+      "version": "2026.1014",
+      "requirements": [
+        "requests",
+        "urllib3"
+      ]
+    },
+    "solaredgeoptimizers": {
+      "documentation": "https://github.com/AndrewTapp/solaredgeoptimizers",
+      "version": "2.4.16",
+      "requirements": [
+        "jsonfinder==0.4.2"
+      ]
+    },
+    "arpscan_tracker": {
+      "documentation": "https://github.com/cyberjunky/home-assistant-arpscan_tracker",
+      "version": "2.1.6",
+      "requirements": [
+        "scapy>=2.5.0",
+        "ouilookup>=0.2.4"
+      ]
+    },
+    "solcast_solar": {
+      "documentation": "https://github.com/BJReplay/ha-solcast-solar",
+      "version": "v4.5.2",
+      "requirements": [
+        "aiohttp>=3.8.5",
+        "aiofiles>=23.2.0",
+        "watchdog>=6.0.0"
+      ]
+    },
+    "import_statistics": {
+      "documentation": "https://github.com/klausj1/homeassistant-statistics",
+      "version": "5.0.1",
+      "requirements": [
+        "pandas>=2.0.0"
+      ]
+    },
+    "robovac_mqtt": {
+      "documentation": "https://github.com/jeppesens/eufy-clean",
+      "version": "1.9.1",
+      "requirements": []
+    },
+    "solaredge_forecast": {
+      "documentation": "https://github.com/nelbs/solaredge-forecast",
+      "version": "1.0.2",
+      "requirements": [
+        "solaredge==0.0.4"
+      ]
+    },
+    "mqtt_discoverystream": {
+      "documentation": "https://github.com/koying/mqtt_discoverystream_ha",
+      "version": "1.5.2",
+      "requirements": []
+    },
+    "zonneplan_one": {
+      "documentation": "https://github.com/fsaris/home-assistant-zonneplan-one",
+      "version": "2026.4.1",
+      "requirements": []
+    },
+    "lghorizon": {
+      "documentation": "https://github.com/Sholofly/lghorizon",
+      "version": "0.11.5",
+      "requirements": [
+        "lghorizon>=0.12.1"
+      ]
+    },
+    "config_editor": {
+      "documentation": "https://github.com/junkfix/config-editor-card",
+      "version": "5.0.0",
+      "requirements": []
+    },
+    "ziggo_modem": {
+      "documentation": "https://github.com/dkwolf1/ha-ziggo-modem",
+      "version": "1.4.1",
+      "requirements": []
+    },
+    "spook": {
+      "documentation": "https://spook.boo",
+      "version": "4.0.1",
+      "requirements": []
+    },
+    "daily": {
+      "documentation": "https://github.com/jeroenterheerdt/HADailySensor",
+      "version": "v2026.2.6",
+      "requirements": []
+    },
+    "better_thermostat": {
+      "documentation": "https://github.com/KartoffelToby/better_thermostat",
+      "version": "1.7.0",
+      "requirements": []
+    },
+    "electrolux_status": {
+      "documentation": "https://github.com/albaintor/homeassistant_electrolux_status",
+      "version": "2.3.1",
+      "requirements": [
+        "pyelectroluxocp==0.1.3",
+        "aiofiles==24.1.0"
+      ]
+    },
+    "kleenex_pollenradar": {
+      "documentation": "https://github.com/MarcoGos/kleenex_pollenradar",
+      "version": "1.6.1",
+      "requirements": [
+        "beautifulsoup4>=4.10.0"
+      ]
+    },
+    "sat": {
+      "documentation": "https://github.com/Alexwijn/SAT",
+      "version": "4.2.0",
+      "requirements": [
+        "pyotgw==2.2.2",
+        "sentry-sdk==2.19.2"
+      ]
+    }
+  },
+  "integration_manifest": {
+    "domain": "tuya",
+    "name": "Tuya",
+    "codeowners": [
+      "Tuya",
+      "zlinoliver"
+    ],
+    "config_flow": true,
+    "dependencies": [
+      "ffmpeg"
+    ],
+    "dhcp": [
+      {
+        "macaddress": "105A17*"
+      },
+      {
+        "macaddress": "10D561*"
+      },
+      {
+        "macaddress": "1869D8*"
+      },
+      {
+        "macaddress": "381F8D*"
+      },
+      {
+        "macaddress": "508A06*"
+      },
+      {
+        "macaddress": "68572D*"
+      },
+      {
+        "macaddress": "708976*"
+      },
+      {
+        "macaddress": "7CF666*"
+      },
+      {
+        "macaddress": "84E342*"
+      },
+      {
+        "macaddress": "D4A651*"
+      },
+      {
+        "macaddress": "D81F12*"
+      }
+    ],
+    "documentation": "https://www.home-assistant.io/integrations/tuya",
+    "integration_type": "hub",
+    "iot_class": "cloud_push",
+    "loggers": [
+      "tuya_sharing"
+    ],
+    "requirements": [
+      "tuya-device-handlers==0.0.18",
+      "tuya-device-sharing-sdk==0.2.8"
+    ],
+    "is_built_in": true,
+    "overwrites_built_in": false
+  },
+  "setup_times": {
+    "null": {
+      "setup": 0.0007834420539438725
+    },
+    "e3157c0fb7aa593574e16f215c751474": {
+      "wait_import_platforms": -12.205204667057842,
+      "config_entry_setup": 13.24640635191463
+    }
+  },
+  "data": {
+    "endpoint": "https://apigw.tuyaeu.com",
+    "terminal_id": "1742636013913ANNBmo",
+    "mqtt_connected": true,
+    "disabled_by": null,
+    "disabled_polling": false,
+    "id": "bf41aaa3ef47429e0cjmoj",
+    "name": "Convector Heater with Wi-Fi",
+    "category": "qn",
+    "product_id": "8axigg3icem6telp",
+    "product_name": "Convector Heater with Wi-Fi",
+    "online": true,
+    "sub": false,
+    "time_zone": "+01:00",
+    "active_time": "2026-01-12T18:01:23+00:00",
+    "create_time": "2026-01-12T18:01:23+00:00",
+    "update_time": "2026-01-12T18:01:23+00:00",
+    "function": {
+      "switch": {
+        "type": "Boolean",
+        "value": "{}"
+      },
+      "temp_set": {
+        "type": "Integer",
+        "value": "{\"unit\":\"\u00b0C\",\"min\":5,\"max\":37,\"scale\":0,\"step\":1}"
+      },
+      "mode": {
+        "type": "Enum",
+        "value": "{\"range\":[\"smart\",\"auto\"]}"
+      },
+      "anion": {
+        "type": "Boolean",
+        "value": "{}"
+      }
+    },
+    "local_strategy": {
+      "1": {
+        "value_convert": "default",
+        "status_code": "switch",
+        "config_item": {
+          "statusFormat": "{\"switch\":\"$\"}",
+          "valueDesc": "{}",
+          "valueType": "Boolean",
+          "enumMappingMap": {},
+          "pid": "8axigg3icem6telp"
+        }
+      },
+      "2": {
+        "value_convert": "default",
+        "status_code": "temp_set",
+        "config_item": {
+          "statusFormat": "{\"temp_set\":\"$\"}",
+          "valueDesc": "{\"unit\":\"\u00b0C\",\"min\":5,\"max\":37,\"scale\":0,\"step\":1}",
+          "valueType": "Integer",
+          "enumMappingMap": {},
+          "pid": "8axigg3icem6telp"
+        }
+      },
+      "3": {
+        "value_convert": "default",
+        "status_code": "temp_current",
+        "config_item": {
+          "statusFormat": "{\"temp_current\":\"$\"}",
+          "valueDesc": "{\"unit\":\"\u00b0C\",\"min\":-20,\"max\":50,\"scale\":0,\"step\":1}",
+          "valueType": "Integer",
+          "enumMappingMap": {},
+          "pid": "8axigg3icem6telp"
+        }
+      },
+      "4": {
+        "value_convert": "default",
+        "status_code": "mode",
+        "config_item": {
+          "statusFormat": "{\"mode\":\"$\"}",
+          "valueDesc": "{\"range\":[\"smart\",\"auto\"]}",
+          "valueType": "Enum",
+          "enumMappingMap": {},
+          "pid": "8axigg3icem6telp"
+        }
+      },
+      "5": {
+        "value_convert": "enum",
+        "status_code": "level",
+        "config_item": {
+          "statusFormat": "{\"level\":\"$\"}",
+          "valueDesc": "{\"range\":[\"1\",\"2\",\"3\",\"4\"]}",
+          "valueType": "Enum",
+          "enumMappingMap": {
+            "1": {
+              "code": "level",
+              "value": "1"
+            },
+            "2": {
+              "code": "level",
+              "value": "2"
+            },
+            "3": {
+              "code": "level",
+              "value": "3"
+            },
+            "4": {
+              "code": "level",
+              "value": "4"
+            },
+            "5": {
+              "code": "level",
+              "value": "5"
+            },
+            "6": {
+              "code": "level",
+              "value": "6"
+            },
+            "7": {
+              "code": "level",
+              "value": "7"
+            },
+            "level_1": {
+              "code": "level",
+              "value": "1"
+            },
+            "level_2": {
+              "code": "level",
+              "value": "2"
+            },
+            "level_3": {
+              "code": "level",
+              "value": "3"
+            },
+            "level_4": {
+              "code": "level",
+              "value": "4"
+            },
+            "level_5": {
+              "code": "level",
+              "value": "5"
+            },
+            "level_6": {
+              "code": "level",
+              "value": "6"
+            },
+            "level_7": {
+              "code": "level",
+              "value": "7"
+            }
+          },
+          "pid": "8axigg3icem6telp"
+        }
+      },
+      "9": {
+        "value_convert": "default",
+        "status_code": "anion",
+        "config_item": {
+          "statusFormat": "{\"anion\":\"$\"}",
+          "valueDesc": "{}",
+          "valueType": "Boolean",
+          "enumMappingMap": {},
+          "pid": "8axigg3icem6telp"
+        }
+      },
+      "12": {
+        "value_convert": "default",
+        "status_code": "countdown_left",
+        "config_item": {
+          "statusFormat": "{\"countdown_left\":\"$\"}",
+          "valueDesc": "{\"unit\":\"s\",\"min\":0,\"max\":86400,\"scale\":0,\"step\":1}",
+          "valueType": "Integer",
+          "enumMappingMap": {},
+          "pid": "8axigg3icem6telp"
+        }
+      }
+    },
+    "status_range": {
+      "switch": {
+        "type": "Boolean",
+        "value": "{}",
+        "report_type": null
+      },
+      "temp_set": {
+        "type": "Integer",
+        "value": "{\"unit\":\"\u00b0C\",\"min\":5,\"max\":37,\"scale\":0,\"step\":1}",
+        "report_type": null
+      },
+      "temp_current": {
+        "type": "Integer",
+        "value": "{\"unit\":\"\u00b0C\",\"min\":-20,\"max\":50,\"scale\":0,\"step\":1}",
+        "report_type": "un_known"
+      },
+      "mode": {
+        "type": "Enum",
+        "value": "{\"range\":[\"smart\",\"auto\"]}",
+        "report_type": null
+      },
+      "level": {
+        "type": "Enum",
+        "value": "{\"range\":[\"1\",\"2\",\"3\",\"4\"]}",
+        "report_type": null
+      },
+      "anion": {
+        "type": "Boolean",
+        "value": "{}",
+        "report_type": null
+      },
+      "countdown_left": {
+        "type": "Integer",
+        "value": "{\"unit\":\"s\",\"min\":0,\"max\":86400,\"scale\":0,\"step\":1}",
+        "report_type": null
+      }
+    },
+    "status": {
+      "switch": false,
+      "temp_set": 25,
+      "temp_current": 18,
+      "mode": "standby",
+      "level": "4",
+      "anion": false,
+      "countdown_left": 0
+    },
+    "set_up": true,
+    "support_local": true,
+    "quirk": null,
+    "warnings": null,
+    "home_assistant": {
+      "name": "Convector Heater with Wi-Fi",
+      "name_by_user": "Convectorverwarming",
+      "disabled": false,
+      "disabled_by": null,
+      "entities": [
+        {
+          "disabled": false,
+          "disabled_by": null,
+          "entity_category": "config",
+          "device_class": null,
+          "original_device_class": null,
+          "icon": null,
+          "original_icon": null,
+          "unit_of_measurement": null,
+          "state": {
+            "entity_id": "switch.convectorverwarming_ionisator",
+            "state": "off",
+            "attributes": {
+              "friendly_name": "Convectorverwarming Ionisator"
+            },
+            "last_changed": "2026-05-10T08:46:11.360643+00:00",
+            "last_reported": "2026-05-10T08:46:11.360643+00:00",
+            "last_updated": "2026-05-10T08:46:11.360643+00:00"
+          }
+        },
+        {
+          "disabled": false,
+          "disabled_by": null,
+          "entity_category": null,
+          "device_class": null,
+          "original_device_class": null,
+          "icon": null,
+          "original_icon": null,
+          "unit_of_measurement": null,
+          "state": {
+            "entity_id": "select.convectorverwarming_temperatuurniveau",
+            "state": "4",
+            "attributes": {
+              "options": [
+                "1",
+                "2",
+                "3",
+                "4"
+              ],
+              "friendly_name": "Convectorverwarming Temperatuurniveau"
+            },
+            "last_changed": "2026-05-10T08:46:11.346644+00:00",
+            "last_reported": "2026-05-10T08:46:11.346644+00:00",
+            "last_updated": "2026-05-10T08:46:11.346644+00:00"
+          }
+        },
+        {
+          "disabled": true,
+          "disabled_by": "user",
+          "entity_category": null,
+          "device_class": null,
+          "original_device_class": null,
+          "icon": null,
+          "original_icon": null,
+          "unit_of_measurement": null,
+          "state": null
+        }
+      ]
+    }
+  },
+  "issues": []
+}
