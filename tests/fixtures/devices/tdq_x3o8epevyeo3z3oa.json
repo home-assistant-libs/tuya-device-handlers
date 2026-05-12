@@ -16,6 +16,7 @@
   "function": {},
   "status_range": {},
   "status": {},
+  "local_strategy": {},
   "set_up": false,
   "support_local": true
 }
