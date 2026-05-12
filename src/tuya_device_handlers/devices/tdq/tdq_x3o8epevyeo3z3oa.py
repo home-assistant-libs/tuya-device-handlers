@@ -3,7 +3,6 @@
 Tuya does not advertise any datapoints for this device.
 They have been retrieved from the Tuya Developer Portal.
 
-
 See https://github.com/home-assistant/core/issues/163360.
 """
 
