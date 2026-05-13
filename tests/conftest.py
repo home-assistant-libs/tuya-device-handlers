@@ -4,7 +4,12 @@ from collections.abc import Generator
 from unittest.mock import Mock, patch
 
 import pytest
-from tuya_sharing import CustomerDevice, DeviceFunction, DeviceStatusRange
+from tuya_sharing import (
+    CustomerDevice,
+    DeviceFunction,
+    DeviceStatusRange,
+    Manager,
+)
 
 from tuya_device_handlers import TUYA_QUIRKS_REGISTRY
 from tuya_device_handlers.devices import register_tuya_quirks
@@ -23,6 +28,18 @@ def filled_quirks_registry() -> QuirksRegistry:
     """Mock an old config entry that can be migrated."""
     register_tuya_quirks()
     return TUYA_QUIRKS_REGISTRY
+
+
+@pytest.fixture(name="mock_manager")
+def manager_fixture() -> Generator[Manager]:
+    """Mock manager."""
+    with (
+        patch(
+            "tuya_sharing.customerapi.CustomerTokenInfo.__init__",
+            return_value=None,
+        ),
+    ):
+        yield Manager("", "", "", "")
 
 
 @pytest.fixture(name="mock_device")
