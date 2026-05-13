@@ -71,6 +71,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
     def __init__(self) -> None:
         """Initialize the quirk."""
         self._applies_to: str | None = None
+        self._override_category: str | None = None
 
         self._datapoint_definitions = {}
         self._get_wrapper_functions = {}
@@ -96,6 +97,8 @@ class DeviceQuirk(DeviceQuirkProtocol):
 
     def initialise_device(self, device: CustomerDevice) -> None:
         """Initialise device."""
+        if self._override_category is not None:
+            device.category = self._override_category
         self.original_function = device.function.copy()
         self.original_local_strategy = device.local_strategy.copy()
         self.original_status_range = device.status_range.copy()
@@ -147,6 +150,11 @@ class DeviceQuirk(DeviceQuirkProtocol):
         self.manufacturer = manufacturer
         self.model = model
         self.model_id = model_id
+        return self
+
+    def override_category(self, category: str) -> Self:
+        """Set category override applied during initialise_device."""
+        self._override_category = category
         return self
 
     def register(self, registry: QuirksRegistry) -> None:
