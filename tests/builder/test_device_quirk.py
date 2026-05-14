@@ -127,6 +127,12 @@ def test_remove_dpid() -> None:
     assert quirk._datapoint_definitions[(5, "rm")] is None
 
 
+def test_override_category() -> None:
+    """override_category stores the new category on the quirk."""
+    quirk = DeviceQuirk().override_category("kg")
+    assert quirk._override_category == "kg"
+
+
 def test_initialise_device_read_and_write_with_local(
     mock_device: CustomerDevice,
 ) -> None:
@@ -203,6 +209,30 @@ def test_initialise_device_none_definition_removes_everything(
     assert 7 not in mock_device.local_strategy
     assert "g" not in mock_device.status
     assert "g" not in mock_device.status_range
+
+
+def test_initialise_device_override_category(
+    mock_device: CustomerDevice,
+) -> None:
+    """initialise_device remaps device.category when an override is set."""
+    mock_device.support_local = True
+    mock_device.local_strategy = {}
+    mock_device.category = "original"
+    quirk = DeviceQuirk().override_category("kg")
+    quirk.initialise_device(mock_device)
+    assert mock_device.category == "kg"
+
+
+def test_initialise_device_without_override_category(
+    mock_device: CustomerDevice,
+) -> None:
+    """initialise_device leaves device.category alone without an override."""
+    mock_device.support_local = True
+    mock_device.local_strategy = {}
+    mock_device.category = "original"
+    quirk = DeviceQuirk()
+    quirk.initialise_device(mock_device)
+    assert mock_device.category == "original"
 
 
 def test_applies_to_records_manufacturer_and_model() -> None:
