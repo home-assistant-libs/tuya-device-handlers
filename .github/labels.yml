@@ -18,6 +18,9 @@
 - name: dependencies
   description: Pull requests that update a dependency file
   color: 0366d6
+- name: device-quirk
+  description: Provides a device quirk
+  color: ff6dc8
 - name: documentation
   description: Improvements or additions to documentation
   color: 0075ca
