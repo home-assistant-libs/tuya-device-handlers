@@ -52,3 +52,26 @@ def test_get_default_definition_fails() -> None:
         color_temp_dpcode=None,
         fallback_color_data_mode=FallbackColorDataMode.V1,
     )
+
+
+def test_missing_colour_data_hsv() -> None:
+    """Test missing_colour_data_hsv."""
+    device = create_device("jsq_op2lzjcj7fdfhid8.json")
+    assert (
+        definition := get_default_definition(
+            device,
+            switch_dpcode="switch_led",
+            brightness_dpcode="bright_value",
+            brightness_max_dpcode=None,
+            brightness_min_dpcode=None,
+            color_data_dpcode="colour_data_hsv",
+            color_mode_dpcode=None,
+            color_temp_dpcode=None,
+            fallback_color_data_mode=FallbackColorDataMode.V1,
+        )
+    )
+    assert definition.brightness_wrapper is None
+    assert isinstance(definition.color_data_wrapper, ColorDataWrapper)
+    assert definition.color_mode_wrapper is None
+    assert definition.color_temp_wrapper is None
+    assert isinstance(definition.switch_wrapper, DPCodeBooleanWrapper)

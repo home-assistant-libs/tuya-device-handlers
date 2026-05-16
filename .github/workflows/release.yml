@@ -28,7 +28,7 @@ jobs:
       - name: 🏗 Set up Python
         uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
-          python-version: "3.14"
+          python-version: "3.14.5"
 
       - name: 🏗 Install Poetry
         run: pipx install poetry
@@ -41,7 +41,7 @@ jobs:
       - name: Detect and tag new version
         id: check-version
         if: steps.check-parent-commit.outputs.sha
-        uses: salsify/action-detect-and-tag-new-version@2e972ec550a624c846f9f37e87376a6f9f6a682a # v2.0.3
+        uses: salsify/action-detect-and-tag-new-version@b1778166f13188a9d478e2d1198f993011ba9864 # v2.0.3
         with:
           version-command: |
             bash -o pipefail -c "poetry version | awk '{ print \$2 }'"
@@ -59,16 +59,16 @@ jobs:
 
       - name: 🚀 Publish package on PyPI
         if: steps.check-version.outputs.tag
-        uses: pypa/gh-action-pypi-publish@6733eb7d741f0b11ec6a39b58540dab7590f9b7d # v1.14.0
+        uses: pypa/gh-action-pypi-publish@cef221092ed1bacb1cc03d23a2d87d1d172e277b # v1.14.0
 
       - name: 🚀 Publish package on TestPyPI
         if: "! steps.check-version.outputs.tag"
-        uses: pypa/gh-action-pypi-publish@6733eb7d741f0b11ec6a39b58540dab7590f9b7d # v1.14.0
+        uses: pypa/gh-action-pypi-publish@cef221092ed1bacb1cc03d23a2d87d1d172e277b # v1.14.0
         with:
           repository-url: https://test.pypi.org/legacy/
 
       - name: 📝 Publish release notes
-        uses: release-drafter/release-drafter@ec0763817cb51182ef86848b090642f2a47902aa # v7.2.1
+        uses: release-drafter/release-drafter@c2e2804cc59f45f57076a99af580d0fedb697927 # v7.3.0
         with:
           publish: ${{ steps.check-version.outputs.tag != '' }}
           tag: ${{ steps.check-version.outputs.tag }}
