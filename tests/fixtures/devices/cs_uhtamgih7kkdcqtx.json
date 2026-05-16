@@ -1,0 +1,135 @@
+{
+  "data": {
+    "category": "cs",
+    "product_id": "uhtamgih7kkdcqtx",
+    "product_name": "DH-24 Nexi ION UV Wifi",
+    "function": {
+      "switch": {
+        "type": "Boolean",
+        "value": "{}"
+      },
+      "dehumidify_set_value": {
+        "type": "Integer",
+        "value": "{\"unit\":\"%\",\"min\":35,\"max\":80,\"scale\":0,\"step\":5}"
+      },
+      "anion": {
+        "type": "Boolean",
+        "value": "{}"
+      },
+      "uv": {
+        "type": "Boolean",
+        "value": "{}"
+      },
+      "child_lock": {
+        "type": "Boolean",
+        "value": "{}"
+      }
+    },
+    "status_range": {
+      "switch": {
+        "type": "Boolean",
+        "value": "{}",
+        "report_type": null
+      },
+      "dehumidify_set_value": {
+        "type": "Integer",
+        "value": "{\"unit\":\"%\",\"min\":35,\"max\":80,\"scale\":0,\"step\":5}",
+        "report_type": null
+      },
+      "anion": {
+        "type": "Boolean",
+        "value": "{}",
+        "report_type": null
+      },
+      "uv": {
+        "type": "Boolean",
+        "value": "{}",
+        "report_type": null
+      },
+      "child_lock": {
+        "type": "Boolean",
+        "value": "{}",
+        "report_type": null
+      },
+      "fault": {
+        "type": "Bitmap",
+        "value": "{\"label\":[\"bit0\"]}",
+        "report_type": null
+      },
+      "humidity_indoor": {
+        "type": "Integer",
+        "value": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+        "report_type": null
+      },
+      "temp_indoor": {
+        "type": "Integer",
+        "value": "{\"unit\":\"°C\",\"min\":-20,\"max\":60,\"scale\":0,\"step\":1}",
+        "report_type": null
+      }
+    },
+    "status": {
+      "switch": false,
+      "dehumidify_set_value": 35,
+      "anion": true,
+      "uv": true,
+      "child_lock": false,
+      "fault": 0,
+      "temp_indoor": 25,
+      "humidity_indoor": 63
+    },
+    "original_function": {
+      "switch": {
+        "type": "Boolean",
+        "value": "{}"
+      },
+      "dehumidify_set_value": {
+        "type": "Integer",
+        "value": "{\"unit\":\"%\",\"min\":35,\"max\":80,\"scale\":0,\"step\":5}"
+      },
+      "anion": {
+        "type": "Boolean",
+        "value": "{}"
+      },
+      "uv": {
+        "type": "Boolean",
+        "value": "{}"
+      },
+      "child_lock": {
+        "type": "Boolean",
+        "value": "{}"
+      }
+    },
+    "original_status_range": {
+      "switch": {
+        "type": "Boolean",
+        "value": "{}",
+        "report_type": null
+      },
+      "dehumidify_set_value": {
+        "type": "Integer",
+        "value": "{\"unit\":\"%\",\"min\":35,\"max\":80,\"scale\":0,\"step\":5}",
+        "report_type": null
+      },
+      "anion": {
+        "type": "Boolean",
+        "value": "{}",
+        "report_type": null
+      },
+      "uv": {
+        "type": "Boolean",
+        "value": "{}",
+        "report_type": null
+      },
+      "child_lock": {
+        "type": "Boolean",
+        "value": "{}",
+        "report_type": null
+      },
+      "fault": {
+        "type": "Bitmap",
+        "value": "{\"label\":[\"bit0\"]}",
+        "report_type": null
+      }
+    }
+  }
+}
