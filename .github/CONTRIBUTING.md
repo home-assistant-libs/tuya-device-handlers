@@ -35,15 +35,28 @@ Request features on the [Issue Tracker].
 
 ## How to set up your development environment
 
-You need Python 3.13+ and [Poetry].
+The easiest way to get started is to use the [Dev Container][devcontainer]:
 
-Install the package with development requirements:
+[![Open in Dev Containers][devcontainer-shield]][devcontainer]
+
+This gives you a fully configured environment with Python, Poetry,
+Node.js, and all development tools pre-installed.
+
+[devcontainer]: https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/home-assistant-libs/tuya-device-handlers
+[devcontainer-shield]: https://img.shields.io/static/v1?label=Dev%20Containers&message=Open&color=blue&logo=visualstudiocode
+
+### Manual setup
+
+You need Python 3.13+, [Poetry], and [Node.js] (for Prettier).
 
 ```console
+$ npm install
 $ poetry install
+$ poetry run prek install
 ```
 
 [poetry]: https://python-poetry.org/
+[node.js]: https://nodejs.org/
 
 ## How to test the project
 
