@@ -317,7 +317,7 @@
     'online': True,
     'product_id': 'x3o8epevyeo3z3oa',
     'product_name': 'T & H Sensor',
-    'quirk': 'ub/tuya-device-handlers/tests/helpers/test_diagnostics.py:53',
+    'quirk': '/tests/helpers/test_diagnostics.py:53',
     'set_up': False,
     'status': dict({
     }),

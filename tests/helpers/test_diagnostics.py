@@ -57,7 +57,7 @@ def test_customer_device_with_uninitialised_quirk_as_dict(
 
     data = customer_device_as_dict(device)
     # The start of the path is not important for the test.
-    data["quirk"] = data["quirk"][-60:]
+    data["quirk"] = data["quirk"][-37:]
     assert data == snapshot
     assert data["quirk"] is not None
     assert "original_category" not in data
