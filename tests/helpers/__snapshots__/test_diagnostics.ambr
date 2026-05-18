@@ -303,3 +303,30 @@
     'warnings': None,
   })
 # ---
+# name: test_customer_device_with_uninitialised_quirk_as_dict
+  dict({
+    'active_time': '2026-05-07T00:36:45+00:00',
+    'category': 'tdq',
+    'create_time': '2026-05-07T00:36:45+00:00',
+    'function': dict({
+    }),
+    'id': 'ao3z3oeyvepe8o3x',
+    'local_strategy': dict({
+    }),
+    'name': 'x3o8epevyeo3z3oa',
+    'online': True,
+    'product_id': 'x3o8epevyeo3z3oa',
+    'product_name': 'T & H Sensor',
+    'quirk': 'ub/tuya-device-handlers/tests/helpers/test_diagnostics.py:53',
+    'set_up': False,
+    'status': dict({
+    }),
+    'status_range': dict({
+    }),
+    'sub': False,
+    'support_local': True,
+    'time_zone': '+12:00',
+    'update_time': '2026-05-07T00:36:45+00:00',
+    'warnings': None,
+  })
+# ---
