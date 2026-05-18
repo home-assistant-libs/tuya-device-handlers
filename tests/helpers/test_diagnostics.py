@@ -23,10 +23,10 @@ def test_customer_device_with_quirk_as_dict(
 ) -> None:
     """Test customer_device_as_dict."""
     device = create_device("tdq_x3o8epevyeo3z3oa.json")
-    data = customer_device_as_dict(device)
 
     filled_quirks_registry.initialise_device_quirk(device)
 
+    data = customer_device_as_dict(device)
     assert data == snapshot
     assert "original_category" in data
     assert "original_function" in data
