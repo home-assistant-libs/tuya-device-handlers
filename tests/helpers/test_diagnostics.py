@@ -27,6 +27,8 @@ def test_customer_device_with_quirk_as_dict(
     filled_quirks_registry.initialise_device_quirk(device)
 
     data = customer_device_as_dict(device)
+    # The start of the path is not important for the test.
+    data["quirk"] = data["quirk"][-60:]
     assert data == snapshot
     assert "original_category" in data
     assert "original_function" in data
