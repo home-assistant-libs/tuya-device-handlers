@@ -1,0 +1,22 @@
+{
+  "endpoint": "https://apigw.tuyaeu.com",
+  "mqtt_connected": true,
+  "disabled_by": null,
+  "disabled_polling": false,
+  "name": "5xe6dkfmdafvrasa",
+  "category": "qn",
+  "product_id": "5xe6dkfmdafvrasa",
+  "product_name": "Inverter pool Heat pump",
+  "online": true,
+  "sub": false,
+  "time_zone": "+10:00",
+  "active_time": "2026-05-04T01:05:49+00:00",
+  "create_time": "2026-05-04T01:05:49+00:00",
+  "update_time": "2026-05-04T01:05:49+00:00",
+  "function": {},
+  "status_range": {},
+  "status": {},
+  "local_strategy": {},
+  "set_up": true,
+  "support_local": true
+}
