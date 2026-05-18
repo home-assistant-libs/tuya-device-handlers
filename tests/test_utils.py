@@ -1,4 +1,4 @@
-"""Test utils"""
+"""Test utils."""
 
 from tuya_sharing import CustomerDevice
 

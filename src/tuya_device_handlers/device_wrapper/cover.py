@@ -2,8 +2,9 @@
 
 from tuya_sharing import CustomerDevice
 
-from ..helpers.homeassistant import TuyaCoverAction
-from ..type_information import EnumTypeInformation
+from tuya_device_handlers.helpers.homeassistant import TuyaCoverAction
+from tuya_device_handlers.type_information import EnumTypeInformation
+
 from .common import DPCodeBooleanWrapper, DPCodeEnumWrapper
 from .extended import DPCodePercentageWrapper
 
@@ -50,6 +51,7 @@ class CoverInstructionEnumWrapper(DPCodeEnumWrapper[TuyaCoverAction]):
     def __init__(
         self, dpcode: str, type_information: EnumTypeInformation
     ) -> None:
+        """Initialize CoverInstructionEnumWrapper."""
         super().__init__(dpcode, type_information)
         self.options = [
             ha_action
@@ -84,6 +86,7 @@ class CoverClosedEnumWrapper(DPCodeEnumWrapper[bool]):
     }
 
     def read_device_status(self, device: CustomerDevice) -> bool | None:
+        """Read the device value for this datapoint."""
         if (value := self._read_dpcode_value(device)) is None:
             return None
         return self._MAPPINGS.get(value)

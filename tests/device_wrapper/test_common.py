@@ -1,4 +1,4 @@
-"""Test DeviceWrapper classes"""
+"""Test DeviceWrapper classes."""
 
 import base64
 from typing import Any
@@ -17,13 +17,6 @@ from tuya_device_handlers.device_wrapper.common import (
     DPCodeStringWrapper,
     DPCodeTypeInformationWrapper,
 )
-
-try:
-    from typeguard import suppress_type_checks  # ty: ignore[unresolved-import]
-except ImportError:
-    from contextlib import nullcontext
-
-    suppress_type_checks: Any = nullcontext
 
 
 def test_dpcode_not_found(
@@ -127,7 +120,7 @@ def test_get_update_commands_value_error(
     wrapper = wrapper_type.find_dpcode(mock_device, dpcode)
 
     assert wrapper
-    with suppress_type_checks(), pytest.raises(SetValueOutOfRangeError):
+    with pytest.raises(SetValueOutOfRangeError):
         wrapper.get_update_commands(mock_device, value)
 
 

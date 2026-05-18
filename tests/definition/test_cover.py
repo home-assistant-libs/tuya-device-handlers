@@ -12,7 +12,7 @@ from tuya_device_handlers.device_wrapper.extended import (
 
 
 def test_get_default_definition() -> None:
-    """Test get_default_definition"""
+    """Test get_default_definition."""
     device = create_device("cl_zah67ekd.json")
     assert (
         definition := get_default_definition(
@@ -40,7 +40,7 @@ def test_get_default_definition() -> None:
 
 
 def test_get_default_definition_fails() -> None:
-    """Test get_default_definition"""
+    """Test get_default_definition."""
     device = create_device("cl_zah67ekd.json")
     assert not get_default_definition(
         device,

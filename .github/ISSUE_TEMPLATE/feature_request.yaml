@@ -1,0 +1,47 @@
+---
+name: Feature request
+description: >-
+  Request a new device quirk or suggest an improvement to an
+  existing one.
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting an improvement!
+
+        If you're requesting a quirk for a specific device, please include
+        information about the device's data points. If you are using
+        Home Assistant, the easiest way to provide this is by downloading
+        the **diagnostics data** for the device.
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: >-
+        Describe what you'd like to see. If your device behaves
+        incorrectly, explain what it currently does and what you
+        expect it to do instead.
+    validations:
+      required: true
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Device diagnostics data
+      description: >-
+        Provide the device's data points, functions, and status ranges.
+        If you are using Home Assistant, you can download this as
+        diagnostics data: go to **Settings → Devices & Services → Tuya →
+        your device → three-dot menu → Download diagnostics**. Sensitive
+        data like device IDs is automatically redacted by Home Assistant.
+      render: json
+    validations:
+      required: false
+  - type: textarea
+    id: additional-information
+    attributes:
+      label: Additional information
+      description: >-
+        Any additional context, references, or links to Tuya
+        documentation for your device.
+    validations:
+      required: false

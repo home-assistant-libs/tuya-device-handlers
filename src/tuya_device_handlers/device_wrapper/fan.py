@@ -4,8 +4,12 @@ from typing import Any
 
 from tuya_sharing import CustomerDevice
 
-from ..helpers.homeassistant import TuyaFanDirection
-from ..type_information import EnumTypeInformation, IntegerTypeInformation
+from tuya_device_handlers.helpers.homeassistant import TuyaFanDirection
+from tuya_device_handlers.type_information import (
+    EnumTypeInformation,
+    IntegerTypeInformation,
+)
+
 from .common import DPCodeEnumWrapper
 from .extended import DPCodeRemappedIntegerWrapper
 

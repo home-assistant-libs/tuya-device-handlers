@@ -1,4 +1,4 @@
-"""Test DeviceWrapper classes"""
+"""Test DeviceWrapper classes."""
 
 from typing import Any
 
@@ -17,13 +17,6 @@ from tuya_device_handlers.device_wrapper.light import (
 from tuya_device_handlers.utils import RemapHelper
 
 from . import inject_dpcode
-
-try:
-    from typeguard import suppress_type_checks  # ty: ignore[unresolved-import]
-except ImportError:
-    from contextlib import nullcontext
-
-    suppress_type_checks: Any = nullcontext
 
 
 def _inject_default_light(mock_device: CustomerDevice) -> None:

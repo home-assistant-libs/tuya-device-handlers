@@ -1,4 +1,4 @@
-"""Test DeviceWrapper classes"""
+"""Test DeviceWrapper classes."""
 
 from typing import Any
 
@@ -16,13 +16,6 @@ from tuya_device_handlers.device_wrapper.fan import (
 from tuya_device_handlers.helpers.homeassistant import TuyaFanDirection
 
 from . import inject_dpcode
-
-try:
-    from typeguard import suppress_type_checks  # ty: ignore[unresolved-import]
-except ImportError:
-    from contextlib import nullcontext
-
-    suppress_type_checks: Any = nullcontext
 
 
 @pytest.mark.parametrize(

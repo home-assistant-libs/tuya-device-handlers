@@ -4,8 +4,9 @@ from typing import Any
 
 from tuya_sharing import CustomerDevice
 
-from ..type_information import IntegerTypeInformation
-from ..utils import RemapHelper
+from tuya_device_handlers.type_information import IntegerTypeInformation
+from tuya_device_handlers.utils import RemapHelper
+
 from .common import DPCodeBooleanWrapper, DPCodeIntegerWrapper
 
 
@@ -85,6 +86,7 @@ class DPCodeInvertedBooleanWrapper(DPCodeBooleanWrapper):
     """Inverted boolean wrapper."""
 
     def read_device_status(self, device: CustomerDevice) -> bool | None:
+        """Read the device value for this datapoint."""
         if (value := self._read_dpcode_value(device)) is None:
             return None
         return not value

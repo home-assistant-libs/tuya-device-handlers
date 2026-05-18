@@ -1,5 +1,6 @@
 """Base quirk definition."""
 
+from collections.abc import Callable
 from dataclasses import dataclass
 import inspect
 import json
@@ -9,7 +10,37 @@ from typing import TYPE_CHECKING, Any, Self
 from tuya_sharing import CustomerDevice, DeviceFunction, DeviceStatusRange
 
 from tuya_device_handlers.const import DPMode, DPType
+from tuya_device_handlers.device_wrapper.base import DeviceWrapper
+from tuya_device_handlers.device_wrapper.service_feeder_schedule import (
+    FeederSchedule,
+)
 from tuya_device_handlers.registry import DeviceQuirkProtocol, QuirksRegistry
+
+
+@dataclass(kw_only=True)
+class LocalConvertStrategy:
+    """Definition for a local convert strategy."""
+
+    dpid: int
+    dpcode: str
+    value_convert: str
+    enum_mapping_map: dict[str, dict[str, Any]] | None = None
+
+    def to_local_strategy(
+        self, product_id: str, status_range: DeviceStatusRange | None
+    ) -> dict[str, Any]:
+        """Convert to LocalStrategy."""
+        return {
+            "value_convert": self.value_convert,
+            "status_code": self.dpcode,
+            "config_item": {
+                "statusFormat": json.dumps({self.dpcode: "$"}),
+                "valueDesc": status_range.values if status_range else "",
+                "valueType": status_range.type if status_range else "",
+                "enumMappingMap": self.enum_mapping_map or {},
+                "pid": product_id,
+            },
+        }
 
 
 @dataclass(kw_only=True)
@@ -57,13 +88,21 @@ class DatapointDefinition:
 class DeviceQuirk(DeviceQuirkProtocol):
     """Quirk for Tuya device."""
 
+    _datapoint_definitions: dict[tuple[int, str], DatapointDefinition | None]
+    _local_strategy: dict[tuple[int, str], LocalConvertStrategy | None]
+    _get_wrapper_functions: dict[
+        str,
+        Callable[[CustomerDevice], DeviceWrapper | None],
+    ]
+
     def __init__(self) -> None:
         """Initialize the quirk."""
-        self._applies_to: list[str] = []
+        self._applies_to: str | None = None
+        self._override_category: str | None = None
 
-        self._datapoint_definitions: dict[
-            tuple[int, str], DatapointDefinition | None
-        ] = {}
+        self._datapoint_definitions = {}
+        self._local_strategy = {}
+        self._get_wrapper_functions = {}
 
         current_frame = inspect.currentframe()
         if TYPE_CHECKING:
@@ -89,6 +128,9 @@ class DeviceQuirk(DeviceQuirkProtocol):
         self.original_function = device.function.copy()
         self.original_local_strategy = device.local_strategy.copy()
         self.original_status_range = device.status_range.copy()
+
+        if self._override_category is not None:
+            device.category = self._override_category
 
         for key, definition in self._datapoint_definitions.items():
             dpid, dpcode = key
@@ -121,15 +163,50 @@ class DeviceQuirk(DeviceQuirkProtocol):
             else:
                 device.local_strategy.pop(definition.dpid, None)
 
-    def applies_to(self, *, product_id: str) -> Self:
+        if device.support_local:
+            for key, definition in self._local_strategy.items():
+                dpid, dpcode = key
+
+                if definition is None:
+                    device.local_strategy.pop(dpid, None)
+                    continue
+
+                device.local_strategy[definition.dpid] = (
+                    definition.to_local_strategy(
+                        device.product_id,
+                        device.status_range.get(definition.dpcode),
+                    )
+                )
+
+    def applies_to(
+        self,
+        *,
+        product_id: str,
+        manufacturer: str | None = None,
+        model: str | None = None,
+        model_id: str | None = None,
+    ) -> Self:
         """Set the device type the quirk applies to."""
-        self._applies_to.append(product_id)
+        if self._applies_to is not None:
+            msg = "DeviceQuirk already has an applies_to condition"
+            raise ValueError(msg)
+        self._applies_to = product_id
+        self.manufacturer = manufacturer
+        self.model = model
+        self.model_id = model_id
+        return self
+
+    def override_category(self, category: str) -> Self:
+        """Set category override applied during initialise_device."""
+        self._override_category = category
         return self
 
     def register(self, registry: QuirksRegistry) -> None:
         """Register the quirk in the registry."""
-        for product_id in self._applies_to:
-            registry.register(product_id, self)
+        if self._applies_to is None:
+            msg = "DeviceQuirk does not have an applies_to condition"
+            raise ValueError(msg)
+        registry.register(self._applies_to, self)
 
     def add_dpid_bitmap(
         self, *, dpid: int, dpcode: str, dpmode: DPMode, label_range: list[str]
@@ -177,8 +254,8 @@ class DeviceQuirk(DeviceQuirkProtocol):
         dpcode: str,
         dpmode: DPMode,
         unit: str,
-        min: int,
-        max: int,
+        min: int,  # noqa: A002  # pylint: disable=redefined-builtin
+        max: int,  # noqa: A002  # pylint: disable=redefined-builtin
         scale: int,
         step: int,
         report_type: str | None = None,
@@ -206,3 +283,49 @@ class DeviceQuirk(DeviceQuirkProtocol):
         """Remove datapoint definition."""
         self._datapoint_definitions[(dpid, dpcode)] = None
         return self
+
+    def set_dpid_strategy_to_enum(
+        self,
+        *,
+        dpid: int,
+        dpcode: str,
+        enum_mapping_map: dict[Any, Any],
+    ) -> Self:
+        """Override local strategy for a datapoint."""
+        self._local_strategy[(dpid, dpcode)] = LocalConvertStrategy(
+            dpid=dpid,
+            dpcode=dpcode,
+            value_convert="enum",
+            enum_mapping_map={
+                str(key): {"value": value}
+                for key, value in enum_mapping_map.items()
+            },
+        )
+        return self
+
+    def remove_dpid_strategy(self, *, dpid: int, dpcode: str) -> Self:
+        """Remove datapoint strategy."""
+        self._local_strategy[(dpid, dpcode)] = None
+        return self
+
+    def map_feeder_schedules_wrapper(
+        self,
+        *,
+        wrapper_function: Callable[
+            [CustomerDevice], DeviceWrapper[list[FeederSchedule]] | None
+        ],
+    ) -> Self:
+        """Map feeder schedule service."""
+        self._get_wrapper_functions["feeder_schedules"] = wrapper_function
+        return self
+
+    def get_feeder_schedules_wrapper(
+        self, device: CustomerDevice
+    ) -> DeviceWrapper[list[FeederSchedule]] | None:
+        """Get the feeder schedules wrapper for a device."""
+        if get_wrapper_function := self._get_wrapper_functions.get(
+            "feeder_schedules"
+        ):
+            return get_wrapper_function(device)
+
+        return None

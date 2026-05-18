@@ -8,13 +8,13 @@ from typing import Any, cast
 
 from tuya_sharing import CustomerDevice
 
-from ..device_wrapper import DeviceWrapper
-from ..device_wrapper.common import (
+from tuya_device_handlers.device_wrapper import DeviceWrapper
+from tuya_device_handlers.device_wrapper.common import (
     DPCodeBooleanWrapper,
     DPCodeEnumWrapper,
     DPCodeIntegerWrapper,
 )
-from ..device_wrapper.light import (
+from tuya_device_handlers.device_wrapper.light import (
     DEFAULT_H_TYPE_V2,
     DEFAULT_S_TYPE_V2,
     DEFAULT_V_TYPE_V2,
@@ -22,12 +22,15 @@ from ..device_wrapper.light import (
     ColorDataWrapper,
     ColorTempWrapper,
 )
-from ..utils import RemapHelper
+from tuya_device_handlers.utils import RemapHelper
+
 from .base import BaseEntityQuirk
 
 
 @dataclass(kw_only=True)
 class LightDefinition:
+    """Definition for a light entity."""
+
     brightness_wrapper: DeviceWrapper[int] | None
     color_data_wrapper: DeviceWrapper[tuple[float, float, float]] | None
     color_mode_wrapper: DeviceWrapper[str] | None
@@ -66,6 +69,7 @@ def get_default_definition(
     color_temp_dpcode: str | tuple[str, ...] | None = None,
     fallback_color_data_mode: FallbackColorDataMode = FallbackColorDataMode.V1,
 ) -> LightDefinition | None:
+    """Get the default light definition for a device."""
     if not (
         switch_wrapper := DPCodeBooleanWrapper.find_dpcode(
             device, switch_dpcode, prefer_function=True
@@ -148,14 +152,17 @@ def _get_color_data_wrapper(
     if function_data := json.loads(
         color_data_wrapper.type_information.type_data
     ):
+        h_type = function_data.get("h", {"min": 0, "max": 360})
+        s_type = function_data.get("s", {"min": 0, "max": 255})
+        v_type = function_data.get("v", {"min": 0, "max": 255})
         color_data_wrapper.h_type = RemapHelper.from_function_data(
-            cast(dict[str, Any], function_data["h"]), 0, 360
+            cast(dict[str, Any], h_type), 0, 360
         )
         color_data_wrapper.s_type = RemapHelper.from_function_data(
-            cast(dict[str, Any], function_data["s"]), 0, 100
+            cast(dict[str, Any], s_type), 0, 100
         )
         color_data_wrapper.v_type = RemapHelper.from_function_data(
-            cast(dict[str, Any], function_data["v"]), 0, 255
+            cast(dict[str, Any], v_type), 0, 255
         )
     elif (
         fallback_color_data_mode == FallbackColorDataMode.V2

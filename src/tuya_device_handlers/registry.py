@@ -6,6 +6,9 @@ from typing import Any, Protocol, Self
 
 from tuya_sharing import CustomerDevice, DeviceFunction, DeviceStatusRange
 
+from .device_wrapper.base import DeviceWrapper
+from .device_wrapper.service_feeder_schedule import FeederSchedule
+
 _LOGGER = logging.getLogger(__name__)
 
 
@@ -16,12 +19,25 @@ class DeviceQuirkProtocol(Protocol):
     original_local_strategy: dict[int, dict[str, Any]]
     original_status_range: dict[str, DeviceStatusRange]
 
-    @property
-    def quirk_file(self) -> pathlib.Path: ...
-    @property
-    def quirk_file_line(self) -> int: ...
+    manufacturer: str | None
+    model: str | None
+    model_id: str | None
 
-    def initialise_device(self, device: CustomerDevice) -> None: ...
+    @property
+    def quirk_file(self) -> pathlib.Path:
+        """Get the quirk file path."""
+
+    @property
+    def quirk_file_line(self) -> int:
+        """Get the quirk file line number."""
+
+    def initialise_device(self, device: CustomerDevice) -> None:
+        """Initialize the device with this quirk."""
+
+    def get_feeder_schedules_wrapper(
+        self, device: CustomerDevice
+    ) -> DeviceWrapper[list[FeederSchedule]] | None:
+        """Get the feeder schedules wrapper for a device."""
 
 
 class QuirksRegistry:

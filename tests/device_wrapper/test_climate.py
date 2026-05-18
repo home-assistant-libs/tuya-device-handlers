@@ -1,4 +1,4 @@
-"""Test DeviceWrapper classes"""
+"""Test DeviceWrapper classes."""
 
 from typing import Any
 
@@ -16,13 +16,6 @@ from tuya_device_handlers.helpers.homeassistant import (
 )
 
 from . import inject_dpcode
-
-try:
-    from typeguard import suppress_type_checks  # ty: ignore[unresolved-import]
-except ImportError:
-    from contextlib import nullcontext
-
-    suppress_type_checks: Any = nullcontext
 
 
 @pytest.mark.parametrize(
@@ -67,6 +60,7 @@ def test_read_swing_mode(
     expected_device_status: Any,
     mock_device: CustomerDevice,
 ) -> None:
+    """Test reading swing mode from device status."""
     if sample == "swing_only":
         inject_dpcode(mock_device, "swing", None, dptype="Boolean")
     if sample in {"horizontal_only", "both"}:
@@ -83,6 +77,7 @@ def test_read_swing_mode(
 def test_swing_mode_unavailable(
     mock_device: CustomerDevice,
 ) -> None:
+    """Test swing mode returns None when no dpcode is available."""
     wrapper = SwingModeCompositeWrapper.find_dpcode(mock_device)
 
     assert wrapper is None
@@ -192,6 +187,7 @@ def test_read_hvac_preset(
     expected_preset: Any,
     mock_device: CustomerDevice,
 ) -> None:
+    """Test reading HVAC mode and preset from device status."""
     inject_dpcode(
         mock_device,
         "mode",

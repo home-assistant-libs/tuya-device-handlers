@@ -4,7 +4,8 @@ from typing import Self
 
 from tuya_sharing import CustomerDevice
 
-from ..type_information import BitmapTypeInformation
+from tuya_device_handlers.type_information import BitmapTypeInformation
+
 from .common import DPCodeBitmapWrapper, DPCodeWrapper
 
 
@@ -25,7 +26,7 @@ class DPCodeBitmapBitWrapper(DPCodeBitmapWrapper[bool]):
         return (raw_value & (1 << self._mask)) != 0
 
     @classmethod
-    def find_dpcode(  # ty: ignore[invalid-method-override]
+    def find_dpcode(  # ty: ignore[invalid-method-override]  # pylint: disable=arguments-differ
         cls,
         device: CustomerDevice,
         dpcodes: str | tuple[str, ...] | None,

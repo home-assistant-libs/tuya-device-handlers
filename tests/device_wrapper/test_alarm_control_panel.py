@@ -1,4 +1,4 @@
-"""Test DeviceWrapper classes"""
+"""Test DeviceWrapper classes."""
 
 from typing import Any
 
@@ -16,13 +16,6 @@ from tuya_device_handlers.helpers.homeassistant import (
 )
 
 from . import inject_dpcode
-
-try:
-    from typeguard import suppress_type_checks  # ty: ignore[unresolved-import]
-except ImportError:
-    from contextlib import nullcontext
-
-    suppress_type_checks: Any = nullcontext
 
 
 def _inject_default_alarm_codes(mock_device: CustomerDevice) -> None:
@@ -81,7 +74,7 @@ def _inject_default_alarm_codes(mock_device: CustomerDevice) -> None:
                 "master_mode": "home",
                 "master_state": "alarm",
                 # "Sensor Low Battery Test Sensor" in UTF-16BE
-                "alarm_msg": "AFMAZQBuAHMAbwByACAATABvAHcAIABCAGEAdAB0AGUAcgB5ACAAVABlAHMAdAAgAFMAZQBuAHMAbwBy",
+                "alarm_msg": "AFMAZQBuAHMAbwByACAATABvAHcAIABCAGEAdAB0AGUAcgB5ACAAVABlAHMAdAAgAFMAZQBuAHMAbwBy",  # noqa: E501
             },
             TuyaAlarmControlPanelState.ARMED_HOME,
             "Sensor Low Battery Test Sensor",

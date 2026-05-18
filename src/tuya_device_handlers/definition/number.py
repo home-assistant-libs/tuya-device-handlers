@@ -5,13 +5,16 @@ from dataclasses import dataclass
 
 from tuya_sharing import CustomerDevice
 
-from ..device_wrapper import DeviceWrapper
-from ..device_wrapper.common import DPCodeIntegerWrapper
+from tuya_device_handlers.device_wrapper import DeviceWrapper
+from tuya_device_handlers.device_wrapper.common import DPCodeIntegerWrapper
+
 from .base import BaseEntityQuirk
 
 
 @dataclass(kw_only=True)
 class NumberDefinition:
+    """Definition for a number entity."""
+
     number_wrapper: DeviceWrapper[float]
 
 
@@ -28,6 +31,7 @@ class NumberQuirk(BaseEntityQuirk):
 def get_default_definition(
     device: CustomerDevice, dpcode: str
 ) -> NumberDefinition | None:
+    """Get the default number definition for a device."""
     if wrapper := DPCodeIntegerWrapper.find_dpcode(
         device, dpcode, prefer_function=True
     ):

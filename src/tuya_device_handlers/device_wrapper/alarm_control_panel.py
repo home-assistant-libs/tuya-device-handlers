@@ -5,11 +5,12 @@ from typing import Any
 
 from tuya_sharing import CustomerDevice
 
-from ..helpers.homeassistant import (
+from tuya_device_handlers.helpers.homeassistant import (
     TuyaAlarmControlPanelAction,
     TuyaAlarmControlPanelState,
 )
-from ..type_information import EnumTypeInformation
+from tuya_device_handlers.type_information import EnumTypeInformation
+
 from .common import DPCodeEnumWrapper, DPCodeRawWrapper
 
 
@@ -49,9 +50,10 @@ class AlarmStateWrapper(DPCodeEnumWrapper[TuyaAlarmControlPanelState]):
         self, device: CustomerDevice
     ) -> TuyaAlarmControlPanelState | None:
         """Read the device status."""
-        # When the alarm is triggered, only its 'state' is changing. From 'normal' to 'alarm'.
+        # When the alarm is triggered, only its 'state' is
+        # changing. From 'normal' to 'alarm'.
         # The 'mode' doesn't change, and stays as 'arm' or 'home'.
-        if device.status.get("master_state") == "alarm":
+        if device.status.get("master_state") == "alarm":  # noqa: SIM102
             # Only report as triggered if NOT a battery warning
             if not (
                 (encoded_msg := device.status.get("alarm_msg"))
@@ -97,4 +99,5 @@ class AlarmActionWrapper(DPCodeEnumWrapper[TuyaAlarmControlPanelAction]):
         """Convert value to raw value."""
         if value in self.options:
             return self._ACTION_MAPPINGS[value]
-        raise ValueError(f"Unsupported value {value} for {self.dpcode}")
+        msg = f"Unsupported value {value} for {self.dpcode}"
+        raise ValueError(msg)
