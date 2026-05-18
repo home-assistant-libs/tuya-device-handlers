@@ -28,13 +28,13 @@ from tuya_device_handlers.const import DPMode
     .add_dpid_boolean(
         dpid=1,
         dpcode="switch",
-        dpmode=DPMode.WRITE,
+        dpmode=DPMode.READ | DPMode.WRITE,
     )
     # Temperature setpoint (DP 2)
     .add_dpid_integer(
         dpid=2,
         dpcode="temp_set",
-        dpmode=DPMode.WRITE,
+        dpmode=DPMode.READ | DPMode.WRITE,
         unit="°C",
         min=5,
         max=37,
@@ -58,7 +58,7 @@ from tuya_device_handlers.const import DPMode
     .add_dpid_enum(
         dpid=4,
         dpcode="mode",
-        dpmode=DPMode.WRITE,
+        dpmode=DPMode.READ | DPMode.WRITE,
         enum_range=["smart", "auto", "off"],
     )
     # Level (DP 5) — power level / heat output
@@ -66,7 +66,7 @@ from tuya_device_handlers.const import DPMode
     .add_dpid_enum(
         dpid=5,
         dpcode="level",
-        dpmode=DPMode.WRITE,
+        dpmode=DPMode.READ | DPMode.WRITE,
         enum_range=["1", "2", "3", "4"],
     )
     # Turbo / fan boost (DP 9)
@@ -75,13 +75,13 @@ from tuya_device_handlers.const import DPMode
     .add_dpid_boolean(
         dpid=9,
         dpcode="turbo",
-        dpmode=DPMode.WRITE,
+        dpmode=DPMode.READ | DPMode.WRITE,
     )
     # Countdown timer (DP 12)
     .add_dpid_integer(
         dpid=12,
         dpcode="countdown_left",
-        dpmode=DPMode.WRITE,
+        dpmode=DPMode.READ | DPMode.WRITE,
         unit="s",
         min=0,
         max=86400,
