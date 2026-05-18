@@ -125,6 +125,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
 
     def initialise_device(self, device: CustomerDevice) -> None:
         """Initialise device."""
+        self.original_category = device.category
         self.original_function = device.function.copy()
         self.original_local_strategy = device.local_strategy.copy()
         self.original_status_range = device.status_range.copy()

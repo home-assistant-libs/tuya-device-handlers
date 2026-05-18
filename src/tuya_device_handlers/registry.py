@@ -15,6 +15,7 @@ _LOGGER = logging.getLogger(__name__)
 class DeviceQuirkProtocol(Protocol):
     """Protocol for a Tuya device quirk."""
 
+    original_category: str
     original_function: dict[str, DeviceFunction]
     original_local_strategy: dict[int, dict[str, Any]]
     original_status_range: dict[str, DeviceStatusRange]

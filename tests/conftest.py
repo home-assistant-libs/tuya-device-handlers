@@ -46,6 +46,7 @@ def manager_fixture() -> Generator[Manager]:
 def device_fixture() -> CustomerDevice:
     """Fixture for a customer device."""
     mock_device = Mock(spec=CustomerDevice)
+    mock_device.category = "category"
     mock_device.id = "device_id"
     mock_device.product_id = "product_id"
 
