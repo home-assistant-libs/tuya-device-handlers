@@ -197,3 +197,136 @@
     'warnings': None,
   })
 # ---
+# name: test_customer_device_with_quirk_as_dict
+  dict({
+    'active_time': '2026-05-07T00:36:45+00:00',
+    'category': 'tdq',
+    'create_time': '2026-05-07T00:36:45+00:00',
+    'function': dict({
+      'temp_unit_convert': dict({
+        'type': 'Enum',
+        'value': '{"range": ["c", "f"]}',
+      }),
+    }),
+    'id': 'ao3z3oeyvepe8o3x',
+    'local_strategy': dict({
+      20: dict({
+        'config_item': dict({
+          'enumMappingMap': dict({
+          }),
+          'pid': 'x3o8epevyeo3z3oa',
+          'statusFormat': '{"temp_unit_convert": "$"}',
+          'valueDesc': '{"range": ["c", "f"]}',
+          'valueType': 'Enum',
+        }),
+        'status_code': 'temp_unit_convert',
+        'value_convert': 'default',
+      }),
+      27: dict({
+        'config_item': dict({
+          'enumMappingMap': dict({
+          }),
+          'pid': 'x3o8epevyeo3z3oa',
+          'statusFormat': '{"temp_current": "$"}',
+          'valueDesc': '{"unit": "\\u2103", "min": -200, "max": 600, "scale": 1, "step": 1}',
+          'valueType': 'Integer',
+        }),
+        'status_code': 'temp_current',
+        'value_convert': 'default',
+      }),
+      46: dict({
+        'config_item': dict({
+          'enumMappingMap': dict({
+          }),
+          'pid': 'x3o8epevyeo3z3oa',
+          'statusFormat': '{"humidity_value": "$"}',
+          'valueDesc': '{"unit": "%", "min": 0, "max": 100, "scale": 0, "step": 1}',
+          'valueType': 'Integer',
+        }),
+        'status_code': 'humidity_value',
+        'value_convert': 'default',
+      }),
+      101: dict({
+        'config_item': dict({
+          'enumMappingMap': dict({
+          }),
+          'pid': 'x3o8epevyeo3z3oa',
+          'statusFormat': '{"battery_state": "$"}',
+          'valueDesc': '{"range": ["low", "middle", "high"]}',
+          'valueType': 'Enum',
+        }),
+        'status_code': 'battery_state',
+        'value_convert': 'default',
+      }),
+    }),
+    'name': 'x3o8epevyeo3z3oa',
+    'online': True,
+    'original_category': 'tdq',
+    'original_function': dict({
+    }),
+    'original_local_strategy': dict({
+    }),
+    'original_status_range': dict({
+    }),
+    'product_id': 'x3o8epevyeo3z3oa',
+    'product_name': 'T & H Sensor',
+    'quirk': 'src/tuya_device_handlers/devices/tdq/x3o8epevyeo3z3oa.py:14',
+    'set_up': False,
+    'status': dict({
+    }),
+    'status_range': dict({
+      'battery_state': dict({
+        'report_type': None,
+        'type': 'Enum',
+        'value': '{"range": ["low", "middle", "high"]}',
+      }),
+      'humidity_value': dict({
+        'report_type': None,
+        'type': 'Integer',
+        'value': '{"unit": "%", "min": 0, "max": 100, "scale": 0, "step": 1}',
+      }),
+      'temp_current': dict({
+        'report_type': None,
+        'type': 'Integer',
+        'value': '{"unit": "\\u2103", "min": -200, "max": 600, "scale": 1, "step": 1}',
+      }),
+      'temp_unit_convert': dict({
+        'report_type': None,
+        'type': 'Enum',
+        'value': '{"range": ["c", "f"]}',
+      }),
+    }),
+    'sub': False,
+    'support_local': True,
+    'time_zone': '+12:00',
+    'update_time': '2026-05-07T00:36:45+00:00',
+    'warnings': None,
+  })
+# ---
+# name: test_customer_device_with_uninitialised_quirk_as_dict
+  dict({
+    'active_time': '2026-05-07T00:36:45+00:00',
+    'category': 'tdq',
+    'create_time': '2026-05-07T00:36:45+00:00',
+    'function': dict({
+    }),
+    'id': 'ao3z3oeyvepe8o3x',
+    'local_strategy': dict({
+    }),
+    'name': 'x3o8epevyeo3z3oa',
+    'online': True,
+    'product_id': 'x3o8epevyeo3z3oa',
+    'product_name': 'T & H Sensor',
+    'quirk': 'tests/helpers/test_diagnostics.py:62',
+    'set_up': False,
+    'status': dict({
+    }),
+    'status_range': dict({
+    }),
+    'sub': False,
+    'support_local': True,
+    'time_zone': '+12:00',
+    'update_time': '2026-05-07T00:36:45+00:00',
+    'warnings': None,
+  })
+# ---

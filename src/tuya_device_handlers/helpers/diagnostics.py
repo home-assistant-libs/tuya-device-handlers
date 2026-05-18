@@ -68,6 +68,8 @@ def customer_device_as_dict(device: CustomerDevice) -> dict[str, Any]:
         "warnings": DEVICE_WARNINGS.get(device.id),
     }
     if quirk:
+        if hasattr(quirk, "original_category"):
+            data["original_category"] = quirk.original_category
         if hasattr(quirk, "original_function"):
             data["original_function"] = _format_functions(
                 quirk.original_function

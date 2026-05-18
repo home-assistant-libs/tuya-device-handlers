@@ -7,6 +7,7 @@
 [![Tests](https://github.com/home-assistant-libs/tuya-device-handlers/workflows/Testing/badge.svg)][tests]
 [![Codecov](https://codecov.io/gh/home-assistant-libs/tuya-device-handlers/branch/main/graph/badge.svg)][codecov]
 [![OpenSSF Scorecard][scorecard-shield]][scorecard]
+[![Open in Dev Containers][devcontainer-shield]][devcontainer]
 
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)][pre-commit]
 [![ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)][ruff]
@@ -17,6 +18,8 @@
 [codecov]: https://app.codecov.io/gh/home-assistant-libs/tuya-device-handlers
 [scorecard]: https://scorecard.dev/viewer/?uri=github.com/home-assistant-libs/tuya-device-handlers
 [scorecard-shield]: https://api.scorecard.dev/projects/github.com/home-assistant-libs/tuya-device-handlers/badge
+[devcontainer]: https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/home-assistant-libs/tuya-device-handlers
+[devcontainer-shield]: https://img.shields.io/static/v1?label=Dev%20Containers&message=Open&color=blue&logo=visualstudiocode
 [pre-commit]: https://github.com/pre-commit/pre-commit
 [ruff]: https://github.com/astral-sh/ruff
 
