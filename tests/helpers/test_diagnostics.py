@@ -1,5 +1,7 @@
 """Test diagnostics helpers."""
 
+import pathlib
+
 from syrupy.assertion import SnapshotAssertion
 
 from tests import create_device
@@ -7,6 +9,14 @@ from tuya_device_handlers import TUYA_QUIRKS_REGISTRY
 from tuya_device_handlers.builder.device_quirk import DeviceQuirk
 from tuya_device_handlers.helpers.diagnostics import customer_device_as_dict
 from tuya_device_handlers.registry import QuirksRegistry
+
+_PROJECT_ROOT = pathlib.Path(__file__).parents[2]
+
+
+def _relative_quirk(quirk: str) -> str:
+    """Return the quirk reference as a path relative to the project root."""
+    path, _, line = quirk.rpartition(":")
+    return f"{pathlib.Path(path).relative_to(_PROJECT_ROOT)}:{line}"
 
 
 def test_customer_device_as_dict(snapshot: SnapshotAssertion) -> None:
@@ -29,8 +39,7 @@ def test_customer_device_with_quirk_as_dict(
     filled_quirks_registry.initialise_device_quirk(device)
 
     data = customer_device_as_dict(device)
-    # The start of the path is not important for the test.
-    data["quirk"] = data["quirk"][-60:]
+    data["quirk"] = _relative_quirk(data["quirk"])
     assert data == snapshot
     assert "original_category" in data
     assert "original_function" in data
@@ -56,8 +65,7 @@ def test_customer_device_with_uninitialised_quirk_as_dict(
     )
 
     data = customer_device_as_dict(device)
-    # The start of the path is not important for the test.
-    data["quirk"] = data["quirk"][-37:]
+    data["quirk"] = _relative_quirk(data["quirk"])
     assert data == snapshot
     assert data["quirk"] is not None
     assert "original_category" not in data
