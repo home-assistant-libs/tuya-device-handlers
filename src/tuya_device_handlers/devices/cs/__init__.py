@@ -2,4 +2,3 @@
 
 https://developer.tuya.com/en/docs/iot/categorycs?id=Kaiuz1vcz4dha
 """
-
