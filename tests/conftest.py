@@ -112,7 +112,7 @@ def device_fixture() -> CustomerDevice:
             values="{}",
         ),
         "demo_string": DeviceFunction(
-            code="demo_json",
+            code="demo_string",
             type="String",
             values="{}",
         ),
@@ -160,7 +160,7 @@ def device_fixture() -> CustomerDevice:
             values="{}",
         ),
         "demo_string": DeviceStatusRange(
-            code="demo_json",
+            code="demo_string",
             type="String",
             values="{}",
         ),
