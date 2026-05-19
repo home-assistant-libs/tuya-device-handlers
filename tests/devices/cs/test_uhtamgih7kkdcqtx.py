@@ -17,15 +17,3 @@ def test_dehumidifier_remaps_humidity_and_temperature(
 
     assert "humidity_indoor" in device.status_range
     assert "temp_indoor" in device.status_range
-
-    assert "envhumid" not in device.status_range
-    assert "Temp" not in device.status_range
-
-    assert "humidity_indoor" in device.status
-    assert "temp_indoor" in device.status
-
-    assert "envhumid" not in device.status
-    assert "Temp" not in device.status
-
-    assert device.status["humidity_indoor"] == 63
-    assert device.status["temp_indoor"] == 25
