@@ -45,6 +45,7 @@ class TypeInformation[T](abc.ABC):
     _DPTYPE: ClassVar[DPType]
     dpcode: str
     type_data: str
+    report_type: str | None
 
     @classmethod
     def _from_json(
@@ -52,10 +53,10 @@ class TypeInformation[T](abc.ABC):
         dpcode: str,
         type_data: str,
         *,
-        report_type: str | None,  # noqa: ARG003
+        report_type: str | None,
     ) -> Self | None:
         """Load JSON string and return a TypeInformation object."""
-        return cls(dpcode=dpcode, type_data=type_data)
+        return cls(dpcode=dpcode, type_data=type_data, report_type=report_type)
 
     @classmethod
     def find_dpcode(
@@ -119,7 +120,7 @@ class BitmapTypeInformation(TypeInformation[int]):
         dpcode: str,
         type_data: str,
         *,
-        report_type: str | None,  # noqa: ARG003
+        report_type: str | None,
     ) -> Self | None:
         """Load JSON string and return a BitmapTypeInformation object."""
         if not (parsed := cast(dict[str, Any] | None, json.loads(type_data))):
@@ -127,6 +128,7 @@ class BitmapTypeInformation(TypeInformation[int]):
         return cls(
             dpcode=dpcode,
             type_data=type_data,
+            report_type=report_type,
             label=parsed["label"],
         )
 
@@ -193,7 +195,7 @@ class EnumTypeInformation(TypeInformation[str]):
         dpcode: str,
         type_data: str,
         *,
-        report_type: str | None,  # noqa: ARG003
+        report_type: str | None,
     ) -> Self | None:
         """Load JSON string and return an EnumTypeInformation object."""
         if not (parsed := json.loads(type_data)):
@@ -201,6 +203,7 @@ class EnumTypeInformation(TypeInformation[str]):
         return cls(
             dpcode=dpcode,
             type_data=type_data,
+            report_type=report_type,
             **cast(dict[str, list[str]], parsed),
         )
 
@@ -239,7 +242,6 @@ class IntegerTypeInformation(TypeInformation[float]):
     scale: int
     step: int
     unit: str | None = None
-    report_type: str | None
 
     def scale_value(self, value: int) -> float:
         """Scale a value."""
