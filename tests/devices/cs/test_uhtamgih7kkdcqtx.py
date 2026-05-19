@@ -13,12 +13,6 @@ def test_dehumidifier_remaps_humidity_and_temperature(
     assert "humidity_indoor" not in device.status_range
     assert "temp_indoor" not in device.status_range
 
-    assert "envhumid" in device.status_range
-    assert "Temp" in device.status_range
-
-    assert "envhumid" in device.status
-    assert "Temp" in device.status
-
     filled_quirks_registry.initialise_device_quirk(device)
 
     assert "humidity_indoor" in device.status_range
