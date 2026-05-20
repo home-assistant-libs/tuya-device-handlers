@@ -1,13 +1,17 @@
 """Quirks registry."""
 
+from __future__ import annotations
+
 import logging
-import pathlib
-from typing import Any, Protocol, Self
+from typing import TYPE_CHECKING, Any, Protocol, Self
 
-from tuya_sharing import CustomerDevice, DeviceFunction, DeviceStatusRange
+if TYPE_CHECKING:
+    import pathlib
 
-from .device_wrapper.base import DeviceWrapper
-from .device_wrapper.service_feeder_schedule import FeederSchedule
+    from tuya_sharing import CustomerDevice, DeviceFunction, DeviceStatusRange
+
+    from .device_wrapper.base import DeviceWrapper
+    from .device_wrapper.service_feeder_schedule import FeederSchedule
 
 _LOGGER = logging.getLogger(__name__)
 
