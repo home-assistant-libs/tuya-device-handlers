@@ -89,15 +89,17 @@ class TypeInformation[T](abc.ABC):
             )
             type_cls = cls
             if quirk and (new_cls := quirk.get_type_information_cls(dpcode)):
-                type_cls = new_cls
+                type_cls = cast(type[Self], new_cls)
             for device_specs in lookup_tuple:
                 if (
                     (current_definition := device_specs.get(dpcode))
                     and (
                         DPType.try_parse(current_definition.type)
+                        # pylint: disable-next=protected-access
                         is type_cls._DPTYPE  # noqa: SLF001
                     )
                     and (
+                        # pylint: disable-next=protected-access
                         type_information := type_cls._from_json(  # noqa: SLF001
                             dpcode=dpcode,
                             type_data=current_definition.values,
