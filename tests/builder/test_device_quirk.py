@@ -18,6 +18,12 @@ from tuya_device_handlers.builder.device_quirk import (
 )
 from tuya_device_handlers.const import DPMode, DPType
 from tuya_device_handlers.registry import QuirksRegistry
+from tuya_device_handlers.type_information import (
+    BitmapTypeInformation,
+    BooleanTypeInformation,
+    EnumTypeInformation,
+    IntegerTypeInformation,
+)
 
 
 def test_datapoint_definition_to_function() -> None:
@@ -352,6 +358,130 @@ def test_initialise_device_without_override_category(
     quirk = DeviceQuirk()
     quirk.initialise_device(mock_device)
     assert mock_device.category == "original"
+
+
+# --- type_information_cls tests ---
+
+
+def test_datapoint_definition_type_information_cls_defaults_to_none() -> None:
+    """type_information_cls defaults to None (use dptype default)."""
+    definition = DatapointDefinition(
+        dpid=1,
+        dpcode="x",
+        dpmode=DPMode.READ,
+        dptype=DPType.BOOLEAN,
+        values="{}",
+    )
+    assert definition.type_information_cls is None
+
+
+def test_add_dpid_bitmap_type_information_cls() -> None:
+    """add_dpid_bitmap passes type_information_cls to DatapointDefinition."""
+    quirk = DeviceQuirk().add_dpid_bitmap(
+        dpid=1,
+        dpcode="bm",
+        dpmode=DPMode.READ,
+        label_range=["a"],
+        type_information_cls=BitmapTypeInformation,
+    )
+    definition = quirk._datapoint_definitions[(1, "bm")]
+    assert definition is not None
+    assert definition.type_information_cls is BitmapTypeInformation
+
+
+def test_add_dpid_boolean_type_information_cls() -> None:
+    """add_dpid_boolean passes type_information_cls to DatapointDefinition."""
+    quirk = DeviceQuirk().add_dpid_boolean(
+        dpid=2,
+        dpcode="bo",
+        dpmode=DPMode.READ,
+        type_information_cls=BooleanTypeInformation,
+    )
+    definition = quirk._datapoint_definitions[(2, "bo")]
+    assert definition is not None
+    assert definition.type_information_cls is BooleanTypeInformation
+
+
+def test_add_dpid_enum_type_information_cls() -> None:
+    """add_dpid_enum passes type_information_cls to DatapointDefinition."""
+    quirk = DeviceQuirk().add_dpid_enum(
+        dpid=3,
+        dpcode="en",
+        dpmode=DPMode.READ,
+        enum_range=["a", "b"],
+        type_information_cls=EnumTypeInformation,
+    )
+    definition = quirk._datapoint_definitions[(3, "en")]
+    assert definition is not None
+    assert definition.type_information_cls is EnumTypeInformation
+
+
+def test_add_dpid_integer_type_information_cls() -> None:
+    """add_dpid_integer passes type_information_cls to DatapointDefinition."""
+    quirk = DeviceQuirk().add_dpid_integer(
+        dpid=4,
+        dpcode="i",
+        dpmode=DPMode.READ,
+        unit="%",
+        min=0,
+        max=100,
+        scale=1,
+        step=1,
+        type_information_cls=IntegerTypeInformation,
+    )
+    definition = quirk._datapoint_definitions[(4, "i")]
+    assert definition is not None
+    assert definition.type_information_cls is IntegerTypeInformation
+
+
+def test_add_dpid_integer_type_information_cls_none_default() -> None:
+    """add_dpid_integer defaults type_information_cls to None."""
+    quirk = DeviceQuirk().add_dpid_integer(
+        dpid=4,
+        dpcode="i",
+        dpmode=DPMode.READ,
+        unit="%",
+        min=0,
+        max=100,
+        scale=1,
+        step=1,
+    )
+    definition = quirk._datapoint_definitions[(4, "i")]
+    assert definition is not None
+    assert definition.type_information_cls is None
+
+
+def test_get_type_information_cls_returns_override() -> None:
+    """get_type_information_cls returns the class set on the definition."""
+    quirk = DeviceQuirk().add_dpid_boolean(
+        dpid=1,
+        dpcode="bo",
+        dpmode=DPMode.READ,
+        type_information_cls=BooleanTypeInformation,
+    )
+    assert quirk.get_type_information_cls("bo") is BooleanTypeInformation
+
+
+def test_get_type_information_cls_returns_none_when_no_override() -> None:
+    """get_type_information_cls returns None when no override is set."""
+    quirk = DeviceQuirk().add_dpid_boolean(
+        dpid=1, dpcode="bo", dpmode=DPMode.READ
+    )
+    assert quirk.get_type_information_cls("bo") is None
+
+
+def test_get_type_information_cls_returns_none_for_unknown_dpcode() -> None:
+    """get_type_information_cls returns None for an unregistered dpcode."""
+    quirk = DeviceQuirk().add_dpid_boolean(
+        dpid=1, dpcode="bo", dpmode=DPMode.READ
+    )
+    assert quirk.get_type_information_cls("unknown") is None
+
+
+def test_get_type_information_cls_returns_none_for_removed_dpid() -> None:
+    """get_type_information_cls returns None for a remove_dpid entry."""
+    quirk = DeviceQuirk().remove_dpid(dpid=1, dpcode="bo")
+    assert quirk.get_type_information_cls("bo") is None
 
 
 def test_applies_to_records_manufacturer_and_model() -> None:

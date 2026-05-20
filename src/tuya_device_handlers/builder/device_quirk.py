@@ -15,7 +15,13 @@ from tuya_device_handlers.device_wrapper.service_feeder_schedule import (
     FeederSchedule,
 )
 from tuya_device_handlers.registry import DeviceQuirkProtocol, QuirksRegistry
-from tuya_device_handlers.type_information import TypeInformation
+from tuya_device_handlers.type_information import (
+    BitmapTypeInformation,
+    BooleanTypeInformation,
+    EnumTypeInformation,
+    IntegerTypeInformation,
+    TypeInformation,
+)
 
 
 @dataclass(kw_only=True)
@@ -212,7 +218,13 @@ class DeviceQuirk(DeviceQuirkProtocol):
         registry.register(self._applies_to, self)
 
     def add_dpid_bitmap(
-        self, *, dpid: int, dpcode: str, dpmode: DPMode, label_range: list[str]
+        self,
+        *,
+        dpid: int,
+        dpcode: str,
+        dpmode: DPMode,
+        label_range: list[str],
+        type_information_cls: type[BitmapTypeInformation] | None = None,
     ) -> Self:
         """Add datapoint Bitmap definition."""
         self._datapoint_definitions[(dpid, dpcode)] = DatapointDefinition(
@@ -221,11 +233,17 @@ class DeviceQuirk(DeviceQuirkProtocol):
             dpmode=dpmode,
             dptype=DPType.BITMAP,
             values=json.dumps({"label": label_range}),
+            type_information_cls=type_information_cls,
         )
         return self
 
     def add_dpid_boolean(
-        self, *, dpid: int, dpcode: str, dpmode: DPMode
+        self,
+        *,
+        dpid: int,
+        dpcode: str,
+        dpmode: DPMode,
+        type_information_cls: type[BooleanTypeInformation] | None = None,
     ) -> Self:
         """Add datapoint Boolean definition."""
         self._datapoint_definitions[(dpid, dpcode)] = DatapointDefinition(
@@ -234,11 +252,18 @@ class DeviceQuirk(DeviceQuirkProtocol):
             dpmode=dpmode,
             dptype=DPType.BOOLEAN,
             values="{}",
+            type_information_cls=type_information_cls,
         )
         return self
 
     def add_dpid_enum(
-        self, *, dpid: int, dpcode: str, dpmode: DPMode, enum_range: list[str]
+        self,
+        *,
+        dpid: int,
+        dpcode: str,
+        dpmode: DPMode,
+        enum_range: list[str],
+        type_information_cls: type[EnumTypeInformation] | None = None,
     ) -> Self:
         """Add datapoint Enum definition."""
         self._datapoint_definitions[(dpid, dpcode)] = DatapointDefinition(
@@ -247,6 +272,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
             dpmode=dpmode,
             dptype=DPType.ENUM,
             values=json.dumps({"range": enum_range}),
+            type_information_cls=type_information_cls,
         )
         return self
 
@@ -262,6 +288,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
         scale: int,
         step: int,
         report_type: str | None = None,
+        type_information_cls: type[IntegerTypeInformation] | None = None,
     ) -> Self:
         """Add datapoint Integer definition."""
         self._datapoint_definitions[(dpid, dpcode)] = DatapointDefinition(
@@ -279,6 +306,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
                     "step": step,
                 }
             ),
+            type_information_cls=type_information_cls,
         )
         return self
 
