@@ -31,5 +31,5 @@ def test_default_definition(
     assert climate_definition is not None
     set_temperature_wrapper = climate_definition.set_temperature_wrapper
     assert set_temperature_wrapper is not None
-    assert set_temperature_wrapper.read_device_status(device) == 61
+    assert set_temperature_wrapper.read_device_status(device) == 65
     assert set_temperature_wrapper.native_unit == "℉"
