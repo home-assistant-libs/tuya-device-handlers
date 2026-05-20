@@ -67,39 +67,12 @@ class TypeInformation[T](abc.ABC):
         prefer_function: bool = False,
     ) -> Self | None:
         """Find type information for a matching DP code."""
-        if dpcodes is None:
-            return None
-
-        if not isinstance(dpcodes, tuple):
-            dpcodes = (dpcodes,)
-
-        lookup_tuple = (
-            (device.function, device.status_range)
-            if prefer_function
-            else (device.status_range, device.function)
+        return get_type_information(
+            device,
+            dpcodes,
+            prefer_function=prefer_function,
+            type_information_cls=cls,
         )
-
-        for dpcode in dpcodes:
-            report_type = (
-                status_range.report_type
-                if (status_range := device.status_range.get(dpcode))
-                else None
-            )
-            for device_specs in lookup_tuple:
-                if (
-                    (current_definition := device_specs.get(dpcode))
-                    and DPType.try_parse(current_definition.type) is cls._DPTYPE
-                    and (
-                        type_information := cls._from_json(
-                            dpcode=dpcode,
-                            type_data=current_definition.values,
-                            report_type=report_type,
-                        )
-                    )
-                ):
-                    return type_information
-
-        return None
 
     @abc.abstractmethod
     def read_device_value(self, device: CustomerDevice) -> T | None:
@@ -358,3 +331,81 @@ class StringTypeInformation(TypeInformation[str]):
     def read_device_value(self, device: CustomerDevice) -> str | None:
         """Read the device value for this datapoint."""
         return cast(str, device.status.get(self.dpcode))
+
+
+def get_type_information[T: TypeInformation](
+    device: CustomerDevice,
+    dpcodes: str | tuple[str, ...] | None,
+    *,
+    prefer_function: bool = False,
+    type_information_cls: type[T],
+) -> T | None:
+    """Find type information for a device DP code."""
+    if dpcodes is None:
+        return None
+
+    if not isinstance(dpcodes, tuple):
+        dpcodes = (dpcodes,)
+
+    for dpcode in dpcodes:
+        if type_information := _get_device_dpcode_type_information(
+            device=device,
+            dpcode=dpcode,
+            prefer_function=prefer_function,
+            type_information_cls=type_information_cls,
+        ):
+            return type_information
+
+    return None
+
+
+def _get_device_dpcode_type_information[T: TypeInformation](
+    device: CustomerDevice,
+    dpcode: str,
+    *,
+    prefer_function: bool = False,
+    type_information_cls: type[T],
+) -> T | None:
+    """Find type information for a device DP code."""
+    # Get definitions
+    function_definition = device.function.get(dpcode)
+    status_range_definition = device.status_range.get(dpcode)
+
+    # Validate definitions against expected DP type, ignore if not matching
+    # pylint: disable-next=protected-access
+    dp_type = type_information_cls._DPTYPE  # noqa: SLF001
+    if (
+        function_definition
+        and DPType.try_parse(function_definition.type) is not dp_type
+    ):
+        function_definition = None
+
+    if (
+        status_range_definition
+        and DPType.try_parse(status_range_definition.type) is not dp_type
+    ):
+        status_range_definition = None
+
+    # report_type is not available on function definitions
+    report_type = (
+        status_range_definition.report_type if status_range_definition else None
+    )
+
+    # Get type_information based on definition preference
+    lookup = (
+        (function_definition, status_range_definition)
+        if prefer_function
+        else (status_range_definition, function_definition)
+    )
+    for definition in lookup:
+        if definition is not None and (
+            # pylint: disable-next=protected-access
+            type_information := type_information_cls._from_json(  # noqa: SLF001
+                dpcode=dpcode,
+                type_data=definition.values,
+                report_type=report_type,
+            )
+        ):
+            return type_information
+
+    return None
