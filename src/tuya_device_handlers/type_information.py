@@ -10,6 +10,7 @@ from typing import Any, ClassVar, Self, cast
 
 from tuya_sharing import CustomerDevice
 
+from . import TUYA_QUIRKS_REGISTRY
 from .const import DEVICE_WARNINGS, DPType
 
 _LOGGER = logging.getLogger(__name__)
@@ -78,6 +79,7 @@ class TypeInformation[T](abc.ABC):
             if prefer_function
             else (device.status_range, device.function)
         )
+        quirk = TUYA_QUIRKS_REGISTRY.get_quirk_for_device(device)
 
         for dpcode in dpcodes:
             report_type = (
@@ -85,12 +87,18 @@ class TypeInformation[T](abc.ABC):
                 if (status_range := device.status_range.get(dpcode))
                 else None
             )
+            type_cls = cls
+            if quirk and (new_cls := quirk.get_type_information_cls(dpcode)):
+                type_cls = new_cls
             for device_specs in lookup_tuple:
                 if (
                     (current_definition := device_specs.get(dpcode))
-                    and DPType.try_parse(current_definition.type) is cls._DPTYPE
                     and (
-                        type_information := cls._from_json(
+                        DPType.try_parse(current_definition.type)
+                        is type_cls._DPTYPE  # noqa: SLF001
+                    )
+                    and (
+                        type_information := type_cls._from_json(  # noqa: SLF001
                             dpcode=dpcode,
                             type_data=current_definition.values,
                             report_type=report_type,

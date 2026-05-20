@@ -15,6 +15,7 @@ from tuya_device_handlers.device_wrapper.service_feeder_schedule import (
     FeederSchedule,
 )
 from tuya_device_handlers.registry import DeviceQuirkProtocol, QuirksRegistry
+from tuya_device_handlers.type_information import TypeInformation
 
 
 @dataclass(kw_only=True)
@@ -53,6 +54,7 @@ class DatapointDefinition:
     dptype: DPType
     values: str | None = None
     report_type: str | None = None
+    type_information_cls: type[TypeInformation[Any]] | None = None
 
     def to_function(self) -> DeviceFunction:
         """Convert to DeviceFunction."""
@@ -329,4 +331,13 @@ class DeviceQuirk(DeviceQuirkProtocol):
         ):
             return get_wrapper_function(device)
 
+        return None
+
+    def get_type_information_cls(
+        self, dpcode: str
+    ) -> type[TypeInformation[Any]] | None:
+        """Get the type information class override for a dpcode."""
+        for (_, code), definition in self._datapoint_definitions.items():
+            if code == dpcode and definition is not None:
+                return definition.type_information_cls
         return None
