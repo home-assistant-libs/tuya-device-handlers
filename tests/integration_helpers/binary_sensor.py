@@ -1,10 +1,12 @@
 """Helpers for quirk binary sensor tests.
 
-The category-to-DPCode mapping below mirrors the ``BINARY_SENSORS``
-dictionary in Home Assistant core, so tests can assert that a quirk
-produces the binary sensors core would build for a device.
+The category mapping below mirrors the ``BINARY_SENSORS`` dictionary in Home
+Assistant core, so tests can assert that a quirk produces the binary sensors
+core would build for a device.
 https://github.com/home-assistant/core/blob/dev/homeassistant/components/tuya/binary_sensor.py
 """
+
+from dataclasses import dataclass
 
 from tuya_sharing import CustomerDevice
 
@@ -15,132 +17,146 @@ from tuya_device_handlers.definition.binary_sensor import (
 from tuya_device_handlers.device_wrapper.common import DPCodeWrapper
 
 _OnValue = bool | float | int | str | set[bool | float | int | str]
-# A binary sensor entry is a DPCode, optionally paired with the bitmap key
-# and/or "on" value Home Assistant core uses to decode it.
-_BinarySensorEntry = str | tuple[str, str | None, _OnValue]
 
-_BINARY_SENSOR_DPCODES: dict[str, tuple[_BinarySensorEntry, ...]] = {
+
+@dataclass(frozen=True)
+class BinarySensorEntityDescription:
+    """Describes a Tuya binary sensor, mirroring the Home Assistant mapping."""
+
+    dpcode: str
+    bitmap_key: str | None = None
+    on_value: _OnValue = True
+
+
+_BINARY_SENSORS: dict[str, tuple[BinarySensorEntityDescription, ...]] = {
     "co2bj": (
-        ("co2_state", None, "alarm"),
-        "temper_alarm",
+        BinarySensorEntityDescription("co2_state", on_value="alarm"),
+        BinarySensorEntityDescription("temper_alarm"),
     ),
     "cobj": (
-        ("co_state", None, "1"),
-        ("co_status", None, "alarm"),
-        "temper_alarm",
+        BinarySensorEntityDescription("co_state", on_value="1"),
+        BinarySensorEntityDescription("co_status", on_value="alarm"),
+        BinarySensorEntityDescription("temper_alarm"),
     ),
     "cs": (
-        ("fault", "water_full", True),
-        ("fault", "tankfull", True),
-        ("fault", "FULL", True),
-        ("fault", "defrost", True),
-        ("fault", "COIL", True),
-        ("fault", "wet", True),
-        ("fault", "Cleaning", True),
-        ("fault", "E1", True),
-        ("fault", "CL", True),
-        ("fault", "CH", True),
-        ("fault", "LO", True),
-        ("fault", "MOTOR", True),
+        BinarySensorEntityDescription("fault", bitmap_key="water_full"),
+        BinarySensorEntityDescription("fault", bitmap_key="tankfull"),
+        BinarySensorEntityDescription("fault", bitmap_key="FULL"),
+        BinarySensorEntityDescription("fault", bitmap_key="defrost"),
+        BinarySensorEntityDescription("fault", bitmap_key="COIL"),
+        BinarySensorEntityDescription("fault", bitmap_key="wet"),
+        BinarySensorEntityDescription("fault", bitmap_key="Cleaning"),
+        BinarySensorEntityDescription("fault", bitmap_key="E1"),
+        BinarySensorEntityDescription("fault", bitmap_key="CL"),
+        BinarySensorEntityDescription("fault", bitmap_key="CH"),
+        BinarySensorEntityDescription("fault", bitmap_key="LO"),
+        BinarySensorEntityDescription("fault", bitmap_key="MOTOR"),
     ),
     "cwwsq": (
-        ("feed_state", None, "feeding"),
-        "charge_state",
+        BinarySensorEntityDescription("feed_state", on_value="feeding"),
+        BinarySensorEntityDescription("charge_state"),
     ),
     "dgnbj": (
-        ("gas_sensor_state", None, "alarm"),
-        ("ch4_sensor_state", None, "alarm"),
-        ("voc_state", None, "alarm"),
-        ("pm25_state", None, "alarm"),
-        ("co_state", None, "alarm"),
-        ("co2_state", None, "alarm"),
-        ("ch2o_state", None, "alarm"),
-        "doorcontact_state",
-        ("watersensor_state", None, "alarm"),
-        ("pressure_state", None, "alarm"),
-        ("smoke_sensor_state", None, "alarm"),
-        "temper_alarm",
+        BinarySensorEntityDescription("gas_sensor_state", on_value="alarm"),
+        BinarySensorEntityDescription("ch4_sensor_state", on_value="alarm"),
+        BinarySensorEntityDescription("voc_state", on_value="alarm"),
+        BinarySensorEntityDescription("pm25_state", on_value="alarm"),
+        BinarySensorEntityDescription("co_state", on_value="alarm"),
+        BinarySensorEntityDescription("co2_state", on_value="alarm"),
+        BinarySensorEntityDescription("ch2o_state", on_value="alarm"),
+        BinarySensorEntityDescription("doorcontact_state"),
+        BinarySensorEntityDescription("watersensor_state", on_value="alarm"),
+        BinarySensorEntityDescription("pressure_state", on_value="alarm"),
+        BinarySensorEntityDescription("smoke_sensor_state", on_value="alarm"),
+        BinarySensorEntityDescription("temper_alarm"),
     ),
     "hps": (
-        (
+        BinarySensorEntityDescription(
             "presence_state",
-            None,
-            {"presence", "small_move", "large_move", "peaceful"},
+            on_value={"presence", "small_move", "large_move", "peaceful"},
         ),
     ),
     "jqbj": (
-        ("ch2o_state", None, "alarm"),
-        "temper_alarm",
+        BinarySensorEntityDescription("ch2o_state", on_value="alarm"),
+        BinarySensorEntityDescription("temper_alarm"),
     ),
     "jwbj": (
-        ("ch4_sensor_state", None, "alarm"),
-        "temper_alarm",
+        BinarySensorEntityDescription("ch4_sensor_state", on_value="alarm"),
+        BinarySensorEntityDescription("temper_alarm"),
     ),
     "ldcg": (
-        "temper_alarm",
-        "temper_alarm",
+        BinarySensorEntityDescription("temper_alarm"),
+        BinarySensorEntityDescription("temper_alarm"),
     ),
-    "mc": (("status", None, {"open", "opened"}),),
+    "mc": (
+        BinarySensorEntityDescription("status", on_value={"open", "opened"}),
+    ),
     "mcs": (
-        "doorcontact_state",
-        "switch",
-        "temper_alarm",
+        BinarySensorEntityDescription("doorcontact_state"),
+        BinarySensorEntityDescription("switch"),
+        BinarySensorEntityDescription("temper_alarm"),
     ),
-    "mk": (("closed_opened_kit", None, {"AQAB"}),),
+    "mk": (
+        BinarySensorEntityDescription("closed_opened_kit", on_value={"AQAB"}),
+    ),
     "msp": (
-        ("fault", "full_fault", True),
-        ("fault", "box_out", True),
+        BinarySensorEntityDescription("fault", bitmap_key="full_fault"),
+        BinarySensorEntityDescription("fault", bitmap_key="box_out"),
     ),
     "pir": (
-        ("pir", None, "pir"),
-        "temper_alarm",
+        BinarySensorEntityDescription("pir", on_value="pir"),
+        BinarySensorEntityDescription("temper_alarm"),
     ),
     "pm2.5": (
-        ("pm25_state", None, "alarm"),
-        "temper_alarm",
+        BinarySensorEntityDescription("pm25_state", on_value="alarm"),
+        BinarySensorEntityDescription("temper_alarm"),
     ),
     "qxj": (),
     "rqbj": (
-        ("gas_sensor_status", None, "alarm"),
-        ("gas_sensor_state", None, "1"),
-        "temper_alarm",
+        BinarySensorEntityDescription("gas_sensor_status", on_value="alarm"),
+        BinarySensorEntityDescription("gas_sensor_state", on_value="1"),
+        BinarySensorEntityDescription("temper_alarm"),
     ),
     "sgbj": (
-        "charge_state",
-        "temper_alarm",
+        BinarySensorEntityDescription("charge_state"),
+        BinarySensorEntityDescription("temper_alarm"),
     ),
     "sj": (
-        ("watersensor_state", None, {"1", "alarm"}),
-        "temper_alarm",
+        BinarySensorEntityDescription(
+            "watersensor_state", on_value={"1", "alarm"}
+        ),
+        BinarySensorEntityDescription("temper_alarm"),
     ),
     "sos": (
-        "sos_state",
-        "temper_alarm",
+        BinarySensorEntityDescription("sos_state"),
+        BinarySensorEntityDescription("temper_alarm"),
     ),
     "voc": (
-        ("voc_state", None, "alarm"),
-        "temper_alarm",
+        BinarySensorEntityDescription("voc_state", on_value="alarm"),
+        BinarySensorEntityDescription("temper_alarm"),
     ),
     "wg2": (
-        ("master_state", None, "alarm"),
-        "charge_state",
+        BinarySensorEntityDescription("master_state", on_value="alarm"),
+        BinarySensorEntityDescription("charge_state"),
     ),
-    "wk": (("valve_state", None, "open"),),
-    "wkf": (("window_state", None, "opened"),),
+    "wk": (BinarySensorEntityDescription("valve_state", on_value="open"),),
+    "wkf": (BinarySensorEntityDescription("window_state", on_value="opened"),),
     "wsdcg": (),
     "ylcg": (
-        ("pressure_state", None, "alarm"),
-        "temper_alarm",
+        BinarySensorEntityDescription("pressure_state", on_value="alarm"),
+        BinarySensorEntityDescription("temper_alarm"),
     ),
     "ywbj": (
-        ("smoke_sensor_status", None, "alarm"),
-        ("smoke_sensor_state", None, {"1", "alarm"}),
-        "temper_alarm",
+        BinarySensorEntityDescription("smoke_sensor_status", on_value="alarm"),
+        BinarySensorEntityDescription(
+            "smoke_sensor_state", on_value={"1", "alarm"}
+        ),
+        BinarySensorEntityDescription("temper_alarm"),
     ),
     "zd": (
-        ("shock_state", None, "vibration"),
-        ("shock_state", None, "drop"),
-        ("shock_state", None, "tilt"),
+        BinarySensorEntityDescription("shock_state", on_value="vibration"),
+        BinarySensorEntityDescription("shock_state", on_value="drop"),
+        BinarySensorEntityDescription("shock_state", on_value="tilt"),
     ),
 }
 
@@ -149,15 +165,15 @@ def get_binary_sensor_default_definitions(
     device: CustomerDevice,
 ) -> list[BinarySensorDefinition]:
     """Get the default binary sensor definitions for a device."""
-    values: list[BinarySensorDefinition | None] = []
-    for entry in _BINARY_SENSOR_DPCODES.get(device.category, ()):
-        if isinstance(entry, str):
-            values.append(get_default_definition(device, entry))
-        else:
-            dpcode, bitmap_key, on_value = entry
-            values.append(
-                get_default_definition(device, dpcode, bitmap_key, on_value)
-            )
+    values = [
+        get_default_definition(
+            device,
+            description.dpcode,
+            description.bitmap_key,
+            description.on_value,
+        )
+        for description in _BINARY_SENSORS.get(device.category, ())
+    ]
     return [definition for definition in values if definition]
 
 
