@@ -3,7 +3,7 @@ repos:
     hooks:
       - id: check-added-large-files
         name: Check for added large files
-        entry: check-added-large-files
+        entry: poetry run check-added-large-files
         language: system
       - id: check-ast
         name: Check Python AST
