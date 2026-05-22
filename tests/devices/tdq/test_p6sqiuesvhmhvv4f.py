@@ -10,12 +10,27 @@ from tests.integration_helpers.sensor import get_sensor_default_definitions
 from tuya_device_handlers.registry import QuirksRegistry
 
 
-def test_default_definition(
+def test_quirk_overrides(
     filled_quirks_registry: QuirksRegistry,
 ) -> None:
-    """Test quirk adds missing datapoints."""
+    """Quirk overrides the category and registers the contact datapoints."""
     device = create_device("tdq_p6sqiuesvhmhvv4f.json")
     assert device.category == "tdq"
+    assert "doorcontact_state" not in device.status_range
+    assert "battery_state" not in device.status_range
+
+    filled_quirks_registry.initialise_device_quirk(device)
+
+    assert device.category == "mcs"
+    assert "doorcontact_state" in device.status_range
+    assert "battery_state" in device.status_range
+
+
+def test_default_definitions(
+    filled_quirks_registry: QuirksRegistry,
+) -> None:
+    """Quirk exposes the contact binary sensor and the battery sensor."""
+    device = create_device("tdq_p6sqiuesvhmhvv4f.json")
     assert "doorcontact_state" not in get_binary_sensor_default_definitions(
         device
     )
@@ -23,7 +38,6 @@ def test_default_definition(
 
     filled_quirks_registry.initialise_device_quirk(device)
 
-    assert device.category == "mcs"
     assert "doorcontact_state" in get_binary_sensor_default_definitions(device)
     assert "battery_state" in get_sensor_default_definitions(device)
 
