@@ -16,7 +16,6 @@ from tuya_device_handlers.definition.sensor import (
 )
 from tuya_device_handlers.device_wrapper.common import (
     DPCodeTypeInformationWrapper,
-    DPCodeWrapper,
 )
 from tuya_device_handlers.device_wrapper.sensor import (
     ElectricityCurrentJsonWrapper,
@@ -489,14 +488,3 @@ def get_sensor_default_definitions(
             )
         )
     }
-
-
-def get_sensor_wrapper(
-    definitions: dict[str, SensorDefinition], dpcode: str
-) -> DPCodeWrapper | None:
-    """Extract the sensor wrapper for a DPCode from a mapping of definitions."""
-    for definition in definitions.values():
-        wrapper = definition.sensor_wrapper
-        if isinstance(wrapper, DPCodeWrapper) and wrapper.dpcode == dpcode:
-            return wrapper
-    return None

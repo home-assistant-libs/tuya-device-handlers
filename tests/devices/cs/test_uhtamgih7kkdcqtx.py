@@ -1,10 +1,7 @@
 """Test device-level quirk initialisation for CS devices."""
 
 from tests import create_device
-from tests.integration_helpers.sensor import (
-    get_sensor_default_definitions,
-    get_sensor_wrapper,
-)
+from tests.integration_helpers.sensor import get_sensor_default_definitions
 from tuya_device_handlers.registry import QuirksRegistry
 
 
@@ -15,11 +12,11 @@ def test_dehumidifier_remaps_humidity_and_temperature(
     device = create_device("cs_uhtamgih7kkdcqtx.json")
 
     definitions = get_sensor_default_definitions(device)
-    assert get_sensor_wrapper(definitions, "humidity_indoor") is None
-    assert get_sensor_wrapper(definitions, "temp_indoor") is None
+    assert "humidity_indoor" not in definitions
+    assert "temp_indoor" not in definitions
 
     filled_quirks_registry.initialise_device_quirk(device)
 
     definitions = get_sensor_default_definitions(device)
-    assert get_sensor_wrapper(definitions, "humidity_indoor") is not None
-    assert get_sensor_wrapper(definitions, "temp_indoor") is not None
+    assert "humidity_indoor" in definitions
+    assert "temp_indoor" in definitions

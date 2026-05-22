@@ -5,12 +5,8 @@ from tuya_sharing import Manager
 from tests import create_device
 from tests.integration_helpers.binary_sensor import (
     get_binary_sensor_default_definitions,
-    get_binary_sensor_wrapper,
 )
-from tests.integration_helpers.sensor import (
-    get_sensor_default_definitions,
-    get_sensor_wrapper,
-)
+from tests.integration_helpers.sensor import get_sensor_default_definitions
 from tuya_device_handlers.registry import QuirksRegistry
 
 
@@ -20,24 +16,16 @@ def test_default_definition(
     """Test quirk adds missing datapoints."""
     device = create_device("tdq_p6sqiuesvhmhvv4f.json")
     assert device.category == "tdq"
-    binary_definitions = get_binary_sensor_default_definitions(device)
-    assert (
-        get_binary_sensor_wrapper(binary_definitions, "doorcontact_state")
-        is None
+    assert "doorcontact_state" not in get_binary_sensor_default_definitions(
+        device
     )
-    definitions = get_sensor_default_definitions(device)
-    assert get_sensor_wrapper(definitions, "battery_state") is None
+    assert "battery_state" not in get_sensor_default_definitions(device)
 
     filled_quirks_registry.initialise_device_quirk(device)
 
     assert device.category == "mcs"
-    binary_definitions = get_binary_sensor_default_definitions(device)
-    assert (
-        get_binary_sensor_wrapper(binary_definitions, "doorcontact_state")
-        is not None
-    )
-    definitions = get_sensor_default_definitions(device)
-    assert get_sensor_wrapper(definitions, "battery_state") is not None
+    assert "doorcontact_state" in get_binary_sensor_default_definitions(device)
+    assert "battery_state" in get_sensor_default_definitions(device)
 
 
 def test_mqtt(

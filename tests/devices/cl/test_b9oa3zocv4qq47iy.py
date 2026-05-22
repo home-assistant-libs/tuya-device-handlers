@@ -43,7 +43,7 @@ def test_cover_definition(filled_quirks_registry: QuirksRegistry) -> None:
     # with dpcode "percent_state"
     definitions = get_cover_default_definitions(device)
     assert len(definitions) == 1
-    definition = definitions[0]
+    definition = definitions["control"]
     assert isinstance(
         definition.current_position_wrapper, DPCodeInvertedPercentageWrapper
     )
@@ -55,7 +55,7 @@ def test_cover_definition(filled_quirks_registry: QuirksRegistry) -> None:
     # but with dpcode "percent_control"
     definitions = get_cover_default_definitions(device)
     assert len(definitions) == 1
-    definition = definitions[0]
+    definition = definitions["control"]
     assert isinstance(
         definition.current_position_wrapper, DPCodeInvertedPercentageWrapper
     )

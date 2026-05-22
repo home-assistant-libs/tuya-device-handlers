@@ -14,7 +14,6 @@ from tuya_device_handlers.definition.binary_sensor import (
     BinarySensorDefinition,
     get_default_definition,
 )
-from tuya_device_handlers.device_wrapper.common import DPCodeWrapper
 
 _OnValue = bool | float | int | str | set[bool | float | int | str]
 
@@ -210,14 +209,3 @@ def get_binary_sensor_default_definitions(
             )
         )
     }
-
-
-def get_binary_sensor_wrapper(
-    definitions: dict[str, BinarySensorDefinition], dpcode: str
-) -> DPCodeWrapper | None:
-    """Extract the binary sensor wrapper for a DPCode from a mapping."""
-    for definition in definitions.values():
-        wrapper = definition.binary_sensor_wrapper
-        if isinstance(wrapper, DPCodeWrapper) and wrapper.dpcode == dpcode:
-            return wrapper
-    return None
