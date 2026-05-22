@@ -33,9 +33,12 @@ _WrapperClass = type[DPCodeTypeInformationWrapper]
 
 @dataclass(frozen=True)
 class CoverEntityDescription:
-    """Describes a Tuya cover, mirroring the Home Assistant core mapping."""
+    """Describes a Tuya cover, mirroring the Home Assistant core mapping.
 
-    instruction_dpcode: str
+    ``key`` doubles as the instruction DPCode, as in Home Assistant core.
+    """
+
+    key: str
     current_position_dpcode: str | tuple[str, ...] | None = None
     current_state_dpcode: str | tuple[str, ...] | None = None
     set_position_dpcode: str | None = None
@@ -47,59 +50,59 @@ class CoverEntityDescription:
 _COVERS: dict[str, tuple[CoverEntityDescription, ...]] = {
     "ckmkzq": (
         CoverEntityDescription(
-            instruction_dpcode="switch_1",
+            key="switch_1",
             current_state_dpcode="doorcontact_state",
             current_state_wrapper=DPCodeInvertedBooleanWrapper,
         ),
         CoverEntityDescription(
-            instruction_dpcode="switch_2",
+            key="switch_2",
             current_state_dpcode="doorcontact_state_2",
             current_state_wrapper=DPCodeInvertedBooleanWrapper,
         ),
         CoverEntityDescription(
-            instruction_dpcode="switch_3",
+            key="switch_3",
             current_state_dpcode="doorcontact_state_3",
             current_state_wrapper=DPCodeInvertedBooleanWrapper,
         ),
     ),
     "cl": (
         CoverEntityDescription(
-            instruction_dpcode="control",
+            key="control",
             current_position_dpcode=("percent_state", "percent_control"),
             current_state_dpcode=("situation_set", "control"),
             set_position_dpcode="percent_control",
         ),
         CoverEntityDescription(
-            instruction_dpcode="control_2",
+            key="control_2",
             current_position_dpcode="percent_state_2",
             set_position_dpcode="percent_control_2",
         ),
         CoverEntityDescription(
-            instruction_dpcode="control_3",
+            key="control_3",
             current_position_dpcode="percent_state_3",
             set_position_dpcode="percent_control_3",
         ),
         CoverEntityDescription(
-            instruction_dpcode="mach_operate",
+            key="mach_operate",
             current_position_dpcode="position",
             set_position_dpcode="position",
             instruction_wrapper=CoverInstructionSpecialEnumWrapper,
         ),
         CoverEntityDescription(
-            instruction_dpcode="switch_1",
+            key="switch_1",
             current_position_dpcode="percent_control",
             set_position_dpcode="percent_control",
         ),
     ),
     "clkg": (
         CoverEntityDescription(
-            instruction_dpcode="control",
+            key="control",
             current_position_dpcode="percent_control",
             set_position_dpcode="percent_control",
             position_wrapper=ControlBackModePercentageMappingWrapper,
         ),
         CoverEntityDescription(
-            instruction_dpcode="control_2",
+            key="control_2",
             current_position_dpcode="percent_control_2",
             set_position_dpcode="percent_control_2",
             position_wrapper=ControlBackModePercentageMappingWrapper,
@@ -107,7 +110,7 @@ _COVERS: dict[str, tuple[CoverEntityDescription, ...]] = {
     ),
     "jdcljqr": (
         CoverEntityDescription(
-            instruction_dpcode="control",
+            key="control",
             current_position_dpcode="percent_state",
             set_position_dpcode="percent_control",
         ),
@@ -117,19 +120,21 @@ _COVERS: dict[str, tuple[CoverEntityDescription, ...]] = {
 
 def get_cover_default_definitions(
     device: CustomerDevice,
-) -> list[CoverDefinition]:
+) -> dict[str, CoverDefinition]:
     """Get the default cover definitions Home Assistant builds for a device."""
-    values = [
-        get_default_definition(
-            device,
-            instruction_dpcode=description.instruction_dpcode,
-            current_position_dpcode=description.current_position_dpcode,
-            current_state_dpcode=description.current_state_dpcode,
-            set_position_dpcode=description.set_position_dpcode,
-            current_state_wrapper=description.current_state_wrapper,
-            instruction_wrapper=description.instruction_wrapper,
-            position_wrapper=description.position_wrapper,
-        )
+    return {
+        description.key: definition
         for description in _COVERS.get(device.category, ())
-    ]
-    return [definition for definition in values if definition]
+        if (
+            definition := get_default_definition(
+                device,
+                instruction_dpcode=description.key,
+                current_position_dpcode=description.current_position_dpcode,
+                current_state_dpcode=description.current_state_dpcode,
+                set_position_dpcode=description.set_position_dpcode,
+                current_state_wrapper=description.current_state_wrapper,
+                instruction_wrapper=description.instruction_wrapper,
+                position_wrapper=description.position_wrapper,
+            )
+        )
+    }

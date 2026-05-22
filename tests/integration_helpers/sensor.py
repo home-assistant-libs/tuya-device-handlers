@@ -41,9 +41,19 @@ _WIND_DIRECTION_WRAPPER = (WindDirectionEnumWrapper,)
 class SensorEntityDescription:
     """Describes a Tuya sensor, mirroring the Home Assistant core mapping."""
 
-    dpcode: str
+    key: str
+    dpcode: str | None = None
     wrapper_class: _WrapperClasses | None = None
 
+
+# Battery sensors reused across categories, mirroring Home Assistant core.
+BATTERY_SENSORS: tuple[SensorEntityDescription, ...] = (
+    SensorEntityDescription("battery_percentage"),
+    SensorEntityDescription("battery"),
+    SensorEntityDescription("battery_state"),
+    SensorEntityDescription("battery_value"),
+    SensorEntityDescription("va_battery"),
+)
 
 _SENSORS: dict[str, tuple[SensorEntityDescription, ...]] = {
     "aqcz": (
@@ -65,19 +75,11 @@ _SENSORS: dict[str, tuple[SensorEntityDescription, ...]] = {
         SensorEntityDescription("voc_value"),
         SensorEntityDescription("pm25_value"),
         SensorEntityDescription("pm10"),
-        SensorEntityDescription("battery_percentage"),
-        SensorEntityDescription("battery"),
-        SensorEntityDescription("battery_state"),
-        SensorEntityDescription("battery_value"),
-        SensorEntityDescription("va_battery"),
+        *BATTERY_SENSORS,
     ),
     "cobj": (
         SensorEntityDescription("co_value"),
-        SensorEntityDescription("battery_percentage"),
-        SensorEntityDescription("battery"),
-        SensorEntityDescription("battery_state"),
-        SensorEntityDescription("battery_value"),
-        SensorEntityDescription("va_battery"),
+        *BATTERY_SENSORS,
     ),
     "cs": (
         SensorEntityDescription("temp_indoor"),
@@ -85,18 +87,10 @@ _SENSORS: dict[str, tuple[SensorEntityDescription, ...]] = {
     ),
     "cwjwq": (
         SensorEntityDescription("work_state_e"),
-        SensorEntityDescription("battery_percentage"),
-        SensorEntityDescription("battery"),
-        SensorEntityDescription("battery_state"),
-        SensorEntityDescription("battery_value"),
-        SensorEntityDescription("va_battery"),
+        *BATTERY_SENSORS,
     ),
     "cwwsq": (
-        SensorEntityDescription("battery_percentage"),
-        SensorEntityDescription("battery"),
-        SensorEntityDescription("battery_state"),
-        SensorEntityDescription("battery_value"),
-        SensorEntityDescription("va_battery"),
+        *BATTERY_SENSORS,
         SensorEntityDescription("feed_report"),
     ),
     "cwysj": (
@@ -134,11 +128,7 @@ _SENSORS: dict[str, tuple[SensorEntityDescription, ...]] = {
         SensorEntityDescription("orp_current"),
         SensorEntityDescription("ph_current"),
         SensorEntityDescription("smoke_sensor_value"),
-        SensorEntityDescription("battery_percentage"),
-        SensorEntityDescription("battery"),
-        SensorEntityDescription("battery_state"),
-        SensorEntityDescription("battery_value"),
-        SensorEntityDescription("va_battery"),
+        *BATTERY_SENSORS,
     ),
     "dlq": (
         SensorEntityDescription("total_forward_energy"),
@@ -147,27 +137,45 @@ _SENSORS: dict[str, tuple[SensorEntityDescription, ...]] = {
         SensorEntityDescription("reverse_energy_total"),
         SensorEntityDescription("cur_neutral"),
         SensorEntityDescription("supply_frequency"),
-        SensorEntityDescription("phase_a", _CURRENT_WRAPPER),
-        SensorEntityDescription("phase_a", _POWER_WRAPPER),
-        SensorEntityDescription("phase_a", _VOLTAGE_WRAPPER),
-        SensorEntityDescription("phase_b", _CURRENT_WRAPPER),
-        SensorEntityDescription("phase_b", _POWER_WRAPPER),
-        SensorEntityDescription("phase_b", _VOLTAGE_WRAPPER),
-        SensorEntityDescription("phase_c", _CURRENT_WRAPPER),
-        SensorEntityDescription("phase_c", _POWER_WRAPPER),
-        SensorEntityDescription("phase_c", _VOLTAGE_WRAPPER),
+        SensorEntityDescription(
+            "phase_aelectriccurrent",
+            dpcode="phase_a",
+            wrapper_class=_CURRENT_WRAPPER,
+        ),
+        SensorEntityDescription(
+            "phase_apower", dpcode="phase_a", wrapper_class=_POWER_WRAPPER
+        ),
+        SensorEntityDescription(
+            "phase_avoltage", dpcode="phase_a", wrapper_class=_VOLTAGE_WRAPPER
+        ),
+        SensorEntityDescription(
+            "phase_belectriccurrent",
+            dpcode="phase_b",
+            wrapper_class=_CURRENT_WRAPPER,
+        ),
+        SensorEntityDescription(
+            "phase_bpower", dpcode="phase_b", wrapper_class=_POWER_WRAPPER
+        ),
+        SensorEntityDescription(
+            "phase_bvoltage", dpcode="phase_b", wrapper_class=_VOLTAGE_WRAPPER
+        ),
+        SensorEntityDescription(
+            "phase_celectriccurrent",
+            dpcode="phase_c",
+            wrapper_class=_CURRENT_WRAPPER,
+        ),
+        SensorEntityDescription(
+            "phase_cpower", dpcode="phase_c", wrapper_class=_POWER_WRAPPER
+        ),
+        SensorEntityDescription(
+            "phase_cvoltage", dpcode="phase_c", wrapper_class=_VOLTAGE_WRAPPER
+        ),
         SensorEntityDescription("cur_current"),
         SensorEntityDescription("cur_power"),
         SensorEntityDescription("cur_voltage"),
     ),
     "fs": (SensorEntityDescription("temp_current"),),
-    "ggq": (
-        SensorEntityDescription("battery_percentage"),
-        SensorEntityDescription("battery"),
-        SensorEntityDescription("battery_state"),
-        SensorEntityDescription("battery_value"),
-        SensorEntityDescription("va_battery"),
-    ),
+    "ggq": (*BATTERY_SENSORS,),
     "hjjcy": (
         SensorEntityDescription("air_quality_index"),
         SensorEntityDescription("temp_current"),
@@ -177,11 +185,7 @@ _SENSORS: dict[str, tuple[SensorEntityDescription, ...]] = {
         SensorEntityDescription("voc_value"),
         SensorEntityDescription("pm25_value"),
         SensorEntityDescription("pm10"),
-        SensorEntityDescription("battery_percentage"),
-        SensorEntityDescription("battery"),
-        SensorEntityDescription("battery_state"),
-        SensorEntityDescription("battery_value"),
-        SensorEntityDescription("va_battery"),
+        *BATTERY_SENSORS,
     ),
     "jqbj": (
         SensorEntityDescription("co2_value"),
@@ -190,11 +194,7 @@ _SENSORS: dict[str, tuple[SensorEntityDescription, ...]] = {
         SensorEntityDescription("va_humidity"),
         SensorEntityDescription("va_temperature"),
         SensorEntityDescription("ch2o_value"),
-        SensorEntityDescription("battery_percentage"),
-        SensorEntityDescription("battery"),
-        SensorEntityDescription("battery_state"),
-        SensorEntityDescription("battery_value"),
-        SensorEntityDescription("va_battery"),
+        *BATTERY_SENSORS,
     ),
     "jsq": (
         SensorEntityDescription("humidity_current"),
@@ -204,11 +204,7 @@ _SENSORS: dict[str, tuple[SensorEntityDescription, ...]] = {
     ),
     "jwbj": (
         SensorEntityDescription("ch4_sensor_value"),
-        SensorEntityDescription("battery_percentage"),
-        SensorEntityDescription("battery"),
-        SensorEntityDescription("battery_state"),
-        SensorEntityDescription("battery_value"),
-        SensorEntityDescription("va_battery"),
+        *BATTERY_SENSORS,
     ),
     "kg": (
         SensorEntityDescription("cur_current"),
@@ -234,26 +230,10 @@ _SENSORS: dict[str, tuple[SensorEntityDescription, ...]] = {
         SensorEntityDescription("temp_current"),
         SensorEntityDescription("humidity_value"),
         SensorEntityDescription("co2_value"),
-        SensorEntityDescription("battery_percentage"),
-        SensorEntityDescription("battery"),
-        SensorEntityDescription("battery_state"),
-        SensorEntityDescription("battery_value"),
-        SensorEntityDescription("va_battery"),
+        *BATTERY_SENSORS,
     ),
-    "mc": (
-        SensorEntityDescription("battery_percentage"),
-        SensorEntityDescription("battery"),
-        SensorEntityDescription("battery_state"),
-        SensorEntityDescription("battery_value"),
-        SensorEntityDescription("va_battery"),
-    ),
-    "mcs": (
-        SensorEntityDescription("battery_percentage"),
-        SensorEntityDescription("battery"),
-        SensorEntityDescription("battery_state"),
-        SensorEntityDescription("battery_value"),
-        SensorEntityDescription("va_battery"),
-    ),
+    "mc": (*BATTERY_SENSORS,),
+    "mcs": (*BATTERY_SENSORS,),
     "msp": (
         SensorEntityDescription("cat_weight"),
         SensorEntityDescription("excretion_time_day"),
@@ -272,13 +252,7 @@ _SENSORS: dict[str, tuple[SensorEntityDescription, ...]] = {
         SensorEntityDescription("add_ele"),
         SensorEntityDescription("pro_add_ele"),
     ),
-    "pir": (
-        SensorEntityDescription("battery_percentage"),
-        SensorEntityDescription("battery"),
-        SensorEntityDescription("battery_state"),
-        SensorEntityDescription("battery_value"),
-        SensorEntityDescription("va_battery"),
-    ),
+    "pir": (*BATTERY_SENSORS,),
     "pm2.5": (
         SensorEntityDescription("pm25_value"),
         SensorEntityDescription("ch2o_value"),
@@ -288,11 +262,7 @@ _SENSORS: dict[str, tuple[SensorEntityDescription, ...]] = {
         SensorEntityDescription("humidity_value"),
         SensorEntityDescription("pm1"),
         SensorEntityDescription("pm10"),
-        SensorEntityDescription("battery_percentage"),
-        SensorEntityDescription("battery"),
-        SensorEntityDescription("battery_state"),
-        SensorEntityDescription("battery_value"),
-        SensorEntityDescription("va_battery"),
+        *BATTERY_SENSORS,
     ),
     "qn": (SensorEntityDescription("work_power"),),
     "qxj": (
@@ -314,24 +284,18 @@ _SENSORS: dict[str, tuple[SensorEntityDescription, ...]] = {
         SensorEntityDescription("rain_24h"),
         SensorEntityDescription("rain_rate"),
         SensorEntityDescription("uv_index"),
-        SensorEntityDescription("wind_direct", _WIND_DIRECTION_WRAPPER),
+        SensorEntityDescription(
+            "wind_direct", wrapper_class=_WIND_DIRECTION_WRAPPER
+        ),
         SensorEntityDescription("dew_point_temp"),
         SensorEntityDescription("feellike_temp"),
         SensorEntityDescription("heat_index"),
         SensorEntityDescription("windchill_index"),
-        SensorEntityDescription("battery_percentage"),
-        SensorEntityDescription("battery"),
-        SensorEntityDescription("battery_state"),
-        SensorEntityDescription("battery_value"),
-        SensorEntityDescription("va_battery"),
+        *BATTERY_SENSORS,
     ),
     "rqbj": (
         SensorEntityDescription("gas_sensor_value"),
-        SensorEntityDescription("battery_percentage"),
-        SensorEntityDescription("battery"),
-        SensorEntityDescription("battery_state"),
-        SensorEntityDescription("battery_value"),
-        SensorEntityDescription("va_battery"),
+        *BATTERY_SENSORS,
     ),
     "sd": (
         SensorEntityDescription("clean_area"),
@@ -349,33 +313,11 @@ _SENSORS: dict[str, tuple[SensorEntityDescription, ...]] = {
         SensorEntityDescription("time_use"),
         SensorEntityDescription("use_time_one"),
         SensorEntityDescription("work_state"),
-        SensorEntityDescription("battery_percentage"),
-        SensorEntityDescription("battery"),
-        SensorEntityDescription("battery_state"),
-        SensorEntityDescription("battery_value"),
-        SensorEntityDescription("va_battery"),
+        *BATTERY_SENSORS,
     ),
-    "sgbj": (
-        SensorEntityDescription("battery_percentage"),
-        SensorEntityDescription("battery"),
-        SensorEntityDescription("battery_state"),
-        SensorEntityDescription("battery_value"),
-        SensorEntityDescription("va_battery"),
-    ),
-    "sj": (
-        SensorEntityDescription("battery_percentage"),
-        SensorEntityDescription("battery"),
-        SensorEntityDescription("battery_state"),
-        SensorEntityDescription("battery_value"),
-        SensorEntityDescription("va_battery"),
-    ),
-    "sos": (
-        SensorEntityDescription("battery_percentage"),
-        SensorEntityDescription("battery"),
-        SensorEntityDescription("battery_state"),
-        SensorEntityDescription("battery_value"),
-        SensorEntityDescription("va_battery"),
-    ),
+    "sgbj": (*BATTERY_SENSORS,),
+    "sj": (*BATTERY_SENSORS,),
+    "sos": (*BATTERY_SENSORS,),
     "sp": (
         SensorEntityDescription("sensor_temperature"),
         SensorEntityDescription("sensor_humidity"),
@@ -384,11 +326,7 @@ _SENSORS: dict[str, tuple[SensorEntityDescription, ...]] = {
     "swtz": (
         SensorEntityDescription("temp_current"),
         SensorEntityDescription("temp_current_2"),
-        SensorEntityDescription("battery_percentage"),
-        SensorEntityDescription("battery"),
-        SensorEntityDescription("battery_state"),
-        SensorEntityDescription("battery_value"),
-        SensorEntityDescription("va_battery"),
+        *BATTERY_SENSORS,
     ),
     "sz": (
         SensorEntityDescription("temp_current"),
@@ -397,19 +335,9 @@ _SENSORS: dict[str, tuple[SensorEntityDescription, ...]] = {
     "szjcy": (
         SensorEntityDescription("tds_in"),
         SensorEntityDescription("temp_current"),
-        SensorEntityDescription("battery_percentage"),
-        SensorEntityDescription("battery"),
-        SensorEntityDescription("battery_state"),
-        SensorEntityDescription("battery_value"),
-        SensorEntityDescription("va_battery"),
+        *BATTERY_SENSORS,
     ),
-    "szjqr": (
-        SensorEntityDescription("battery_percentage"),
-        SensorEntityDescription("battery"),
-        SensorEntityDescription("battery_state"),
-        SensorEntityDescription("battery_value"),
-        SensorEntityDescription("va_battery"),
-    ),
+    "szjqr": (*BATTERY_SENSORS,),
     "tdq": (
         SensorEntityDescription("cur_current"),
         SensorEntityDescription("cur_power"),
@@ -420,19 +348,9 @@ _SENSORS: dict[str, tuple[SensorEntityDescription, ...]] = {
         SensorEntityDescription("va_humidity"),
         SensorEntityDescription("humidity_value"),
         SensorEntityDescription("bright_value"),
-        SensorEntityDescription("battery_percentage"),
-        SensorEntityDescription("battery"),
-        SensorEntityDescription("battery_state"),
-        SensorEntityDescription("battery_value"),
-        SensorEntityDescription("va_battery"),
+        *BATTERY_SENSORS,
     ),
-    "tyndj": (
-        SensorEntityDescription("battery_percentage"),
-        SensorEntityDescription("battery"),
-        SensorEntityDescription("battery_state"),
-        SensorEntityDescription("battery_value"),
-        SensorEntityDescription("va_battery"),
-    ),
+    "tyndj": (*BATTERY_SENSORS,),
     "voc": (
         SensorEntityDescription("co2_value"),
         SensorEntityDescription("pm25_value"),
@@ -440,26 +358,10 @@ _SENSORS: dict[str, tuple[SensorEntityDescription, ...]] = {
         SensorEntityDescription("humidity_value"),
         SensorEntityDescription("temp_current"),
         SensorEntityDescription("voc_value"),
-        SensorEntityDescription("battery_percentage"),
-        SensorEntityDescription("battery"),
-        SensorEntityDescription("battery_state"),
-        SensorEntityDescription("battery_value"),
-        SensorEntityDescription("va_battery"),
+        *BATTERY_SENSORS,
     ),
-    "wg2": (
-        SensorEntityDescription("battery_percentage"),
-        SensorEntityDescription("battery"),
-        SensorEntityDescription("battery_state"),
-        SensorEntityDescription("battery_value"),
-        SensorEntityDescription("va_battery"),
-    ),
-    "wk": (
-        SensorEntityDescription("battery_percentage"),
-        SensorEntityDescription("battery"),
-        SensorEntityDescription("battery_state"),
-        SensorEntityDescription("battery_value"),
-        SensorEntityDescription("va_battery"),
-    ),
+    "wg2": (*BATTERY_SENSORS,),
+    "wk": (*BATTERY_SENSORS,),
     "wkcz": (
         SensorEntityDescription("humidity_value"),
         SensorEntityDescription("temp_current"),
@@ -467,13 +369,7 @@ _SENSORS: dict[str, tuple[SensorEntityDescription, ...]] = {
         SensorEntityDescription("cur_power"),
         SensorEntityDescription("cur_voltage"),
     ),
-    "wkf": (
-        SensorEntityDescription("battery_percentage"),
-        SensorEntityDescription("battery"),
-        SensorEntityDescription("battery_state"),
-        SensorEntityDescription("battery_value"),
-        SensorEntityDescription("va_battery"),
-    ),
+    "wkf": (*BATTERY_SENSORS,),
     "wnykq": (
         SensorEntityDescription("va_temperature"),
         SensorEntityDescription("va_humidity"),
@@ -487,19 +383,9 @@ _SENSORS: dict[str, tuple[SensorEntityDescription, ...]] = {
         SensorEntityDescription("va_humidity"),
         SensorEntityDescription("humidity_value"),
         SensorEntityDescription("bright_value"),
-        SensorEntityDescription("battery_percentage"),
-        SensorEntityDescription("battery"),
-        SensorEntityDescription("battery_state"),
-        SensorEntityDescription("battery_value"),
-        SensorEntityDescription("va_battery"),
+        *BATTERY_SENSORS,
     ),
-    "wxkg": (
-        SensorEntityDescription("battery_percentage"),
-        SensorEntityDescription("battery"),
-        SensorEntityDescription("battery_state"),
-        SensorEntityDescription("battery_value"),
-        SensorEntityDescription("va_battery"),
-    ),
+    "wxkg": (*BATTERY_SENSORS,),
     "xnyjcn": (
         SensorEntityDescription("current_soc"),
         SensorEntityDescription("pv_power_total"),
@@ -515,47 +401,57 @@ _SENSORS: dict[str, tuple[SensorEntityDescription, ...]] = {
     ),
     "ylcg": (
         SensorEntityDescription("pressure_value"),
-        SensorEntityDescription("battery_percentage"),
-        SensorEntityDescription("battery"),
-        SensorEntityDescription("battery_state"),
-        SensorEntityDescription("battery_value"),
-        SensorEntityDescription("va_battery"),
+        *BATTERY_SENSORS,
     ),
     "ywbj": (
         SensorEntityDescription("smoke_sensor_value"),
-        SensorEntityDescription("battery_percentage"),
-        SensorEntityDescription("battery"),
-        SensorEntityDescription("battery_state"),
-        SensorEntityDescription("battery_value"),
-        SensorEntityDescription("va_battery"),
+        *BATTERY_SENSORS,
     ),
     "ywcgq": (
         SensorEntityDescription("liquid_state"),
         SensorEntityDescription("liquid_depth"),
         SensorEntityDescription("liquid_level_percent"),
     ),
-    "zd": (
-        SensorEntityDescription("battery_percentage"),
-        SensorEntityDescription("battery"),
-        SensorEntityDescription("battery_state"),
-        SensorEntityDescription("battery_value"),
-        SensorEntityDescription("va_battery"),
-    ),
+    "zd": (*BATTERY_SENSORS,),
     "zndb": (
         SensorEntityDescription("forward_energy_total"),
         SensorEntityDescription("reverse_energy_total"),
         SensorEntityDescription("power_total"),
-        SensorEntityDescription("total_power"),
+        SensorEntityDescription("total_powerpower", dpcode="total_power"),
         SensorEntityDescription("supply_frequency"),
-        SensorEntityDescription("phase_a", _CURRENT_WRAPPER),
-        SensorEntityDescription("phase_a", _POWER_WRAPPER),
-        SensorEntityDescription("phase_a", _VOLTAGE_WRAPPER),
-        SensorEntityDescription("phase_b", _CURRENT_WRAPPER),
-        SensorEntityDescription("phase_b", _POWER_WRAPPER),
-        SensorEntityDescription("phase_b", _VOLTAGE_WRAPPER),
-        SensorEntityDescription("phase_c", _CURRENT_WRAPPER),
-        SensorEntityDescription("phase_c", _POWER_WRAPPER),
-        SensorEntityDescription("phase_c", _VOLTAGE_WRAPPER),
+        SensorEntityDescription(
+            "phase_aelectriccurrent",
+            dpcode="phase_a",
+            wrapper_class=_CURRENT_WRAPPER,
+        ),
+        SensorEntityDescription(
+            "phase_apower", dpcode="phase_a", wrapper_class=_POWER_WRAPPER
+        ),
+        SensorEntityDescription(
+            "phase_avoltage", dpcode="phase_a", wrapper_class=_VOLTAGE_WRAPPER
+        ),
+        SensorEntityDescription(
+            "phase_belectriccurrent",
+            dpcode="phase_b",
+            wrapper_class=_CURRENT_WRAPPER,
+        ),
+        SensorEntityDescription(
+            "phase_bpower", dpcode="phase_b", wrapper_class=_POWER_WRAPPER
+        ),
+        SensorEntityDescription(
+            "phase_bvoltage", dpcode="phase_b", wrapper_class=_VOLTAGE_WRAPPER
+        ),
+        SensorEntityDescription(
+            "phase_celectriccurrent",
+            dpcode="phase_c",
+            wrapper_class=_CURRENT_WRAPPER,
+        ),
+        SensorEntityDescription(
+            "phase_cpower", dpcode="phase_c", wrapper_class=_POWER_WRAPPER
+        ),
+        SensorEntityDescription(
+            "phase_cvoltage", dpcode="phase_c", wrapper_class=_VOLTAGE_WRAPPER
+        ),
     ),
     "znnbq": (
         SensorEntityDescription("reverse_energy_total"),
@@ -573,33 +469,33 @@ _SENSORS: dict[str, tuple[SensorEntityDescription, ...]] = {
     "zwjcy": (
         SensorEntityDescription("temp_current"),
         SensorEntityDescription("humidity"),
-        SensorEntityDescription("battery_percentage"),
-        SensorEntityDescription("battery"),
-        SensorEntityDescription("battery_state"),
-        SensorEntityDescription("battery_value"),
-        SensorEntityDescription("va_battery"),
+        *BATTERY_SENSORS,
     ),
 }
 
 
 def get_sensor_default_definitions(
     device: CustomerDevice,
-) -> list[SensorDefinition]:
+) -> dict[str, SensorDefinition]:
     """Get the default sensor definitions Home Assistant builds for a device."""
-    values = [
-        get_default_definition(
-            device, description.dpcode, description.wrapper_class
-        )
+    return {
+        description.key: definition
         for description in _SENSORS.get(device.category, ())
-    ]
-    return [definition for definition in values if definition]
+        if (
+            definition := get_default_definition(
+                device,
+                description.dpcode or description.key,
+                description.wrapper_class,
+            )
+        )
+    }
 
 
 def get_sensor_wrapper(
-    definitions: list[SensorDefinition], dpcode: str
+    definitions: dict[str, SensorDefinition], dpcode: str
 ) -> DPCodeWrapper | None:
-    """Extract the sensor wrapper for a DPCode from a list of definitions."""
-    for definition in definitions:
+    """Extract the sensor wrapper for a DPCode from a mapping of definitions."""
+    for definition in definitions.values():
         wrapper = definition.sensor_wrapper
         if isinstance(wrapper, DPCodeWrapper) and wrapper.dpcode == dpcode:
             return wrapper
