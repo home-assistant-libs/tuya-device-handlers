@@ -3,11 +3,11 @@
 from tuya_sharing import Manager
 
 from tests import create_device
-from tests.devices.binary_sensor_helpers import (
+from tests.integration_helpers.binary_sensor import (
     get_binary_sensor_default_definitions,
     get_binary_sensor_wrapper,
 )
-from tests.devices.sensor_helpers import (
+from tests.integration_helpers.sensor import (
     get_sensor_default_definitions,
     get_sensor_wrapper,
 )

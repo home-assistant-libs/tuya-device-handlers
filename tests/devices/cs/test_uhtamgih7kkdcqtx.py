@@ -1,7 +1,7 @@
 """Test device-level quirk initialisation for CS devices."""
 
 from tests import create_device
-from tests.devices.sensor_helpers import (
+from tests.integration_helpers.sensor import (
     get_sensor_default_definitions,
     get_sensor_wrapper,
 )

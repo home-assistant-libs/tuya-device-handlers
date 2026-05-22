@@ -1,7 +1,7 @@
 """Test device-level quirk initialisation."""
 
 from tests import create_device
-from tests.devices.cover_helpers import get_cover_default_definitions
+from tests.integration_helpers.cover import get_cover_default_definitions
 from tuya_device_handlers.device_wrapper.extended import (
     DPCodeInvertedPercentageWrapper,
 )
