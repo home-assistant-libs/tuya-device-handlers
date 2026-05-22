@@ -20,6 +20,10 @@ _LOG_OR_QUIRK = (
 )
 
 
+class PrepareSetValueError(ValueError):
+    """A value could not be prepared to be sent to a Tuya data point."""
+
+
 def _should_log_warning(device_id: str, warning_key: str) -> bool:
     """Check if a warning was already logged for a device.
 
@@ -105,6 +109,14 @@ class TypeInformation[T](abc.ABC):
     def read_device_value(self, device: CustomerDevice) -> T | None:
         """Read (and validate + convert) device value."""
 
+    def prepare_set_value(self, device: CustomerDevice, value: Any) -> Any:
+        """Prepare a Home Assistant value to be sent as a device command.
+
+        Base implementation does no conversion, subclasses may
+        override to provide specific conversion and validation.
+        """
+        raise NotImplementedError
+
 
 @dataclass(kw_only=True)
 class BitmapTypeInformation(TypeInformation[int]):
@@ -159,6 +171,15 @@ class BooleanTypeInformation(TypeInformation[bool]):
 
     _DPTYPE = DPType.BOOLEAN
 
+    def prepare_set_value(self, device: CustomerDevice, value: Any) -> bool:
+        """Prepare a Home Assistant value to be sent as a device command."""
+        if value in (True, False):
+            return cast(bool, value)
+        # Currently only called with boolean values
+        # Safety net in case of future changes
+        msg = f"Invalid boolean value `{value}`"
+        raise PrepareSetValueError(msg)
+
     def read_device_value(self, device: CustomerDevice) -> bool | None:
         """Read the device value for this datapoint."""
         if (raw_value := device.status.get(self.dpcode)) is None:
@@ -206,6 +227,15 @@ class EnumTypeInformation(TypeInformation[str]):
             report_type=report_type,
             **cast(dict[str, list[str]], parsed),
         )
+
+    def prepare_set_value(self, device: CustomerDevice, value: Any) -> str:
+        """Prepare a Home Assistant value to be sent as a device command."""
+        if value in self.range:
+            return cast(str, value)
+        # Guarded by select option validation
+        # Safety net in case of future changes
+        msg = f"Enum value `{value}` out of range: {self.range}"
+        raise PrepareSetValueError(msg)
 
     def read_device_value(self, device: CustomerDevice) -> str | None:
         """Read the device value for this datapoint."""
@@ -269,6 +299,19 @@ class IntegerTypeInformation(TypeInformation[float]):
             unit=parsed.get("unit"),
             report_type=report_type,
         )
+
+    def prepare_set_value(self, device: CustomerDevice, value: Any) -> int:
+        """Prepare a Home Assistant value to be sent as a device command."""
+        new_value = self.scale_value_back(value)
+        if self.min <= new_value <= self.max:
+            return new_value
+        # Guarded by number validation
+        # Safety net in case of future changes
+        msg = (
+            f"Value `{new_value}` (converted from `{value}`) out of range:"
+            f" ({self.min}-{self.max})"
+        )
+        raise PrepareSetValueError(msg)
 
     def read_device_value(self, device: CustomerDevice) -> float | None:
         """Read the device value for this datapoint."""
