@@ -9,7 +9,7 @@ def test_quirk_overrides(
     filled_quirks_registry: QuirksRegistry,
 ) -> None:
     """Quirk registers the temperature, humidity, unit and battery DPs."""
-    device = create_device("tdq_x3o8epevyeo3z3oa.json")
+    device = create_device("tdq_xeagimantb7d7apb.json")
 
     assert "temp_unit_convert" not in device.status_range
     assert "temp_current" not in device.status_range
@@ -30,7 +30,7 @@ def test_default_definitions(
     filled_quirks_registry: QuirksRegistry,
 ) -> None:
     """TDQ quirk registers explicit sensor device classes."""
-    device = create_device("tdq_x3o8epevyeo3z3oa.json")
+    device = create_device("tdq_xeagimantb7d7apb.json")
 
     definitions = get_sensor_default_definitions(device)
     assert "temp_current" not in definitions
