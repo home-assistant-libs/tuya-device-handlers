@@ -3,11 +3,12 @@
 from tuya_sharing import Manager
 
 from tests import create_device
+from tests.devices.sensor_helpers import (
+    get_sensor_default_definitions,
+    get_sensor_wrapper,
+)
 from tuya_device_handlers.definition.binary_sensor import (
     get_default_definition as get_binary_sensor_definition,
-)
-from tuya_device_handlers.definition.sensor import (
-    get_default_definition as get_sensor_definition,
 )
 from tuya_device_handlers.registry import QuirksRegistry
 
@@ -19,13 +20,15 @@ def test_default_definition(
     device = create_device("tdq_p6sqiuesvhmhvv4f.json")
     assert device.category == "tdq"
     assert get_binary_sensor_definition(device, "doorcontact_state") is None
-    assert get_sensor_definition(device, "battery_state") is None
+    definitions = get_sensor_default_definitions(device)
+    assert get_sensor_wrapper(definitions, "battery_state") is None
 
     filled_quirks_registry.initialise_device_quirk(device)
 
     assert device.category == "mcs"
     assert get_binary_sensor_definition(device, "doorcontact_state") is not None
-    assert get_sensor_definition(device, "battery_state") is not None
+    definitions = get_sensor_default_definitions(device)
+    assert get_sensor_wrapper(definitions, "battery_state") is not None
 
 
 def test_mqtt(
