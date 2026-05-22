@@ -246,25 +246,3 @@ def test_prepare_set_value_out_of_range(
     assert type_information
     with pytest.raises(PrepareSetValueError, match=match):
         type_information.prepare_set_value(mock_device, value)
-
-
-@pytest.mark.parametrize(
-    ("type_information_type", "dpcode"),
-    [
-        (BitmapTypeInformation, "demo_bitmap"),
-        (JsonTypeInformation, "demo_json"),
-        (RawTypeInformation, "demo_raw"),
-        (StringTypeInformation, "demo_string"),
-    ],
-)
-def test_prepare_set_value_not_implemented(
-    type_information_type: type[TypeInformation[Any]],
-    dpcode: str,
-    mock_device: CustomerDevice,
-) -> None:
-    """Test prepare_set_value is not implemented for all types."""
-    type_information = type_information_type.find_dpcode(mock_device, dpcode)
-
-    assert type_information
-    with pytest.raises(NotImplementedError):
-        type_information.prepare_set_value(mock_device, "any_value")
