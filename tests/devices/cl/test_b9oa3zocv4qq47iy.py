@@ -8,7 +8,7 @@ from tuya_device_handlers.device_wrapper.extended import (
 from tuya_device_handlers.registry import QuirksRegistry
 
 
-def test_suppresses_percent_state(
+def test_quirk_overrides(
     filled_quirks_registry: QuirksRegistry,
 ) -> None:
     """A-OK AM45 Plus advertises ``percent_state`` but never pushes updates.
@@ -30,7 +30,7 @@ def test_suppresses_percent_state(
     assert 3 not in device.local_strategy
 
 
-def test_cover_definition(filled_quirks_registry: QuirksRegistry) -> None:
+def test_default_definitions(filled_quirks_registry: QuirksRegistry) -> None:
     """A-OK AM45 Plus advertises ``percent_state`` but never pushes updates.
 
     The quirk must drop the DP so the default CL mapping falls back to
