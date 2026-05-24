@@ -16,6 +16,7 @@ from tuya_device_handlers.device_wrapper.cover import (
 )
 from tuya_device_handlers.device_wrapper.extended import (
     DPCodeInvertedPercentageWrapper,
+    DPCodePercentageWrapper,
 )
 from tuya_device_handlers.helpers.homeassistant import TuyaCoverAction
 
@@ -58,7 +59,7 @@ def get_default_definition(
     ] = CoverInstructionEnumWrapper,
     position_wrapper: type[
         DPCodeTypeInformationWrapper
-    ] = DPCodeInvertedPercentageWrapper,
+    ] = DPCodePercentageWrapper,
 ) -> CoverDefinition | None:
     """Get the default cover definition for a device."""
     if not (
