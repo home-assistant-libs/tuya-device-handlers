@@ -61,6 +61,6 @@ class DPCodeInSetWrapper(DPCodeWrapper[bool]):
 
     def read_device_status(self, device: CustomerDevice) -> bool | None:
         """Read the device value for the dpcode."""
-        if (raw_value := device.status.get(self.dpcode)) is None:
+        if (raw_value := self._read_dpcode_value(device)) is None:
             return None
         return raw_value in self._valid_values
