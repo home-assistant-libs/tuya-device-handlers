@@ -176,52 +176,6 @@ def test_log_invalid_value(
     assert warning_diplayed not in caplog.text
 
 
-def test_find_dpcode_uses_quirk_type_information_cls_override(
-    mock_device: CustomerDevice,
-) -> None:
-    """find_dpcode uses a custom IntegerTypeInformation subclass when set.
-
-    The quirk overrides demo_integer to use a CustomIntegerTypeInformation
-    subclass. find_dpcode should return an instance of the subclass.
-    """
-    mock_device.support_local = False
-
-    class CustomIntegerTypeInformation(IntegerTypeInformation):
-        """Custom subclass to verify override is used."""
-
-    quirk = (
-        DeviceQuirk()
-        .applies_to(product_id=mock_device.product_id)
-        .add_dpid_integer(
-            dpid=1,
-            dpcode="demo_integer",
-            dpmode=DPMode.READ,
-            unit="%",
-            min=0,
-            max=100,
-            scale=0,
-            step=1,
-            type_information_cls=CustomIntegerTypeInformation,
-        )
-    )
-    quirk.initialise_device(mock_device)
-    TUYA_QUIRKS_REGISTRY.register(mock_device.product_id, quirk)
-
-    result = IntegerTypeInformation.find_dpcode(mock_device, "demo_integer")
-    assert isinstance(result, CustomIntegerTypeInformation)
-    assert result.dpcode == "demo_integer"
-
-
-def test_find_dpcode_no_quirk_override_uses_default_class(
-    mock_device: CustomerDevice,
-) -> None:
-    """find_dpcode uses the calling class when no quirk override is set."""
-    # No quirk registered for this device — default behaviour unchanged.
-    result = IntegerTypeInformation.find_dpcode(mock_device, "demo_integer")
-    assert isinstance(result, IntegerTypeInformation)
-    assert result.dpcode == "demo_integer"
-
-
 def test_find_dpcode_quirk_inverted_percentage_integer(
     mock_device: CustomerDevice,
 ) -> None:
@@ -260,6 +214,10 @@ def test_find_dpcode_quirk_inverted_percentage_integer(
             max=100,
             scale=0,
             step=1,
+        )
+        .override_dpid_type_information_cls(
+            dpid=1,
+            dpcode="demo_integer",
             type_information_cls=InvertedPercentageIntegerTypeInformation,
         )
     )
@@ -276,6 +234,16 @@ def test_find_dpcode_quirk_inverted_percentage_integer(
     # Endpoints invert cleanly
     assert result.prepare_set_value(mock_device, 0) == 100
     assert result.prepare_set_value(mock_device, 100) == 0
+
+
+def test_find_dpcode_no_quirk_override_uses_default_class(
+    mock_device: CustomerDevice,
+) -> None:
+    """find_dpcode uses the calling class when no quirk override is set."""
+    # No quirk registered for this device — default behaviour unchanged.
+    result = IntegerTypeInformation.find_dpcode(mock_device, "demo_integer")
+    assert isinstance(result, IntegerTypeInformation)
+    assert result.dpcode == "demo_integer"
 
 
 @pytest.mark.parametrize(
