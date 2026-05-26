@@ -129,7 +129,9 @@ def test_cover_position_quirk_type_information_override(
     ]
 
 
-@pytest.mark.parametrize("fixture_file", ["cl_68nvbio9.json", "cl_cf1sl3tj.json"])
+@pytest.mark.parametrize(
+    "fixture_file", ["cl_68nvbio9.json", "cl_cf1sl3tj.json"]
+)
 @pytest.mark.parametrize(
     (
         "type_information_cls_override",
@@ -151,7 +153,7 @@ def test_cover_inverted_percentage_wrapper_type_information_override(
     expected_position: int,
     expected_raw_write: int,
 ) -> None:
-    """TypeInformation override cancels DPCodeInvertedPercentageWrapper inversion."""
+    """TypeInformation override cancels the cover wrapper's inversion."""
     device = create_device(fixture_file)
     (
         DeviceQuirk()
