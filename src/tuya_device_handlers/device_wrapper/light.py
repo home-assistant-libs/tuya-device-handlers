@@ -36,7 +36,7 @@ class BrightnessWrapper(DPCodeIntegerWrapper[int]):
 
     def read_device_status(self, device: CustomerDevice) -> int | None:
         """Return the brightness of this light between 0..255."""
-        if (brightness := device.status.get(self.dpcode)) is None:
+        if (brightness := self._read_dpcode_value(device)) is None:
             return None
 
         # Remap value to our scale
@@ -50,11 +50,17 @@ class BrightnessWrapper(DPCodeIntegerWrapper[int]):
             and self.brightness_max_remap is not None
             and self.brightness_min_remap is not None
             and (
-                brightness_max := device.status.get(self.brightness_max.dpcode)
+                brightness_max
+                := self.brightness_max.type_information.read_device_value(
+                    device
+                )
             )
             is not None
             and (
-                brightness_min := device.status.get(self.brightness_min.dpcode)
+                brightness_min
+                := self.brightness_min.type_information.read_device_value(
+                    device
+                )
             )
             is not None
         ):
@@ -89,11 +95,17 @@ class BrightnessWrapper(DPCodeIntegerWrapper[int]):
             and self.brightness_max_remap is not None
             and self.brightness_min_remap is not None
             and (
-                brightness_max := device.status.get(self.brightness_max.dpcode)
+                brightness_max
+                := self.brightness_max.type_information.read_device_value(
+                    device
+                )
             )
             is not None
             and (
-                brightness_min := device.status.get(self.brightness_min.dpcode)
+                brightness_min
+                := self.brightness_min.type_information.read_device_value(
+                    device
+                )
             )
             is not None
         ):
@@ -113,7 +125,9 @@ class BrightnessWrapper(DPCodeIntegerWrapper[int]):
                 to_min=brightness_min,
                 to_max=brightness_max,
             )
-        return round(self._remap_helper.remap_value_from(value))
+        return super()._convert_value_to_raw_value(
+            device, self._remap_helper.remap_value_from(value)
+        )
 
 
 class ColorTempWrapper(DPCodeIntegerWrapper[int]):
@@ -150,7 +164,7 @@ class ColorTempWrapper(DPCodeIntegerWrapper[int]):
 
     def read_device_status(self, device: CustomerDevice) -> int | None:
         """Return the color temperature value in Kelvin."""
-        if (temperature := device.status.get(self.dpcode)) is None:
+        if (temperature := self._read_dpcode_value(device)) is None:
             return None
 
         return self.mired_to_kelvin(
@@ -161,11 +175,12 @@ class ColorTempWrapper(DPCodeIntegerWrapper[int]):
         self, device: CustomerDevice, value: int
     ) -> Any:
         """Convert HA value (Kelvin) to a raw device value."""
-        return round(
+        return super()._convert_value_to_raw_value(
+            device,
             self._remap_helper.remap_value_from(
                 self.kelvin_to_mired(value),
                 reverse=True,
-            )
+            ),
         )
 
 
