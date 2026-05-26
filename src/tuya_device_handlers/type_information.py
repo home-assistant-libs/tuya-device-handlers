@@ -6,7 +6,7 @@ import binascii
 from dataclasses import dataclass
 import json
 import logging
-from typing import Any, ClassVar, Self, cast
+from typing import Any, ClassVar, Self
 
 from tuya_sharing import CustomerDevice
 
@@ -135,7 +135,8 @@ class BitmapTypeInformation(TypeInformation[int]):
         report_type: str | None,
     ) -> Self | None:
         """Load JSON string and return a BitmapTypeInformation object."""
-        if not (parsed := cast(dict[str, Any] | None, json.loads(type_data))):
+        parsed: dict[str, Any] | None
+        if not (parsed := json.loads(type_data)):
             return None
         return cls(
             dpcode=dpcode,
@@ -183,7 +184,7 @@ class BooleanTypeInformation(TypeInformation[bool]):
         if (raw_value := device.status.get(self.dpcode)) is None:
             return None
         if raw_value in (True, False):
-            return cast(bool, raw_value)
+            return raw_value
 
         if _should_log_warning(
             device.id, f"boolean_out_range|{self.dpcode}|{raw_value}"
@@ -217,13 +218,14 @@ class EnumTypeInformation(TypeInformation[str]):
         report_type: str | None,
     ) -> Self | None:
         """Load JSON string and return an EnumTypeInformation object."""
+        parsed: dict[str, Any] | None
         if not (parsed := json.loads(type_data)):
             return None
         return cls(
             dpcode=dpcode,
             type_data=type_data,
             report_type=report_type,
-            **cast(dict[str, list[str]], parsed),
+            range=parsed["range"],
         )
 
     def prepare_set_value(self, device: CustomerDevice, value: Any) -> str:
@@ -242,7 +244,7 @@ class EnumTypeInformation(TypeInformation[str]):
             return None
         # Validate input against defined range
         if raw_value in self.range:
-            return cast(str, raw_value)
+            return raw_value
 
         if _should_log_warning(
             device.id, f"enum_out_range|{self.dpcode}|{raw_value}"
@@ -285,7 +287,8 @@ class IntegerTypeInformation(TypeInformation[float]):
         cls, dpcode: str, type_data: str, *, report_type: str | None
     ) -> Self | None:
         """Load JSON string and return an IntegerTypeInformation object."""
-        if not (parsed := cast(dict[str, Any] | None, json.loads(type_data))):
+        parsed: dict[str, Any] | None
+        if not (parsed := json.loads(type_data)):
             return None
 
         return cls(
@@ -351,7 +354,7 @@ class JsonTypeInformation(TypeInformation[dict[str, Any]]):
         if (raw_value := device.status.get(self.dpcode)) is None:
             return None
         try:
-            return cast(dict[str, Any], json.loads(raw_value))
+            return json.loads(raw_value)
         except json.JSONDecodeError:
             if _should_log_warning(device.id, f"invalid_json|{self.dpcode}"):
                 _LOGGER.warning(
@@ -363,7 +366,7 @@ class JsonTypeInformation(TypeInformation[dict[str, Any]]):
                     device.product_id,
                     _LOG_OR_QUIRK,
                 )
-        return None
+            return None
 
 
 @dataclass(kw_only=True)
@@ -400,4 +403,4 @@ class StringTypeInformation(TypeInformation[str]):
 
     def read_device_value(self, device: CustomerDevice) -> str | None:
         """Read the device value for this datapoint."""
-        return cast(str, device.status.get(self.dpcode))
+        return device.status.get(self.dpcode)
