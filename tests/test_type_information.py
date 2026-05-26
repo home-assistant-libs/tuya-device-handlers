@@ -17,6 +17,7 @@ from tuya_device_handlers.type_information import (
     EnumTypeInformation,
     IntegerTypeInformation,
     JsonTypeInformation,
+    PrepareSetValueError,
     RawTypeInformation,
     StringTypeInformation,
     TypeInformation,
@@ -221,3 +222,89 @@ def test_find_dpcode_no_quirk_override_uses_default_class(
     result = IntegerTypeInformation.find_dpcode(mock_device, "demo_integer")
     assert isinstance(result, IntegerTypeInformation)
     assert result.dpcode == "demo_integer"
+
+
+@pytest.mark.parametrize(
+    ("type_information_type", "dpcode", "value", "expected"),
+    [
+        (BooleanTypeInformation, "demo_boolean", True, True),
+        (BooleanTypeInformation, "demo_boolean", False, False),
+        (EnumTypeInformation, "demo_enum", "scene", "scene"),
+        (EnumTypeInformation, "demo_enum", "colour", "colour"),
+        # Integer scale is 1, so the raw value is the input scaled by 10
+        (IntegerTypeInformation, "demo_integer", 0, 0),
+        (IntegerTypeInformation, "demo_integer", 50, 500),
+        (IntegerTypeInformation, "demo_integer", 100, 1000),
+        (IntegerTypeInformation, "demo_integer", 12.3, 123),
+    ],
+)
+def test_prepare_set_value(
+    type_information_type: type[TypeInformation[Any]],
+    dpcode: str,
+    value: Any,
+    expected: Any,
+    mock_device: CustomerDevice,
+) -> None:
+    """Test prepare_set_value converts a value to its raw form."""
+    type_information = type_information_type.find_dpcode(mock_device, dpcode)
+
+    assert type_information
+    assert type_information.prepare_set_value(mock_device, value) == expected
+
+
+@pytest.mark.parametrize(
+    ("type_information_type", "dpcode", "value", "match"),
+    [
+        (
+            BooleanTypeInformation,
+            "demo_boolean",
+            "yes",
+            r"Invalid boolean value `yes` \(str\)",
+        ),
+        (
+            EnumTypeInformation,
+            "demo_enum",
+            True,
+            r"Invalid string value `True` \(bool\)",
+        ),
+        (
+            EnumTypeInformation,
+            "demo_enum",
+            "unknown",
+            "Enum value `unknown` out of range",
+        ),
+        (
+            IntegerTypeInformation,
+            "demo_integer",
+            "145.2",
+            r"Invalid numeric value `145.2` \(str\)",
+        ),
+        # Scaled raw value above max (1000)
+        (
+            IntegerTypeInformation,
+            "demo_integer",
+            200,
+            "out of range",
+        ),
+        # Scaled raw value below min (0)
+        (
+            IntegerTypeInformation,
+            "demo_integer",
+            -1,
+            "out of range",
+        ),
+    ],
+)
+def test_prepare_set_value_out_of_range(
+    type_information_type: type[TypeInformation[Any]],
+    dpcode: str,
+    value: Any,
+    match: str,
+    mock_device: CustomerDevice,
+) -> None:
+    """Test prepare_set_value rejects invalid values."""
+    type_information = type_information_type.find_dpcode(mock_device, dpcode)
+
+    assert type_information
+    with pytest.raises(PrepareSetValueError, match=match):
+        type_information.prepare_set_value(mock_device, value)
