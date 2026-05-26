@@ -2,12 +2,14 @@
 
 import dataclasses
 from typing import Any
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 import pytest
 from syrupy.assertion import SnapshotAssertion
+from syrupy.filters import props
 from tuya_sharing import CustomerDevice
 
+from tuya_device_handlers import TUYA_QUIRKS_REGISTRY
 from tuya_device_handlers.const import DEVICE_WARNINGS
 from tuya_device_handlers.type_information import (
     BitmapTypeInformation,
@@ -44,7 +46,9 @@ def test_valid_type_information(
     type_information = type_information_type.find_dpcode(mock_device, dpcode)
 
     assert type_information
-    assert dataclasses.asdict(type_information) == snapshot
+    assert dataclasses.asdict(type_information) == snapshot(
+        exclude=props("quirk")
+    )
 
 
 @pytest.mark.parametrize(
@@ -75,6 +79,29 @@ def test_invalid_type_information(
     type_information = type_information_type.find_dpcode(mock_device, dpcode)
 
     assert type_information is None
+
+
+def test_quirk_set_when_registered(mock_device: CustomerDevice) -> None:
+    """find_dpcode attaches the device's quirk to the type information."""
+    quirk = Mock()
+    TUYA_QUIRKS_REGISTRY.register(mock_device.product_id, quirk)
+
+    type_information = StringTypeInformation.find_dpcode(
+        mock_device, "demo_string"
+    )
+
+    assert type_information
+    assert type_information.quirk is quirk
+
+
+def test_quirk_none_when_not_registered(mock_device: CustomerDevice) -> None:
+    """find_dpcode leaves quirk as None when no quirk is registered."""
+    type_information = StringTypeInformation.find_dpcode(
+        mock_device, "demo_string"
+    )
+
+    assert type_information
+    assert type_information.quirk is None
 
 
 def test_integer_scaling(mock_device: CustomerDevice) -> None:
