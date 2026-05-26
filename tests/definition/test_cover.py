@@ -127,3 +127,58 @@ def test_cover_position_quirk_type_information_override(
     assert position_wrapper.get_update_commands(device, 70) == [
         {"code": "percent_state", "value": expected_raw_write}
     ]
+
+
+@pytest.mark.parametrize("fixture_file", ["cl_68nvbio9.json", "cl_cf1sl3tj.json"])
+@pytest.mark.parametrize(
+    (
+        "type_information_cls_override",
+        "expected_position",
+        "expected_raw_write",
+    ),
+    [
+        # Without override: wrapper inverts raw 52 → 48 (the bug for devices
+        # that already report position in HA convention, 0=closed/100=open).
+        (IntegerTypeInformation, 48, 30),
+        # With inverted TypeInformation: TypeInfo pre-inverts 52→48, wrapper
+        # re-inverts 48→52. Double inversion cancels → correct HA position.
+        (_InvertedPercentageIntegerTypeInformation, 52, 70),
+    ],
+)
+def test_cover_inverted_percentage_wrapper_type_information_override(
+    fixture_file: str,
+    type_information_cls_override: type[IntegerTypeInformation],
+    expected_position: int,
+    expected_raw_write: int,
+) -> None:
+    """TypeInformation override cancels DPCodeInvertedPercentageWrapper inversion."""
+    device = create_device(fixture_file)
+    (
+        DeviceQuirk()
+        .applies_to(product_id=device.product_id)
+        .override_dpid_type_information_cls(
+            dpid=3,
+            dpcode="percent_state",
+            type_information_cls=type_information_cls_override,
+        )
+        .register(TUYA_QUIRKS_REGISTRY)
+    )
+
+    definition = get_default_definition(
+        device,
+        current_position_dpcode=("percent_state", "percent_control"),
+        instruction_dpcode="control",
+        set_position_dpcode="percent_control",
+        position_wrapper=DPCodeInvertedPercentageWrapper,
+    )
+    assert definition is not None
+    position_wrapper = definition.current_position_wrapper
+    assert isinstance(position_wrapper, DPCodeInvertedPercentageWrapper)
+    assert position_wrapper.dpcode == "percent_state"
+    assert isinstance(
+        position_wrapper.type_information, type_information_cls_override
+    )
+    assert position_wrapper.read_device_status(device) == expected_position
+    assert position_wrapper.get_update_commands(device, 70) == [
+        {"code": "percent_state", "value": expected_raw_write}
+    ]
