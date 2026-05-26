@@ -207,9 +207,7 @@ def test_find_dpcode_uses_quirk_type_information_cls_override(
     quirk.initialise_device(mock_device)
     TUYA_QUIRKS_REGISTRY.register(mock_device.product_id, quirk)
 
-    result = CustomIntegerTypeInformation.find_dpcode(
-        mock_device, "demo_integer"
-    )
+    result = IntegerTypeInformation.find_dpcode(mock_device, "demo_integer")
     assert isinstance(result, CustomIntegerTypeInformation)
     assert result.dpcode == "demo_integer"
 
@@ -222,6 +220,62 @@ def test_find_dpcode_no_quirk_override_uses_default_class(
     result = IntegerTypeInformation.find_dpcode(mock_device, "demo_integer")
     assert isinstance(result, IntegerTypeInformation)
     assert result.dpcode == "demo_integer"
+
+
+def test_find_dpcode_quirk_inverted_percentage_integer(
+    mock_device: CustomerDevice,
+) -> None:
+    """A custom IntegerTypeInformation subclass inverts 0-100 on read/write.
+
+    The quirk wires demo_integer to InvertedPercentageIntegerTypeInformation
+    which flips the value around max on both directions: a raw device value
+    of 30 reads as 70, and a HA-side value of 70 writes back as 30.
+    """
+    mock_device.support_local = False
+    mock_device.status["demo_integer"] = 30
+
+    class InvertedPercentageIntegerTypeInformation(IntegerTypeInformation):
+        """Inverts a 0-100 percentage on read and write."""
+
+        def read_device_value(self, device: CustomerDevice) -> float | None:
+            value = super().read_device_value(device)
+            if value is None:
+                return None
+            return self.max - value
+
+        def prepare_set_value(self, device: CustomerDevice, value: Any) -> int:
+            if not isinstance(value, (int, float)):
+                return super().prepare_set_value(device, value)
+            return super().prepare_set_value(device, self.max - value)
+
+    quirk = (
+        DeviceQuirk()
+        .applies_to(product_id=mock_device.product_id)
+        .add_dpid_integer(
+            dpid=1,
+            dpcode="demo_integer",
+            dpmode=DPMode.READ | DPMode.WRITE,
+            unit="%",
+            min=0,
+            max=100,
+            scale=0,
+            step=1,
+            type_information_cls=InvertedPercentageIntegerTypeInformation,
+        )
+    )
+    quirk.initialise_device(mock_device)
+    TUYA_QUIRKS_REGISTRY.register(mock_device.product_id, quirk)
+
+    result = IntegerTypeInformation.find_dpcode(mock_device, "demo_integer")
+    assert isinstance(result, InvertedPercentageIntegerTypeInformation)
+
+    # Read: raw status 30 → HA value 70
+    assert result.read_device_value(mock_device) == 70
+    # Write: HA value 70 → raw 30
+    assert result.prepare_set_value(mock_device, 70) == 30
+    # Endpoints invert cleanly
+    assert result.prepare_set_value(mock_device, 0) == 100
+    assert result.prepare_set_value(mock_device, 100) == 0
 
 
 @pytest.mark.parametrize(
