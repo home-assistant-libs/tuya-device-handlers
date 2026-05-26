@@ -173,8 +173,8 @@ class BooleanTypeInformation(TypeInformation[bool]):
 
     def prepare_set_value(self, device: CustomerDevice, value: Any) -> bool:
         """Prepare a Home Assistant value to be sent as a device command."""
-        if value in (True, False):
-            return cast(bool, value)
+        if isinstance(value, bool):
+            return value
         # Currently only called with boolean values
         # Safety net in case of future changes
         msg = f"Invalid boolean value `{value}`"
@@ -230,8 +230,8 @@ class EnumTypeInformation(TypeInformation[str]):
 
     def prepare_set_value(self, device: CustomerDevice, value: Any) -> str:
         """Prepare a Home Assistant value to be sent as a device command."""
-        if value in self.range:
-            return cast(str, value)
+        if isinstance(value, str) and value in self.range:
+            return value
         # Guarded by select option validation
         # Safety net in case of future changes
         msg = f"Enum value `{value}` out of range: {self.range}"
@@ -302,9 +302,10 @@ class IntegerTypeInformation(TypeInformation[float]):
 
     def prepare_set_value(self, device: CustomerDevice, value: Any) -> int:
         """Prepare a Home Assistant value to be sent as a device command."""
-        new_value = self.scale_value_back(value)
-        if self.min <= new_value <= self.max:
-            return new_value
+        if isinstance(value, float):
+            new_value = self.scale_value_back(value)
+            if self.min <= new_value <= self.max:
+                return new_value
         # Guarded by number validation
         # Safety net in case of future changes
         msg = (
