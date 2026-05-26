@@ -173,12 +173,10 @@ class BooleanTypeInformation(TypeInformation[bool]):
 
     def prepare_set_value(self, device: CustomerDevice, value: Any) -> bool:
         """Prepare a Home Assistant value to be sent as a device command."""
-        if isinstance(value, bool):
-            return value
-        # Currently only called with boolean values
-        # Safety net in case of future changes
-        msg = f"Invalid boolean value `{value}`"
-        raise PrepareSetValueError(msg)
+        if not isinstance(value, bool):
+            msg = f"Invalid boolean value `{value}` ({type(value).__name__})"
+            raise PrepareSetValueError(msg)
+        return value
 
     def read_device_value(self, device: CustomerDevice) -> bool | None:
         """Read the device value for this datapoint."""
@@ -230,12 +228,13 @@ class EnumTypeInformation(TypeInformation[str]):
 
     def prepare_set_value(self, device: CustomerDevice, value: Any) -> str:
         """Prepare a Home Assistant value to be sent as a device command."""
-        if isinstance(value, str) and value in self.range:
-            return value
-        # Guarded by select option validation
-        # Safety net in case of future changes
-        msg = f"Enum value `{value}` out of range: {self.range}"
-        raise PrepareSetValueError(msg)
+        if not isinstance(value, str):
+            msg = f"Invalid string value `{value}` ({type(value).__name__})"
+            raise PrepareSetValueError(msg)
+        if value not in self.range:
+            msg = f"Enum value `{value}` out of range: {self.range}"
+            raise PrepareSetValueError(msg)
+        return value
 
     def read_device_value(self, device: CustomerDevice) -> str | None:
         """Read the device value for this datapoint."""
@@ -302,17 +301,17 @@ class IntegerTypeInformation(TypeInformation[float]):
 
     def prepare_set_value(self, device: CustomerDevice, value: Any) -> int:
         """Prepare a Home Assistant value to be sent as a device command."""
-        if isinstance(value, float):
-            new_value = self.scale_value_back(value)
-            if self.min <= new_value <= self.max:
-                return new_value
-        # Guarded by number validation
-        # Safety net in case of future changes
-        msg = (
-            f"Value `{new_value}` (converted from `{value}`) out of range:"
-            f" ({self.min}-{self.max})"
-        )
-        raise PrepareSetValueError(msg)
+        if not isinstance(value, (int, float)):
+            msg = f"Invalid numeric value `{value}` ({type(value).__name__})"
+            raise PrepareSetValueError(msg)
+        new_value = self.scale_value_back(value)
+        if not (self.min <= new_value <= self.max):
+            msg = (
+                f"Value `{new_value}` (converted from {type(value).__name__}"
+                f" `{value}`) out of range: ({self.min}-{self.max})"
+            )
+            raise PrepareSetValueError(msg)
+        return new_value
 
     def read_device_value(self, device: CustomerDevice) -> float | None:
         """Read the device value for this datapoint."""
