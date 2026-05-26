@@ -209,13 +209,25 @@ def test_prepare_set_value(
             BooleanTypeInformation,
             "demo_boolean",
             "yes",
-            "Invalid boolean value `yes`",
+            r"Invalid boolean value `yes` \(str\)",
+        ),
+        (
+            EnumTypeInformation,
+            "demo_enum",
+            True,
+            r"Invalid string value `True` \(bool\)",
         ),
         (
             EnumTypeInformation,
             "demo_enum",
             "unknown",
             "Enum value `unknown` out of range",
+        ),
+        (
+            IntegerTypeInformation,
+            "demo_integer",
+            "145.2",
+            r"Invalid numeric value `145.2` \(str\)",
         ),
         # Scaled raw value above max (1000)
         (
