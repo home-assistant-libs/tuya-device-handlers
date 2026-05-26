@@ -16,6 +16,7 @@ from tuya_device_handlers.device_wrapper.cover import (
 )
 from tuya_device_handlers.device_wrapper.extended import (
     DPCodeInvertedPercentageWrapper,
+    DPCodePercentageWrapper,
 )
 from tuya_device_handlers.helpers.homeassistant import TuyaCoverAction
 
@@ -61,6 +62,11 @@ def get_default_definition(
     ] = DPCodeInvertedPercentageWrapper,
 ) -> CoverDefinition | None:
     """Get the default cover definition for a device."""
+    # A per-device quirk may override position inversion via
+    # DeviceQuirk.invert_cover_position(). Honour it over the caller default.
+    if (inverted := getattr(device, "quirk_cover_position_inverted", None)) is not None:
+        position_wrapper = DPCodeInvertedPercentageWrapper if inverted else DPCodePercentageWrapper
+
     if not (
         instruction_dpcode in device.function
         or instruction_dpcode in device.status_range

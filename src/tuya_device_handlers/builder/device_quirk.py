@@ -99,6 +99,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
         """Initialize the quirk."""
         self._applies_to: str | None = None
         self._override_category: str | None = None
+        self._cover_position_inverted: bool | None = None
 
         self._datapoint_definitions = {}
         self._local_strategy = {}
@@ -127,11 +128,16 @@ class DeviceQuirk(DeviceQuirkProtocol):
         """Initialise device."""
         self.original_category = device.category
         self.original_function = device.function.copy()
-        self.original_local_strategy = device.local_strategy.copy()
+        self.original_local_strategy = (
+            device.local_strategy.copy() if device.local_strategy is not None else None
+        )
         self.original_status_range = device.status_range.copy()
 
         if self._override_category is not None:
             device.category = self._override_category
+
+        if self._cover_position_inverted is not None:
+            device.quirk_cover_position_inverted = self._cover_position_inverted  # type: ignore[attr-defined]
 
         for key, definition in self._datapoint_definitions.items():
             dpid, dpcode = key
@@ -307,6 +313,18 @@ class DeviceQuirk(DeviceQuirkProtocol):
     def remove_dpid_strategy(self, *, dpid: int, dpcode: str) -> Self:
         """Remove datapoint strategy."""
         self._local_strategy[(dpid, dpcode)] = None
+        return self
+
+    def invert_cover_position(self, *, inverted: bool = True) -> Self:
+        """Override whether cover position values are inverted for this device.
+
+        By default the CL cover mapping uses DPCodeInvertedPercentageWrapper
+        because most Tuya curtain/blind motors report 0=open, 100=closed.
+        Call this with ``inverted=False`` for devices that report position in
+        the standard HA convention (0=closed, 100=open) and must not be
+        inverted.
+        """
+        self._cover_position_inverted = inverted
         return self
 
     def map_feeder_schedules_wrapper(
