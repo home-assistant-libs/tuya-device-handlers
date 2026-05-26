@@ -6,7 +6,7 @@ import binascii
 from dataclasses import dataclass
 import json
 import logging
-from typing import Any, ClassVar, Self
+from typing import Any, ClassVar, Self, cast
 
 from tuya_sharing import CustomerDevice
 
@@ -93,7 +93,7 @@ class TypeInformation[T](abc.ABC):
             )
             type_cls = cls
             if quirk and (new_cls := quirk.get_type_information_cls(dpcode)):
-                type_cls = new_cls
+                type_cls = cast(Self, new_cls)
             for device_specs in lookup_tuple:
                 if (
                     (current_definition := device_specs.get(dpcode))
