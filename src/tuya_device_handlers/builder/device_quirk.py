@@ -215,12 +215,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
         registry.register(self._applies_to, self)
 
     def add_dpid_bitmap(
-        self,
-        *,
-        dpid: int,
-        dpcode: str,
-        dpmode: DPMode,
-        label_range: list[str],
+        self, *, dpid: int, dpcode: str, dpmode: DPMode, label_range: list[str]
     ) -> Self:
         """Add datapoint Bitmap definition."""
         self._datapoint_definitions[(dpid, dpcode)] = DatapointDefinition(
@@ -233,11 +228,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
         return self
 
     def add_dpid_boolean(
-        self,
-        *,
-        dpid: int,
-        dpcode: str,
-        dpmode: DPMode,
+        self, *, dpid: int, dpcode: str, dpmode: DPMode
     ) -> Self:
         """Add datapoint Boolean definition."""
         self._datapoint_definitions[(dpid, dpcode)] = DatapointDefinition(
@@ -250,12 +241,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
         return self
 
     def add_dpid_enum(
-        self,
-        *,
-        dpid: int,
-        dpcode: str,
-        dpmode: DPMode,
-        enum_range: list[str],
+        self, *, dpid: int, dpcode: str, dpmode: DPMode, enum_range: list[str]
     ) -> Self:
         """Add datapoint Enum definition."""
         self._datapoint_definitions[(dpid, dpcode)] = DatapointDefinition(
