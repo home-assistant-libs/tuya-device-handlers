@@ -455,3 +455,40 @@ def test_register_without_applies_to_raises() -> None:
         ValueError, match="does not have an applies_to condition"
     ):
         quirk.register(QuirksRegistry())
+
+
+def test_invert_cover_position_stores_flag() -> None:
+    """invert_cover_position stores the inverted flag on the quirk."""
+    quirk = DeviceQuirk().invert_cover_position(inverted=False)
+    assert quirk._cover_position_inverted is False
+
+    quirk_inverted = DeviceQuirk().invert_cover_position(inverted=True)
+    assert quirk_inverted._cover_position_inverted is True
+
+    quirk_default = DeviceQuirk().invert_cover_position()
+    assert quirk_default._cover_position_inverted is True
+
+
+def test_invert_cover_position_sets_attribute_on_device(
+    mock_device: CustomerDevice,
+) -> None:
+    """initialise_device sets quirk_cover_position_inverted on the device."""
+    mock_device.support_local = True
+    mock_device.local_strategy = {}
+
+    DeviceQuirk().invert_cover_position(inverted=False).initialise_device(mock_device)
+    assert getattr(mock_device, "quirk_cover_position_inverted") is False
+
+    DeviceQuirk().invert_cover_position(inverted=True).initialise_device(mock_device)
+    assert getattr(mock_device, "quirk_cover_position_inverted") is True
+
+
+def test_invert_cover_position_not_set_leaves_device_unchanged(
+    mock_device: CustomerDevice,
+) -> None:
+    """Without invert_cover_position, the device attribute is not set."""
+    mock_device.support_local = True
+    mock_device.local_strategy = {}
+
+    DeviceQuirk().initialise_device(mock_device)
+    assert not hasattr(mock_device, "quirk_cover_position_inverted")
