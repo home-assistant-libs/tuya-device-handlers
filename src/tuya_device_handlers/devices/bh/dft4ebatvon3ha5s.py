@@ -3,11 +3,9 @@
 The Tuya cloud product catalog declares only ["85","90"] for
 temp_setting_quick_c (dpid 4), but the device physically supports
 ["80","85","90","95","100"]. This was confirmed via:
-- physical button testing (all 5 values lit the correct button and started heating)
-- local LAN (tinytuya) commands accepted and echoed by device firmware
-- cloud MQTT push reports all 5 values when set physically
-
-See https://github.com/home-assistant/core/issues/XXXXX
+- physical button testing (all values lit and started heating)
+- local LAN (tinytuya) commands accepted and echoed by firmware
+- cloud MQTT push reports all values when set physically
 """
 
 from tuya_device_handlers import TUYA_QUIRKS_REGISTRY

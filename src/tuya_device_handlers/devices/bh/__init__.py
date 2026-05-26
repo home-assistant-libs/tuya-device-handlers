@@ -1,1 +1,1 @@
-"""Quirks for Tuya BH (smart kettle) devices."""
+"""Quirks for Tuya BH category (smart kettle)."""
