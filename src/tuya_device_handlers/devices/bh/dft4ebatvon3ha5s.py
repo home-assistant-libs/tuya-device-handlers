@@ -14,7 +14,12 @@ from tuya_device_handlers.const import DPMode
 
 (
     DeviceQuirk()
-    .applies_to(product_id="dft4ebatvon3ha5s")
+    .applies_to(
+        product_id="dft4ebatvon3ha5s",
+        manufacturer="Anko",
+        model="Smart kettle",
+        model_id="LD-K3068",
+    )
     .add_dpid_enum(
         dpid=4,
         dpcode="temp_setting_quick_c",
