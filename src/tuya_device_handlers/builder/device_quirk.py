@@ -132,11 +132,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
         """Initialise device."""
         self.original_category = device.category
         self.original_function = device.function.copy()
-        self.original_local_strategy = (
-            device.local_strategy.copy()
-            if device.local_strategy is not None
-            else None
-        )
+        self.original_local_strategy = device.local_strategy.copy()
         self.original_status_range = device.status_range.copy()
 
         if self._override_category is not None:

@@ -64,7 +64,6 @@ ignore = ["tests"]
 
 [tool.pylint.BASIC]
 good-names = ["_", "ex", "fp", "i", "id", "j", "k", "on", "Run", "T"]
-module-rgx = "[a-z0-9][a-z0-9_]*"
 
 [tool.pylint.DESIGN]
 max-attributes = 15
@@ -121,9 +120,6 @@ ignore = [
 select = ["ALL"]
 
 [tool.ruff.lint.per-file-ignores]
-"src/tuya_device_handlers/devices/**/*.py" = [
-    "N999",    # Module names match product IDs which may start with a digit
-]
 "tests/**/*.py" = [
     "A002",    # Argument shadowing a Python builtin
     "S101",    # assert

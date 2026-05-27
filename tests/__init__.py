@@ -35,12 +35,12 @@ def _get_functions(details: dict[str, Any]) -> dict[str, DeviceFunction]:
 
 def _get_local_strategy(
     details: dict[str, Any],
-) -> dict[int, dict[str, Any]] | None:
+) -> dict[int, dict[str, Any]]:
     local_strategy_details = details.get("local_strategy")
     if "original_local_strategy" in details:
         local_strategy_details = details["original_local_strategy"]
     if local_strategy_details is None:
-        return None
+        return {}
 
     return {int(key): value for key, value in local_strategy_details.items()}
 
