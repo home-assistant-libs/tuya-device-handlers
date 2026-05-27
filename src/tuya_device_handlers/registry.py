@@ -48,7 +48,7 @@ class DeviceQuirkProtocol(Protocol):
         """Get the feeder schedules wrapper for a device."""
 
     def get_type_information_cls(
-        self, dpcode: str
+        self, *, dpcode: str
     ) -> type[TypeInformation[Any]] | None:
         """Get the type information class override for a dpcode."""
 

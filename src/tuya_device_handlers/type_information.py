@@ -92,7 +92,9 @@ class TypeInformation[T](abc.ABC):
                 else None
             )
             type_cls = cls
-            if quirk and (new_cls := quirk.get_type_information_cls(dpcode)):
+            if quirk and (
+                new_cls := quirk.get_type_information_cls(dpcode=dpcode)
+            ):
                 type_cls = cast(type[Self], new_cls)
             for device_specs in lookup_tuple:
                 if (

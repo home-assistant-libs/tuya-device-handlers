@@ -348,7 +348,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
         return None
 
     def get_type_information_cls(
-        self, dpcode: str
+        self, *, dpcode: str
     ) -> type[TypeInformation[Any]] | None:
         """Get the type information class override for a dpcode."""
         for (_, code), type_cls in self._type_information_overrides.items():

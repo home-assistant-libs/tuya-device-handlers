@@ -407,7 +407,7 @@ def test_get_type_information_cls_returns_override() -> None:
         dpcode="bo",
         type_information_cls=BooleanTypeInformation,
     )
-    assert quirk.get_type_information_cls("bo") is BooleanTypeInformation
+    assert quirk.get_type_information_cls(dpcode="bo") is BooleanTypeInformation
 
 
 def test_get_type_information_cls_returns_none_when_no_override() -> None:
@@ -415,7 +415,7 @@ def test_get_type_information_cls_returns_none_when_no_override() -> None:
     quirk = DeviceQuirk().add_dpid_boolean(
         dpid=1, dpcode="bo", dpmode=DPMode.READ
     )
-    assert quirk.get_type_information_cls("bo") is None
+    assert quirk.get_type_information_cls(dpcode="bo") is None
 
 
 def test_get_type_information_cls_returns_none_for_unknown_dpcode() -> None:
@@ -425,7 +425,7 @@ def test_get_type_information_cls_returns_none_for_unknown_dpcode() -> None:
         dpcode="bo",
         type_information_cls=BooleanTypeInformation,
     )
-    assert quirk.get_type_information_cls("unknown") is None
+    assert quirk.get_type_information_cls(dpcode="unknown") is None
 
 
 def test_applies_to_records_manufacturer_and_model() -> None:
