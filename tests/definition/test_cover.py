@@ -132,9 +132,7 @@ def test_cover_position_quirk_type_information_override(
     ]
 
 
-@pytest.mark.parametrize(
-    "fixture_file", ["cl_zah67ekd.json"]
-)
+@pytest.mark.parametrize("fixture_file", ["cl_zah67ekd.json"])
 @pytest.mark.parametrize(
     (
         "type_information_cls_override",
