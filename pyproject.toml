@@ -120,6 +120,9 @@ ignore = [
 select = ["ALL"]
 
 [tool.ruff.lint.per-file-ignores]
+"src/tuya_device_handlers/devices/**/*.py" = [
+    "N999",    # Module names match product IDs which may start with a digit
+]
 "tests/**/*.py" = [
     "A002",    # Argument shadowing a Python builtin
     "S101",    # assert
