@@ -64,6 +64,7 @@ ignore = ["tests"]
 
 [tool.pylint.BASIC]
 good-names = ["_", "ex", "fp", "i", "id", "j", "k", "on", "Run", "T"]
+module-rgx = "[a-z0-9][a-z0-9_]*"
 
 [tool.pylint.DESIGN]
 max-attributes = 15
