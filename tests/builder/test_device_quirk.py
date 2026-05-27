@@ -18,12 +18,6 @@ from tuya_device_handlers.builder.device_quirk import (
 )
 from tuya_device_handlers.const import DPMode, DPType
 from tuya_device_handlers.registry import QuirksRegistry
-from tuya_device_handlers.type_information import (
-    BitmapTypeInformation,
-    BooleanTypeInformation,
-    EnumTypeInformation,
-    IntegerTypeInformation,
-)
 
 
 def test_datapoint_definition_to_function() -> None:
@@ -360,74 +354,6 @@ def test_initialise_device_without_override_category(
     assert mock_device.category == "original"
 
 
-# --- override_dpid_type_information_cls tests ---
-
-
-def test_override_dpid_type_information_cls_records_override() -> None:
-    """override_dpid_type_information_cls records (dpid, dpcode) → class."""
-    quirk = DeviceQuirk().override_dpid_type_information_cls(
-        dpid=1,
-        dpcode="bm",
-        type_information_cls=BitmapTypeInformation,
-    )
-    assert quirk._type_information_overrides == {
-        (1, "bm"): BitmapTypeInformation
-    }
-
-
-def test_override_dpid_type_information_cls_accepts_all_subclasses() -> None:
-    """override_dpid_type_information_cls accepts any TypeInformation type."""
-    quirk = (
-        DeviceQuirk()
-        .override_dpid_type_information_cls(
-            dpid=1, dpcode="bm", type_information_cls=BitmapTypeInformation
-        )
-        .override_dpid_type_information_cls(
-            dpid=2, dpcode="bo", type_information_cls=BooleanTypeInformation
-        )
-        .override_dpid_type_information_cls(
-            dpid=3, dpcode="en", type_information_cls=EnumTypeInformation
-        )
-        .override_dpid_type_information_cls(
-            dpid=4, dpcode="i", type_information_cls=IntegerTypeInformation
-        )
-    )
-    assert quirk._type_information_overrides == {
-        (1, "bm"): BitmapTypeInformation,
-        (2, "bo"): BooleanTypeInformation,
-        (3, "en"): EnumTypeInformation,
-        (4, "i"): IntegerTypeInformation,
-    }
-
-
-def test_get_type_information_cls_returns_override() -> None:
-    """get_type_information_cls returns the override registered on the quirk."""
-    quirk = DeviceQuirk().override_dpid_type_information_cls(
-        dpid=1,
-        dpcode="bo",
-        type_information_cls=BooleanTypeInformation,
-    )
-    assert quirk.get_type_information_cls(dpcode="bo") is BooleanTypeInformation
-
-
-def test_get_type_information_cls_returns_none_when_no_override() -> None:
-    """get_type_information_cls returns None when no override is set."""
-    quirk = DeviceQuirk().add_dpid_boolean(
-        dpid=1, dpcode="bo", dpmode=DPMode.READ
-    )
-    assert quirk.get_type_information_cls(dpcode="bo") is None
-
-
-def test_get_type_information_cls_returns_none_for_unknown_dpcode() -> None:
-    """get_type_information_cls returns None for an unregistered dpcode."""
-    quirk = DeviceQuirk().override_dpid_type_information_cls(
-        dpid=1,
-        dpcode="bo",
-        type_information_cls=BooleanTypeInformation,
-    )
-    assert quirk.get_type_information_cls(dpcode="unknown") is None
-
-
 def test_applies_to_records_manufacturer_and_model() -> None:
     """applies_to stores manufacturer and model as readable attributes."""
     quirk = DeviceQuirk().applies_to(
@@ -455,40 +381,3 @@ def test_register_without_applies_to_raises() -> None:
         ValueError, match="does not have an applies_to condition"
     ):
         quirk.register(QuirksRegistry())
-
-
-def test_invert_cover_position_stores_flag() -> None:
-    """invert_cover_position stores the inverted flag on the quirk."""
-    quirk = DeviceQuirk().invert_cover_position(inverted=False)
-    assert quirk._cover_position_inverted is False
-
-    quirk_inverted = DeviceQuirk().invert_cover_position(inverted=True)
-    assert quirk_inverted._cover_position_inverted is True
-
-    quirk_default = DeviceQuirk().invert_cover_position()
-    assert quirk_default._cover_position_inverted is True
-
-
-def test_invert_cover_position_sets_attribute_on_device(
-    mock_device: CustomerDevice,
-) -> None:
-    """initialise_device sets quirk_cover_position_inverted on the device."""
-    mock_device.support_local = True
-    mock_device.local_strategy = {}
-
-    DeviceQuirk().invert_cover_position(inverted=False).initialise_device(mock_device)
-    assert getattr(mock_device, "quirk_cover_position_inverted") is False
-
-    DeviceQuirk().invert_cover_position(inverted=True).initialise_device(mock_device)
-    assert getattr(mock_device, "quirk_cover_position_inverted") is True
-
-
-def test_invert_cover_position_not_set_leaves_device_unchanged(
-    mock_device: CustomerDevice,
-) -> None:
-    """Without invert_cover_position, the device attribute is not set."""
-    mock_device.support_local = True
-    mock_device.local_strategy = {}
-
-    DeviceQuirk().initialise_device(mock_device)
-    assert not hasattr(mock_device, "quirk_cover_position_inverted")
