@@ -18,6 +18,12 @@ from tuya_device_handlers.builder.device_quirk import (
 )
 from tuya_device_handlers.const import DPMode, DPType
 from tuya_device_handlers.registry import QuirksRegistry
+from tuya_device_handlers.type_information import (
+    BitmapTypeInformation,
+    BooleanTypeInformation,
+    EnumTypeInformation,
+    IntegerTypeInformation,
+)
 
 
 def test_datapoint_definition_to_function() -> None:
@@ -352,6 +358,74 @@ def test_initialise_device_without_override_category(
     quirk = DeviceQuirk()
     quirk.initialise_device(mock_device)
     assert mock_device.category == "original"
+
+
+# --- override_dpid_type_information_cls tests ---
+
+
+def test_override_dpid_type_information_cls_records_override() -> None:
+    """override_dpid_type_information_cls records (dpid, dpcode) → class."""
+    quirk = DeviceQuirk().override_dpid_type_information_cls(
+        dpid=1,
+        dpcode="bm",
+        type_information_cls=BitmapTypeInformation,
+    )
+    assert quirk._type_information_overrides == {
+        (1, "bm"): BitmapTypeInformation
+    }
+
+
+def test_override_dpid_type_information_cls_accepts_all_subclasses() -> None:
+    """override_dpid_type_information_cls accepts any TypeInformation type."""
+    quirk = (
+        DeviceQuirk()
+        .override_dpid_type_information_cls(
+            dpid=1, dpcode="bm", type_information_cls=BitmapTypeInformation
+        )
+        .override_dpid_type_information_cls(
+            dpid=2, dpcode="bo", type_information_cls=BooleanTypeInformation
+        )
+        .override_dpid_type_information_cls(
+            dpid=3, dpcode="en", type_information_cls=EnumTypeInformation
+        )
+        .override_dpid_type_information_cls(
+            dpid=4, dpcode="i", type_information_cls=IntegerTypeInformation
+        )
+    )
+    assert quirk._type_information_overrides == {
+        (1, "bm"): BitmapTypeInformation,
+        (2, "bo"): BooleanTypeInformation,
+        (3, "en"): EnumTypeInformation,
+        (4, "i"): IntegerTypeInformation,
+    }
+
+
+def test_get_type_information_cls_returns_override() -> None:
+    """get_type_information_cls returns the override registered on the quirk."""
+    quirk = DeviceQuirk().override_dpid_type_information_cls(
+        dpid=1,
+        dpcode="bo",
+        type_information_cls=BooleanTypeInformation,
+    )
+    assert quirk.get_type_information_cls(dpcode="bo") is BooleanTypeInformation
+
+
+def test_get_type_information_cls_returns_none_when_no_override() -> None:
+    """get_type_information_cls returns None when no override is set."""
+    quirk = DeviceQuirk().add_dpid_boolean(
+        dpid=1, dpcode="bo", dpmode=DPMode.READ
+    )
+    assert quirk.get_type_information_cls(dpcode="bo") is None
+
+
+def test_get_type_information_cls_returns_none_for_unknown_dpcode() -> None:
+    """get_type_information_cls returns None for an unregistered dpcode."""
+    quirk = DeviceQuirk().override_dpid_type_information_cls(
+        dpid=1,
+        dpcode="bo",
+        type_information_cls=BooleanTypeInformation,
+    )
+    assert quirk.get_type_information_cls(dpcode="unknown") is None
 
 
 def test_applies_to_records_manufacturer_and_model() -> None:
