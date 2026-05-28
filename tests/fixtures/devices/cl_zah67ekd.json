@@ -56,5 +56,6 @@
     "work_state": "closing",
     "situation_set": "fully_open",
     "fault": 0
-  }
+  },
+  "local_strategy":{}
 }

@@ -71,8 +71,7 @@
       }),
     }),
     'id': 'cijerqyssiwrf7de',
-    'local_strategy': dict({
-    }),
+    'local_strategy': None,
     'name': '接HA水阀',
     'online': True,
     'product_id': 'ed7frwissyqrejic',
