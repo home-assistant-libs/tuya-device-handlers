@@ -21,7 +21,7 @@ from tuya_device_handlers.type_information_ex import (
 
 (
     DeviceQuirk()
-    .applies_to(product_id="zah67ekd", model="AM43拉绳电机-Zigbee")
+    .applies_to(product_id="zah67ekd")
     .override_dpid_type_information_cls(
         dpid=3,
         dpcode="percent_state",
