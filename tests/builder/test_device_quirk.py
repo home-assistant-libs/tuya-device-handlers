@@ -70,6 +70,23 @@ def test_datapoint_definition_to_status_range() -> None:
     assert status_range.code == "z"
     assert status_range.type == DPType.BOOLEAN.value
     assert status_range.values == "{}"
+    assert status_range.report_type is None
+
+
+def test_datapoint_definition_to_status_range_report_type() -> None:
+    """to_status_range carries the report_type to the DeviceStatusRange."""
+    definition = DatapointDefinition(
+        dpid=4,
+        dpcode="energy",
+        dpmode=DPMode.READ,
+        dptype=DPType.INTEGER,
+        values='{"unit": "kWh", "min": 0, "max": 50000, "scale": 3, "step": 1}',
+        report_type="sum",
+    )
+    status_range = definition.to_status_range()
+    assert status_range.code == "energy"
+    assert status_range.type == DPType.INTEGER.value
+    assert status_range.report_type == "sum"
 
 
 def test_device_quirk_provenance() -> None:

@@ -83,6 +83,7 @@ class DatapointDefinition:
             code=self.dpcode,
             type=self.dptype.value,
             values=self.values,
+            report_type=self.report_type,
         )
 
 
