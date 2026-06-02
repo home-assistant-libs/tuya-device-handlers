@@ -1773,13 +1773,14 @@ files = [
 
 [[package]]
 name = "tuya-device-sharing-sdk"
-version = "0.2.9"
+version = "0.2.10"
 description = "A Python sdk for Tuya Open API, which provides IoT capabilities, maintained by Tuya official"
 optional = false
 python-versions = ">=3.7"
 groups = ["main"]
 files = [
-    {file = "tuya_device_sharing_sdk-0.2.9-py3-none-any.whl", hash = "sha256:18070a7f777c6ac2ce6b1e56c196558d12868614a34df58d9e7503aa6a4738c2"},
+    {file = "tuya_device_sharing_sdk-0.2.10-py3-none-any.whl", hash = "sha256:6377958c351b46873a15c9e9afedb9c26fd1c4fa917aff355452c1bcf8676a73"},
+    {file = "tuya_device_sharing_sdk-0.2.10.tar.gz", hash = "sha256:9bed3365fa92c32f09f997334a7eb7f8e0ba17f0401166a547403aba308f94ca"},
 ]
 
 [package.dependencies]
