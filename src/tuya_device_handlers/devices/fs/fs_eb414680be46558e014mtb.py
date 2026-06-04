@@ -7,7 +7,12 @@ from tuya_device_handlers.const import DPMode
 # Define the structured quirk using the fluent builder pattern
 (
     DeviceQuirk()
-    .applies_to(product_id="eb414680be46558e014mtb")
+    .applies_to(
+        product_id="eb414680be46558e014mtb",
+        manufacturer="Comfort Zone",
+        model="Tower Fan",
+        model_id="CZTF423S",
+    )
     .override_category("fs")
     # DP 1: Power Toggle (Read + Write)
     .add_dpid_boolean(
