@@ -1,14 +1,14 @@
 """Test device-level quirk initialisation."""
 
 from tests import create_device
-from tests.devices.cover_helpers import get_cover_default_definitions
+from tests.integration_helpers.cover import get_cover_default_definitions
 from tuya_device_handlers.device_wrapper.extended import (
     DPCodeInvertedPercentageWrapper,
 )
 from tuya_device_handlers.registry import QuirksRegistry
 
 
-def test_suppresses_percent_state(
+def test_quirk_overrides(
     filled_quirks_registry: QuirksRegistry,
 ) -> None:
     """A-OK AM45 Plus advertises ``percent_state`` but never pushes updates.
@@ -30,7 +30,7 @@ def test_suppresses_percent_state(
     assert 3 not in device.local_strategy
 
 
-def test_cover_definition(filled_quirks_registry: QuirksRegistry) -> None:
+def test_default_definitions(filled_quirks_registry: QuirksRegistry) -> None:
     """A-OK AM45 Plus advertises ``percent_state`` but never pushes updates.
 
     The quirk must drop the DP so the default CL mapping falls back to
@@ -43,7 +43,7 @@ def test_cover_definition(filled_quirks_registry: QuirksRegistry) -> None:
     # with dpcode "percent_state"
     definitions = get_cover_default_definitions(device)
     assert len(definitions) == 1
-    definition = definitions[0]
+    definition = definitions["control"]
     assert isinstance(
         definition.current_position_wrapper, DPCodeInvertedPercentageWrapper
     )
@@ -55,7 +55,7 @@ def test_cover_definition(filled_quirks_registry: QuirksRegistry) -> None:
     # but with dpcode "percent_control"
     definitions = get_cover_default_definitions(device)
     assert len(definitions) == 1
-    definition = definitions[0]
+    definition = definitions["control"]
     assert isinstance(
         definition.current_position_wrapper, DPCodeInvertedPercentageWrapper
     )

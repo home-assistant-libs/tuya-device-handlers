@@ -1,13 +1,20 @@
 """Quirks registry."""
 
+from __future__ import annotations
+
 import logging
-import pathlib
-from typing import Any, Protocol, Self
+from typing import TYPE_CHECKING, Any, Protocol, Self
 
-from tuya_sharing import CustomerDevice, DeviceFunction, DeviceStatusRange
+if TYPE_CHECKING:
+    import pathlib
 
-from .device_wrapper.base import DeviceWrapper
-from .device_wrapper.service_feeder_schedule import FeederSchedule
+    from tuya_sharing import CustomerDevice, DeviceFunction, DeviceStatusRange
+
+    # We don't want to accidentally create a circular import, so we import
+    # these here for type checking only
+    from .device_wrapper.base import DeviceWrapper
+    from .device_wrapper.service_feeder_schedule import FeederSchedule
+    from .type_information import TypeInformation
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -15,6 +22,7 @@ _LOGGER = logging.getLogger(__name__)
 class DeviceQuirkProtocol(Protocol):
     """Protocol for a Tuya device quirk."""
 
+    original_category: str
     original_function: dict[str, DeviceFunction]
     original_local_strategy: dict[int, dict[str, Any]]
     original_status_range: dict[str, DeviceStatusRange]
@@ -38,6 +46,11 @@ class DeviceQuirkProtocol(Protocol):
         self, device: CustomerDevice
     ) -> DeviceWrapper[list[FeederSchedule]] | None:
         """Get the feeder schedules wrapper for a device."""
+
+    def get_type_information_cls(
+        self, *, dpcode: str
+    ) -> type[TypeInformation[Any]] | None:
+        """Get the type information class override for a dpcode."""
 
 
 class QuirksRegistry:

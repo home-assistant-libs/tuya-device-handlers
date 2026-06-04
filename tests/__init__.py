@@ -73,7 +73,7 @@ def create_device(fixture_filename: str) -> CustomerDevice:
         # Use reverse of the product_id for testing
         id=details["product_id"].replace("_", "")[::-1],
         name=details["name"],
-        category=details["category"],
+        category=details.get("original_category", details["category"]),
         product_id=details["product_id"],
         product_name=details["product_name"],
         online=details["online"],

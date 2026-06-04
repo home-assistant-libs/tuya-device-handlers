@@ -1,6 +1,6 @@
 """Tuya device wrapper."""
 
-from typing import TYPE_CHECKING, Any, Self
+from typing import Any, Self
 
 from tuya_sharing import CustomerDevice
 
@@ -10,6 +10,7 @@ from tuya_device_handlers.type_information import (
     EnumTypeInformation,
     IntegerTypeInformation,
     JsonTypeInformation,
+    PrepareSetValueError,
     RawTypeInformation,
     StringTypeInformation,
     TypeInformation,
@@ -118,6 +119,15 @@ class DPCodeTypeInformationWrapper[
         """Read and process raw value against this type information."""
         return self.type_information.read_device_value(device)
 
+    def _convert_value_to_raw_value(
+        self, device: CustomerDevice, value: Any
+    ) -> Any:
+        """Convert a Home Assistant value back to a raw device value."""
+        try:
+            return self.type_information.prepare_set_value(device, value)
+        except PrepareSetValueError as err:
+            raise SetValueOutOfRangeError(str(err)) from err
+
 
 class DPCodeBitmapWrapper[T = int](
     DPCodeTypeInformationWrapper[BitmapTypeInformation, int, T]
@@ -134,20 +144,6 @@ class DPCodeBooleanWrapper[T = bool](
 
     _DPTYPE = BooleanTypeInformation
 
-    def _convert_value_to_raw_value(
-        self, device: CustomerDevice, value: Any
-    ) -> bool:
-        """Convert a Home Assistant value back to a raw device value."""
-        if value in (True, False):
-            if TYPE_CHECKING:
-                # Type checkers don't infer membership in a tuple of bools
-                assert isinstance(value, bool)
-            return value
-        # Currently only called with boolean values
-        # Safety net in case of future changes
-        msg = f"Invalid boolean value `{value}`"
-        raise SetValueOutOfRangeError(msg)
-
 
 class DPCodeEnumWrapper[T = str](
     DPCodeTypeInformationWrapper[EnumTypeInformation, str, T]
@@ -163,22 +159,6 @@ class DPCodeEnumWrapper[T = str](
         """Init DPCodeEnumWrapper."""
         super().__init__(dpcode, type_information)
         self.options = type_information.range
-
-    def _convert_value_to_raw_value(
-        self, device: CustomerDevice, value: Any
-    ) -> str:
-        """Convert a Home Assistant value back to a raw device value."""
-        if value in self.type_information.range:
-            if TYPE_CHECKING:
-                # Type checkers don't infer membership in a list of strings
-                assert isinstance(value, str)
-            return value
-        # Guarded by select option validation
-        # Safety net in case of future changes
-        msg = (
-            f"Enum value `{value}` out of range: {self.type_information.range}"
-        )
-        raise SetValueOutOfRangeError(msg)
 
 
 class DPCodeIntegerWrapper[T = float](
@@ -199,21 +179,6 @@ class DPCodeIntegerWrapper[T = float](
         self.value_step = self.type_information.scale_value(
             type_information.step
         )
-
-    def _convert_value_to_raw_value(
-        self, device: CustomerDevice, value: Any
-    ) -> int:
-        """Convert a Home Assistant value back to a raw device value."""
-        new_value = self.type_information.scale_value_back(value)
-        if self.type_information.min <= new_value <= self.type_information.max:
-            return new_value
-        # Guarded by number validation
-        # Safety net in case of future changes
-        msg = (
-            f"Value `{new_value}` (converted from `{value}`) out of range:"
-            f" ({self.type_information.min}-{self.type_information.max})"
-        )
-        raise SetValueOutOfRangeError(msg)
 
 
 class DPCodeJsonWrapper[T = dict[str, Any]](

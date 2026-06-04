@@ -15,6 +15,7 @@ from tuya_device_handlers.device_wrapper.service_feeder_schedule import (
     FeederSchedule,
 )
 from tuya_device_handlers.registry import DeviceQuirkProtocol, QuirksRegistry
+from tuya_device_handlers.type_information import TypeInformation
 
 
 @dataclass(kw_only=True)
@@ -82,6 +83,7 @@ class DatapointDefinition:
             code=self.dpcode,
             type=self.dptype.value,
             values=self.values,
+            report_type=self.report_type,
         )
 
 
@@ -90,6 +92,9 @@ class DeviceQuirk(DeviceQuirkProtocol):
 
     _datapoint_definitions: dict[tuple[int, str], DatapointDefinition | None]
     _local_strategy: dict[tuple[int, str], LocalConvertStrategy | None]
+    _type_information_overrides: dict[
+        tuple[int, str], type[TypeInformation[Any]]
+    ]
     _get_wrapper_functions: dict[
         str,
         Callable[[CustomerDevice], DeviceWrapper | None],
@@ -102,6 +107,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
 
         self._datapoint_definitions = {}
         self._local_strategy = {}
+        self._type_information_overrides = {}
         self._get_wrapper_functions = {}
 
         current_frame = inspect.currentframe()
@@ -125,6 +131,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
 
     def initialise_device(self, device: CustomerDevice) -> None:
         """Initialise device."""
+        self.original_category = device.category
         self.original_function = device.function.copy()
         self.original_local_strategy = device.local_strategy.copy()
         self.original_status_range = device.status_range.copy()
@@ -279,6 +286,17 @@ class DeviceQuirk(DeviceQuirkProtocol):
         )
         return self
 
+    def override_dpid_type_information_cls(
+        self,
+        *,
+        dpid: int,
+        dpcode: str,
+        type_information_cls: type[TypeInformation[Any]],
+    ) -> Self:
+        """Override the TypeInformation class used for a datapoint."""
+        self._type_information_overrides[(dpid, dpcode)] = type_information_cls
+        return self
+
     def remove_dpid(self, *, dpid: int, dpcode: str) -> Self:
         """Remove datapoint definition."""
         self._datapoint_definitions[(dpid, dpcode)] = None
@@ -328,4 +346,13 @@ class DeviceQuirk(DeviceQuirkProtocol):
         ):
             return get_wrapper_function(device)
 
+        return None
+
+    def get_type_information_cls(
+        self, *, dpcode: str
+    ) -> type[TypeInformation[Any]] | None:
+        """Get the type information class override for a dpcode."""
+        for (_, code), type_cls in self._type_information_overrides.items():
+            if code == dpcode:
+                return type_cls
         return None
