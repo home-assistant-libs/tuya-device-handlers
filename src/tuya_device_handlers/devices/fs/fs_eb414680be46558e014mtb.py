@@ -5,7 +5,7 @@ from tuya_device_handlers.builder import DeviceQuirk
 from tuya_device_handlers.const import DPMode
 
 # Define the structured quirk using the fluent builder pattern
-device_quirk = (
+(
     DeviceQuirk()
     .applies_to(product_id="eb414680be46558e014mtb")
     .override_category("fs")
@@ -62,7 +62,6 @@ device_quirk = (
             "12h",
         ],
     )
+    # Register quirk with global handler registry
+    .register(TUYA_QUIRKS_REGISTRY)
 )
-
-# Register quirk with global handler registry
-device_quirk.register(TUYA_QUIRKS_REGISTRY)
