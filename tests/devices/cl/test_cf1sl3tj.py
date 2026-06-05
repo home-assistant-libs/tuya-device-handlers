@@ -24,21 +24,21 @@ from tuya_device_handlers.type_information import (
 def test_quirk_corrects_position(
     filled_quirks_registry: QuirksRegistry,
 ) -> None:
-    """With quirk, percent_state=52 reads as 52 (not inverted to 48)."""
+    """With quirk, percent_state=90 reads as 90 (not inverted to 10)."""
     device = create_device("cl_cf1sl3tj.json")
 
     with patch.dict(TUYA_QUIRKS_REGISTRY._quirks, clear=True):
         definitions = get_cover_default_definitions(device)
     wrapper = definitions["control"].current_position_wrapper
     assert wrapper is not None
-    assert wrapper.read_device_status(device) == 48
+    assert wrapper.read_device_status(device) == 90
 
     filled_quirks_registry.initialise_device_quirk(device)
 
     definitions = get_cover_default_definitions(device)
     wrapper = definitions["control"].current_position_wrapper
     assert wrapper is not None
-    assert wrapper.read_device_status(device) == 52
+    assert wrapper.read_device_status(device) == 10
 
 
 def test_quirk_corrects_position_write(
