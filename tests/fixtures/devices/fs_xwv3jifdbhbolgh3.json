@@ -1,9 +1,18 @@
 {
+  "endpoint": "https://apigw.tuyaus.com",
+  "mqtt_connected": true,
+  "disabled_by": null,
+  "disabled_polling": false,
   "name": "Tallboy",
   "category": "fs",
-  "product_id": "eb414680be46558e014mtb",
-  "product_name": "TOWER FAN (CZTF423S)",
+  "product_id": "xwv3jifdbhbolgh3",
+  "product_name": "TOWER FAN\uff08CZTF423S\uff09",
   "online": true,
+  "sub": false,
+  "time_zone": "-04:00",
+  "active_time": "2026-06-01T23:25:46+00:00",
+  "create_time": "2026-06-01T23:25:46+00:00",
+  "update_time": "2026-06-01T23:25:46+00:00",
   "function": {
     "switch": {
       "type": "Boolean",
@@ -28,38 +37,6 @@
     "countdown_set": {
       "type": "Enum",
       "value": "{\"range\":[\"cancel\",\"1h\",\"2h\",\"3h\",\"4h\",\"5h\",\"6h\"]}"
-    }
-  },
-  "status_range": {
-    "switch": {
-      "type": "Boolean",
-      "value": "{}",
-      "report_type": null
-    },
-    "mode": {
-      "type": "Enum",
-      "value": "{\"range\":[\"nature\",\"sleep\"]}",
-      "report_type": null
-    },
-    "fan_speed_percent": {
-      "type": "Integer",
-      "value": "{\"unit\":\"\",\"min\":1,\"max\":5,\"scale\":0,\"step\":1}",
-      "report_type": null
-    },
-    "switch_horizontal": {
-      "type": "Boolean",
-      "value": "{}",
-      "report_type": null
-    },
-    "fan_beep": {
-      "type": "Boolean",
-      "value": "{}",
-      "report_type": null
-    },
-    "countdown_set": {
-      "type": "Enum",
-      "value": "{\"range\":[\"cancel\",\"1h\",\"2h\",\"3h\",\"4h\",\"5h\",\"6h\"]}",
-      "report_type": null
     }
   },
   "local_strategy": {
@@ -130,12 +107,50 @@
       }
     }
   },
+  "status_range": {
+    "switch": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"nature\",\"sleep\"]}",
+      "report_type": null
+    },
+    "fan_speed_percent": {
+      "type": "Integer",
+      "value": "{\"unit\":\"\",\"min\":1,\"max\":5,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "switch_horizontal": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "fan_beep": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "countdown_set": {
+      "type": "Enum",
+      "value": "{\"range\":[\"cancel\",\"1h\",\"2h\",\"3h\",\"4h\",\"5h\",\"6h\"]}",
+      "report_type": null
+    }
+  },
   "status": {
     "switch": false,
-    "mode": "nature",
+    "mode": "normal",
     "fan_speed_percent": 3,
     "switch_horizontal": false,
     "fan_beep": true,
     "countdown_set": "cancel"
-  }
+  },
+  "set_up": true,
+  "support_local": true,
+  "quirk": null,
+  "warnings": [
+    "enum_out_range|mode|normal"
+  ]
 }

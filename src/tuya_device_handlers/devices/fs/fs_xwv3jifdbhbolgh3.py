@@ -8,7 +8,7 @@ from tuya_device_handlers.const import DPMode
 (
     DeviceQuirk()
     .applies_to(
-        product_id="eb414680be46558e014mtb",
+        product_id="xwv3jifdbhbolgh3",
         manufacturer="Comfort Zone",
         model="Tower Fan",
         model_id="CZTF423S",

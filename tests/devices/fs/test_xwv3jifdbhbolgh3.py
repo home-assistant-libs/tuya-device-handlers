@@ -12,7 +12,7 @@ def test_quirk_overrides(
     The device's mode enum is missing "normal" and countdown_set only
     supports up to 6h. The quirk expands both to their full range.
     """
-    device = create_device("fs_eb414680be46558e014mtb.json")
+    device = create_device("fs_xwv3jifdbhbolgh3.json")
 
     # BEFORE quirk: verify limited enum ranges
     mode_func = device.function.get("mode")
