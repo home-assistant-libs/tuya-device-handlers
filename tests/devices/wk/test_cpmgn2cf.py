@@ -1,17 +1,42 @@
 """Test device-level quirk initialisation."""
 
 from tests import create_device
-from tuya_device_handlers.definition.sensor import get_default_definition
+from tuya_device_handlers.definition.climate import get_default_definition
+from tuya_device_handlers.helpers.homeassistant import TuyaUnitOfTemperature
 from tuya_device_handlers.registry import QuirksRegistry
 
 
-def test_valve_sensor_wk(
+def test_quirk(
     filled_quirks_registry: QuirksRegistry,
 ) -> None:
-    """WK quirk registers the valve datapoint as a sensor."""
+    """Test quirk."""
     device = create_device("wk_cpmgn2cf.json")
-    assert get_default_definition(device, "valve") is None
+
+    definition = get_default_definition(device, TuyaUnitOfTemperature.CELSIUS)
+    assert definition is not None
+    assert definition.hvac_mode_wrapper is not None
+    assert definition.hvac_mode_wrapper.options == []
+    assert definition.preset_wrapper is not None
+    assert definition.preset_wrapper.options == [
+        "holiday",
+        "auto",
+        "manual",
+        "eco",
+    ]
 
     filled_quirks_registry.initialise_device_quirk(device)
 
-    assert get_default_definition(device, "valve") is not None
+    definition = get_default_definition(device, TuyaUnitOfTemperature.CELSIUS)
+    assert definition is not None
+    assert definition.hvac_mode_wrapper is not None
+    assert definition.hvac_mode_wrapper.options == []
+    assert definition.preset_wrapper is not None
+    assert definition.preset_wrapper.options == [
+        "holiday",
+        "auto",
+        "manual",
+        "comfort",
+        "eco",
+        "BOOST",
+        "temp_auto",
+    ]
