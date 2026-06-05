@@ -26,6 +26,7 @@ def test_quirk_corrects_position(
 ) -> None:
     """With quirk, percent_state=52 reads as 52 (not inverted to 48)."""
     device = create_device("cl_68nvbio9.json")
+    device.status["percent_state"] = 52
 
     with patch.dict(TUYA_QUIRKS_REGISTRY._quirks, clear=True):
         definitions = get_cover_default_definitions(device)
