@@ -1,0 +1,145 @@
+{
+  "endpoint": "https://apigw.tuyaeu.com",
+  "mqtt_connected": true,
+  "disabled_by": null,
+  "disabled_polling": false,
+  "name": "Smart kettle",
+  "category": "bh",
+  "product_id": "dft4ebatvon3ha5s",
+  "product_name": "Smart kettle",
+  "online": true,
+  "sub": false,
+  "time_zone": "+10:00",
+  "active_time": "2026-05-17T01:54:22+00:00",
+  "create_time": "2026-05-17T01:54:22+00:00",
+  "update_time": "2026-05-17T01:54:22+00:00",
+  "function": {
+    "start": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "temp_setting_quick_c": {
+      "type": "Enum",
+      "value": "{\"range\":[\"85\",\"90\"]}"
+    },
+    "warm": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "work_type": {
+      "type": "Enum",
+      "value": "{\"range\":[\"setting_quick\",\"boiling_quick\",\"temp_setting\",\"temp_boiling\"]}"
+    }
+  },
+  "status_range": {
+    "start": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "temp_current": {
+      "type": "Integer",
+      "value": "{\"unit\":\"℃\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "temp_setting_quick_c": {
+      "type": "Enum",
+      "value": "{\"range\":[\"85\",\"90\"]}",
+      "report_type": null
+    },
+    "warm": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "status": {
+      "type": "Enum",
+      "value": "{\"range\":[\"standby\",\"heating\",\"cooling\",\"warm\",\"heating_temp\"]}",
+      "report_type": null
+    },
+    "work_type": {
+      "type": "Enum",
+      "value": "{\"range\":[\"setting_quick\",\"boiling_quick\",\"temp_setting\",\"temp_boiling\"]}",
+      "report_type": null
+    }
+  },
+  "status": {
+    "start": false,
+    "temp_current": 0,
+    "temp_setting_quick_c": "90",
+    "warm": false,
+    "status": "standby",
+    "work_type": "setting_quick"
+  },
+  "set_up": true,
+  "support_local": true,
+  "local_strategy": {
+    "1": {
+      "value_convert": "default",
+      "status_code": "start",
+      "config_item": {
+        "statusFormat": "{\"start\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "dft4ebatvon3ha5s"
+      }
+    },
+    "2": {
+      "value_convert": "default",
+      "status_code": "temp_current",
+      "config_item": {
+        "statusFormat": "{\"temp_current\":\"$\"}",
+        "valueDesc": "{\"unit\":\"℃\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "dft4ebatvon3ha5s"
+      }
+    },
+    "4": {
+      "value_convert": "default",
+      "status_code": "temp_setting_quick_c",
+      "config_item": {
+        "statusFormat": "{\"temp_setting_quick_c\":\"$\"}",
+        "valueDesc": "{\"range\":[\"85\",\"90\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "dft4ebatvon3ha5s"
+      }
+    },
+    "13": {
+      "value_convert": "default",
+      "status_code": "warm",
+      "config_item": {
+        "statusFormat": "{\"warm\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "dft4ebatvon3ha5s"
+      }
+    },
+    "15": {
+      "value_convert": "default",
+      "status_code": "status",
+      "config_item": {
+        "statusFormat": "{\"status\":\"$\"}",
+        "valueDesc": "{\"range\":[\"standby\",\"heating\",\"cooling\",\"warm\",\"heating_temp\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "dft4ebatvon3ha5s"
+      }
+    },
+    "16": {
+      "value_convert": "default",
+      "status_code": "work_type",
+      "config_item": {
+        "statusFormat": "{\"work_type\":\"$\"}",
+        "valueDesc": "{\"range\":[\"setting_quick\",\"boiling_quick\",\"temp_setting\",\"temp_boiling\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "dft4ebatvon3ha5s"
+      }
+    }
+  },
+  "warnings": null
+}

@@ -45,7 +45,7 @@ class DPCodeRemappedIntegerWrapper(DPCodeIntegerWrapper[int]):
 
     def read_device_status(self, device: CustomerDevice) -> int | None:
         """Read and round the device status."""
-        if (value := device.status.get(self.dpcode)) is None:
+        if (value := self._read_dpcode_value(device)) is None:
             return None
 
         return round(
@@ -57,10 +57,11 @@ class DPCodeRemappedIntegerWrapper(DPCodeIntegerWrapper[int]):
     def _convert_value_to_raw_value(
         self, device: CustomerDevice, value: Any
     ) -> int:
-        return round(
+        return super()._convert_value_to_raw_value(
+            device,
             self._remap_helper.remap_value_from(
                 value, reverse=self._remap_inverted(device)
-            )
+            ),
         )
 
 

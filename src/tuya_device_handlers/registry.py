@@ -14,6 +14,7 @@ if TYPE_CHECKING:
     # these here for type checking only
     from .device_wrapper.base import DeviceWrapper
     from .device_wrapper.service_feeder_schedule import FeederSchedule
+    from .type_information import TypeInformation
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -45,6 +46,11 @@ class DeviceQuirkProtocol(Protocol):
         self, device: CustomerDevice
     ) -> DeviceWrapper[list[FeederSchedule]] | None:
         """Get the feeder schedules wrapper for a device."""
+
+    def get_type_information_cls(
+        self, *, dpcode: str
+    ) -> type[TypeInformation[Any]] | None:
+        """Get the type information class override for a dpcode."""
 
 
 class QuirksRegistry:

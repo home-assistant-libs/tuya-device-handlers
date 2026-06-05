@@ -19,8 +19,8 @@
       "settings": {
         "[python]": {
           "editor.codeActionsOnSave": {
-            "source.fixAll": true,
-            "source.organizeImports": true
+            "source.fixAll": "explicit",
+            "source.organizeImports": "explicit"
           }
         },
         "coverage-gutters.customizable.context-menu": true,
@@ -29,18 +29,18 @@
         "coverage-gutters.showLineCoverage": true,
         "coverage-gutters.xmlname": "coverage.xml",
         "python.analysis.extraPaths": ["${workspaceFolder}/src"],
-        "python.defaultInterpreterPath": ".venv/bin/python",
+        "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
         "python.testing.cwd": "${workspaceFolder}",
         "python.testing.pytestArgs": ["--cov-report=xml"],
         "python.testing.pytestEnabled": true,
         "ruff.importStrategy": "fromEnvironment",
-        "ruff.interpreter": [".venv/bin/python"],
+        "ruff.interpreter": ["${workspaceFolder}/.venv/bin/python"],
         "terminal.integrated.defaultProfile.linux": "zsh"
       }
     }
   },
   "features": {
-    "ghcr.io/devcontainers-contrib/features/poetry:2": {},
+    "ghcr.io/devcontainers-extra/features/poetry:2": {},
     "ghcr.io/devcontainers/features/github-cli:1": {},
     "ghcr.io/devcontainers/features/node:2": {},
     "ghcr.io/devcontainers/features/python:1": {

@@ -1,1 +1,1 @@
-"""Tests for Tuya WK category (thermostat) quirks."""
+"""Tests for Tuya WK category quirks."""
