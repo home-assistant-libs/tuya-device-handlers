@@ -16,7 +16,7 @@ _PROJECT_ROOT = pathlib.Path(__file__).parents[2]
 def _relative_quirk(quirk: str) -> str:
     """Return the quirk reference as a path relative to the project root."""
     path, _, line = quirk.rpartition(":")
-    return f"{pathlib.Path(path).relative_to(_PROJECT_ROOT)}:{line}"
+    return f"{pathlib.Path(path).relative_to(_PROJECT_ROOT).as_posix()}:{line}"
 
 
 def test_customer_device_as_dict(snapshot: SnapshotAssertion) -> None:
