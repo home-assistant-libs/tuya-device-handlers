@@ -2,6 +2,8 @@
 
 import json
 
+import pytest
+
 from tests import create_device
 from tests.integration_helpers.sensor import get_sensor_default_definitions
 from tuya_device_handlers.registry import QuirksRegistry
@@ -28,11 +30,11 @@ def test_quirk_overrides_power_and_voltage_scaling(
 
     power_wrapper = definitions["cur_power"].sensor_wrapper
     assert power_wrapper.native_unit == "W"
-    assert power_wrapper.read_device_status(device) == 294.1
+    assert power_wrapper.read_device_status(device) == pytest.approx(294.1)
 
     voltage_wrapper = definitions["cur_voltage"].sensor_wrapper
     assert voltage_wrapper.native_unit == "V"
-    assert voltage_wrapper.read_device_status(device) == 230.6
+    assert voltage_wrapper.read_device_status(device) == pytest.approx(230.6)
     assert json.loads(device.status_range["cur_voltage"].values)["max"] == 3000
 
     current_wrapper = definitions["cur_current"].sensor_wrapper
