@@ -20,45 +20,9 @@
     },
     "countdown_1": {
       "type": "Integer",
-      "value": "{\"unit\":\"\\u79d2\",\"min\":0,\"max\":86400,\"scale\":0,\"step\":1}"
+      "value": "{\"unit\":\"秒\",\"min\":0,\"max\":86400,\"scale\":0,\"step\":1}"
     }
   },
-  "status_range": {
-    "switch": {
-      "type": "Boolean",
-      "value": "{}",
-      "report_type": null
-    },
-    "countdown_1": {
-      "type": "Integer",
-      "value": "{\"unit\":\"\\u79d2\",\"min\":0,\"max\":86400,\"scale\":0,\"step\":1}",
-      "report_type": null
-    },
-    "cur_current": {
-      "type": "Integer",
-      "value": "{\"unit\":\"mA\",\"min\":0,\"max\":30000,\"scale\":0,\"step\":1}",
-      "report_type": null
-    },
-    "cur_power": {
-      "type": "Integer",
-      "value": "{\"unit\":\"W\",\"min\":0,\"max\":50000,\"scale\":0,\"step\":1}",
-      "report_type": null
-    },
-    "cur_voltage": {
-      "type": "Integer",
-      "value": "{\"unit\":\"V\",\"min\":0,\"max\":3000,\"scale\":0,\"step\":1}",
-      "report_type": null
-    }
-  },
-  "status": {
-    "switch": true,
-    "countdown_1": 0,
-    "cur_current": 1275,
-    "cur_power": 2941,
-    "cur_voltage": 2306
-  },
-  "set_up": true,
-  "support_local": true,
   "local_strategy": {
     "1": {
       "value_convert": "default",
@@ -76,7 +40,7 @@
       "status_code": "countdown_1",
       "config_item": {
         "statusFormat": "{\"countdown_1\":\"$\"}",
-        "valueDesc": "{\"unit\":\"\\u79d2\",\"min\":0,\"max\":86400,\"scale\":0,\"step\":1}",
+        "valueDesc": "{\"unit\":\"秒\",\"min\":0,\"max\":86400,\"scale\":0,\"step\":1}",
         "valueType": "Integer",
         "enumMappingMap": {},
         "pid": "qxJSyTLEtX5WrzA9"
@@ -116,5 +80,42 @@
       }
     }
   },
+  "status_range": {
+    "switch": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "countdown_1": {
+      "type": "Integer",
+      "value": "{\"unit\":\"秒\",\"min\":0,\"max\":86400,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "cur_current": {
+      "type": "Integer",
+      "value": "{\"unit\":\"mA\",\"min\":0,\"max\":30000,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "cur_power": {
+      "type": "Integer",
+      "value": "{\"unit\":\"W\",\"min\":0,\"max\":50000,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "cur_voltage": {
+      "type": "Integer",
+      "value": "{\"unit\":\"V\",\"min\":0,\"max\":3000,\"scale\":0,\"step\":1}",
+      "report_type": null
+    }
+  },
+  "status": {
+    "switch": true,
+    "countdown_1": 0,
+    "cur_current": 925,
+    "cur_power": 2082,
+    "cur_voltage": 2341
+  },
+  "set_up": true,
+  "support_local": true,
+  "quirk": null,
   "warnings": null
 }
