@@ -18,11 +18,11 @@ def test_quirk_overrides_power_and_voltage_scaling(
     definitions = get_sensor_default_definitions(device)
     assert (
         definitions["cur_power"].sensor_wrapper.read_device_status(device)
-        == 2941
+        == 882
     )
     assert (
         definitions["cur_voltage"].sensor_wrapper.read_device_status(device)
-        == 2306
+        == 2351
     )
 
     filled_quirks_registry.initialise_device_quirk(device)
@@ -30,13 +30,13 @@ def test_quirk_overrides_power_and_voltage_scaling(
 
     power_wrapper = definitions["cur_power"].sensor_wrapper
     assert power_wrapper.native_unit == "W"
-    assert power_wrapper.read_device_status(device) == pytest.approx(294.1)
+    assert power_wrapper.read_device_status(device) == 88.2
 
     voltage_wrapper = definitions["cur_voltage"].sensor_wrapper
     assert voltage_wrapper.native_unit == "V"
-    assert voltage_wrapper.read_device_status(device) == pytest.approx(230.6)
+    assert voltage_wrapper.read_device_status(device) == pytest.approx(235.1)
     assert json.loads(device.status_range["cur_voltage"].values)["max"] == 3000
 
     current_wrapper = definitions["cur_current"].sensor_wrapper
     assert current_wrapper.native_unit == "mA"
-    assert current_wrapper.read_device_status(device) == 1275
+    assert current_wrapper.read_device_status(device) == 375
