@@ -100,3 +100,27 @@ These two layers exist because the cloud-side device shape (datapoints) doesn't 
 `tests/` mirrors `src/tuya_device_handlers/`. Per-device JSON fixtures live under [tests/fixtures/devices/](tests/fixtures/devices/) named `<category>_<product_id>.json` — these capture real `CustomerDevice` payloads. Snapshot tests use `syrupy` (`__snapshots__/` directories). [tests/conftest.py](tests/conftest.py) provides `mock_device` (a `CustomerDevice` Mock pre-populated with `demo_*` DPs covering every `DPType`) and `filled_quirks_registry` (calls `register_tuya_quirks()` once per module).
 
 When adding a new device quirk: add a fixture JSON, add the quirk module under `devices/<category>/`, and add tests under `tests/devices/<category>/`.
+
+### Converting a diagnostic file into a fixture
+
+Device support requests usually attach a Home Assistant diagnostics JSON (downloaded from the device's diagnostics, or from a `github.com/user-attachments/...` link on the issue). To turn one into a fixture:
+
+1. Take **only the contents of the top-level `data` property** — that object is the captured `CustomerDevice` payload. Discard everything else (`home_assistant`, `custom_components`, `integration_manifest`, `setup_times`, `issues`, …).
+2. From that object, **remove the `id`, `terminal_id`, and `home_assistant` keys** (`id`/`terminal_id` are per-account identifiers; `home_assistant` is a nested diagnostics block, not part of the device payload).
+3. Write the result to `tests/fixtures/devices/<category>_<product_id>.json`, using the device's own `category` and `product_id` fields for the filename (e.g. a `cl` device with product id `nfq1essvr99qsvvd` → `cl_nfq1essvr99qsvvd.json`). Pretty-print with 2-space indent and a trailing newline.
+
+One-liner (input `diag.json`):
+
+```bash
+python3 -c "
+import json
+d = json.load(open('diag.json'))['data']
+for k in ('id', 'terminal_id', 'home_assistant'):
+    d.pop(k, None)
+name = f\"tests/fixtures/devices/{d['category']}_{d['product_id']}.json\"
+with open(name, 'w') as f:
+    json.dump(d, f, indent=2, ensure_ascii=False)
+    f.write('\n')
+print(name)
+"
+```
