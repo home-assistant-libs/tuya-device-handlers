@@ -16,7 +16,9 @@ from tuya_device_handlers.const import DPMode
     DeviceQuirk()
     .applies_to(
         product_id="qxJSyTLEtX5WrzA9",
+        manufacturer="GHome",
         model="Mini Smart Plug",
+        model_id="WP3",
     )
     .add_dpid_integer(
         dpid=5,
