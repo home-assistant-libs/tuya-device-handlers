@@ -1789,30 +1789,30 @@ requests = "*"
 
 [[package]]
 name = "ty"
-version = "0.0.44"
+version = "0.0.45"
 description = "An extremely fast Python type checker, written in Rust."
 optional = false
 python-versions = ">=3.8"
 groups = ["dev"]
 files = [
-    {file = "ty-0.0.44-py3-none-linux_armv6l.whl", hash = "sha256:272d31e7ad49b1dc5e8465a9fe700354e14c755b40d9c75f08f031d786903df3"},
-    {file = "ty-0.0.44-py3-none-macosx_10_12_x86_64.whl", hash = "sha256:b92c4ddd7a3daf2049715edec9dc70cf6fd31a5a318ee647258f90dd75495eed"},
-    {file = "ty-0.0.44-py3-none-macosx_11_0_arm64.whl", hash = "sha256:4d42cfd84a690f6654b2a4f0515027c21b692cf2512d32e6433f754893a95609"},
-    {file = "ty-0.0.44-py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:5dc47ae87e4cb7db2a9166bb23b78a905c3626e523296ec5bccf36b5e89bda6b"},
-    {file = "ty-0.0.44-py3-none-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:46d867e80f16f421ac72c9a85240dbf050d62d9b3fbd10a8b5b082fb21679e0b"},
-    {file = "ty-0.0.44-py3-none-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:411f5de0f96a4e4e5cccc3e0d55954c41f6a99ee6ca1fe5a7226cbc68406e053"},
-    {file = "ty-0.0.44-py3-none-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:4b15f01ecb4e2b46c05a1769293f9d32c3d4a1e4e7dfccf37c604d705dc3e3f4"},
-    {file = "ty-0.0.44-py3-none-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:edd32b7467af509c99c0244c2226a4e4c03400699003ec33373282ab931654d9"},
-    {file = "ty-0.0.44-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:503a585f4007387c3afc58bae23a7ca1b9f236cbdb1a881dc36110655ceb1937"},
-    {file = "ty-0.0.44-py3-none-manylinux_2_31_riscv64.whl", hash = "sha256:2d28bcfa83243d77c2316944e8cf197f73597bf17d1ddc047d0b10a762531252"},
-    {file = "ty-0.0.44-py3-none-musllinux_1_2_aarch64.whl", hash = "sha256:56fd2dd0192def189715b25f5338f6222fb827884dc34111e50aa1c4e061cee5"},
-    {file = "ty-0.0.44-py3-none-musllinux_1_2_armv7l.whl", hash = "sha256:7f8d990489032de1984e73c159f3e760d754cf83a602b874827d943821f63595"},
-    {file = "ty-0.0.44-py3-none-musllinux_1_2_i686.whl", hash = "sha256:f61ffe72996a755432922fe90b28db593f572eb5cbf48e3ef4e67b282533d1b0"},
-    {file = "ty-0.0.44-py3-none-musllinux_1_2_x86_64.whl", hash = "sha256:2b237a143bac4f30cec9257d45f01e72da97030a80a09a2b69cfef065f09c37f"},
-    {file = "ty-0.0.44-py3-none-win32.whl", hash = "sha256:6a24586c65419223ac5bab4822d49ab493a5d19ea2a897514284c232b9d6166a"},
-    {file = "ty-0.0.44-py3-none-win_amd64.whl", hash = "sha256:8cccb27e348c89a9733fbad1b2efadfbad79b107c7e52adb52dfd8a70156a38d"},
-    {file = "ty-0.0.44-py3-none-win_arm64.whl", hash = "sha256:58049504e7a12bf1957f24a5384a332c94d5590127083a80db5e5a1bed34190b"},
-    {file = "ty-0.0.44.tar.gz", hash = "sha256:5886229830ab77022842a1c55d2ef57405621a91fc465969fa6d538661898173"},
+    {file = "ty-0.0.45-py3-none-linux_armv6l.whl", hash = "sha256:2854ed2cbb931add10a8672abfffec762ab57d2bcb44f17e11a3e1667030b949"},
+    {file = "ty-0.0.45-py3-none-macosx_10_12_x86_64.whl", hash = "sha256:704d59f0f6949d89d170ecdd46a1910c59442987bfffbe7addb56b7d42cccb83"},
+    {file = "ty-0.0.45-py3-none-macosx_11_0_arm64.whl", hash = "sha256:8d6041cfb8fc52204c343f4cf18596b1481c0fd26e2539eb49485fafbda9d5db"},
+    {file = "ty-0.0.45-py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:6637c03861d6e32f08039bcc9bbe33515ec935f477a96a34659cdfb0b346e5e4"},
+    {file = "ty-0.0.45-py3-none-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:7c6b1ac9bd0d6d3205108bbedba18532561019ca0967b39a24bc0efe863a8ca8"},
+    {file = "ty-0.0.45-py3-none-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:a6ab32fbf622a1c46c79c1f5ba52d8b3c7a215b6f81b9485b7db1e6444e0db24"},
+    {file = "ty-0.0.45-py3-none-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:e28edfd83b591b8c92030f192019c988c49cfdf20e5cc81a24f7185e61bea39f"},
+    {file = "ty-0.0.45-py3-none-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:3cc8b7f5d333787e250367e28793a9a7e784afe4d305eec3bfea85768336b93c"},
+    {file = "ty-0.0.45-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:6a5d57c8f034cebe723cb3ee1aa90877c7b3997326cbc120fe6ff499de3b9542"},
+    {file = "ty-0.0.45-py3-none-manylinux_2_31_riscv64.whl", hash = "sha256:7adec00717a9518b6f64fe8ccbed5a40eb1d9f0a4350945bb079de95492cd710"},
+    {file = "ty-0.0.45-py3-none-musllinux_1_2_aarch64.whl", hash = "sha256:b5e72751d95daf6c37e78d122a174f6b7b692a1664445baba44abdf42f1236ff"},
+    {file = "ty-0.0.45-py3-none-musllinux_1_2_armv7l.whl", hash = "sha256:2060d7074b5a7431ce583aa3d312d17b5f1b3f77fc5b2e1c54434b7eca1c087a"},
+    {file = "ty-0.0.45-py3-none-musllinux_1_2_i686.whl", hash = "sha256:7468761236a65b7376937a042696c07ee10955804bd70e696f859bda772fd490"},
+    {file = "ty-0.0.45-py3-none-musllinux_1_2_x86_64.whl", hash = "sha256:7cd3e7c8dfa7aefff6d4ff13096d1e694802df25694bca264e0023ab5c1d6077"},
+    {file = "ty-0.0.45-py3-none-win32.whl", hash = "sha256:34937651a1fb7200334b7111a2781efedc38526add60690ba942cf1edc33fd02"},
+    {file = "ty-0.0.45-py3-none-win_amd64.whl", hash = "sha256:dfb45582d3198cc083d5ed617a27cd290f3d6a6fd8d8a198d3db8f7a4b94ca24"},
+    {file = "ty-0.0.45-py3-none-win_arm64.whl", hash = "sha256:15130a29cb33b284e2b6ef00afd76d5d61344937c7c885317243c6d256b8f8ab"},
+    {file = "ty-0.0.45.tar.gz", hash = "sha256:ce66b6774052ab5eb5a00b75e5ee2ec0b8f854a3c4731367362de90ba6f6d0ff"},
 ]
 
 [[package]]
@@ -1921,4 +1921,4 @@ files = [
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12"
-content-hash = "db6eff63c81814d5ae588fb7901ac12094e3aaebb546d20920a8a917e4ca9935"
+content-hash = "b004bef8b33f4e964b687874430925e5022ef3e7499996c04591d43d7ee24853"
