@@ -9,7 +9,7 @@ from tuya_device_handlers.const import DPMode
     .applies_to(product_id="m7kacaxrxbxeegfs")
     .add_dpid_integer(
         dpid=101,
-        dpcode="temp_current",
+        dpcode="ext_temp",
         dpmode=DPMode.READ,
         unit="℃",
         min=-200,

@@ -12,12 +12,12 @@ def test_quirk_overrides(
     device = create_device("wsdcg_m7kacaxrxbxeegfs.json")
 
     assert "va_temperature" in device.status_range
-    assert "temp_current" not in device.status_range
+    assert "ext_temp" not in device.status_range
 
     filled_quirks_registry.initialise_device_quirk(device)
 
     assert "va_temperature" in device.status_range
-    assert "temp_current" in device.status_range
+    assert "ext_temp" in device.status_range
 
 
 def test_default_definitions(
@@ -28,10 +28,10 @@ def test_default_definitions(
 
     definitions = get_sensor_default_definitions(device)
     assert "va_temperature" in definitions
-    assert "temp_current" not in definitions
+    assert "ext_temp" not in definitions
 
     filled_quirks_registry.initialise_device_quirk(device)
 
     definitions = get_sensor_default_definitions(device)
     assert "va_temperature" in definitions
-    assert "temp_current" in definitions
+    assert "ext_temp" in definitions
