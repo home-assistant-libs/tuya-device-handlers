@@ -1,6 +1,8 @@
 """Test device-level quirk initialisation."""
 
 from tests import create_device
+from tests.integration_helpers.fan import get_fan_default_definition
+from tests.integration_helpers.select import get_select_default_definitions
 from tuya_device_handlers.registry import QuirksRegistry
 
 
@@ -15,30 +17,48 @@ def test_quirk_overrides(
     device = create_device("fs_xwv3jifdbhbolgh3.json")
 
     # BEFORE quirk: verify limited enum ranges
-    mode_func = device.function.get("mode")
-    assert mode_func is not None
-    assert '"range":["nature","sleep"]' in mode_func.values
-    assert "normal" not in mode_func.values
-
-    countdown_func = device.function.get("countdown_set")
-    assert countdown_func is not None
-    assert '"range":["cancel","1h","2h","3h","4h","5h","6h"]' in (
-        countdown_func.values
-    )
-    assert "12h" not in countdown_func.values
+    fan_definition = get_fan_default_definition(device)
+    assert fan_definition is not None
+    assert fan_definition.mode_wrapper is not None
+    assert fan_definition.mode_wrapper.options == ["nature", "sleep"]
+    select_defininitions = get_select_default_definitions(device)
+    assert select_defininitions is not None
+    countdown_definition = select_defininitions.get("countdown_set")
+    assert countdown_definition is not None
+    assert countdown_definition.select_wrapper.options == [
+        "cancel",
+        "1h",
+        "2h",
+        "3h",
+        "4h",
+        "5h",
+        "6h",
+    ]
 
     # APPLY quirk
     filled_quirks_registry.initialise_device_quirk(device)
 
     # AFTER quirk: verify expanded enum ranges
-    mode_func = device.function.get("mode")
-    assert mode_func is not None
-    assert '"range": ["normal", "nature", "sleep"]' in mode_func.values
-
-    countdown_func = device.function.get("countdown_set")
-    assert countdown_func is not None
-    expected_countdown_range = (
-        '"range": ["cancel", "1h", "2h", "3h", "4h", "5h", "6h", '
-        '"7h", "8h", "9h", "10h", "11h", "12h"]'
-    )
-    assert expected_countdown_range in countdown_func.values
+    fan_definition = get_fan_default_definition(device)
+    assert fan_definition is not None
+    assert fan_definition.mode_wrapper is not None
+    assert fan_definition.mode_wrapper.options == ["normal", "nature", "sleep"]
+    select_defininitions = get_select_default_definitions(device)
+    assert select_defininitions is not None
+    countdown_definition = select_defininitions.get("countdown_set")
+    assert countdown_definition is not None
+    assert countdown_definition.select_wrapper.options == [
+        "cancel",
+        "1h",
+        "2h",
+        "3h",
+        "4h",
+        "5h",
+        "6h",
+        "7h",
+        "8h",
+        "9h",
+        "10h",
+        "11h",
+        "12h",
+    ]
