@@ -17,7 +17,6 @@ from tuya_device_handlers import TUYA_QUIRKS_REGISTRY
 from tuya_device_handlers.builder import DeviceQuirk
 from tuya_device_handlers.const import DPMode
 
-
 (
     DeviceQuirk()
     .applies_to(
