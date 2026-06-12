@@ -21,6 +21,9 @@ from tuya_device_handlers.const import DPMode
     DeviceQuirk()
     .applies_to(
         product_id="7bqwya0ydtz4q3ss",
+        manufacturer="WVC",
+        model="Micro inverter",
+        model_id="WVC-800W",
     )
     .add_dpid_integer(
         dpid=10,
