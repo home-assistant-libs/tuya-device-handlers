@@ -1,0 +1,121 @@
+{
+  "endpoint": "https://apigw.tuyaus.com",
+  "mqtt_connected": true,
+  "disabled_by": null,
+  "disabled_polling": false,
+  "name": "Metered electrical outlet",
+  "category": "cz",
+  "product_id": "QH3oyDNHKw9c1irH",
+  "product_name": "JL",
+  "online": true,
+  "sub": false,
+  "time_zone": "-05:00",
+  "active_time": "2026-06-06T14:55:00+00:00",
+  "create_time": "2026-06-06T14:55:00+00:00",
+  "update_time": "2026-06-06T14:55:00+00:00",
+  "function": {
+    "switch": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "countdown_1": {
+      "type": "Integer",
+      "value": "{\"unit\":\"秒\",\"min\":0,\"max\":86400,\"scale\":0,\"step\":1}"
+    }
+  },
+  "local_strategy": {
+    "1": {
+      "value_convert": "default",
+      "status_code": "switch",
+      "config_item": {
+        "statusFormat": "{\"switch\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "QH3oyDNHKw9c1irH"
+      }
+    },
+    "2": {
+      "value_convert": "default",
+      "status_code": "countdown_1",
+      "config_item": {
+        "statusFormat": "{\"countdown_1\":\"$\"}",
+        "valueDesc": "{\"unit\":\"秒\",\"min\":0,\"max\":86400,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "QH3oyDNHKw9c1irH"
+      }
+    },
+    "4": {
+      "value_convert": "default",
+      "status_code": "cur_current",
+      "config_item": {
+        "statusFormat": "{\"cur_current\":\"$\"}",
+        "valueDesc": "{\"unit\":\"mA\",\"min\":0,\"max\":30000,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "QH3oyDNHKw9c1irH"
+      }
+    },
+    "5": {
+      "value_convert": "default",
+      "status_code": "cur_power",
+      "config_item": {
+        "statusFormat": "{\"cur_power\":\"$\"}",
+        "valueDesc": "{\"unit\":\"W\",\"min\":0,\"max\":50000,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "QH3oyDNHKw9c1irH"
+      }
+    },
+    "6": {
+      "value_convert": "default",
+      "status_code": "cur_voltage",
+      "config_item": {
+        "statusFormat": "{\"cur_voltage\":\"$\"}",
+        "valueDesc": "{\"unit\":\"V\",\"min\":0,\"max\":2500,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "QH3oyDNHKw9c1irH"
+      }
+    }
+  },
+  "status_range": {
+    "switch": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "countdown_1": {
+      "type": "Integer",
+      "value": "{\"unit\":\"秒\",\"min\":0,\"max\":86400,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "cur_current": {
+      "type": "Integer",
+      "value": "{\"unit\":\"mA\",\"min\":0,\"max\":30000,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "cur_power": {
+      "type": "Integer",
+      "value": "{\"unit\":\"W\",\"min\":0,\"max\":50000,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "cur_voltage": {
+      "type": "Integer",
+      "value": "{\"unit\":\"V\",\"min\":0,\"max\":2500,\"scale\":0,\"step\":1}",
+      "report_type": null
+    }
+  },
+  "status": {
+    "switch": true,
+    "countdown_1": 0,
+    "cur_current": 4178,
+    "cur_power": 4681,
+    "cur_voltage": 1156
+  },
+  "set_up": true,
+  "support_local": true,
+  "quirk": null,
+  "warnings": null
+}
