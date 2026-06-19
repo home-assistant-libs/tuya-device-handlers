@@ -1,0 +1,240 @@
+{
+  "endpoint": "**REDACTED**",
+  "mqtt_connected": true,
+  "disabled_by": null,
+  "disabled_polling": false,
+  "name": "roller 2",
+  "category": "clkg",
+  "product_id": "csgb8eqhczvjaetl",
+  "product_name": "6Gen Roller Shutter Switch",
+  "online": true,
+  "sub": false,
+  "time_zone": "+02:00",
+  "active_time": "2025-07-09T11:52:27+00:00",
+  "create_time": "2025-07-09T11:52:27+00:00",
+  "update_time": "2025-07-09T11:52:27+00:00",
+  "function": {
+    "control": {
+      "type": "Enum",
+      "value": "{\"range\":[\"open\",\"stop\",\"close\"]}"
+    },
+    "percent_control": {
+      "type": "Integer",
+      "value": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}"
+    },
+    "cur_calibration": {
+      "type": "Enum",
+      "value": "{\"range\":[\"start\",\"end\"]}"
+    },
+    "switch_backlight": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "control_back_mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"forward\",\"back\"]}"
+    }
+  },
+  "local_strategy": {
+    "1": {
+      "value_convert": "default",
+      "status_code": "control",
+      "config_item": {
+        "statusFormat": "{\"control\":\"$\"}",
+        "valueDesc": "{\"range\":[\"open\",\"stop\",\"close\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "csgb8eqhczvjaetl"
+      }
+    },
+    "2": {
+      "value_convert": "default",
+      "status_code": "percent_control",
+      "config_item": {
+        "statusFormat": "{\"percent_control\":\"$\"}",
+        "valueDesc": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "csgb8eqhczvjaetl"
+      }
+    },
+    "3": {
+      "value_convert": "default",
+      "status_code": "cur_calibration",
+      "config_item": {
+        "statusFormat": "{\"cur_calibration\":\"$\"}",
+        "valueDesc": "{\"range\":[\"start\",\"end\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "csgb8eqhczvjaetl"
+      }
+    },
+    "7": {
+      "value_convert": "default",
+      "status_code": "switch_backlight",
+      "config_item": {
+        "statusFormat": "{\"switch_backlight\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "csgb8eqhczvjaetl"
+      }
+    },
+    "8": {
+      "value_convert": "default",
+      "status_code": "control_back_mode",
+      "config_item": {
+        "statusFormat": "{\"control_back_mode\":\"$\"}",
+        "valueDesc": "{\"range\":[\"forward\",\"back\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "csgb8eqhczvjaetl"
+      }
+    }
+  },
+  "status_range": {
+    "control": {
+      "type": "Enum",
+      "value": "{\"range\":[\"open\",\"stop\",\"close\"]}",
+      "report_type": null
+    },
+    "percent_control": {
+      "type": "Integer",
+      "value": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "cur_calibration": {
+      "type": "Enum",
+      "value": "{\"range\":[\"start\",\"end\"]}",
+      "report_type": null
+    },
+    "switch_backlight": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "control_back_mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"forward\",\"back\"]}",
+      "report_type": null
+    }
+  },
+  "status": {
+    "control": "stop",
+    "percent_control": 0,
+    "cur_calibration": "end",
+    "switch_backlight": true,
+    "control_back_mode": "back"
+  },
+  "set_up": true,
+  "support_local": true,
+  "quirk": "/config/tuya_quirks/clkg_csgb8eqhczvjaetl.py:61",
+  "warnings": null,
+  "original_category": "clkg",
+  "original_function": {
+    "control": {
+      "type": "Enum",
+      "value": "{\"range\":[\"open\",\"stop\",\"close\"]}"
+    },
+    "percent_control": {
+      "type": "Integer",
+      "value": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}"
+    },
+    "cur_calibration": {
+      "type": "Enum",
+      "value": "{\"range\":[\"start\",\"end\"]}"
+    },
+    "switch_backlight": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "control_back_mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"forward\",\"back\"]}"
+    }
+  },
+  "original_local_strategy": {
+    "1": {
+      "value_convert": "default",
+      "status_code": "control",
+      "config_item": {
+        "statusFormat": "{\"control\":\"$\"}",
+        "valueDesc": "{\"range\":[\"open\",\"stop\",\"close\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "csgb8eqhczvjaetl"
+      }
+    },
+    "2": {
+      "value_convert": "default",
+      "status_code": "percent_control",
+      "config_item": {
+        "statusFormat": "{\"percent_control\":\"$\"}",
+        "valueDesc": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "csgb8eqhczvjaetl"
+      }
+    },
+    "3": {
+      "value_convert": "default",
+      "status_code": "cur_calibration",
+      "config_item": {
+        "statusFormat": "{\"cur_calibration\":\"$\"}",
+        "valueDesc": "{\"range\":[\"start\",\"end\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "csgb8eqhczvjaetl"
+      }
+    },
+    "7": {
+      "value_convert": "default",
+      "status_code": "switch_backlight",
+      "config_item": {
+        "statusFormat": "{\"switch_backlight\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "csgb8eqhczvjaetl"
+      }
+    },
+    "8": {
+      "value_convert": "default",
+      "status_code": "control_back_mode",
+      "config_item": {
+        "statusFormat": "{\"control_back_mode\":\"$\"}",
+        "valueDesc": "{\"range\":[\"forward\",\"back\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "csgb8eqhczvjaetl"
+      }
+    }
+  },
+  "original_status_range": {
+    "control": {
+      "type": "Enum",
+      "value": "{\"range\":[\"open\",\"stop\",\"close\"]}",
+      "report_type": null
+    },
+    "percent_control": {
+      "type": "Integer",
+      "value": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "cur_calibration": {
+      "type": "Enum",
+      "value": "{\"range\":[\"start\",\"end\"]}",
+      "report_type": null
+    },
+    "switch_backlight": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "control_back_mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"forward\",\"back\"]}",
+      "report_type": null
+    }
+  }
+}
