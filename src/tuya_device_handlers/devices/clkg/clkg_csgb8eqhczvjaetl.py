@@ -50,8 +50,8 @@ class _InvertedIntegerTypeInformationEx(IntegerTypeInformation):
         """Invert and prepare a value to be sent to the device."""
         if not isinstance(value, (int, float)):
             return super().prepare_set_value(device, value)
-        
-        # Invert the incoming value against the max limit before passing it 
+
+        # Invert the incoming value against the max limit before passing it
         # to the standard Tuya scaling/preparation pipeline.
         inverted_value = self.max - value
         return super().prepare_set_value(device, inverted_value)
