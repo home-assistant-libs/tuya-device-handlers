@@ -47,6 +47,7 @@ _NUMBERS: dict[str, tuple[NumberEntityDescription, ...]] = {
         NumberEntityDescription("manual_feed"),
         NumberEntityDescription("voice_times"),
     ),
+    "dghsxj": _SP_NUMBERS,
     "dgnbj": (NumberEntityDescription("alarm_time"),),
     "fs": (NumberEntityDescription("temp"),),
     "hps": (
@@ -76,10 +77,6 @@ _NUMBERS: dict[str, tuple[NumberEntityDescription, ...]] = {
         NumberEntityDescription("cook_time"),
         NumberEntityDescription("cloud_recipe_number"),
     ),
-    "swtz": (
-        NumberEntityDescription("cook_temperature"),
-        NumberEntityDescription("cook_temperature_2"),
-    ),
     "sd": (NumberEntityDescription("volume_set"),),
     "sfkzq": (
         NumberEntityDescription("countdown"),
@@ -94,6 +91,10 @@ _NUMBERS: dict[str, tuple[NumberEntityDescription, ...]] = {
     ),
     "sgbj": (NumberEntityDescription("alarm_time"),),
     "sp": _SP_NUMBERS,
+    "swtz": (
+        NumberEntityDescription("cook_temperature"),
+        NumberEntityDescription("cook_temperature_2"),
+    ),
     "szjqr": (
         NumberEntityDescription("arm_down_percent"),
         NumberEntityDescription("arm_up_percent"),
@@ -132,9 +133,6 @@ _NUMBERS: dict[str, tuple[NumberEntityDescription, ...]] = {
     "zd": (NumberEntityDescription("sensitivity"),),
     "znrb": (NumberEntityDescription("temp_set"),),
 }
-
-# Smart Camera - Low power consumption camera (duplicate of `sp`)
-_NUMBERS["dghsxj"] = _NUMBERS["sp"]
 
 
 def get_number_default_definitions(
