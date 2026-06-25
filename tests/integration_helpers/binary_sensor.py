@@ -137,7 +137,7 @@ _BINARY_SENSORS: dict[str, tuple[BinarySensorEntityDescription, ...]] = {
         BinarySensorEntityDescription("pm25_state", on_value="alarm"),
         TAMPER_BINARY_SENSOR,
     ),
-    "qxj": (),
+    "qxj": (TAMPER_BINARY_SENSOR,),
     "rqbj": (
         BinarySensorEntityDescription("gas_sensor_status", on_value="alarm"),
         BinarySensorEntityDescription("gas_sensor_state", on_value="1"),
@@ -167,7 +167,7 @@ _BINARY_SENSORS: dict[str, tuple[BinarySensorEntityDescription, ...]] = {
     ),
     "wk": (BinarySensorEntityDescription("valve_state", on_value="open"),),
     "wkf": (BinarySensorEntityDescription("window_state", on_value="opened"),),
-    "wsdcg": (),
+    "wsdcg": (TAMPER_BINARY_SENSOR,),
     "ylcg": (
         BinarySensorEntityDescription("pressure_state", on_value="alarm"),
         TAMPER_BINARY_SENSOR,
