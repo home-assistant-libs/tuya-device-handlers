@@ -17,13 +17,13 @@ import pytest
 from tests import create_device
 from tests.integration_helpers.cover import get_cover_default_definitions
 from tuya_device_handlers import TUYA_QUIRKS_REGISTRY
-from tuya_device_handlers.devices.clkg.clkg_csgb8eqhczvjaetl import (
-    _InvertedIntegerTypeInformationEx,
-)
 from tuya_device_handlers.registry import QuirksRegistry
 from tuya_device_handlers.type_information import (
     IntegerTypeInformation,
     PrepareSetValueError,
+)
+from tuya_device_handlers.type_information_ex import (
+    InvertedIntegerTypeInformationEx,
 )
 
 
@@ -39,12 +39,12 @@ def test_quirk_overrides_type_information(
             device, "percent_control"
         )
     assert type_information is not None
-    assert not isinstance(type_information, _InvertedIntegerTypeInformationEx)
+    assert not isinstance(type_information, InvertedIntegerTypeInformationEx)
 
     type_information = IntegerTypeInformation.find_dpcode(
         device, "percent_control"
     )
-    assert isinstance(type_information, _InvertedIntegerTypeInformationEx)
+    assert isinstance(type_information, InvertedIntegerTypeInformationEx)
 
 
 def test_quirk_cancels_wrapper_inversion_when_forward(
