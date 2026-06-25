@@ -21,6 +21,7 @@ _FANS: frozenset[str] = frozenset(
         "fsd",  # Fan with light
         "fskg",  # Fan wall switch
         "kj",  # Air Purifier
+        "ks",  # Air Conditioner
         "cs",  # Dehumidifier
     }
 )
