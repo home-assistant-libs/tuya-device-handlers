@@ -122,6 +122,83 @@ What to change:
 
 Keep the file to a **single** `DeviceQuirk()...register(...)` block.
 
+### Which variant do I have — _add_ or _map_?
+
+There are two shapes of "missing ENUM value". Check your diagnostics to tell
+them apart:
+
+- **Add (most common)** — the raw value the device sends is simply a **new
+  state that isn't in the list**. The value is meaningful on its own (e.g.
+  `bheat` for a boost-heat mode). Fix: add it to `enum_range` with
+  `add_dpid_enum`, as above.
+
+- **Map** — the device sends a **raw code that stands for one of the values
+  already in the list, under a different name**. The clue is in your
+  diagnostics: under `local_strategy`, the datapoint's `config_item` has a
+  non-empty **`enumMappingMap`** that pairs Home Assistant codes with different
+  raw values. For example a `mode` datapoint whose range is
+  `["auto", "cold", "wet", "heat", "fan"]` but whose device sends raw `wind`
+  (meaning `fan`) and `hot` (meaning `heat`). Adding `wind`/`hot` to the range
+  would create bogus extra modes — instead you **translate** the raw values.
+
+### Variant: mapping raw values with `set_dpid_strategy_to_enum`
+
+Use this when your device reports raw codes that must be translated to the
+standard values (the "Map" case above). `set_dpid_strategy_to_enum` takes an
+`enum_mapping_map` of **`{raw value the device sends: value Home Assistant
+should store}`**, and the stored value should be one of the values in the
+datapoint's declared range.
+
+```python
+"""Quirk for <device> (<product_id>).
+
+The device reports raw `mode` codes (`wind`, `hot`) that aren't the standard
+values, so Home Assistant rejects them. Map each raw code to its real mode.
+"""
+
+from tuya_device_handlers import TUYA_QUIRKS_REGISTRY
+from tuya_device_handlers.builder import DeviceQuirk
+from tuya_device_handlers.const import DPMode
+
+(
+    DeviceQuirk()
+    .applies_to(product_id="<product_id>")
+    # Make sure every target value is declared in the range...
+    .add_dpid_enum(
+        dpid=4,
+        dpcode="mode",
+        dpmode=DPMode.READ | DPMode.WRITE,
+        enum_range=["auto", "cold", "wet", "heat", "fan"],
+    )
+    # ...then translate the raw codes the device actually sends.
+    .set_dpid_strategy_to_enum(
+        dpid=4,
+        dpcode="mode",
+        enum_mapping_map={
+            "wind": "fan",  # raw `wind` -> standard `fan`
+            "hot": "heat",  # raw `hot`  -> standard `heat`
+            # values that already match (auto/cold/wet) need no entry
+        },
+    )
+    .register(TUYA_QUIRKS_REGISTRY)
+)
+```
+
+Notes for the mapping variant:
+
+- The mapping is applied to values the device pushes locally (over MQTT), so
+  the device must be a local one — you'll see `"support_local": true` in the
+  diagnostics. If in doubt, capture the raw values from the warning logs and
+  ask in the issue; a maintainer can confirm which variant fits.
+- Only map the raw values that differ; values that already match a range entry
+  don't need an entry.
+- Keep the file to a **single** `DeviceQuirk()...register(...)` block (the two
+  builder calls above are part of one chain).
+
+> Not sure which variant you have? Attach your diagnostics to the issue and say
+> which raw values appear in the warnings — that's enough for a maintainer to
+> point you at the right one.
+
 ---
 
 ## Step 3 — Test it live in Home Assistant
