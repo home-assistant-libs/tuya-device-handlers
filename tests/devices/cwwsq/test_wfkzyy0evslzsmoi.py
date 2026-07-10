@@ -138,10 +138,6 @@ def test_feed_report_report_type(
     """feed_report has no report_type without quirk; quirk sets it to sum."""
     device = create_device("cwwsq_wfkzyy0evslzsmoi.json")
 
-    # Prevent error if local_strategy is None when device.support_local is True
-    if device.support_local and device.local_strategy is None:
-        device.local_strategy = {}
-
     assert device.status_range["feed_report"].report_type is None
 
     filled_quirks_registry.initialise_device_quirk(device)
