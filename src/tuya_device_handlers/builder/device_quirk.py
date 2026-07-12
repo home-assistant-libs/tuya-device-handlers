@@ -54,6 +54,7 @@ class DatapointDefinition:
     dptype: DPType
     values: str | None = None
     report_type: str | None = None
+    apply_when: Callable[[CustomerDevice], bool] | None = None
 
     def to_function(self) -> DeviceFunction:
         """Convert to DeviceFunction."""
@@ -87,10 +88,19 @@ class DatapointDefinition:
         )
 
 
+@dataclass(kw_only=True)
+class DatapointRemoval:
+    """Marker for a Tuya datapoint removal."""
+
+    apply_when: Callable[[CustomerDevice], bool] | None = None
+
+
 class DeviceQuirk(DeviceQuirkProtocol):
     """Quirk for Tuya device."""
 
-    _datapoint_definitions: dict[tuple[int, str], DatapointDefinition | None]
+    _datapoint_definitions: dict[
+        tuple[int, str], DatapointDefinition | DatapointRemoval
+    ]
     _local_strategy: dict[tuple[int, str], LocalConvertStrategy | None]
     _type_information_overrides: dict[
         tuple[int, str], type[TypeInformation[Any]]
@@ -142,33 +152,13 @@ class DeviceQuirk(DeviceQuirkProtocol):
         for key, definition in self._datapoint_definitions.items():
             dpid, dpcode = key
 
-            # Remove definition if explicit None
-            if definition is None:
-                device.function.pop(dpcode, None)
-                device.local_strategy.pop(dpid, None)
-                device.status.pop(dpcode, None)
-                device.status_range.pop(dpcode, None)
+            # Skip definition if its condition is not met on this device
+            if definition.apply_when is not None and not definition.apply_when(
+                device
+            ):
                 continue
 
-            # Add or remove function/status_range attributes
-            if DPMode.READ in definition.dpmode:
-                device.status_range[definition.dpcode] = (
-                    definition.to_status_range()
-                )
-            else:
-                device.status_range.pop(definition.dpcode, None)
-
-            if DPMode.WRITE in definition.dpmode:
-                device.function[definition.dpcode] = definition.to_function()
-            else:
-                device.function.pop(definition.dpcode, None)
-
-            if device.support_local:
-                device.local_strategy[definition.dpid] = (
-                    definition.to_local_strategy(device.product_id)
-                )
-            else:
-                device.local_strategy.pop(definition.dpid, None)
+            self._apply_datapoint_definition(device, dpid, dpcode, definition)
 
         if device.support_local:
             for key, definition in self._local_strategy.items():
@@ -184,6 +174,42 @@ class DeviceQuirk(DeviceQuirkProtocol):
                         device.status_range.get(definition.dpcode),
                     )
                 )
+
+    @staticmethod
+    def _apply_datapoint_definition(
+        device: CustomerDevice,
+        dpid: int,
+        dpcode: str,
+        definition: DatapointDefinition | DatapointRemoval,
+    ) -> None:
+        """Apply a datapoint definition or removal to the device."""
+        # Remove definition if explicit removal
+        if isinstance(definition, DatapointRemoval):
+            device.function.pop(dpcode, None)
+            device.local_strategy.pop(dpid, None)
+            device.status.pop(dpcode, None)
+            device.status_range.pop(dpcode, None)
+            return
+
+        # Add or remove function/status_range attributes
+        if DPMode.READ in definition.dpmode:
+            device.status_range[definition.dpcode] = (
+                definition.to_status_range()
+            )
+        else:
+            device.status_range.pop(definition.dpcode, None)
+
+        if DPMode.WRITE in definition.dpmode:
+            device.function[definition.dpcode] = definition.to_function()
+        else:
+            device.function.pop(definition.dpcode, None)
+
+        if device.support_local:
+            device.local_strategy[definition.dpid] = (
+                definition.to_local_strategy(device.product_id)
+            )
+        else:
+            device.local_strategy.pop(definition.dpid, None)
 
     def applies_to(
         self,
@@ -216,7 +242,13 @@ class DeviceQuirk(DeviceQuirkProtocol):
         registry.register(self._applies_to, self)
 
     def add_dpid_bitmap(
-        self, *, dpid: int, dpcode: str, dpmode: DPMode, label_range: list[str]
+        self,
+        *,
+        dpid: int,
+        dpcode: str,
+        dpmode: DPMode,
+        label_range: list[str],
+        apply_when: Callable[[CustomerDevice], bool] | None = None,
     ) -> Self:
         """Add datapoint Bitmap definition."""
         self._datapoint_definitions[(dpid, dpcode)] = DatapointDefinition(
@@ -225,11 +257,17 @@ class DeviceQuirk(DeviceQuirkProtocol):
             dpmode=dpmode,
             dptype=DPType.BITMAP,
             values=json.dumps({"label": label_range}),
+            apply_when=apply_when,
         )
         return self
 
     def add_dpid_boolean(
-        self, *, dpid: int, dpcode: str, dpmode: DPMode
+        self,
+        *,
+        dpid: int,
+        dpcode: str,
+        dpmode: DPMode,
+        apply_when: Callable[[CustomerDevice], bool] | None = None,
     ) -> Self:
         """Add datapoint Boolean definition."""
         self._datapoint_definitions[(dpid, dpcode)] = DatapointDefinition(
@@ -238,11 +276,18 @@ class DeviceQuirk(DeviceQuirkProtocol):
             dpmode=dpmode,
             dptype=DPType.BOOLEAN,
             values="{}",
+            apply_when=apply_when,
         )
         return self
 
     def add_dpid_enum(
-        self, *, dpid: int, dpcode: str, dpmode: DPMode, enum_range: list[str]
+        self,
+        *,
+        dpid: int,
+        dpcode: str,
+        dpmode: DPMode,
+        enum_range: list[str],
+        apply_when: Callable[[CustomerDevice], bool] | None = None,
     ) -> Self:
         """Add datapoint Enum definition."""
         self._datapoint_definitions[(dpid, dpcode)] = DatapointDefinition(
@@ -251,6 +296,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
             dpmode=dpmode,
             dptype=DPType.ENUM,
             values=json.dumps({"range": enum_range}),
+            apply_when=apply_when,
         )
         return self
 
@@ -266,6 +312,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
         scale: int,
         step: int,
         report_type: str | None = None,
+        apply_when: Callable[[CustomerDevice], bool] | None = None,
     ) -> Self:
         """Add datapoint Integer definition."""
         self._datapoint_definitions[(dpid, dpcode)] = DatapointDefinition(
@@ -274,6 +321,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
             dpmode=dpmode,
             dptype=DPType.INTEGER,
             report_type=report_type,
+            apply_when=apply_when,
             values=json.dumps(
                 {
                     "unit": unit,
@@ -297,9 +345,17 @@ class DeviceQuirk(DeviceQuirkProtocol):
         self._type_information_overrides[(dpid, dpcode)] = type_information_cls
         return self
 
-    def remove_dpid(self, *, dpid: int, dpcode: str) -> Self:
+    def remove_dpid(
+        self,
+        *,
+        dpid: int,
+        dpcode: str,
+        apply_when: Callable[[CustomerDevice], bool] | None = None,
+    ) -> Self:
         """Remove datapoint definition."""
-        self._datapoint_definitions[(dpid, dpcode)] = None
+        self._datapoint_definitions[(dpid, dpcode)] = DatapointRemoval(
+            apply_when=apply_when
+        )
         return self
 
     def set_dpid_strategy_to_enum(
