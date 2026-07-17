@@ -13,6 +13,7 @@ from tuya_sharing import (
 
 from tuya_device_handlers.builder.device_quirk import (
     DatapointDefinition,
+    DatapointRemoval,
     DeviceQuirk,
     LocalConvertStrategy,
 )
@@ -103,7 +104,7 @@ def test_add_dpid_bitmap() -> None:
         dpid=1, dpcode="bm", dpmode=DPMode.READ, label_range=["a", "b"]
     )
     definition = quirk._datapoint_definitions[(1, "bm")]
-    assert definition is not None
+    assert isinstance(definition, DatapointDefinition)
     assert definition.dptype is DPType.BITMAP
     assert json.loads(definition.values or "")["label"] == ["a", "b"]
 
@@ -114,7 +115,7 @@ def test_add_dpid_boolean() -> None:
         dpid=2, dpcode="bo", dpmode=DPMode.WRITE
     )
     definition = quirk._datapoint_definitions[(2, "bo")]
-    assert definition is not None
+    assert isinstance(definition, DatapointDefinition)
     assert definition.dptype is DPType.BOOLEAN
 
 
@@ -124,7 +125,7 @@ def test_add_dpid_enum() -> None:
         dpid=3, dpcode="en", dpmode=DPMode.READ, enum_range=["scene", "auto"]
     )
     definition = quirk._datapoint_definitions[(3, "en")]
-    assert definition is not None
+    assert isinstance(definition, DatapointDefinition)
     assert definition.dptype is DPType.ENUM
     assert json.loads(definition.values or "")["range"] == ["scene", "auto"]
 
@@ -143,7 +144,7 @@ def test_add_dpid_integer() -> None:
         report_type="sum",
     )
     definition = quirk._datapoint_definitions[(4, "i")]
-    assert definition is not None
+    assert isinstance(definition, DatapointDefinition)
     assert definition.dptype is DPType.INTEGER
     assert definition.report_type == "sum"
     payload = json.loads(definition.values or "")
@@ -151,9 +152,12 @@ def test_add_dpid_integer() -> None:
 
 
 def test_remove_dpid() -> None:
-    """remove_dpid stores None to mark the dpid for removal."""
+    """remove_dpid stores a removal entry for the dpid."""
     quirk = DeviceQuirk().remove_dpid(dpid=5, dpcode="rm")
-    assert quirk._datapoint_definitions[(5, "rm")] is None
+    entry = quirk._datapoint_definitions[(5, "rm")]
+    assert isinstance(entry, DatapointRemoval)
+    assert entry.dpid == 5
+    assert entry.dpcode == "rm"
 
 
 def test_override_category() -> None:
@@ -332,7 +336,7 @@ def test_mqtt_enum_strategy_mapping(
     assert mock_device.status["x"] is False
 
 
-def test_initialise_device_none_definition_removes_everything(
+def test_initialise_device_remove_dpid_removes_everything(
     mock_device: CustomerDevice,
 ) -> None:
     """remove_dpid: function, strategy, status all popped."""

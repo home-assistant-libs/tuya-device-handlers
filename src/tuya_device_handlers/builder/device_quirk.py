@@ -45,11 +45,22 @@ class LocalConvertStrategy:
 
 
 @dataclass(kw_only=True)
-class DatapointDefinition:
-    """Definition for a Tuya datapoint."""
+class DatapointBase:
+    """Base for a Tuya datapoint entry."""
 
     dpid: int
     dpcode: str
+
+
+@dataclass(kw_only=True)
+class DatapointRemoval(DatapointBase):
+    """Removal of a Tuya datapoint."""
+
+
+@dataclass(kw_only=True)
+class DatapointDefinition(DatapointBase):
+    """Definition for a Tuya datapoint."""
+
     dpmode: DPMode
     dptype: DPType
     values: str | None = None
@@ -90,7 +101,9 @@ class DatapointDefinition:
 class DeviceQuirk(DeviceQuirkProtocol):
     """Quirk for Tuya device."""
 
-    _datapoint_definitions: dict[tuple[int, str], DatapointDefinition | None]
+    _datapoint_definitions: dict[
+        tuple[int, str], DatapointDefinition | DatapointRemoval
+    ]
     _local_strategy: dict[tuple[int, str], LocalConvertStrategy | None]
     _type_information_overrides: dict[
         tuple[int, str], type[TypeInformation[Any]]
@@ -142,8 +155,8 @@ class DeviceQuirk(DeviceQuirkProtocol):
         for key, definition in self._datapoint_definitions.items():
             dpid, dpcode = key
 
-            # Remove definition if explicit None
-            if definition is None:
+            # Remove definition if explicit removal
+            if isinstance(definition, DatapointRemoval):
                 device.function.pop(dpcode, None)
                 device.local_strategy.pop(dpid, None)
                 device.status.pop(dpcode, None)
@@ -299,7 +312,9 @@ class DeviceQuirk(DeviceQuirkProtocol):
 
     def remove_dpid(self, *, dpid: int, dpcode: str) -> Self:
         """Remove datapoint definition."""
-        self._datapoint_definitions[(dpid, dpcode)] = None
+        self._datapoint_definitions[(dpid, dpcode)] = DatapointRemoval(
+            dpid=dpid, dpcode=dpcode
+        )
         return self
 
     def set_dpid_strategy_to_enum(
