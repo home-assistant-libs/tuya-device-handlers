@@ -103,7 +103,7 @@ def test_add_dpid_bitmap() -> None:
     quirk = DeviceQuirk().add_dpid_bitmap(
         dpid=1, dpcode="bm", dpmode=DPMode.READ, label_range=["a", "b"]
     )
-    definition = quirk._datapoint_definitions[(1, "bm")]
+    definition = quirk._datapoint_definitions[0]
     assert isinstance(definition, DatapointDefinition)
     assert definition.dptype is DPType.BITMAP
     assert json.loads(definition.values or "")["label"] == ["a", "b"]
@@ -114,7 +114,7 @@ def test_add_dpid_boolean() -> None:
     quirk = DeviceQuirk().add_dpid_boolean(
         dpid=2, dpcode="bo", dpmode=DPMode.WRITE
     )
-    definition = quirk._datapoint_definitions[(2, "bo")]
+    definition = quirk._datapoint_definitions[0]
     assert isinstance(definition, DatapointDefinition)
     assert definition.dptype is DPType.BOOLEAN
 
@@ -124,7 +124,7 @@ def test_add_dpid_enum() -> None:
     quirk = DeviceQuirk().add_dpid_enum(
         dpid=3, dpcode="en", dpmode=DPMode.READ, enum_range=["scene", "auto"]
     )
-    definition = quirk._datapoint_definitions[(3, "en")]
+    definition = quirk._datapoint_definitions[0]
     assert isinstance(definition, DatapointDefinition)
     assert definition.dptype is DPType.ENUM
     assert json.loads(definition.values or "")["range"] == ["scene", "auto"]
@@ -143,7 +143,7 @@ def test_add_dpid_integer() -> None:
         step=1,
         report_type="sum",
     )
-    definition = quirk._datapoint_definitions[(4, "i")]
+    definition = quirk._datapoint_definitions[0]
     assert isinstance(definition, DatapointDefinition)
     assert definition.dptype is DPType.INTEGER
     assert definition.report_type == "sum"
@@ -154,7 +154,7 @@ def test_add_dpid_integer() -> None:
 def test_remove_dpid() -> None:
     """remove_dpid stores a removal entry for the dpid."""
     quirk = DeviceQuirk().remove_dpid(dpid=5, dpcode="rm")
-    entry = quirk._datapoint_definitions[(5, "rm")]
+    entry = quirk._datapoint_definitions[0]
     assert isinstance(entry, DatapointRemoval)
     assert entry.dpid == 5
     assert entry.dpcode == "rm"
