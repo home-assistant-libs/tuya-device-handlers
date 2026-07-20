@@ -1,0 +1,290 @@
+{
+  "endpoint": "https://apigw.tuyaeu.com",
+  "mqtt_connected": true,
+  "disabled_by": null,
+  "disabled_polling": false,
+  "name": "Tester wody",
+  "category": "dgnbj",
+  "product_id": "layxxij0sdbrfmrf",
+  "product_name": "WiFi smart online 8 in 1 tester",
+  "online": true,
+  "sub": false,
+  "time_zone": "+02:00",
+  "active_time": "2024-08-04T18:29:00+00:00",
+  "create_time": "2024-08-04T18:29:00+00:00",
+  "update_time": "2024-08-04T18:29:00+00:00",
+  "function": {},
+  "local_strategy": {
+    "8": {
+      "value_convert": "default",
+      "status_code": "temp_current",
+      "config_item": {
+        "statusFormat": "{\"temp_current\": \"$\"}",
+        "valueDesc": "{\"unit\": \"\\u00b0C\", \"min\": 0, \"max\": 1000, \"scale\": 1, \"step\": 1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "layxxij0sdbrfmrf"
+      }
+    },
+    "106": {
+      "value_convert": "default",
+      "status_code": "ph_current",
+      "config_item": {
+        "statusFormat": "{\"ph_current\": \"$\"}",
+        "valueDesc": "{\"unit\": \"pH\", \"min\": 0, \"max\": 1400, \"scale\": 2, \"step\": 1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "layxxij0sdbrfmrf"
+      }
+    },
+    "111": {
+      "value_convert": "default",
+      "status_code": "tds_current",
+      "config_item": {
+        "statusFormat": "{\"tds_current\": \"$\"}",
+        "valueDesc": "{\"unit\": \"g/L\", \"min\": 0, \"max\": 50000, \"scale\": 2, \"step\": 1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "layxxij0sdbrfmrf"
+      }
+    },
+    "116": {
+      "value_convert": "default",
+      "status_code": "ec_current",
+      "config_item": {
+        "statusFormat": "{\"ec_current\": \"$\"}",
+        "valueDesc": "{\"unit\": \"\\u00b5S/cm\", \"min\": 0, \"max\": 20000, \"scale\": 0, \"step\": 1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "layxxij0sdbrfmrf"
+      }
+    },
+    "121": {
+      "value_convert": "default",
+      "status_code": "salinity_current",
+      "config_item": {
+        "statusFormat": "{\"salinity_current\": \"$\"}",
+        "valueDesc": "{\"unit\": \"ppm\", \"min\": 0, \"max\": 10000, \"scale\": 0, \"step\": 1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "layxxij0sdbrfmrf"
+      }
+    },
+    "126": {
+      "value_convert": "default",
+      "status_code": "pro_current",
+      "config_item": {
+        "statusFormat": "{\"pro_current\": \"$\"}",
+        "valueDesc": "{\"unit\": \"S.G\", \"min\": 0, \"max\": 2000, \"scale\": 3, \"step\": 1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "layxxij0sdbrfmrf"
+      }
+    },
+    "131": {
+      "value_convert": "default",
+      "status_code": "orp_current",
+      "config_item": {
+        "statusFormat": "{\"orp_current\": \"$\"}",
+        "valueDesc": "{\"unit\": \"mV\", \"min\": 0, \"max\": 2000, \"scale\": 0, \"step\": 1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "layxxij0sdbrfmrf"
+      }
+    },
+    "136": {
+      "value_convert": "default",
+      "status_code": "cf_current",
+      "config_item": {
+        "statusFormat": "{\"cf_current\": \"$\"}",
+        "valueDesc": "{\"unit\": \"CF\", \"min\": 0, \"max\": 20000, \"scale\": 2, \"step\": 1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "layxxij0sdbrfmrf"
+      }
+    }
+  },
+  "status_range": {
+    "temp_current": {
+      "type": "Integer",
+      "value": "{\"unit\": \"\\u00b0C\", \"min\": 0, \"max\": 1000, \"scale\": 1, \"step\": 1}",
+      "report_type": null
+    },
+    "ph_current": {
+      "type": "Integer",
+      "value": "{\"unit\": \"pH\", \"min\": 0, \"max\": 1400, \"scale\": 2, \"step\": 1}",
+      "report_type": null
+    },
+    "tds_current": {
+      "type": "Integer",
+      "value": "{\"unit\": \"g/L\", \"min\": 0, \"max\": 50000, \"scale\": 2, \"step\": 1}",
+      "report_type": null
+    },
+    "ec_current": {
+      "type": "Integer",
+      "value": "{\"unit\": \"\\u00b5S/cm\", \"min\": 0, \"max\": 20000, \"scale\": 0, \"step\": 1}",
+      "report_type": null
+    },
+    "salinity_current": {
+      "type": "Integer",
+      "value": "{\"unit\": \"ppm\", \"min\": 0, \"max\": 10000, \"scale\": 0, \"step\": 1}",
+      "report_type": null
+    },
+    "pro_current": {
+      "type": "Integer",
+      "value": "{\"unit\": \"S.G\", \"min\": 0, \"max\": 2000, \"scale\": 3, \"step\": 1}",
+      "report_type": null
+    },
+    "orp_current": {
+      "type": "Integer",
+      "value": "{\"unit\": \"mV\", \"min\": 0, \"max\": 2000, \"scale\": 0, \"step\": 1}",
+      "report_type": null
+    },
+    "cf_current": {
+      "type": "Integer",
+      "value": "{\"unit\": \"CF\", \"min\": 0, \"max\": 20000, \"scale\": 2, \"step\": 1}",
+      "report_type": null
+    }
+  },
+  "status": {
+    "temp_current": 247,
+    "ph_current": 797,
+    "tds_current": 318,
+    "ec_current": 636,
+    "salinity_current": 371,
+    "pro_current": 997,
+    "orp_current": 274,
+    "cf_current": 636
+  },
+  "set_up": true,
+  "support_local": true,
+  "quirk": "/config/tuya_quirks/dgnbj_layxxij0sdbrfmrf.py:6",
+  "warnings": [
+    "integer_out_range|orp_current|-1482",
+    "integer_out_range|orp_current|-396",
+    "integer_out_range|orp_current|-156",
+    "integer_out_range|orp_current|-804",
+    "integer_out_range|orp_current|-1459",
+    "integer_out_range|orp_current|-199",
+    "integer_out_range|orp_current|-1508",
+    "integer_out_range|orp_current|-1135",
+    "integer_out_range|orp_current|-1335",
+    "integer_out_range|orp_current|-654",
+    "integer_out_range|orp_current|-1288",
+    "integer_out_range|orp_current|-495",
+    "integer_out_range|orp_current|-1444",
+    "integer_out_range|orp_current|-705",
+    "integer_out_range|orp_current|-420",
+    "integer_out_range|orp_current|-843",
+    "integer_out_range|orp_current|-578",
+    "integer_out_range|orp_current|-1630",
+    "integer_out_range|orp_current|-712",
+    "integer_out_range|orp_current|-1432",
+    "integer_out_range|orp_current|-774",
+    "integer_out_range|orp_current|-1643",
+    "integer_out_range|orp_current|-1082",
+    "integer_out_range|orp_current|-1139",
+    "integer_out_range|orp_current|-455",
+    "integer_out_range|orp_current|-938",
+    "integer_out_range|orp_current|-300",
+    "integer_out_range|orp_current|-350",
+    "integer_out_range|orp_current|-256",
+    "integer_out_range|orp_current|-216",
+    "integer_out_range|orp_current|-523",
+    "integer_out_range|orp_current|-251",
+    "integer_out_range|orp_current|-1535",
+    "integer_out_range|orp_current|-866",
+    "integer_out_range|orp_current|-1579",
+    "integer_out_range|orp_current|-817",
+    "integer_out_range|orp_current|-339",
+    "integer_out_range|orp_current|-984",
+    "integer_out_range|orp_current|-1646",
+    "integer_out_range|orp_current|-336",
+    "integer_out_range|orp_current|-951",
+    "integer_out_range|orp_current|-963",
+    "integer_out_range|orp_current|-879",
+    "integer_out_range|orp_current|-588",
+    "integer_out_range|orp_current|-1430",
+    "integer_out_range|orp_current|-279",
+    "integer_out_range|orp_current|-456",
+    "integer_out_range|orp_current|-118",
+    "integer_out_range|orp_current|-772",
+    "integer_out_range|orp_current|-363",
+    "integer_out_range|orp_current|-685",
+    "integer_out_range|orp_current|-864",
+    "integer_out_range|orp_current|-686",
+    "integer_out_range|orp_current|-765",
+    "integer_out_range|orp_current|-820",
+    "integer_out_range|orp_current|-993",
+    "integer_out_range|orp_current|-1647",
+    "integer_out_range|orp_current|-1033",
+    "integer_out_range|orp_current|-1526",
+    "integer_out_range|orp_current|-995",
+    "integer_out_range|orp_current|-1527",
+    "integer_out_range|orp_current|-1549",
+    "integer_out_range|orp_current|-1613",
+    "integer_out_range|orp_current|-1130",
+    "integer_out_range|orp_current|-1635",
+    "integer_out_range|orp_current|-748",
+    "integer_out_range|orp_current|-1507",
+    "integer_out_range|orp_current|-833",
+    "integer_out_range|orp_current|-897",
+    "integer_out_range|orp_current|-297",
+    "integer_out_range|orp_current|-554",
+    "integer_out_range|orp_current|-1602",
+    "integer_out_range|orp_current|-180",
+    "integer_out_range|orp_current|-1044",
+    "integer_out_range|orp_current|-260",
+    "integer_out_range|orp_current|-692",
+    "integer_out_range|orp_current|-747",
+    "integer_out_range|orp_current|-928",
+    "integer_out_range|orp_current|-1639",
+    "integer_out_range|orp_current|-1369",
+    "integer_out_range|orp_current|-678",
+    "integer_out_range|orp_current|-1434",
+    "integer_out_range|orp_current|-878",
+    "integer_out_range|orp_current|-1636",
+    "integer_out_range|orp_current|-1596",
+    "integer_out_range|orp_current|-652",
+    "integer_out_range|orp_current|-1598",
+    "integer_out_range|orp_current|-1475",
+    "integer_out_range|orp_current|-187",
+    "integer_out_range|orp_current|-421",
+    "integer_out_range|orp_current|-1500",
+    "integer_out_range|orp_current|-923",
+    "integer_out_range|orp_current|-1172",
+    "integer_out_range|orp_current|-413",
+    "integer_out_range|orp_current|-362",
+    "integer_out_range|orp_current|-987",
+    "integer_out_range|orp_current|-841",
+    "integer_out_range|orp_current|-248",
+    "integer_out_range|orp_current|-729",
+    "integer_out_range|orp_current|-1644",
+    "integer_out_range|orp_current|-1523",
+    "integer_out_range|orp_current|-594",
+    "integer_out_range|orp_current|-1095",
+    "integer_out_range|orp_current|-1353"
+  ],
+  "original_category": "dgnbj",
+  "original_function": {},
+  "original_local_strategy": {
+    "8": {
+      "value_convert": "default",
+      "status_code": "temp_current",
+      "config_item": {
+        "statusFormat": "{\"temp_current\":\"$\"}",
+        "valueDesc": "{\"unit\":\"℃\",\"min\":-100,\"max\":1100,\"scale\":1,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "layxxij0sdbrfmrf"
+      }
+    }
+  },
+  "original_status_range": {
+    "temp_current": {
+      "type": "Integer",
+      "value": "{\"unit\":\"℃\",\"min\":-100,\"max\":1100,\"scale\":1,\"step\":1}",
+      "report_type": "un_known"
+    }
+  }
+}
