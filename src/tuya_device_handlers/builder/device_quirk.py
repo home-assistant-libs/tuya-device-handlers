@@ -1,5 +1,6 @@
 """Base quirk definition."""
 
+from abc import ABC, abstractmethod
 from collections.abc import Callable
 from dataclasses import dataclass
 import inspect
@@ -45,7 +46,7 @@ class LocalConvertStrategy:
 
 
 @dataclass(kw_only=True)
-class DatapointBase:
+class DatapointBase(ABC):
     """Base for a Tuya datapoint entry.
 
     When `apply_when` is set, the entry is only applied to devices for
@@ -61,10 +62,21 @@ class DatapointBase:
         """Check whether this entry applies to the device."""
         return self.apply_when is None or self.apply_when(device)
 
+    @abstractmethod
+    def apply(self, device: CustomerDevice) -> None:
+        """Apply this entry to the device."""
+
 
 @dataclass(kw_only=True)
 class DatapointRemoval(DatapointBase):
     """Removal of a Tuya datapoint."""
+
+    def apply(self, device: CustomerDevice) -> None:
+        """Remove the datapoint from the device."""
+        device.function.pop(self.dpcode, None)
+        device.local_strategy.pop(self.dpid, None)
+        device.status.pop(self.dpcode, None)
+        device.status_range.pop(self.dpcode, None)
 
 
 @dataclass(kw_only=True)
@@ -75,6 +87,25 @@ class DatapointDefinition(DatapointBase):
     dptype: DPType
     values: str | None = None
     report_type: str | None = None
+
+    def apply(self, device: CustomerDevice) -> None:
+        """Add or update the datapoint on the device."""
+        if DPMode.READ in self.dpmode:
+            device.status_range[self.dpcode] = self.to_status_range()
+        else:
+            device.status_range.pop(self.dpcode, None)
+
+        if DPMode.WRITE in self.dpmode:
+            device.function[self.dpcode] = self.to_function()
+        else:
+            device.function.pop(self.dpcode, None)
+
+        if device.support_local:
+            device.local_strategy[self.dpid] = self.to_local_strategy(
+                device.product_id
+            )
+        else:
+            device.local_strategy.pop(self.dpid, None)
 
     def to_function(self) -> DeviceFunction:
         """Convert to DeviceFunction."""
@@ -162,7 +193,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
 
         for definition in self._datapoint_definitions:
             if definition.applies_to_device(device):
-                self._apply_datapoint(device, definition)
+                definition.apply(device)
 
         if device.support_local:
             for key, definition in self._local_strategy.items():
@@ -178,41 +209,6 @@ class DeviceQuirk(DeviceQuirkProtocol):
                         device.status_range.get(definition.dpcode),
                     )
                 )
-
-    @staticmethod
-    def _apply_datapoint(
-        device: CustomerDevice, definition: DatapointBase
-    ) -> None:
-        """Apply a single datapoint entry to the device."""
-        if isinstance(definition, DatapointRemoval):
-            device.function.pop(definition.dpcode, None)
-            device.local_strategy.pop(definition.dpid, None)
-            device.status.pop(definition.dpcode, None)
-            device.status_range.pop(definition.dpcode, None)
-            return
-
-        if TYPE_CHECKING:
-            assert isinstance(definition, DatapointDefinition)
-
-        # Add or remove function/status_range attributes
-        if DPMode.READ in definition.dpmode:
-            device.status_range[definition.dpcode] = (
-                definition.to_status_range()
-            )
-        else:
-            device.status_range.pop(definition.dpcode, None)
-
-        if DPMode.WRITE in definition.dpmode:
-            device.function[definition.dpcode] = definition.to_function()
-        else:
-            device.function.pop(definition.dpcode, None)
-
-        if device.support_local:
-            device.local_strategy[definition.dpid] = (
-                definition.to_local_strategy(device.product_id)
-            )
-        else:
-            device.local_strategy.pop(definition.dpid, None)
 
     def applies_to(
         self,
