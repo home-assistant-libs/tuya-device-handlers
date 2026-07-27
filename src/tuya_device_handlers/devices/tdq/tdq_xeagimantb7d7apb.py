@@ -20,7 +20,7 @@ from tuya_device_handlers.const import DPMode
         enum_range=["c", "f"],
     )
     .add_dpid_integer(
-        dpid=27,
+        dpid=102,
         dpcode="temp_current",
         dpmode=DPMode.READ,
         unit="℃",
@@ -30,7 +30,7 @@ from tuya_device_handlers.const import DPMode
         step=1,
     )
     .add_dpid_integer(
-        dpid=46,
+        dpid=103,
         dpcode="humidity_value",
         dpmode=DPMode.READ,
         unit="%",
@@ -40,7 +40,7 @@ from tuya_device_handlers.const import DPMode
         step=1,
     )
     .add_dpid_enum(
-        dpid=101,
+        dpid=104,
         dpcode="battery_state",
         dpmode=DPMode.READ,
         enum_range=["low", "middle", "high"],
