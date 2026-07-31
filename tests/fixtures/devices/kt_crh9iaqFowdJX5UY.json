@@ -1,0 +1,258 @@
+{
+  "endpoint": "https://apigw.tuyaeu.com",
+  "mqtt_connected": true,
+  "disabled_by": null,
+  "disabled_polling": false,
+  "name": "Smart Portable AC",
+  "category": "kt",
+  "product_id": "crh9iaqFowdJX5UY",
+  "product_name": "Smart Portable AC",
+  "online": true,
+  "sub": false,
+  "time_zone": "+10:00",
+  "active_time": "2026-01-18T11:14:13+00:00",
+  "create_time": "2026-01-18T11:14:13+00:00",
+  "update_time": "2026-01-18T11:14:13+00:00",
+  "function": {
+    "temp_set": {
+      "type": "Integer",
+      "value": "{\"unit\": \"\\u2103\", \"min\": 16, \"max\": 30, \"scale\": 0, \"step\": 1}"
+    },
+    "windspeed": {
+      "type": "Enum",
+      "value": "{\"range\":[\"1\",\"2\",\"3\"]}"
+    },
+    "c_f": {
+      "type": "Enum",
+      "value": "{\"range\":[\"C\",\"F\"]}"
+    },
+    "switch": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "mode": {
+      "type": "Enum",
+      "value": "{\"range\": [\"cold\", \"hot\", \"wet\", \"wind\"]}"
+    }
+  },
+  "local_strategy": {
+    "1": {
+      "value_convert": "default",
+      "status_code": "switch",
+      "config_item": {
+        "statusFormat": "{\"switch\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "crh9iaqFowdJX5UY"
+      }
+    },
+    "19": {
+      "value_convert": "default",
+      "status_code": "c_f",
+      "config_item": {
+        "statusFormat": "{\"c_f\":\"$\"}",
+        "valueDesc": "{\"range\":[\"C\",\"F\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "crh9iaqFowdJX5UY"
+      }
+    },
+    "5": {
+      "value_convert": "default",
+      "status_code": "windspeed",
+      "config_item": {
+        "statusFormat": "{\"windspeed\":\"$\"}",
+        "valueDesc": "{\"range\":[\"1\",\"2\",\"3\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "crh9iaqFowdJX5UY"
+      }
+    },
+    "4": {
+      "value_convert": "default",
+      "status_code": "mode",
+      "config_item": {
+        "statusFormat": "{\"mode\": \"$\"}",
+        "valueDesc": "{\"range\": [\"cold\", \"hot\", \"wet\", \"wind\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "crh9iaqFowdJX5UY"
+      }
+    },
+    "2": {
+      "value_convert": "default",
+      "status_code": "temp_set",
+      "config_item": {
+        "statusFormat": "{\"temp_set\": \"$\"}",
+        "valueDesc": "{\"unit\": \"\\u2103\", \"min\": 16, \"max\": 30, \"scale\": 0, \"step\": 1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "crh9iaqFowdJX5UY"
+      }
+    },
+    "3": {
+      "value_convert": "default",
+      "status_code": "temp_current",
+      "config_item": {
+        "statusFormat": "{\"temp_current\": \"$\"}",
+        "valueDesc": "{\"unit\": \"\\u2103\", \"min\": -7, \"max\": 98, \"scale\": 0, \"step\": 1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "crh9iaqFowdJX5UY"
+      }
+    }
+  },
+  "status_range": {
+    "switch": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "c_f": {
+      "type": "Enum",
+      "value": "{\"range\":[\"C\",\"F\"]}",
+      "report_type": null
+    },
+    "windspeed": {
+      "type": "Enum",
+      "value": "{\"range\":[\"1\",\"2\",\"3\"]}",
+      "report_type": null
+    },
+    "mode": {
+      "type": "Enum",
+      "value": "{\"range\": [\"cold\", \"hot\", \"wet\", \"wind\"]}",
+      "report_type": null
+    },
+    "temp_set": {
+      "type": "Integer",
+      "value": "{\"unit\": \"\\u2103\", \"min\": 16, \"max\": 30, \"scale\": 0, \"step\": 1}",
+      "report_type": null
+    },
+    "temp_current": {
+      "type": "Integer",
+      "value": "{\"unit\": \"\\u2103\", \"min\": -7, \"max\": 98, \"scale\": 0, \"step\": 1}",
+      "report_type": null
+    }
+  },
+  "status": {
+    "switch": true,
+    "mode": "hot",
+    "windspeed": "3",
+    "c_f": "C",
+    "temp_set": 22,
+    "temp_current": 23
+  },
+  "set_up": true,
+  "support_local": true,
+  "quirk": "/config/tuya_quirks/kt_crh9iaqfowdjx5uy.py:9",
+  "warnings": null,
+  "original_category": "kt",
+  "original_function": {
+    "temp_set": {
+      "type": "Integer",
+      "value": "{\"min\":0,\"unit\":\"\\u2103\",\"scale\":0,\"max\":50,\"step\":1}"
+    },
+    "windspeed": {
+      "type": "Enum",
+      "value": "{\"range\":[\"1\",\"2\",\"3\"]}"
+    },
+    "c_f": {
+      "type": "Enum",
+      "value": "{\"range\":[\"C\",\"F\"]}"
+    },
+    "switch": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"auto\",\"cold\",\"hot\",\"wet\",\"wind\",\"eco\"]}"
+    }
+  },
+  "original_local_strategy": {
+    "1": {
+      "value_convert": "default",
+      "status_code": "switch",
+      "config_item": {
+        "statusFormat": "{\"switch\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "crh9iaqFowdJX5UY"
+      }
+    },
+    "19": {
+      "value_convert": "default",
+      "status_code": "c_f",
+      "config_item": {
+        "statusFormat": "{\"c_f\":\"$\"}",
+        "valueDesc": "{\"range\":[\"C\",\"F\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "crh9iaqFowdJX5UY"
+      }
+    },
+    "5": {
+      "value_convert": "default",
+      "status_code": "windspeed",
+      "config_item": {
+        "statusFormat": "{\"windspeed\":\"$\"}",
+        "valueDesc": "{\"range\":[\"1\",\"2\",\"3\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "crh9iaqFowdJX5UY"
+      }
+    },
+    "4": {
+      "value_convert": "enum",
+      "status_code": "mode",
+      "config_item": {
+        "statusFormat": "{\"mode\":\"$\"}",
+        "valueDesc": "{\"range\":[\"auto\",\"cold\",\"hot\",\"wet\",\"wind\",\"eco\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {
+          "COOL": {
+            "code": "mode",
+            "value": "cold"
+          },
+          "DRY": {
+            "code": "mode",
+            "value": "wet"
+          },
+          "FAN": {
+            "code": "mode",
+            "value": "wind"
+          },
+          "HEAT": {
+            "code": "mode",
+            "value": "hot"
+          }
+        },
+        "pid": "crh9iaqFowdJX5UY"
+      }
+    }
+  },
+  "original_status_range": {
+    "switch": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "c_f": {
+      "type": "Enum",
+      "value": "{\"range\":[\"C\",\"F\"]}",
+      "report_type": null
+    },
+    "windspeed": {
+      "type": "Enum",
+      "value": "{\"range\":[\"1\",\"2\",\"3\"]}",
+      "report_type": null
+    },
+    "mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"auto\",\"cold\",\"hot\",\"wet\",\"wind\",\"eco\"]}",
+      "report_type": null
+    }
+  }
+}
