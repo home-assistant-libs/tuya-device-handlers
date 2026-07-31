@@ -10,7 +10,21 @@ from typing import Any
 
 from tuya_sharing import CustomerDevice
 
-from .type_information import IntegerTypeInformation
+from .type_information import BooleanTypeInformation, IntegerTypeInformation
+
+
+@dataclass(kw_only=True)
+class StringBooleanTypeInformationEx(BooleanTypeInformation):
+    """Boolean type information that accepts lowercase string values."""
+
+    def read_device_value(self, device: CustomerDevice) -> bool | None:
+        """Read boolean strings as native boolean values."""
+        raw_value = device.status.get(self.dpcode)
+        if raw_value == "true":
+            return True
+        if raw_value == "false":
+            return False
+        return super().read_device_value(device)
 
 
 @dataclass(kw_only=True)
