@@ -174,7 +174,7 @@ def test_set_dpid_strategy_to_enum() -> None:
         dpcode="x",
         enum_mapping_map={"on": True, "off": False},
     )
-    strategy = quirk._local_strategy[(1, "x")]
+    strategy = quirk._local_strategy[0]
     assert isinstance(strategy, LocalConvertStrategy)
     assert strategy.value_convert == "enum"
     assert strategy.enum_mapping_map == {
@@ -186,7 +186,7 @@ def test_set_dpid_strategy_to_enum() -> None:
 def test_remove_dpid_strategy() -> None:
     """remove_dpid_strategy stores a removal entry for the strategy."""
     quirk = DeviceQuirk().remove_dpid_strategy(dpid=2, dpcode="y")
-    entry = quirk._local_strategy[(2, "y")]
+    entry = quirk._local_strategy[0]
     assert isinstance(entry, LocalStrategyRemoval)
     assert entry.dpid == 2
     assert entry.dpcode == "y"

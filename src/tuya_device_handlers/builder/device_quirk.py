@@ -151,9 +151,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
     """Quirk for Tuya device."""
 
     _datapoint_definitions: list[DatapointBase]
-    _local_strategy: dict[
-        tuple[int, str], LocalConvertStrategy | LocalStrategyRemoval
-    ]
+    _local_strategy: list[LocalConvertStrategy | LocalStrategyRemoval]
     _type_information_overrides: dict[
         tuple[int, str], type[TypeInformation[Any]]
     ]
@@ -168,7 +166,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
         self._override_category: str | None = None
 
         self._datapoint_definitions = []
-        self._local_strategy = {}
+        self._local_strategy = []
         self._type_information_overrides = {}
         self._get_wrapper_functions = {}
 
@@ -206,17 +204,15 @@ class DeviceQuirk(DeviceQuirkProtocol):
                 definition.apply(device)
 
         if device.support_local:
-            for key, definition in self._local_strategy.items():
-                dpid, _dpcode = key
-
-                if isinstance(definition, LocalStrategyRemoval):
-                    device.local_strategy.pop(dpid, None)
+            for strategy in self._local_strategy:
+                if isinstance(strategy, LocalStrategyRemoval):
+                    device.local_strategy.pop(strategy.dpid, None)
                     continue
 
-                device.local_strategy[definition.dpid] = (
-                    definition.to_local_strategy(
+                device.local_strategy[strategy.dpid] = (
+                    strategy.to_local_strategy(
                         device.product_id,
-                        device.status_range.get(definition.dpcode),
+                        device.status_range.get(strategy.dpcode),
                     )
                 )
 
@@ -383,21 +379,23 @@ class DeviceQuirk(DeviceQuirkProtocol):
         enum_mapping_map: dict[Any, Any],
     ) -> Self:
         """Override local strategy for a datapoint."""
-        self._local_strategy[(dpid, dpcode)] = LocalConvertStrategy(
-            dpid=dpid,
-            dpcode=dpcode,
-            value_convert="enum",
-            enum_mapping_map={
-                str(key): {"value": value}
-                for key, value in enum_mapping_map.items()
-            },
+        self._local_strategy.append(
+            LocalConvertStrategy(
+                dpid=dpid,
+                dpcode=dpcode,
+                value_convert="enum",
+                enum_mapping_map={
+                    str(key): {"value": value}
+                    for key, value in enum_mapping_map.items()
+                },
+            )
         )
         return self
 
     def remove_dpid_strategy(self, *, dpid: int, dpcode: str) -> Self:
         """Remove datapoint strategy."""
-        self._local_strategy[(dpid, dpcode)] = LocalStrategyRemoval(
-            dpid=dpid, dpcode=dpcode
+        self._local_strategy.append(
+            LocalStrategyRemoval(dpid=dpid, dpcode=dpcode)
         )
         return self
 
