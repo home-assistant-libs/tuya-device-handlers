@@ -16,6 +16,7 @@ from tuya_device_handlers.builder.device_quirk import (
     DatapointRemoval,
     DeviceQuirk,
     LocalConvertStrategy,
+    LocalStrategyRemoval,
 )
 from tuya_device_handlers.const import DPMode, DPType
 from tuya_device_handlers.registry import QuirksRegistry
@@ -183,9 +184,12 @@ def test_set_dpid_strategy_to_enum() -> None:
 
 
 def test_remove_dpid_strategy() -> None:
-    """remove_dpid_strategy stores None to mark the strategy for removal."""
+    """remove_dpid_strategy stores a removal entry for the strategy."""
     quirk = DeviceQuirk().remove_dpid_strategy(dpid=2, dpcode="y")
-    assert quirk._local_strategy[(2, "y")] is None
+    entry = quirk._local_strategy[(2, "y")]
+    assert isinstance(entry, LocalStrategyRemoval)
+    assert entry.dpid == 2
+    assert entry.dpcode == "y"
 
 
 def test_initialise_device_read_and_write_with_local(

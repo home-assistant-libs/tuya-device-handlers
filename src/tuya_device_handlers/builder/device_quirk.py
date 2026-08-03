@@ -46,6 +46,14 @@ class LocalConvertStrategy:
 
 
 @dataclass(kw_only=True)
+class LocalStrategyRemoval:
+    """Removal of a local convert strategy."""
+
+    dpid: int
+    dpcode: str
+
+
+@dataclass(kw_only=True)
 class DatapointBase(ABC):
     """Base for a Tuya datapoint entry.
 
@@ -143,7 +151,9 @@ class DeviceQuirk(DeviceQuirkProtocol):
     """Quirk for Tuya device."""
 
     _datapoint_definitions: list[DatapointBase]
-    _local_strategy: dict[tuple[int, str], LocalConvertStrategy | None]
+    _local_strategy: dict[
+        tuple[int, str], LocalConvertStrategy | LocalStrategyRemoval
+    ]
     _type_information_overrides: dict[
         tuple[int, str], type[TypeInformation[Any]]
     ]
@@ -199,7 +209,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
             for key, definition in self._local_strategy.items():
                 dpid, _dpcode = key
 
-                if definition is None:
+                if isinstance(definition, LocalStrategyRemoval):
                     device.local_strategy.pop(dpid, None)
                     continue
 
@@ -386,7 +396,9 @@ class DeviceQuirk(DeviceQuirkProtocol):
 
     def remove_dpid_strategy(self, *, dpid: int, dpcode: str) -> Self:
         """Remove datapoint strategy."""
-        self._local_strategy[(dpid, dpcode)] = None
+        self._local_strategy[(dpid, dpcode)] = LocalStrategyRemoval(
+            dpid=dpid, dpcode=dpcode
+        )
         return self
 
     def map_feeder_schedules_wrapper(
