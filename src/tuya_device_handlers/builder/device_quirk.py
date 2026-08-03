@@ -20,42 +20,8 @@ from tuya_device_handlers.type_information import TypeInformation
 
 
 @dataclass(kw_only=True)
-class LocalConvertStrategy:
-    """Definition for a local convert strategy."""
-
-    dpid: int
-    dpcode: str
-    value_convert: str
-    enum_mapping_map: dict[str, dict[str, Any]] | None = None
-
-    def to_local_strategy(
-        self, product_id: str, status_range: DeviceStatusRange | None
-    ) -> dict[str, Any]:
-        """Convert to LocalStrategy."""
-        return {
-            "value_convert": self.value_convert,
-            "status_code": self.dpcode,
-            "config_item": {
-                "statusFormat": json.dumps({self.dpcode: "$"}),
-                "valueDesc": status_range.values if status_range else "",
-                "valueType": status_range.type if status_range else "",
-                "enumMappingMap": self.enum_mapping_map or {},
-                "pid": product_id,
-            },
-        }
-
-
-@dataclass(kw_only=True)
-class LocalStrategyRemoval:
-    """Removal of a local convert strategy."""
-
-    dpid: int
-    dpcode: str
-
-
-@dataclass(kw_only=True)
-class DatapointBase(ABC):
-    """Base for a Tuya datapoint entry.
+class QuirkEntry(ABC):
+    """Base for an entry that a quirk applies to a device.
 
     When `apply_when` is set, the entry is only applied to devices for
     which the callable returns True. This allows a quirk to cover
@@ -76,7 +42,47 @@ class DatapointBase(ABC):
 
 
 @dataclass(kw_only=True)
-class DatapointRemoval(DatapointBase):
+class LocalConvertStrategy(QuirkEntry):
+    """Definition for a local convert strategy."""
+
+    value_convert: str
+    enum_mapping_map: dict[str, dict[str, Any]] | None = None
+
+    def apply(self, device: CustomerDevice) -> None:
+        """Set the local strategy on the device."""
+        device.local_strategy[self.dpid] = self.to_local_strategy(
+            device.product_id,
+            device.status_range.get(self.dpcode),
+        )
+
+    def to_local_strategy(
+        self, product_id: str, status_range: DeviceStatusRange | None
+    ) -> dict[str, Any]:
+        """Convert to LocalStrategy."""
+        return {
+            "value_convert": self.value_convert,
+            "status_code": self.dpcode,
+            "config_item": {
+                "statusFormat": json.dumps({self.dpcode: "$"}),
+                "valueDesc": status_range.values if status_range else "",
+                "valueType": status_range.type if status_range else "",
+                "enumMappingMap": self.enum_mapping_map or {},
+                "pid": product_id,
+            },
+        }
+
+
+@dataclass(kw_only=True)
+class LocalStrategyRemoval(QuirkEntry):
+    """Removal of a local convert strategy."""
+
+    def apply(self, device: CustomerDevice) -> None:
+        """Remove the local strategy from the device."""
+        device.local_strategy.pop(self.dpid, None)
+
+
+@dataclass(kw_only=True)
+class DatapointRemoval(QuirkEntry):
     """Removal of a Tuya datapoint."""
 
     def apply(self, device: CustomerDevice) -> None:
@@ -88,7 +94,7 @@ class DatapointRemoval(DatapointBase):
 
 
 @dataclass(kw_only=True)
-class DatapointDefinition(DatapointBase):
+class DatapointDefinition(QuirkEntry):
     """Definition for a Tuya datapoint."""
 
     dpmode: DPMode
@@ -150,7 +156,7 @@ class DatapointDefinition(DatapointBase):
 class DeviceQuirk(DeviceQuirkProtocol):
     """Quirk for Tuya device."""
 
-    _datapoint_definitions: list[DatapointBase]
+    _datapoint_definitions: list[QuirkEntry]
     _local_strategy: list[LocalConvertStrategy | LocalStrategyRemoval]
     _type_information_overrides: dict[
         tuple[int, str], type[TypeInformation[Any]]
@@ -205,16 +211,8 @@ class DeviceQuirk(DeviceQuirkProtocol):
 
         if device.support_local:
             for strategy in self._local_strategy:
-                if isinstance(strategy, LocalStrategyRemoval):
-                    device.local_strategy.pop(strategy.dpid, None)
-                    continue
-
-                device.local_strategy[strategy.dpid] = (
-                    strategy.to_local_strategy(
-                        device.product_id,
-                        device.status_range.get(strategy.dpcode),
-                    )
-                )
+                if strategy.applies_to_device(device):
+                    strategy.apply(device)
 
     def applies_to(
         self,

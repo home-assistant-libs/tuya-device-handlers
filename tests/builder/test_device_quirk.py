@@ -299,6 +299,25 @@ def test_initialise_device_remove_dpid_strategy(
     assert 1 not in mock_device.local_strategy
 
 
+def test_initialise_device_local_strategy_apply_when_not_met(
+    mock_device: CustomerDevice,
+) -> None:
+    """A local strategy whose apply_when returns False is skipped."""
+    mock_device.support_local = True
+    mock_device.local_strategy = {}
+    quirk = DeviceQuirk()
+    quirk._local_strategy.append(
+        LocalConvertStrategy(
+            dpid=1,
+            dpcode="x",
+            value_convert="enum",
+            apply_when=lambda _device: False,
+        )
+    )
+    quirk.initialise_device(mock_device)
+    assert 1 not in mock_device.local_strategy
+
+
 def test_mqtt_enum_strategy_mapping(
     mock_device: CustomerDevice, mock_manager: Manager
 ) -> None:
