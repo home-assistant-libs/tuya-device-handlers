@@ -52,6 +52,9 @@ class DeviceQuirkProtocol(Protocol):
     ) -> type[TypeInformation[Any]] | None:
         """Get the type information class override for a dpcode."""
 
+    def get_color_temp_kelvin_range(self) -> tuple[int, int] | None:
+        """Get the physical color temperature range in Kelvin."""
+
 
 class QuirksRegistry:
     """Registry for Tuya quirks."""

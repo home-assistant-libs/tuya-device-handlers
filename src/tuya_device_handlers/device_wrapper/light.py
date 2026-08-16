@@ -1,10 +1,11 @@
 """Tuya device wrapper."""
 
 import json
-from typing import Any
+from typing import Any, Self
 
 from tuya_sharing import CustomerDevice
 
+from tuya_device_handlers import TUYA_QUIRKS_REGISTRY
 from tuya_device_handlers.type_information import IntegerTypeInformation
 from tuya_device_handlers.utils import RemapHelper
 
@@ -141,6 +142,9 @@ class ColorTempWrapper(DPCodeIntegerWrapper[int]):
     MIN_KELVIN = 2000  # 500 mireds
     MAX_KELVIN = 6500  # 153 mireds
 
+    min_kelvin: int
+    max_kelvin: int
+
     @staticmethod
     def kelvin_to_mired(kelvin: int) -> float:
         """Convert Kelvin to Mired."""
@@ -152,14 +156,53 @@ class ColorTempWrapper(DPCodeIntegerWrapper[int]):
         return round(1000000 / mired)
 
     def __init__(
-        self, dpcode: str, type_information: IntegerTypeInformation
+        self,
+        dpcode: str,
+        type_information: IntegerTypeInformation,
+        *,
+        min_kelvin: int | None = None,
+        max_kelvin: int | None = None,
     ) -> None:
         """Init DPCodeIntegerWrapper."""
         super().__init__(dpcode, type_information)
-        max_mireds = self.kelvin_to_mired(self.MIN_KELVIN)
-        min_mireds = self.kelvin_to_mired(self.MAX_KELVIN)
+        self.min_kelvin = (
+            min_kelvin if min_kelvin is not None else self.MIN_KELVIN
+        )
+        self.max_kelvin = (
+            max_kelvin if max_kelvin is not None else self.MAX_KELVIN
+        )
+        max_mireds = self.kelvin_to_mired(self.min_kelvin)
+        min_mireds = self.kelvin_to_mired(self.max_kelvin)
         self._remap_helper = RemapHelper.from_type_information(
             type_information, min_mireds, max_mireds
+        )
+
+    @classmethod
+    def find_dpcode(
+        cls,
+        device: CustomerDevice,
+        dpcodes: str | tuple[str, ...] | None,
+        *,
+        prefer_function: bool = False,
+    ) -> Self | None:
+        """Find a color temperature wrapper, applying a quirk Kelvin range."""
+        if not (
+            type_information := cls._DPTYPE.find_dpcode(
+                device, dpcodes, prefer_function=prefer_function
+            )
+        ):
+            return None
+        min_kelvin = cls.MIN_KELVIN
+        max_kelvin = cls.MAX_KELVIN
+        if (quirk := TUYA_QUIRKS_REGISTRY.get_quirk_for_device(device)) and (
+            kelvin_range := quirk.get_color_temp_kelvin_range()
+        ):
+            min_kelvin, max_kelvin = kelvin_range
+        return cls(
+            dpcode=type_information.dpcode,
+            type_information=type_information,
+            min_kelvin=min_kelvin,
+            max_kelvin=max_kelvin,
         )
 
     def read_device_status(self, device: CustomerDevice) -> int | None:

@@ -14,6 +14,7 @@ from tuya_device_handlers.device_wrapper.light import (
     ColorDataWrapper,
     ColorTempWrapper,
 )
+from tuya_device_handlers.type_information import IntegerTypeInformation
 from tuya_device_handlers.utils import RemapHelper
 
 from . import inject_dpcode
@@ -333,3 +334,64 @@ def test_light_action_command(
             )
         )
     assert wrapper.get_update_commands(mock_device, action) == expected
+
+
+@pytest.mark.parametrize(
+    ("raw_value", "expected_kelvin"),
+    [
+        (0, 1600),
+        (795, 3059),
+        (1000, 4000),
+    ],
+)
+def test_color_temp_wrapper_custom_kelvin_range_read(
+    mock_device: CustomerDevice,
+    raw_value: int,
+    expected_kelvin: int,
+) -> None:
+    """A custom Kelvin range remaps the 0-1000 Tuya scale."""
+    _inject_default_light(mock_device)
+    mock_device.status["temp_value"] = raw_value
+    type_information = IntegerTypeInformation.find_dpcode(
+        mock_device, "temp_value"
+    )
+    assert type_information is not None
+    wrapper = ColorTempWrapper(
+        "temp_value",
+        type_information,
+        min_kelvin=1600,
+        max_kelvin=4000,
+    )
+    assert wrapper.min_kelvin == 1600
+    assert wrapper.max_kelvin == 4000
+    assert wrapper.read_device_status(mock_device) == expected_kelvin
+
+
+@pytest.mark.parametrize(
+    ("kelvin", "expected_raw"),
+    [
+        (1600, 0),
+        (3059, 795),
+        (4000, 1000),
+    ],
+)
+def test_color_temp_wrapper_custom_kelvin_range_write(
+    mock_device: CustomerDevice,
+    kelvin: int,
+    expected_raw: int,
+) -> None:
+    """A custom Kelvin range converts HA Kelvin back to the Tuya scale."""
+    _inject_default_light(mock_device)
+    type_information = IntegerTypeInformation.find_dpcode(
+        mock_device, "temp_value"
+    )
+    assert type_information is not None
+    wrapper = ColorTempWrapper(
+        "temp_value",
+        type_information,
+        min_kelvin=1600,
+        max_kelvin=4000,
+    )
+    assert wrapper.get_update_commands(mock_device, kelvin) == [
+        {"code": "temp_value", "value": expected_raw}
+    ]

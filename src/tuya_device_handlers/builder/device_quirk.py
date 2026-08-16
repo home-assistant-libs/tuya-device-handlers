@@ -161,6 +161,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
         self._local_strategy = {}
         self._type_information_overrides = {}
         self._get_wrapper_functions = {}
+        self._color_temp_kelvin_range: tuple[int, int] | None = None
 
         current_frame = inspect.currentframe()
         if TYPE_CHECKING:
@@ -419,3 +420,17 @@ class DeviceQuirk(DeviceQuirkProtocol):
             if code == dpcode:
                 return type_cls
         return None
+
+    def set_color_temp_kelvin_range(
+        self, *, min_kelvin: int, max_kelvin: int
+    ) -> Self:
+        """Set the physical color temperature range in Kelvin."""
+        if min_kelvin >= max_kelvin:
+            msg = "min_kelvin must be less than max_kelvin"
+            raise ValueError(msg)
+        self._color_temp_kelvin_range = (min_kelvin, max_kelvin)
+        return self
+
+    def get_color_temp_kelvin_range(self) -> tuple[int, int] | None:
+        """Get the physical color temperature range in Kelvin."""
+        return self._color_temp_kelvin_range
