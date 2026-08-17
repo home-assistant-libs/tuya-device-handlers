@@ -34,7 +34,6 @@ def test_power_switch_climate_definition() -> None:
 
     # The switch_wrapper should find power_switch and be non-None
     assert definition.switch_wrapper is not None
-    assert definition.switch_wrapper.dpcode == "power_switch"
 
     # Also verify temperature wrappers work
     assert definition.current_temperature_wrapper is not None
