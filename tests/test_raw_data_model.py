@@ -6,7 +6,10 @@ import dataclasses
 import pytest
 from syrupy.assertion import SnapshotAssertion
 
-from tuya_device_handlers.raw_data_model import ElectricityData
+from tuya_device_handlers.raw_data_model import (
+    ElectricityData,
+    FeederScheduleData,
+)
 
 
 @pytest.mark.parametrize(
@@ -41,3 +44,29 @@ def test_electricity_data(
 
     asdict = None if raw_data is None else dataclasses.asdict(raw_data)
     assert asdict == snapshot
+
+
+@pytest.mark.parametrize(
+    "base64_string",
+    [
+        # Empty
+        "",
+        # Single entry: Mon, 07:30, portion=2, enabled=1
+        base64.b64encode(bytes.fromhex("01071E0201")),
+        # Two entries: Mon+Wed 08:00 p=1 on, Sat+Sun 18:15 p=3 off
+        base64.b64encode(bytes.fromhex("050800010160120F0300")),
+        # Invalid (length not a multiple of 5)
+        base64.b64encode(bytes.fromhex("01071E02")),
+    ],
+)
+def test_feeder_schedule_data(
+    base64_string: str,
+    snapshot: SnapshotAssertion,
+) -> None:
+    """Test FeederScheduleData round-trip."""
+    raw_bytes = base64.b64decode(base64_string)
+    entries = FeederScheduleData.from_bytes(raw_bytes)
+
+    assert entries == snapshot
+    if entries is not None:
+        assert FeederScheduleData.to_bytes(entries) == raw_bytes

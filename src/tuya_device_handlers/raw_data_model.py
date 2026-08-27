@@ -58,3 +58,57 @@ class ElectricityData:
             return cls(current=current, power=power, voltage=voltage)
 
         return None
+
+
+@dataclass(kw_only=True)
+class FeederScheduleDataEntry:
+    """One feeder schedule entry."""
+
+    days: int
+    """Bitmask: bit 0 Monday … bit 6 Sunday; bit 7 ignored."""
+    hour: int
+    """0-23."""
+    minute: int
+    """0-59."""
+    portion: int
+    enabled: int
+    """0 or 1."""
+
+    @classmethod
+    def from_bytes(cls, raw: bytes) -> Self:
+        """Parse 5 bytes into a FeederScheduleDataEntry."""
+        return cls(
+            days=raw[0],
+            hour=raw[1],
+            minute=raw[2],
+            portion=raw[3],
+            enabled=raw[4],
+        )
+
+    def to_bytes(self) -> bytes:
+        """Serialize this entry to 5 bytes."""
+        return bytes(
+            (self.days, self.hour, self.minute, self.portion, self.enabled)
+        )
+
+
+class FeederScheduleData:
+    """Feeder schedule RAW value."""
+
+    _ENTRY_LEN = 5
+
+    @classmethod
+    def from_bytes(cls, raw: bytes) -> list[FeederScheduleDataEntry] | None:
+        """Parse bytes into a list of RawFeederScheduleDataEntry."""
+        # Format: concatenated 5-byte entries (see RawFeederScheduleDataEntry).
+        if len(raw) % cls._ENTRY_LEN != 0:
+            return None
+        return [
+            FeederScheduleDataEntry.from_bytes(raw[i : i + cls._ENTRY_LEN])
+            for i in range(0, len(raw), cls._ENTRY_LEN)
+        ]
+
+    @classmethod
+    def to_bytes(cls, entries: list[FeederScheduleDataEntry]) -> bytes:
+        """Serialize a list of RawFeederScheduleDataEntry."""
+        return b"".join(entry.to_bytes() for entry in entries)

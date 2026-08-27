@@ -85,6 +85,14 @@ _SAMPLE_MEAL_PLAN = [
         enabled=True,
     ),
 ]
+_PARTIAL_DAYS_MEAL_PLAN = [
+    FeederSchedule(
+        days=["monday", "thursday"],
+        time="12:00",
+        portion=1,
+        enabled=True,
+    ),
+]
 
 
 @pytest.mark.parametrize(
@@ -106,6 +114,11 @@ _SAMPLE_MEAL_PLAN = [
             "cwwsq_wfkzyy0evslzsmoi.json",
             None,
         ),
+        # Invalid: byte length not a multiple of 5
+        (
+            "cwwsq_wfkzyy0evslzsmoi.json",
+            "AQceAg==",
+        ),
     ],
 )
 def test_read_device_status(
@@ -123,17 +136,28 @@ def test_read_device_status(
 
 
 @pytest.mark.parametrize(
-    ("fixture_filename", "dpcode", "expected_value"),
+    ("fixture_filename", "dpcode", "meal_plan", "expected_value"),
     [
         (
             "cwwsq_wfkzyy0evslzsmoi.json",
             "meal_plan",
+            _SAMPLE_MEAL_PLAN,
             "fwkAAQF/CR4BAX8MAAEBfw8AAgF/FQACAQ==",
+        ),
+        # Partial days: Mon+Thu only, exercises the "day not in list" branch
+        (
+            "cwwsq_wfkzyy0evslzsmoi.json",
+            "meal_plan",
+            _PARTIAL_DAYS_MEAL_PLAN,
+            "CQwAAQE=",
         ),
     ],
 )
 def test_get_update_commands(
-    fixture_filename: str, dpcode: str, expected_value: str
+    fixture_filename: str,
+    dpcode: str,
+    meal_plan: list[FeederSchedule],
+    expected_value: str,
 ) -> None:
     """Test get_update_commands encodes data correctly."""
     device = create_device(fixture_filename)
@@ -143,7 +167,7 @@ def test_get_update_commands(
     )
     assert wrapper is not None
 
-    commands = wrapper.get_update_commands(device, _SAMPLE_MEAL_PLAN)
+    commands = wrapper.get_update_commands(device, meal_plan)
     assert commands == [{"code": dpcode, "value": expected_value}]
 
 
