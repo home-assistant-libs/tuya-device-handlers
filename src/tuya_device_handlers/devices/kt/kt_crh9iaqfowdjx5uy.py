@@ -4,15 +4,13 @@ from tuya_device_handlers import TUYA_QUIRKS_REGISTRY
 from tuya_device_handlers.builder import DeviceQuirk
 from tuya_device_handlers.const import DPMode
 
-READ_WRITE = DPMode.READ | DPMode.WRITE
-
 (
     DeviceQuirk()
     .applies_to(product_id="crh9iaqFowdJX5UY")
     .add_dpid_integer(
         dpid=2,
         dpcode="temp_set",
-        dpmode=READ_WRITE,
+        dpmode=DPMode.READ | DPMode.WRITE,
         unit="℃",
         min=16,
         max=30,
@@ -32,7 +30,7 @@ READ_WRITE = DPMode.READ | DPMode.WRITE
     .add_dpid_enum(
         dpid=4,
         dpcode="mode",
-        dpmode=READ_WRITE,
+        dpmode=DPMode.READ | DPMode.WRITE,
         enum_range=["cold", "hot", "wet", "wind"],
     )
     .register(TUYA_QUIRKS_REGISTRY)
