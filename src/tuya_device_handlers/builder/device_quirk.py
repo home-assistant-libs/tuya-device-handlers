@@ -6,7 +6,7 @@ from dataclasses import dataclass
 import inspect
 import json
 import pathlib
-from typing import TYPE_CHECKING, Any, Self
+from typing import TYPE_CHECKING, Any, ClassVar, Self
 
 from tuya_sharing import CustomerDevice, DeviceFunction, DeviceStatusRange
 
@@ -20,13 +20,50 @@ from tuya_device_handlers.type_information import TypeInformation
 
 
 @dataclass(kw_only=True)
-class LocalConvertStrategy:
-    """Definition for a local convert strategy."""
+class QuirkEntry(ABC):
+    """Base for an entry that a quirk applies to a device.
+
+    When `apply_when` is set, the entry is only applied to devices for
+    which the callable returns True. This allows a quirk to cover
+    variants that share a product_id but behave differently.
+
+    Subclasses that only make sense for locally controlled devices set
+    `requires_local_support`, which skips them when the device does not
+    support local control.
+    """
+
+    requires_local_support: ClassVar[bool] = False
 
     dpid: int
     dpcode: str
+    apply_when: Callable[[CustomerDevice], bool] | None = None
+
+    def applies_to_device(self, device: CustomerDevice) -> bool:
+        """Check whether this entry applies to the device."""
+        if self.requires_local_support and not device.support_local:
+            return False
+        return self.apply_when is None or self.apply_when(device)
+
+    @abstractmethod
+    def apply(self, device: CustomerDevice) -> None:
+        """Apply this entry to the device."""
+
+
+@dataclass(kw_only=True)
+class LocalConvertStrategy(QuirkEntry):
+    """Definition for a local convert strategy."""
+
+    requires_local_support: ClassVar[bool] = True
+
     value_convert: str
     enum_mapping_map: dict[str, dict[str, Any]] | None = None
+
+    def apply(self, device: CustomerDevice) -> None:
+        """Set the local strategy on the device."""
+        device.local_strategy[self.dpid] = self.to_local_strategy(
+            device.product_id,
+            device.status_range.get(self.dpcode),
+        )
 
     def to_local_strategy(
         self, product_id: str, status_range: DeviceStatusRange | None
@@ -46,29 +83,18 @@ class LocalConvertStrategy:
 
 
 @dataclass(kw_only=True)
-class DatapointBase(ABC):
-    """Base for a Tuya datapoint entry.
+class LocalStrategyRemoval(QuirkEntry):
+    """Removal of a local convert strategy."""
 
-    When `apply_when` is set, the entry is only applied to devices for
-    which the callable returns True. This allows a quirk to cover
-    variants that share a product_id but behave differently.
-    """
+    requires_local_support: ClassVar[bool] = True
 
-    dpid: int
-    dpcode: str
-    apply_when: Callable[[CustomerDevice], bool] | None = None
-
-    def applies_to_device(self, device: CustomerDevice) -> bool:
-        """Check whether this entry applies to the device."""
-        return self.apply_when is None or self.apply_when(device)
-
-    @abstractmethod
     def apply(self, device: CustomerDevice) -> None:
-        """Apply this entry to the device."""
+        """Remove the local strategy from the device."""
+        device.local_strategy.pop(self.dpid, None)
 
 
 @dataclass(kw_only=True)
-class DatapointRemoval(DatapointBase):
+class DatapointRemoval(QuirkEntry):
     """Removal of a Tuya datapoint."""
 
     def apply(self, device: CustomerDevice) -> None:
@@ -80,7 +106,7 @@ class DatapointRemoval(DatapointBase):
 
 
 @dataclass(kw_only=True)
-class DatapointDefinition(DatapointBase):
+class DatapointDefinition(QuirkEntry):
     """Definition for a Tuya datapoint."""
 
     dpmode: DPMode
@@ -142,8 +168,7 @@ class DatapointDefinition(DatapointBase):
 class DeviceQuirk(DeviceQuirkProtocol):
     """Quirk for Tuya device."""
 
-    _datapoint_definitions: list[DatapointBase]
-    _local_strategy: dict[tuple[int, str], LocalConvertStrategy | None]
+    _quirk_entries: list[QuirkEntry]
     _type_information_overrides: dict[
         tuple[int, str], type[TypeInformation[Any]]
     ]
@@ -157,8 +182,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
         self._applies_to: str | None = None
         self._override_category: str | None = None
 
-        self._datapoint_definitions = []
-        self._local_strategy = {}
+        self._quirk_entries = []
         self._type_information_overrides = {}
         self._get_wrapper_functions = {}
 
@@ -191,24 +215,12 @@ class DeviceQuirk(DeviceQuirkProtocol):
         if self._override_category is not None:
             device.category = self._override_category
 
-        for definition in self._datapoint_definitions:
-            if definition.applies_to_device(device):
-                definition.apply(device)
-
-        if device.support_local:
-            for key, definition in self._local_strategy.items():
-                dpid, _dpcode = key
-
-                if definition is None:
-                    device.local_strategy.pop(dpid, None)
-                    continue
-
-                device.local_strategy[definition.dpid] = (
-                    definition.to_local_strategy(
-                        device.product_id,
-                        device.status_range.get(definition.dpcode),
-                    )
-                )
+        # Entries are applied in the order the builder methods were called.
+        # A LocalConvertStrategy reads device.status_range, so it must be
+        # added after the datapoint definition that provides its dpcode.
+        for entry in self._quirk_entries:
+            if entry.applies_to_device(device):
+                entry.apply(device)
 
     def applies_to(
         self,
@@ -250,7 +262,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
         apply_when: Callable[[CustomerDevice], bool] | None = None,
     ) -> Self:
         """Add datapoint Bitmap definition."""
-        self._datapoint_definitions.append(
+        self._quirk_entries.append(
             DatapointDefinition(
                 dpid=dpid,
                 dpcode=dpcode,
@@ -271,7 +283,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
         apply_when: Callable[[CustomerDevice], bool] | None = None,
     ) -> Self:
         """Add datapoint Boolean definition."""
-        self._datapoint_definitions.append(
+        self._quirk_entries.append(
             DatapointDefinition(
                 dpid=dpid,
                 dpcode=dpcode,
@@ -293,7 +305,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
         apply_when: Callable[[CustomerDevice], bool] | None = None,
     ) -> Self:
         """Add datapoint Enum definition."""
-        self._datapoint_definitions.append(
+        self._quirk_entries.append(
             DatapointDefinition(
                 dpid=dpid,
                 dpcode=dpcode,
@@ -320,7 +332,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
         apply_when: Callable[[CustomerDevice], bool] | None = None,
     ) -> Self:
         """Add datapoint Integer definition."""
-        self._datapoint_definitions.append(
+        self._quirk_entries.append(
             DatapointDefinition(
                 dpid=dpid,
                 dpcode=dpcode,
@@ -360,7 +372,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
         apply_when: Callable[[CustomerDevice], bool] | None = None,
     ) -> Self:
         """Remove datapoint definition."""
-        self._datapoint_definitions.append(
+        self._quirk_entries.append(
             DatapointRemoval(dpid=dpid, dpcode=dpcode, apply_when=apply_when)
         )
         return self
@@ -371,22 +383,36 @@ class DeviceQuirk(DeviceQuirkProtocol):
         dpid: int,
         dpcode: str,
         enum_mapping_map: dict[Any, Any],
+        apply_when: Callable[[CustomerDevice], bool] | None = None,
     ) -> Self:
         """Override local strategy for a datapoint."""
-        self._local_strategy[(dpid, dpcode)] = LocalConvertStrategy(
-            dpid=dpid,
-            dpcode=dpcode,
-            value_convert="enum",
-            enum_mapping_map={
-                str(key): {"value": value}
-                for key, value in enum_mapping_map.items()
-            },
+        self._quirk_entries.append(
+            LocalConvertStrategy(
+                dpid=dpid,
+                dpcode=dpcode,
+                value_convert="enum",
+                enum_mapping_map={
+                    str(key): {"value": value}
+                    for key, value in enum_mapping_map.items()
+                },
+                apply_when=apply_when,
+            )
         )
         return self
 
-    def remove_dpid_strategy(self, *, dpid: int, dpcode: str) -> Self:
+    def remove_dpid_strategy(
+        self,
+        *,
+        dpid: int,
+        dpcode: str,
+        apply_when: Callable[[CustomerDevice], bool] | None = None,
+    ) -> Self:
         """Remove datapoint strategy."""
-        self._local_strategy[(dpid, dpcode)] = None
+        self._quirk_entries.append(
+            LocalStrategyRemoval(
+                dpid=dpid, dpcode=dpcode, apply_when=apply_when
+            )
+        )
         return self
 
     def map_feeder_schedules_wrapper(

@@ -1,99 +1,141 @@
 # serializer version: 1
 # name: test_electricity_data[AAAAAAAAAAAAAA==]
   dict({
+    'apparent_power': None,
     'current': 0,
     'power': 0,
+    'power_factor': None,
+    'reactive_power': None,
     'voltage': 0.0,
   })
 # ---
 # name: test_electricity_data[AQ8IgAAD6AAnEAANrAAw1FA=]
   dict({
+    'apparent_power': 12500,
     'current': 1000,
     'power': 10000,
+    'power_factor': 0.8,
+    'reactive_power': 3500,
     'voltage': 217.6,
   })
 # ---
 # name: test_electricity_data[Ag8IgAAD6AAnEAANrAAw1FAP]
   dict({
+    'apparent_power': 12500,
     'current': -1000,
     'power': -10000,
+    'power_factor': -0.8,
+    'reactive_power': -3500,
     'voltage': 217.6,
   })
 # ---
 # name: test_electricity_data[Ag8JJQAASAAACAAAAAAACGME]
   dict({
+    'apparent_power': 8,
     'current': 72,
     'power': 8,
+    'power_factor': 0.99,
+    'reactive_power': 0,
     'voltage': 234.1,
   })
 # ---
 # name: test_electricity_data[CGYAPCgADPIACw==]
   dict({
+    'apparent_power': None,
     'current': 15400,
     'power': 3314,
+    'power_factor': None,
+    'reactive_power': None,
     'voltage': 215.0,
   })
 # ---
 # name: test_electricity_data[CIAAA+gAJxA=]
   dict({
+    'apparent_power': None,
     'current': 1000,
     'power': 10000,
+    'power_factor': None,
+    'reactive_power': None,
     'voltage': 217.6,
   })
 # ---
 # name: test_electricity_data[CIsAK8MACWo=]
   dict({
+    'apparent_power': None,
     'current': 11203,
     'power': 2410,
+    'power_factor': None,
+    'reactive_power': None,
     'voltage': 218.7,
   })
 # ---
 # name: test_electricity_data[CJwAA5EAAFw=]
   dict({
+    'apparent_power': None,
     'current': 913,
     'power': 92,
+    'power_factor': None,
+    'reactive_power': None,
     'voltage': 220.4,
   })
 # ---
 # name: test_electricity_data[CKMAAn0AAGw=]
   dict({
+    'apparent_power': None,
     'current': 637,
     'power': 108,
+    'power_factor': None,
+    'reactive_power': None,
     'voltage': 221.1,
   })
 # ---
 # name: test_electricity_data[CPQAI58ACBA=]
   dict({
+    'apparent_power': None,
     'current': 9119,
     'power': 2064,
+    'power_factor': None,
+    'reactive_power': None,
     'voltage': 229.2,
   })
 # ---
 # name: test_electricity_data[CREANUkADG8=]
   dict({
+    'apparent_power': None,
     'current': 13641,
     'power': 3183,
+    'power_factor': None,
+    'reactive_power': None,
     'voltage': 232.1,
   })
 # ---
 # name: test_electricity_data[CSIAFfQABKE=]
   dict({
+    'apparent_power': None,
     'current': 5620,
     'power': 1185,
+    'power_factor': None,
+    'reactive_power': None,
     'voltage': 233.8,
   })
 # ---
 # name: test_electricity_data[CT0AAmAAAIU=]
   dict({
+    'apparent_power': None,
     'current': 608,
     'power': 133,
+    'power_factor': None,
+    'reactive_power': None,
     'voltage': 236.5,
   })
 # ---
 # name: test_electricity_data[CTIAVfcAFGw=]
   dict({
+    'apparent_power': None,
     'current': 22007,
     'power': 5228,
+    'power_factor': None,
+    'reactive_power': None,
     'voltage': 235.4,
   })
 # ---
