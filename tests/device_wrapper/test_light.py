@@ -5,6 +5,7 @@ from typing import Any
 import pytest
 from tuya_sharing import CustomerDevice
 
+from tuya_device_handlers.const import ColorTempScale
 from tuya_device_handlers.device_wrapper.common import (
     DPCodeIntegerWrapper,
     DPCodeTypeInformationWrapper,
@@ -467,3 +468,73 @@ def test_color_temp_wrapper_custom_kelvin_range(
     assert wrapper.get_update_commands(mock_device, 4000) == [
         {"code": "temp_value", "value": 1000}
     ]
+
+
+@pytest.mark.parametrize(
+    ("raw_value", "expected_kelvin"),
+    [
+        (0, 1600),
+        (795, 3508),
+        (1000, 4000),
+    ],
+)
+def test_color_temp_wrapper_kelvin_scale_read(
+    mock_device: CustomerDevice,
+    raw_value: int,
+    expected_kelvin: int,
+) -> None:
+    """Test reading a device whose raw range is linear in Kelvin."""
+
+    class KelvinScaleWrapper(ColorTempWrapper):
+        """Wrapper for a 1600-4000 K lamp, linear in Kelvin."""
+
+        min_kelvin = 1600
+        max_kelvin = 4000
+        color_temp_scale = ColorTempScale.KELVIN
+
+    _inject_default_light(mock_device)
+    mock_device.status["temp_value"] = raw_value
+    wrapper = KelvinScaleWrapper.find_dpcode(mock_device, "temp_value")
+
+    assert wrapper
+    assert wrapper.read_device_status(mock_device) == expected_kelvin
+
+
+@pytest.mark.parametrize(
+    ("kelvin", "expected_raw"),
+    [
+        (1600, 0),
+        (3508, 795),
+        (4000, 1000),
+    ],
+)
+def test_color_temp_wrapper_kelvin_scale_write(
+    mock_device: CustomerDevice,
+    kelvin: int,
+    expected_raw: int,
+) -> None:
+    """Test writing to a device whose raw range is linear in Kelvin."""
+
+    class KelvinScaleWrapper(ColorTempWrapper):
+        """Wrapper for a 1600-4000 K lamp, linear in Kelvin."""
+
+        min_kelvin = 1600
+        max_kelvin = 4000
+        color_temp_scale = ColorTempScale.KELVIN
+
+    _inject_default_light(mock_device)
+    wrapper = KelvinScaleWrapper.find_dpcode(mock_device, "temp_value")
+
+    assert wrapper
+    assert wrapper.get_update_commands(mock_device, kelvin) == [
+        {"code": "temp_value", "value": expected_raw}
+    ]
+
+
+def test_color_temp_wrapper_default_scale(mock_device: CustomerDevice) -> None:
+    """Test the default color temperature scale of a light."""
+    _inject_default_light(mock_device)
+    wrapper = ColorTempWrapper.find_dpcode(mock_device, "temp_value")
+
+    assert wrapper
+    assert wrapper.color_temp_scale is ColorTempScale.MIRED
