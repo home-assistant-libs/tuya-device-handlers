@@ -30,19 +30,19 @@ Changelog = "https://github.com/home-assistant-libs/tuya-device-handlers/release
 [tool.poetry.group.dev.dependencies]
 codespell = "2.4.3"
 covdefaults = "2.3.0"
-coverage = { version = "7.15.3", extras = ["toml"] }
+coverage = { version = "7.16.0", extras = ["toml"] }
 pre-commit-hooks = "6.0.0"
-prek = "0.4.11"
-pylint = "4.0.6"
+prek = "0.5.0"
+pylint = "4.0.8"
 pytest = "9.1.1"
 pytest-asyncio = "1.4.0"
 pytest-cov = "7.1.0"
-ruff = "0.15.22"
+ruff = "0.16.5"
 safety = "3.8.1"
-syrupy = "5.5.3"
-ty = "0.0.65"
+syrupy = "6.0.0"
+ty = "0.0.75"
 yamllint = "1.38.0"
-zizmor = "1.29.0"
+zizmor = "1.30.0"
 
 
 [tool.coverage.run]
@@ -108,10 +108,13 @@ ignore = [
 
     # Pre-existing patterns (can be tightened over time)
     "ARG002",  # Unused method argument
+    "CPY001",  # Missing copyright notice at top of file
     "FBT001",  # Boolean type hint positional argument
     "FBT002",  # Boolean default value positional argument
     "FBT003",  # Boolean positional value in call
+    "ISC004",  # Unparenthesized implicit string concatenation in collection
     "PLR0913", # Too many arguments in function definition
+    "PLR0917", # Too many positional arguments
     "PYI041",  # Redundant numeric union (int is subtype of float, but keep for clarity)
     "RUF012",  # Mutable class default
     "TC006",   # Runtime cast value (stylistic, prefer unquoted)

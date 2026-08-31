@@ -12,6 +12,9 @@ class ElectricityData:
     current: float
     power: float
     voltage: float
+    reactive_power: float | None = None
+    apparent_power: float | None = None
+    power_factor: float | None = None
 
     @classmethod
     def from_bytes(cls, raw: bytes) -> Self | None:
@@ -41,6 +44,9 @@ class ElectricityData:
             voltage = struct.unpack(">H", data[0:2])[0] / 10.0
             current = struct.unpack(">L", b"\x00" + data[2:5])[0]
             power = struct.unpack(">L", b"\x00" + data[5:8])[0]
+            reactive_power = struct.unpack(">L", b"\x00" + data[8:11])[0]
+            apparent_power = struct.unpack(">L", b"\x00" + data[11:14])[0]
+            power_factor = data[14] / 100.0
 
             if is_v2:
                 sign_bitmap = raw[17]
@@ -48,8 +54,19 @@ class ElectricityData:
                     current = -current
                 if sign_bitmap & 0x02:
                     power = -power
+                if sign_bitmap & 0x04:
+                    reactive_power = -reactive_power
+                if sign_bitmap & 0x08:
+                    power_factor = -power_factor
 
-            return cls(current=current, power=power, voltage=voltage)
+            return cls(
+                current=current,
+                power=power,
+                voltage=voltage,
+                reactive_power=reactive_power,
+                apparent_power=apparent_power,
+                power_factor=power_factor,
+            )
 
         if len(raw) >= 8:
             voltage = struct.unpack(">H", raw[0:2])[0] / 10.0
