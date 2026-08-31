@@ -1,14 +1,12 @@
 """Quirk for Duux Whisper Flex fan (product_id dune79w7bsu6dg3e).
 
-Tuya maps the horizontal and vertical oscillation datapoints to lowercase
-boolean strings despite advertising them as Boolean values.
+Tuya reports the cached status of the horizontal and vertical oscillation
+datapoints as lowercase boolean strings despite advertising them as Boolean
+values, and maps the local strategy values to the same strings.
 """
 
 from tuya_device_handlers import TUYA_QUIRKS_REGISTRY
 from tuya_device_handlers.builder import DeviceQuirk
-from tuya_device_handlers.type_information_ex import (
-    StringBooleanTypeInformationEx,
-)
 
 (
     DeviceQuirk()
@@ -18,20 +16,20 @@ from tuya_device_handlers.type_information_ex import (
         model="Whisper Flex",
         model_id="DXCF10",
     )
-    .override_dpid_type_information_cls(
+    .map_dpid_initial_status_values(
         dpid=4,
         dpcode="switch_horizontal",
-        type_information_cls=StringBooleanTypeInformationEx,
+        status_mapping={"false": False, "true": True},
     )
     .set_dpid_strategy_to_enum(
         dpid=4,
         dpcode="switch_horizontal",
         enum_mapping_map={0: False, 1: True},
     )
-    .override_dpid_type_information_cls(
+    .map_dpid_initial_status_values(
         dpid=5,
         dpcode="switch_vertical",
-        type_information_cls=StringBooleanTypeInformationEx,
+        status_mapping={"false": False, "true": True},
     )
     .set_dpid_strategy_to_enum(
         dpid=5,

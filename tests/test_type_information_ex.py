@@ -6,7 +6,6 @@ from tuya_sharing import CustomerDevice
 from tuya_device_handlers.type_information import PrepareSetValueError
 from tuya_device_handlers.type_information_ex import (
     InvertedIntegerTypeInformationEx,
-    StringBooleanTypeInformationEx,
 )
 
 
@@ -18,46 +17,6 @@ def _find(device: CustomerDevice) -> InvertedIntegerTypeInformationEx:
     )
     assert type_information is not None
     return type_information
-
-
-def _find_string_boolean(
-    device: CustomerDevice,
-) -> StringBooleanTypeInformationEx:
-    """Return string boolean type information for ``demo_boolean``."""
-    type_information = StringBooleanTypeInformationEx.find_dpcode(
-        device, "demo_boolean"
-    )
-    assert type_information is not None
-    return type_information
-
-
-@pytest.mark.parametrize(
-    ("raw_value", "expected"),
-    [
-        pytest.param("false", False, id="false-string"),
-        pytest.param("true", True, id="true-string"),
-        pytest.param(False, False, id="native-false"),
-        pytest.param(True, True, id="native-true"),
-    ],
-)
-def test_string_boolean_read(
-    mock_device: CustomerDevice, raw_value: str | bool, expected: bool
-) -> None:
-    """Read lowercase strings and native booleans."""
-    mock_device.status["demo_boolean"] = raw_value
-    assert (
-        _find_string_boolean(mock_device).read_device_value(mock_device)
-        is expected
-    )
-
-
-def test_string_boolean_write(mock_device: CustomerDevice) -> None:
-    """Write native booleans and reject boolean strings."""
-    type_information = _find_string_boolean(mock_device)
-    assert type_information.prepare_set_value(mock_device, True) is True
-    assert type_information.prepare_set_value(mock_device, False) is False
-    with pytest.raises(PrepareSetValueError):
-        type_information.prepare_set_value(mock_device, "true")
 
 
 def test_read_inverts_within_range(mock_device: CustomerDevice) -> None:
