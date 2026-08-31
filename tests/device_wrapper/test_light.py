@@ -16,7 +16,6 @@ from tuya_device_handlers.device_wrapper.light import (
     ColorDataStringWrapper,
     ColorTempWrapper,
 )
-from tuya_device_handlers.type_information import IntegerTypeInformation
 from tuya_device_handlers.type_information_ex import ColorTempTypeInformationEx
 from tuya_device_handlers.utils import RemapHelper
 
@@ -436,41 +435,40 @@ def test_color_data_string_action_command(
     assert wrapper.get_update_commands(mock_device, action) == expected
 
 
-class _KelvinScaleTypeInformation(ColorTempTypeInformationEx):
-    """1600-4000 K lamp whose raw scale is linear in Kelvin."""
-
-    min_kelvin = 1600
-    max_kelvin = 4000
-    color_temp_scale = ColorTempScale.KELVIN
-
-
-class _MiredScaleTypeInformation(ColorTempTypeInformationEx):
-    """1600-4000 K lamp whose raw scale is linear in mireds."""
-
-    min_kelvin = 1600
-    max_kelvin = 4000
-
-
-def _color_temp_wrapper(
+def test_color_temp_wrapper_default_kelvin_range(
     mock_device: CustomerDevice,
-    type_information_cls: type[IntegerTypeInformation],
-) -> ColorTempWrapper:
-    """Build a ColorTempWrapper for temp_value with given type information."""
-    type_information = type_information_cls.find_dpcode(
-        mock_device, "temp_value"
-    )
-    assert type_information is not None
-    return ColorTempWrapper("temp_value", type_information)
-
-
-def test_color_temp_wrapper_defaults(mock_device: CustomerDevice) -> None:
-    """Without a quirk, the Tuya defaults apply."""
+) -> None:
+    """Test the default color temperature range of a light."""
     _inject_default_light(mock_device)
-    wrapper = _color_temp_wrapper(mock_device, IntegerTypeInformation)
+    wrapper = ColorTempWrapper.find_dpcode(mock_device, "temp_value")
 
+    assert wrapper
     assert wrapper.min_kelvin == 2000
     assert wrapper.max_kelvin == 6500
-    assert wrapper.color_temp_scale is ColorTempScale.MIRED
+
+
+def test_color_temp_wrapper_custom_kelvin_range(
+    mock_device: CustomerDevice,
+) -> None:
+    """Test a subclass overriding the color temperature range."""
+
+    class CustomColorTempWrapper(ColorTempWrapper):
+        """Wrapper for a 1600-4000 K lamp."""
+
+        min_kelvin = 1600
+        max_kelvin = 4000
+
+    _inject_default_light(mock_device)
+    mock_device.status["temp_value"] = 795
+    wrapper = CustomColorTempWrapper.find_dpcode(mock_device, "temp_value")
+
+    assert wrapper
+    assert wrapper.min_kelvin == 1600
+    assert wrapper.max_kelvin == 4000
+    assert wrapper.read_device_status(mock_device) == 3059
+    assert wrapper.get_update_commands(mock_device, 4000) == [
+        {"code": "temp_value", "value": 1000}
+    ]
 
 
 @pytest.mark.parametrize(
@@ -486,13 +484,20 @@ def test_color_temp_wrapper_kelvin_scale_read(
     raw_value: int,
     expected_kelvin: int,
 ) -> None:
-    """A Kelvin-scaled range maps the raw scale linearly onto Kelvin."""
+    """Test reading a device whose raw range is linear in Kelvin."""
+
+    class KelvinScaleWrapper(ColorTempWrapper):
+        """Wrapper for a 1600-4000 K lamp, linear in Kelvin."""
+
+        min_kelvin = 1600
+        max_kelvin = 4000
+        color_temp_scale = ColorTempScale.KELVIN
+
     _inject_default_light(mock_device)
     mock_device.status["temp_value"] = raw_value
-    wrapper = _color_temp_wrapper(mock_device, _KelvinScaleTypeInformation)
+    wrapper = KelvinScaleWrapper.find_dpcode(mock_device, "temp_value")
 
-    assert wrapper.min_kelvin == 1600
-    assert wrapper.max_kelvin == 4000
+    assert wrapper
     assert wrapper.read_device_status(mock_device) == expected_kelvin
 
 
@@ -509,32 +514,54 @@ def test_color_temp_wrapper_kelvin_scale_write(
     kelvin: int,
     expected_raw: int,
 ) -> None:
-    """A Kelvin-scaled range converts HA Kelvin back to the raw scale."""
-    _inject_default_light(mock_device)
-    wrapper = _color_temp_wrapper(mock_device, _KelvinScaleTypeInformation)
+    """Test writing to a device whose raw range is linear in Kelvin."""
 
+    class KelvinScaleWrapper(ColorTempWrapper):
+        """Wrapper for a 1600-4000 K lamp, linear in Kelvin."""
+
+        min_kelvin = 1600
+        max_kelvin = 4000
+        color_temp_scale = ColorTempScale.KELVIN
+
+    _inject_default_light(mock_device)
+    wrapper = KelvinScaleWrapper.find_dpcode(mock_device, "temp_value")
+
+    assert wrapper
     assert wrapper.get_update_commands(mock_device, kelvin) == [
         {"code": "temp_value", "value": expected_raw}
     ]
 
 
-@pytest.mark.parametrize(
-    ("raw_value", "expected_kelvin"),
-    [
-        (0, 1600),
-        (795, 3059),
-        (1000, 4000),
-    ],
-)
-def test_color_temp_wrapper_mired_scale_read(
-    mock_device: CustomerDevice,
-    raw_value: int,
-    expected_kelvin: int,
-) -> None:
-    """A custom range keeps the mired round-trip by default."""
+def test_color_temp_wrapper_default_scale(mock_device: CustomerDevice) -> None:
+    """Test the default color temperature scale of a light."""
     _inject_default_light(mock_device)
-    mock_device.status["temp_value"] = raw_value
-    wrapper = _color_temp_wrapper(mock_device, _MiredScaleTypeInformation)
+    wrapper = ColorTempWrapper.find_dpcode(mock_device, "temp_value")
 
+    assert wrapper
     assert wrapper.color_temp_scale is ColorTempScale.MIRED
-    assert wrapper.read_device_status(mock_device) == expected_kelvin
+
+
+def test_color_temp_wrapper_type_information_override(
+    mock_device: CustomerDevice,
+) -> None:
+    """Test a quirk supplying the range and scale via type information."""
+
+    class CustomColorTempTypeInformation(ColorTempTypeInformationEx):
+        """Type information for a 1600-4000 K lamp, linear in Kelvin."""
+
+        min_kelvin = 1600
+        max_kelvin = 4000
+        color_temp_scale = ColorTempScale.KELVIN
+
+    _inject_default_light(mock_device)
+    mock_device.status["temp_value"] = 795
+    type_information = CustomColorTempTypeInformation.find_dpcode(
+        mock_device, "temp_value"
+    )
+    assert type_information is not None
+    wrapper = ColorTempWrapper("temp_value", type_information)
+
+    assert wrapper.min_kelvin == 1600
+    assert wrapper.max_kelvin == 4000
+    assert wrapper.color_temp_scale is ColorTempScale.KELVIN
+    assert wrapper.read_device_status(mock_device) == 3508

@@ -144,10 +144,21 @@ class ColorTempWrapper(DPCodeIntegerWrapper[int]):
     historical reason, and because mired scale is a better measure
     of perceptual color difference.
 
-    The Kelvin range and the scale used are taken from the datapoint's
-    `ColorTempTypeInformationEx`, when a quirk provides one, otherwise
-    the Tuya defaults apply. `min_kelvin` / `max_kelvin` are read by the
-    host integration to report the entity's color temperature range.
+    `min_kelvin` / `max_kelvin` describe the color temperature range the
+    lamp actually covers. The Tuya cloud never reports it, so they
+    default to the range assumed for all Tuya lights; a subclass may
+    override them for a device that deviates. The host integration reads
+    them to report the entity's supported range.
+
+    `color_temp_scale` tells how the raw range maps onto that Kelvin
+    range. Tuya lights are assumed to be linear in mireds; a subclass may
+    select `ColorTempScale.KELVIN` for a device that is linear in Kelvin
+    instead. It only affects the conversion done here, the host
+    integration always deals in Kelvin.
+
+    All three are taken from the datapoint's `ColorTempTypeInformationEx`
+    when a quirk provides one, so a device can be corrected without a
+    wrapper subclass.
     """
 
     MIN_KELVIN: ClassVar[int] = 2000  # 500 mireds
@@ -181,10 +192,10 @@ class ColorTempWrapper(DPCodeIntegerWrapper[int]):
                 type_information, self.min_kelvin, self.max_kelvin
             )
         else:
+            max_mireds = self.kelvin_to_mired(self.min_kelvin)
+            min_mireds = self.kelvin_to_mired(self.max_kelvin)
             self._remap_helper = RemapHelper.from_type_information(
-                type_information,
-                self.kelvin_to_mired(self.max_kelvin),
-                self.kelvin_to_mired(self.min_kelvin),
+                type_information, min_mireds, max_mireds
             )
 
     def read_device_status(self, device: CustomerDevice) -> int | None:
