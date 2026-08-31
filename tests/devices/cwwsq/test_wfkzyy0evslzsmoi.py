@@ -130,3 +130,15 @@ def test_get_update_commands(filled_quirks_registry: QuirksRegistry) -> None:
     assert wrapper.get_update_commands(device, _SAMPLE_MEAL_PLAN) == [
         {"code": "meal_plan", "value": "fwkAAQF/CR4BAX8MAAEBfw8AAgF/FQACAQ=="}
     ]
+
+
+def test_feed_report_report_type(
+    filled_quirks_registry: QuirksRegistry,
+) -> None:
+    """feed_report has no report_type without quirk; quirk sets it to sum."""
+    device = create_device("cwwsq_wfkzyy0evslzsmoi.json")
+
+    assert device.status_range["feed_report"].report_type is None
+
+    filled_quirks_registry.initialise_device_quirk(device)
+    assert device.status_range["feed_report"].report_type == "sum"

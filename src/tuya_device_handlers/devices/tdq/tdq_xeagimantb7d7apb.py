@@ -45,5 +45,31 @@ from tuya_device_handlers.const import DPMode
         dpmode=DPMode.READ,
         enum_range=["low", "middle", "high"],
     )
+    .add_dpid_integer(
+        dpid=102,
+        dpcode="temp_current",
+        dpmode=DPMode.READ,
+        unit="℃",
+        min=-200,
+        max=600,
+        scale=1,
+        step=1,
+    )
+    .add_dpid_integer(
+        dpid=103,
+        dpcode="humidity_value",
+        dpmode=DPMode.READ,
+        unit="%",
+        min=0,
+        max=100,
+        scale=0,
+        step=1,
+    )
+    .add_dpid_enum(
+        dpid=104,
+        dpcode="battery_state",
+        dpmode=DPMode.READ,
+        enum_range=["low", "middle", "high"],
+    )
     .register(TUYA_QUIRKS_REGISTRY)
 )

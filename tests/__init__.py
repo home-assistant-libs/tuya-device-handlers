@@ -91,6 +91,11 @@ def create_device(fixture_filename: str) -> CustomerDevice:
         status=details["status"],
     )
 
+    # A real local device always exposes a local_strategy dict; a diagnostics
+    # fixture may capture it as null, so mirror the real-world invariant here.
+    if device.support_local and device.local_strategy is None:
+        device.local_strategy = {}
+
     for key, value in device.status.items():
         # Some devices do not provide a status_range for all status DPs
         # Others set the type as String in status_range and as Json in function

@@ -53,7 +53,11 @@ from tuya_device_handlers.const import DPMode
         dpid=18,
         dpcode="cur_current",
         dpmode=DPMode.READ,
-        unit="mA", min=0, max=30000, scale=0, step=1,
+        unit="mA",
+        min=0,
+        max=30000,
+        scale=0,
+        step=1,
     )
     .remove_dpid(dpid=22, dpcode="phantom_dp")
     .register(TUYA_QUIRKS_REGISTRY)
@@ -61,6 +65,8 @@ from tuya_device_handlers.const import DPMode
 ```
 
 Each quirk file should contain exactly one `DeviceQuirk()...register(...)` chain at module top level — the file path is captured for reload tracking. Available builder methods include `add_dpid_boolean`, `add_dpid_bitmap`, `add_dpid_enum`, `add_dpid_integer`, and `remove_dpid`. For more complex needs (custom value scaling, platform-specific definitions), see the in-tree examples under [`src/tuya_device_handlers/devices/`][devices-dir].
+
+> **New to this and not a programmer?** For a fully worked, copy-paste walkthrough of one of the most common fixes — a device sending ENUM values (e.g. extra `mode` presets) that Home Assistant rejects as `Found invalid ENUM value ...` — see [Recipe: add missing ENUM values](docs/adding-missing-enum-values.md). It covers writing the quirk, testing it live, and opening a PR end to end.
 
 ### 3. Test it inside Home Assistant
 
