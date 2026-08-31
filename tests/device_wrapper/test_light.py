@@ -5,6 +5,7 @@ from typing import Any
 import pytest
 from tuya_sharing import CustomerDevice
 
+from tuya_device_handlers.const import ColorTempScale
 from tuya_device_handlers.device_wrapper.common import (
     DPCodeIntegerWrapper,
     DPCodeTypeInformationWrapper,
@@ -16,6 +17,7 @@ from tuya_device_handlers.device_wrapper.light import (
     ColorTempWrapper,
 )
 from tuya_device_handlers.type_information import IntegerTypeInformation
+from tuya_device_handlers.type_information_ex import ColorTempTypeInformationEx
 from tuya_device_handlers.utils import RemapHelper
 
 from . import inject_dpcode
@@ -434,32 +436,61 @@ def test_color_data_string_action_command(
     assert wrapper.get_update_commands(mock_device, action) == expected
 
 
+class _KelvinScaleTypeInformation(ColorTempTypeInformationEx):
+    """1600-4000 K lamp whose raw scale is linear in Kelvin."""
+
+    min_kelvin = 1600
+    max_kelvin = 4000
+    color_temp_scale = ColorTempScale.KELVIN
+
+
+class _MiredScaleTypeInformation(ColorTempTypeInformationEx):
+    """1600-4000 K lamp whose raw scale is linear in mireds."""
+
+    min_kelvin = 1600
+    max_kelvin = 4000
+
+
+def _color_temp_wrapper(
+    mock_device: CustomerDevice,
+    type_information_cls: type[IntegerTypeInformation],
+) -> ColorTempWrapper:
+    """Build a ColorTempWrapper for temp_value with given type information."""
+    type_information = type_information_cls.find_dpcode(
+        mock_device, "temp_value"
+    )
+    assert type_information is not None
+    return ColorTempWrapper("temp_value", type_information)
+
+
+def test_color_temp_wrapper_defaults(mock_device: CustomerDevice) -> None:
+    """Without a quirk, the Tuya defaults apply."""
+    _inject_default_light(mock_device)
+    wrapper = _color_temp_wrapper(mock_device, IntegerTypeInformation)
+
+    assert wrapper.min_kelvin == 2000
+    assert wrapper.max_kelvin == 6500
+    assert wrapper.color_temp_scale is ColorTempScale.MIRED
+
+
 @pytest.mark.parametrize(
     ("raw_value", "expected_kelvin"),
     [
         (0, 1600),
-        (795, 3059),
+        (795, 3508),
         (1000, 4000),
     ],
 )
-def test_color_temp_wrapper_custom_kelvin_range_read(
+def test_color_temp_wrapper_kelvin_scale_read(
     mock_device: CustomerDevice,
     raw_value: int,
     expected_kelvin: int,
 ) -> None:
-    """A custom Kelvin range remaps the 0-1000 Tuya scale."""
+    """A Kelvin-scaled range maps the raw scale linearly onto Kelvin."""
     _inject_default_light(mock_device)
     mock_device.status["temp_value"] = raw_value
-    type_information = IntegerTypeInformation.find_dpcode(
-        mock_device, "temp_value"
-    )
-    assert type_information is not None
-    wrapper = ColorTempWrapper(
-        "temp_value",
-        type_information,
-        min_kelvin=1600,
-        max_kelvin=4000,
-    )
+    wrapper = _color_temp_wrapper(mock_device, _KelvinScaleTypeInformation)
+
     assert wrapper.min_kelvin == 1600
     assert wrapper.max_kelvin == 4000
     assert wrapper.read_device_status(mock_device) == expected_kelvin
@@ -469,27 +500,41 @@ def test_color_temp_wrapper_custom_kelvin_range_read(
     ("kelvin", "expected_raw"),
     [
         (1600, 0),
-        (3059, 795),
+        (3508, 795),
         (4000, 1000),
     ],
 )
-def test_color_temp_wrapper_custom_kelvin_range_write(
+def test_color_temp_wrapper_kelvin_scale_write(
     mock_device: CustomerDevice,
     kelvin: int,
     expected_raw: int,
 ) -> None:
-    """A custom Kelvin range converts HA Kelvin back to the Tuya scale."""
+    """A Kelvin-scaled range converts HA Kelvin back to the raw scale."""
     _inject_default_light(mock_device)
-    type_information = IntegerTypeInformation.find_dpcode(
-        mock_device, "temp_value"
-    )
-    assert type_information is not None
-    wrapper = ColorTempWrapper(
-        "temp_value",
-        type_information,
-        min_kelvin=1600,
-        max_kelvin=4000,
-    )
+    wrapper = _color_temp_wrapper(mock_device, _KelvinScaleTypeInformation)
+
     assert wrapper.get_update_commands(mock_device, kelvin) == [
         {"code": "temp_value", "value": expected_raw}
     ]
+
+
+@pytest.mark.parametrize(
+    ("raw_value", "expected_kelvin"),
+    [
+        (0, 1600),
+        (795, 3059),
+        (1000, 4000),
+    ],
+)
+def test_color_temp_wrapper_mired_scale_read(
+    mock_device: CustomerDevice,
+    raw_value: int,
+    expected_kelvin: int,
+) -> None:
+    """A custom range keeps the mired round-trip by default."""
+    _inject_default_light(mock_device)
+    mock_device.status["temp_value"] = raw_value
+    wrapper = _color_temp_wrapper(mock_device, _MiredScaleTypeInformation)
+
+    assert wrapper.color_temp_scale is ColorTempScale.MIRED
+    assert wrapper.read_device_status(mock_device) == expected_kelvin

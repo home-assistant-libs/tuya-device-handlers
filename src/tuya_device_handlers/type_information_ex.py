@@ -6,10 +6,11 @@ import a shared implementation instead of redefining one locally.
 """
 
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, ClassVar
 
 from tuya_sharing import CustomerDevice
 
+from .const import ColorTempScale
 from .type_information import IntegerTypeInformation
 
 
@@ -45,3 +46,29 @@ class InvertedIntegerTypeInformationEx(IntegerTypeInformation):
         return super().prepare_set_value(
             device, self.scale_value(self.max) - value
         )
+
+
+@dataclass(kw_only=True)
+class ColorTempTypeInformationEx(IntegerTypeInformation):
+    """IntegerTypeInformation carrying the physical CCT characteristics.
+
+    The Tuya cloud only reports the raw range of a color temperature
+    datapoint (typically 0-1000), never the Kelvin range the lamp
+    actually covers, nor whether that raw range is linear in mireds or
+    in Kelvin.  `ColorTempWrapper` assumes the Tuya defaults (2000-6500 K,
+    linear in mireds); a device that deviates gets a subclass of this
+    class applied via ``override_dpid_type_information_cls``, so the
+    correction is attached to the individual datapoint rather than to
+    the device (a device may expose several lights).
+
+    See https://github.com/home-assistant/core/issues/166103.
+    """
+
+    min_kelvin: ClassVar[int] = 2000
+    """Warmest color temperature the lamp can produce."""
+
+    max_kelvin: ClassVar[int] = 6500
+    """Coldest color temperature the lamp can produce."""
+
+    color_temp_scale: ClassVar[ColorTempScale] = ColorTempScale.MIRED
+    """How the raw range maps onto the Kelvin range."""

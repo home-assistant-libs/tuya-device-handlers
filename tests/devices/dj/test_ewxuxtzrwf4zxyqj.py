@@ -3,6 +3,7 @@
 from tuya_sharing import CustomerDevice
 
 from tests import create_device
+from tuya_device_handlers.const import ColorTempScale
 from tuya_device_handlers.definition.light import (
     FallbackColorDataMode,
     LightDefinition,
@@ -39,7 +40,8 @@ def test_quirk_overrides_color_temp_kelvin_range(
     assert isinstance(wrapper, ColorTempWrapper)
     assert wrapper.min_kelvin == 1600
     assert wrapper.max_kelvin == 4000
-    assert wrapper.read_device_status(device) == 3059
+    assert wrapper.color_temp_scale is ColorTempScale.KELVIN
+    assert wrapper.read_device_status(device) == 3508
     assert wrapper.get_update_commands(device, 1600) == [
         {"code": "temp_value_v2", "value": 0}
     ]

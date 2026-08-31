@@ -740,16 +740,3 @@ def test_register_without_applies_to_raises() -> None:
         ValueError, match="does not have an applies_to condition"
     ):
         quirk.register(QuirksRegistry())
-
-
-def test_set_color_temp_kelvin_range_records_range() -> None:
-    """set_color_temp_kelvin_range stores the physical CCT range."""
-    quirk = DeviceQuirk().set_color_temp_kelvin_range(
-        min_kelvin=1600, max_kelvin=4000
-    )
-    assert quirk.get_color_temp_kelvin_range() == (1600, 4000)
-
-
-def test_get_color_temp_kelvin_range_returns_none_by_default() -> None:
-    """get_color_temp_kelvin_range is unset until a range is configured."""
-    assert DeviceQuirk().get_color_temp_kelvin_range() is None
