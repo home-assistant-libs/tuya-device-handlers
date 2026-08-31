@@ -20,7 +20,7 @@ from tuya_device_handlers.type_information import TypeInformation
 
 
 @dataclass(kw_only=True)
-class QuirkEntry(ABC):
+class _QuirkEntry(ABC):
     """Base for an entry that a quirk applies to a device.
 
     When `apply_when` is set, the entry is only applied to devices for
@@ -50,7 +50,7 @@ class QuirkEntry(ABC):
 
 
 @dataclass(kw_only=True)
-class LocalConvertStrategy(QuirkEntry):
+class _LocalConvertStrategy(_QuirkEntry):
     """Definition for a local convert strategy."""
 
     requires_local_support: ClassVar[bool] = True
@@ -83,7 +83,7 @@ class LocalConvertStrategy(QuirkEntry):
 
 
 @dataclass(kw_only=True)
-class LocalStrategyRemoval(QuirkEntry):
+class _LocalStrategyRemoval(_QuirkEntry):
     """Removal of a local convert strategy."""
 
     requires_local_support: ClassVar[bool] = True
@@ -94,7 +94,7 @@ class LocalStrategyRemoval(QuirkEntry):
 
 
 @dataclass(kw_only=True)
-class DatapointRemoval(QuirkEntry):
+class _DatapointRemoval(_QuirkEntry):
     """Removal of a Tuya datapoint."""
 
     def apply(self, device: CustomerDevice) -> None:
@@ -106,7 +106,29 @@ class DatapointRemoval(QuirkEntry):
 
 
 @dataclass(kw_only=True)
-class DatapointDefinition(QuirkEntry):
+class _InitialStatusValueMapping(_QuirkEntry):
+    """Mapping applied to the initial status value of a datapoint.
+
+    The cloud may report the cached status of a datapoint in a different
+    shape than the values reported later over MQTT (for example the
+    strings ``"true"``/``"false"`` for a Boolean datapoint). This entry
+    rewrites the initial value so it matches the expected type.
+    """
+
+    status_mapping: dict[Any, Any]
+
+    def apply(self, device: CustomerDevice) -> None:
+        """Map the initial status value on the device."""
+        raw_value = device.status.get(self.dpcode)
+        try:
+            if raw_value in self.status_mapping:
+                device.status[self.dpcode] = self.status_mapping[raw_value]
+        except TypeError:  # unhashable raw value
+            pass
+
+
+@dataclass(kw_only=True)
+class _DatapointDefinition(_QuirkEntry):
     """Definition for a Tuya datapoint."""
 
     dpmode: DPMode
@@ -168,7 +190,7 @@ class DatapointDefinition(QuirkEntry):
 class DeviceQuirk(DeviceQuirkProtocol):
     """Quirk for Tuya device."""
 
-    _quirk_entries: list[QuirkEntry]
+    _quirk_entries: list[_QuirkEntry]
     _type_information_overrides: dict[
         tuple[int, str], type[TypeInformation[Any]]
     ]
@@ -216,7 +238,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
             device.category = self._override_category
 
         # Entries are applied in the order the builder methods were called.
-        # A LocalConvertStrategy reads device.status_range, so it must be
+        # A _LocalConvertStrategy reads device.status_range, so it must be
         # added after the datapoint definition that provides its dpcode.
         for entry in self._quirk_entries:
             if entry.applies_to_device(device):
@@ -263,7 +285,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
     ) -> Self:
         """Add datapoint Bitmap definition."""
         self._quirk_entries.append(
-            DatapointDefinition(
+            _DatapointDefinition(
                 dpid=dpid,
                 dpcode=dpcode,
                 dpmode=dpmode,
@@ -284,7 +306,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
     ) -> Self:
         """Add datapoint Boolean definition."""
         self._quirk_entries.append(
-            DatapointDefinition(
+            _DatapointDefinition(
                 dpid=dpid,
                 dpcode=dpcode,
                 dpmode=dpmode,
@@ -306,7 +328,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
     ) -> Self:
         """Add datapoint Enum definition."""
         self._quirk_entries.append(
-            DatapointDefinition(
+            _DatapointDefinition(
                 dpid=dpid,
                 dpcode=dpcode,
                 dpmode=dpmode,
@@ -333,7 +355,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
     ) -> Self:
         """Add datapoint Integer definition."""
         self._quirk_entries.append(
-            DatapointDefinition(
+            _DatapointDefinition(
                 dpid=dpid,
                 dpcode=dpcode,
                 dpmode=dpmode,
@@ -348,6 +370,25 @@ class DeviceQuirk(DeviceQuirkProtocol):
                         "step": step,
                     }
                 ),
+                apply_when=apply_when,
+            )
+        )
+        return self
+
+    def map_dpid_initial_status_values(
+        self,
+        *,
+        dpid: int,
+        dpcode: str,
+        status_mapping: dict[Any, Any],
+        apply_when: Callable[[CustomerDevice], bool] | None = None,
+    ) -> Self:
+        """Map the initial status value of a datapoint."""
+        self._quirk_entries.append(
+            _InitialStatusValueMapping(
+                dpid=dpid,
+                dpcode=dpcode,
+                status_mapping=status_mapping,
                 apply_when=apply_when,
             )
         )
@@ -373,7 +414,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
     ) -> Self:
         """Remove datapoint definition."""
         self._quirk_entries.append(
-            DatapointRemoval(dpid=dpid, dpcode=dpcode, apply_when=apply_when)
+            _DatapointRemoval(dpid=dpid, dpcode=dpcode, apply_when=apply_when)
         )
         return self
 
@@ -387,7 +428,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
     ) -> Self:
         """Override local strategy for a datapoint."""
         self._quirk_entries.append(
-            LocalConvertStrategy(
+            _LocalConvertStrategy(
                 dpid=dpid,
                 dpcode=dpcode,
                 value_convert="enum",
@@ -409,7 +450,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
     ) -> Self:
         """Remove datapoint strategy."""
         self._quirk_entries.append(
-            LocalStrategyRemoval(
+            _LocalStrategyRemoval(
                 dpid=dpid, dpcode=dpcode, apply_when=apply_when
             )
         )
