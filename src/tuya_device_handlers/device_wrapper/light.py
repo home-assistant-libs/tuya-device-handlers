@@ -5,6 +5,7 @@ from typing import Any, ClassVar
 
 from tuya_sharing import CustomerDevice
 
+from tuya_device_handlers.const import ColorTempScale
 from tuya_device_handlers.type_information import IntegerTypeInformation
 from tuya_device_handlers.utils import RemapHelper
 
@@ -147,6 +148,12 @@ class ColorTempWrapper(DPCodeIntegerWrapper[int]):
     default to the range assumed for all Tuya lights; a subclass may
     override them for a device that deviates. The host integration reads
     them to report the entity's supported range.
+
+    `color_temp_scale` tells how the raw range maps onto that Kelvin
+    range. Tuya lights are assumed to be linear in mireds; a subclass may
+    select `ColorTempScale.KELVIN` for a device that is linear in Kelvin
+    instead. It only affects the conversion done here, the host
+    integration always deals in Kelvin.
     """
 
     MIN_KELVIN: ClassVar[int] = 2000  # 500 mireds
@@ -154,6 +161,7 @@ class ColorTempWrapper(DPCodeIntegerWrapper[int]):
 
     min_kelvin: int = MIN_KELVIN
     max_kelvin: int = MAX_KELVIN
+    color_temp_scale: ColorTempScale = ColorTempScale.MIRED
 
     @staticmethod
     def kelvin_to_mired(kelvin: int) -> float:
@@ -170,16 +178,24 @@ class ColorTempWrapper(DPCodeIntegerWrapper[int]):
     ) -> None:
         """Init DPCodeIntegerWrapper."""
         super().__init__(dpcode, type_information)
-        max_mireds = self.kelvin_to_mired(self.min_kelvin)
-        min_mireds = self.kelvin_to_mired(self.max_kelvin)
-        self._remap_helper = RemapHelper.from_type_information(
-            type_information, min_mireds, max_mireds
-        )
+        if self.color_temp_scale is ColorTempScale.KELVIN:
+            self._remap_helper = RemapHelper.from_type_information(
+                type_information, self.min_kelvin, self.max_kelvin
+            )
+        else:
+            max_mireds = self.kelvin_to_mired(self.min_kelvin)
+            min_mireds = self.kelvin_to_mired(self.max_kelvin)
+            self._remap_helper = RemapHelper.from_type_information(
+                type_information, min_mireds, max_mireds
+            )
 
     def read_device_status(self, device: CustomerDevice) -> int | None:
         """Return the color temperature value in Kelvin."""
         if (temperature := self._read_dpcode_value(device)) is None:
             return None
+
+        if self.color_temp_scale is ColorTempScale.KELVIN:
+            return round(self._remap_helper.remap_value_to(temperature))
 
         return self.mired_to_kelvin(
             self._remap_helper.remap_value_to(temperature, reverse=True)
@@ -189,13 +205,14 @@ class ColorTempWrapper(DPCodeIntegerWrapper[int]):
         self, device: CustomerDevice, value: int
     ) -> Any:
         """Convert HA value (Kelvin) to a raw device value."""
-        return super()._convert_value_to_raw_value(
-            device,
-            self._remap_helper.remap_value_from(
+        if self.color_temp_scale is ColorTempScale.KELVIN:
+            raw_value = self._remap_helper.remap_value_from(value)
+        else:
+            raw_value = self._remap_helper.remap_value_from(
                 self.kelvin_to_mired(value),
                 reverse=True,
-            ),
-        )
+            )
+        return super()._convert_value_to_raw_value(device, raw_value)
 
 
 DEFAULT_H_TYPE = RemapHelper(
