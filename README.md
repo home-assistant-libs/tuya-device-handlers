@@ -53,7 +53,11 @@ from tuya_device_handlers.const import DPMode
         dpid=18,
         dpcode="cur_current",
         dpmode=DPMode.READ,
-        unit="mA", min=0, max=30000, scale=0, step=1,
+        unit="mA",
+        min=0,
+        max=30000,
+        scale=0,
+        step=1,
     )
     .remove_dpid(dpid=22, dpcode="phantom_dp")
     .register(TUYA_QUIRKS_REGISTRY)

@@ -1,7 +1,9 @@
-"""Tests for DatapointDefinition and DeviceQuirk."""
+"""Tests for the quirk builder entries and DeviceQuirk."""
 
+from collections.abc import Callable
 import json
 import pathlib
+from typing import Any
 
 import pytest
 from tuya_sharing import (
@@ -12,10 +14,12 @@ from tuya_sharing import (
 )
 
 from tuya_device_handlers.builder.device_quirk import (
-    DatapointDefinition,
-    DatapointRemoval,
     DeviceQuirk,
-    LocalConvertStrategy,
+    _DatapointDefinition,
+    _DatapointRemoval,
+    _LocalConvertStrategy,
+    _LocalStrategyRemoval,
+    _QuirkEntry,
 )
 from tuya_device_handlers.const import DPMode, DPType
 from tuya_device_handlers.registry import QuirksRegistry
@@ -29,7 +33,7 @@ from tuya_device_handlers.type_information import (
 
 def test_datapoint_definition_to_function() -> None:
     """to_function builds a DeviceFunction from the definition."""
-    definition = DatapointDefinition(
+    definition = _DatapointDefinition(
         dpid=1,
         dpcode="x",
         dpmode=DPMode.READ | DPMode.WRITE,
@@ -44,7 +48,7 @@ def test_datapoint_definition_to_function() -> None:
 
 def test_datapoint_definition_to_local_strategy() -> None:
     """to_local_strategy builds the LocalStrategy dict for the device."""
-    definition = DatapointDefinition(
+    definition = _DatapointDefinition(
         dpid=2,
         dpcode="y",
         dpmode=DPMode.READ,
@@ -60,7 +64,7 @@ def test_datapoint_definition_to_local_strategy() -> None:
 
 def test_datapoint_definition_to_status_range() -> None:
     """to_status_range builds a DeviceStatusRange from the definition."""
-    definition = DatapointDefinition(
+    definition = _DatapointDefinition(
         dpid=3,
         dpcode="z",
         dpmode=DPMode.READ,
@@ -76,7 +80,7 @@ def test_datapoint_definition_to_status_range() -> None:
 
 def test_datapoint_definition_to_status_range_report_type() -> None:
     """to_status_range carries the report_type to the DeviceStatusRange."""
-    definition = DatapointDefinition(
+    definition = _DatapointDefinition(
         dpid=4,
         dpcode="energy",
         dpmode=DPMode.READ,
@@ -103,8 +107,8 @@ def test_add_dpid_bitmap() -> None:
     quirk = DeviceQuirk().add_dpid_bitmap(
         dpid=1, dpcode="bm", dpmode=DPMode.READ, label_range=["a", "b"]
     )
-    definition = quirk._datapoint_definitions[0]
-    assert isinstance(definition, DatapointDefinition)
+    definition = quirk._quirk_entries[0]
+    assert isinstance(definition, _DatapointDefinition)
     assert definition.dptype is DPType.BITMAP
     assert json.loads(definition.values or "")["label"] == ["a", "b"]
 
@@ -114,8 +118,8 @@ def test_add_dpid_boolean() -> None:
     quirk = DeviceQuirk().add_dpid_boolean(
         dpid=2, dpcode="bo", dpmode=DPMode.WRITE
     )
-    definition = quirk._datapoint_definitions[0]
-    assert isinstance(definition, DatapointDefinition)
+    definition = quirk._quirk_entries[0]
+    assert isinstance(definition, _DatapointDefinition)
     assert definition.dptype is DPType.BOOLEAN
 
 
@@ -124,8 +128,8 @@ def test_add_dpid_enum() -> None:
     quirk = DeviceQuirk().add_dpid_enum(
         dpid=3, dpcode="en", dpmode=DPMode.READ, enum_range=["scene", "auto"]
     )
-    definition = quirk._datapoint_definitions[0]
-    assert isinstance(definition, DatapointDefinition)
+    definition = quirk._quirk_entries[0]
+    assert isinstance(definition, _DatapointDefinition)
     assert definition.dptype is DPType.ENUM
     assert json.loads(definition.values or "")["range"] == ["scene", "auto"]
 
@@ -143,8 +147,8 @@ def test_add_dpid_integer() -> None:
         step=1,
         report_type="sum",
     )
-    definition = quirk._datapoint_definitions[0]
-    assert isinstance(definition, DatapointDefinition)
+    definition = quirk._quirk_entries[0]
+    assert isinstance(definition, _DatapointDefinition)
     assert definition.dptype is DPType.INTEGER
     assert definition.report_type == "sum"
     payload = json.loads(definition.values or "")
@@ -154,8 +158,8 @@ def test_add_dpid_integer() -> None:
 def test_remove_dpid() -> None:
     """remove_dpid stores a removal entry for the dpid."""
     quirk = DeviceQuirk().remove_dpid(dpid=5, dpcode="rm")
-    entry = quirk._datapoint_definitions[0]
-    assert isinstance(entry, DatapointRemoval)
+    entry = quirk._quirk_entries[0]
+    assert isinstance(entry, _DatapointRemoval)
     assert entry.dpid == 5
     assert entry.dpcode == "rm"
 
@@ -167,14 +171,14 @@ def test_override_category() -> None:
 
 
 def test_set_dpid_strategy_to_enum() -> None:
-    """set_dpid_strategy_to_enum stores an enum LocalConvertStrategy."""
+    """set_dpid_strategy_to_enum stores an enum local convert strategy."""
     quirk = DeviceQuirk().set_dpid_strategy_to_enum(
         dpid=1,
         dpcode="x",
         enum_mapping_map={"on": True, "off": False},
     )
-    strategy = quirk._local_strategy[(1, "x")]
-    assert isinstance(strategy, LocalConvertStrategy)
+    strategy = quirk._quirk_entries[0]
+    assert isinstance(strategy, _LocalConvertStrategy)
     assert strategy.value_convert == "enum"
     assert strategy.enum_mapping_map == {
         "on": {"value": True},
@@ -183,9 +187,12 @@ def test_set_dpid_strategy_to_enum() -> None:
 
 
 def test_remove_dpid_strategy() -> None:
-    """remove_dpid_strategy stores None to mark the strategy for removal."""
+    """remove_dpid_strategy stores a removal entry for the strategy."""
     quirk = DeviceQuirk().remove_dpid_strategy(dpid=2, dpcode="y")
-    assert quirk._local_strategy[(2, "y")] is None
+    entry = quirk._quirk_entries[0]
+    assert isinstance(entry, _LocalStrategyRemoval)
+    assert entry.dpid == 2
+    assert entry.dpcode == "y"
 
 
 def test_initialise_device_read_and_write_with_local(
@@ -271,17 +278,50 @@ def test_initialise_device_local_strategy_enum_with_local(
     assert strategy["config_item"]["valueType"] == DPType.BOOLEAN.value
 
 
-def test_initialise_device_local_strategy_enum_no_local(
+@pytest.mark.parametrize(
+    "add_entry",
+    [
+        lambda quirk: quirk.set_dpid_strategy_to_enum(
+            dpid=1, dpcode="x", enum_mapping_map={"on": True}
+        ),
+        lambda quirk: quirk.remove_dpid_strategy(dpid=1, dpcode="x"),
+    ],
+    ids=["set_dpid_strategy_to_enum", "remove_dpid_strategy"],
+)
+def test_initialise_device_local_strategy_no_local(
+    mock_device: CustomerDevice,
+    add_entry: Callable[[DeviceQuirk], DeviceQuirk],
+) -> None:
+    """Without support_local, requires_local_support entries are skipped."""
+    mock_device.support_local = False
+    mock_device.local_strategy = {1: {"some": "thing"}}
+    quirk = add_entry(DeviceQuirk())
+    quirk.initialise_device(mock_device)
+    assert mock_device.local_strategy == {1: {"some": "thing"}}
+
+
+def test_quirk_entries_are_applied_in_builder_call_order(
     mock_device: CustomerDevice,
 ) -> None:
-    """Without support_local, the enum strategy is not applied."""
-    mock_device.support_local = False
+    """Entries share one list and are applied in the order they were added."""
+    mock_device.support_local = True
     mock_device.local_strategy = {}
-    quirk = DeviceQuirk().set_dpid_strategy_to_enum(
-        dpid=1, dpcode="x", enum_mapping_map={"on": True}
+    mock_device.status_range = {}
+    quirk = (
+        DeviceQuirk()
+        .add_dpid_boolean(dpid=1, dpcode="x", dpmode=DPMode.READ)
+        .set_dpid_strategy_to_enum(
+            dpid=1, dpcode="x", enum_mapping_map={"on": True}
+        )
     )
+    assert len(quirk._quirk_entries) == 2
+
     quirk.initialise_device(mock_device)
-    assert 1 not in mock_device.local_strategy
+
+    # The strategy was added after the datapoint, so it sees its status_range.
+    strategy = mock_device.local_strategy[1]
+    assert strategy["value_convert"] == "enum"
+    assert strategy["config_item"]["valueType"] == DPType.BOOLEAN.value
 
 
 def test_initialise_device_remove_dpid_strategy(
@@ -293,6 +333,73 @@ def test_initialise_device_remove_dpid_strategy(
     quirk = DeviceQuirk().remove_dpid_strategy(dpid=1, dpcode="x")
     quirk.initialise_device(mock_device)
     assert 1 not in mock_device.local_strategy
+
+
+@pytest.mark.parametrize(
+    "add_entry",
+    [
+        lambda quirk, apply_when: quirk.set_dpid_strategy_to_enum(
+            dpid=1,
+            dpcode="x",
+            enum_mapping_map={"on": True},
+            apply_when=apply_when,
+        ),
+        lambda quirk, apply_when: quirk.remove_dpid_strategy(
+            dpid=1, dpcode="x", apply_when=apply_when
+        ),
+    ],
+    ids=["set_dpid_strategy_to_enum", "remove_dpid_strategy"],
+)
+def test_initialise_device_local_strategy_apply_when_not_met(
+    mock_device: CustomerDevice,
+    add_entry: Callable[
+        [DeviceQuirk, Callable[[CustomerDevice], bool]], DeviceQuirk
+    ],
+) -> None:
+    """A local strategy whose apply_when returns False is skipped."""
+    mock_device.support_local = True
+    mock_device.local_strategy = {1: {"some": "thing"}}
+    quirk = add_entry(DeviceQuirk(), lambda _device: False)
+    quirk.initialise_device(mock_device)
+    assert mock_device.local_strategy == {1: {"some": "thing"}}
+
+
+@pytest.mark.parametrize(
+    ("add_entry", "expected_entry_type"),
+    [
+        (
+            lambda quirk, apply_when: quirk.set_dpid_strategy_to_enum(
+                dpid=1,
+                dpcode="x",
+                enum_mapping_map={"on": True},
+                apply_when=apply_when,
+            ),
+            _LocalConvertStrategy,
+        ),
+        (
+            lambda quirk, apply_when: quirk.remove_dpid_strategy(
+                dpid=1, dpcode="x", apply_when=apply_when
+            ),
+            _LocalStrategyRemoval,
+        ),
+    ],
+    ids=["set_dpid_strategy_to_enum", "remove_dpid_strategy"],
+)
+def test_local_strategy_apply_when_is_stored(
+    add_entry: Callable[
+        [DeviceQuirk, Callable[[CustomerDevice], bool]], DeviceQuirk
+    ],
+    expected_entry_type: type[_QuirkEntry],
+) -> None:
+    """The builder methods forward apply_when onto the stored entry."""
+
+    def apply_when(_device: CustomerDevice) -> bool:
+        return True
+
+    quirk = add_entry(DeviceQuirk(), apply_when)
+    entry = quirk._quirk_entries[0]
+    assert isinstance(entry, expected_entry_type)
+    assert entry.apply_when is apply_when
 
 
 def test_mqtt_enum_strategy_mapping(
@@ -355,6 +462,68 @@ def test_initialise_device_remove_dpid_removes_everything(
     assert 7 not in mock_device.local_strategy
     assert "g" not in mock_device.status
     assert "g" not in mock_device.status_range
+
+
+@pytest.mark.parametrize(
+    ("raw_value", "expected"),
+    [
+        pytest.param("true", True, id="true-string"),
+        pytest.param("false", False, id="false-string"),
+        pytest.param(True, True, id="native-true"),
+        pytest.param("other", "other", id="unmapped"),
+    ],
+)
+def test_initialise_device_map_dpid_initial_status_values(
+    mock_device: CustomerDevice,
+    raw_value: Any,
+    expected: Any,
+) -> None:
+    """map_dpid_initial_status_values rewrites only mapped initial values."""
+    mock_device.status["x"] = raw_value
+    quirk = DeviceQuirk().map_dpid_initial_status_values(
+        dpid=1, dpcode="x", status_mapping={"true": True, "false": False}
+    )
+    quirk.initialise_device(mock_device)
+    assert mock_device.status["x"] is expected
+
+
+def test_initialise_device_map_dpid_initial_status_values_unhashable(
+    mock_device: CustomerDevice,
+) -> None:
+    """An unhashable initial value is left untouched."""
+    mock_device.status["x"] = ["unhashable"]
+    quirk = DeviceQuirk().map_dpid_initial_status_values(
+        dpid=1, dpcode="x", status_mapping={"true": True}
+    )
+    quirk.initialise_device(mock_device)
+    assert mock_device.status["x"] == ["unhashable"]
+
+
+def test_initialise_device_map_dpid_initial_status_values_missing_dpcode(
+    mock_device: CustomerDevice,
+) -> None:
+    """An absent dpcode is left absent."""
+    mock_device.status.pop("x", None)
+    quirk = DeviceQuirk().map_dpid_initial_status_values(
+        dpid=1, dpcode="x", status_mapping={"true": True}
+    )
+    quirk.initialise_device(mock_device)
+    assert "x" not in mock_device.status
+
+
+def test_initialise_device_map_dpid_initial_status_values_apply_when_not_met(
+    mock_device: CustomerDevice,
+) -> None:
+    """A status mapping whose apply_when returns False is skipped."""
+    mock_device.status["x"] = "true"
+    quirk = DeviceQuirk().map_dpid_initial_status_values(
+        dpid=1,
+        dpcode="x",
+        status_mapping={"true": True},
+        apply_when=lambda _: False,
+    )
+    quirk.initialise_device(mock_device)
+    assert mock_device.status["x"] == "true"
 
 
 def test_initialise_device_apply_when_met(
