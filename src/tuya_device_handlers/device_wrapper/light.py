@@ -1,7 +1,7 @@
 """Tuya device wrapper."""
 
 import json
-from typing import Any
+from typing import Any, ClassVar
 
 from tuya_sharing import CustomerDevice
 
@@ -140,11 +140,20 @@ class ColorTempWrapper(DPCodeIntegerWrapper[int]):
 
     A round-trip from Tuya range to Kelvin via Mireds is done for
     historical reason, and because mired scale is a better measure
-    of perceptual color difference
+    of perceptual color difference.
+
+    `min_kelvin` / `max_kelvin` describe the color temperature range the
+    lamp actually covers. The Tuya cloud never reports it, so they
+    default to the range assumed for all Tuya lights; a subclass may
+    override them for a device that deviates. The host integration reads
+    them to report the entity's supported range.
     """
 
-    MIN_KELVIN = 2000  # 500 mireds
-    MAX_KELVIN = 6500  # 153 mireds
+    MIN_KELVIN: ClassVar[int] = 2000  # 500 mireds
+    MAX_KELVIN: ClassVar[int] = 6500  # 153 mireds
+
+    min_kelvin: int = MIN_KELVIN
+    max_kelvin: int = MAX_KELVIN
 
     @staticmethod
     def kelvin_to_mired(kelvin: int) -> float:
@@ -161,8 +170,8 @@ class ColorTempWrapper(DPCodeIntegerWrapper[int]):
     ) -> None:
         """Init DPCodeIntegerWrapper."""
         super().__init__(dpcode, type_information)
-        max_mireds = self.kelvin_to_mired(self.MIN_KELVIN)
-        min_mireds = self.kelvin_to_mired(self.MAX_KELVIN)
+        max_mireds = self.kelvin_to_mired(self.min_kelvin)
+        min_mireds = self.kelvin_to_mired(self.max_kelvin)
         self._remap_helper = RemapHelper.from_type_information(
             type_information, min_mireds, max_mireds
         )

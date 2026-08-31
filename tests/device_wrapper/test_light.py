@@ -431,3 +431,39 @@ def test_color_data_string_action_command(
 
     assert wrapper
     assert wrapper.get_update_commands(mock_device, action) == expected
+
+
+def test_color_temp_wrapper_default_kelvin_range(
+    mock_device: CustomerDevice,
+) -> None:
+    """Test the default color temperature range of a light."""
+    _inject_default_light(mock_device)
+    wrapper = ColorTempWrapper.find_dpcode(mock_device, "temp_value")
+
+    assert wrapper
+    assert wrapper.min_kelvin == 2000
+    assert wrapper.max_kelvin == 6500
+
+
+def test_color_temp_wrapper_custom_kelvin_range(
+    mock_device: CustomerDevice,
+) -> None:
+    """Test a subclass overriding the color temperature range."""
+
+    class CustomColorTempWrapper(ColorTempWrapper):
+        """Wrapper for a 1600-4000 K lamp."""
+
+        min_kelvin = 1600
+        max_kelvin = 4000
+
+    _inject_default_light(mock_device)
+    mock_device.status["temp_value"] = 795
+    wrapper = CustomColorTempWrapper.find_dpcode(mock_device, "temp_value")
+
+    assert wrapper
+    assert wrapper.min_kelvin == 1600
+    assert wrapper.max_kelvin == 4000
+    assert wrapper.read_device_status(mock_device) == 3059
+    assert wrapper.get_update_commands(mock_device, 4000) == [
+        {"code": "temp_value", "value": 1000}
+    ]
