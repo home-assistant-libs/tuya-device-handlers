@@ -2,6 +2,7 @@
 
 from tuya_device_handlers import TUYA_QUIRKS_REGISTRY
 from tuya_device_handlers.builder import DeviceQuirk
+from tuya_device_handlers.const import DPMode
 from tuya_device_handlers.device_wrapper.service_feeder_schedule import (
     DefaultFeederScheduleWrapper,
 )
@@ -20,6 +21,17 @@ from tuya_device_handlers.device_wrapper.service_feeder_schedule import (
                 device, "meal_plan", prefer_function=True
             )
         )
+    )
+    .add_dpid_integer(
+        dpid=15,
+        dpcode="feed_report",
+        dpmode=DPMode.READ,
+        unit="",
+        min=0,
+        max=20,
+        scale=0,
+        step=1,
+        report_type="sum",
     )
     .register(TUYA_QUIRKS_REGISTRY)
 )

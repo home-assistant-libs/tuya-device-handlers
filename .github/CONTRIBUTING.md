@@ -103,3 +103,10 @@ This will allow a chance to talk it over with the owners and validate your appro
 <!-- github-only -->
 
 [code of conduct]: CODE_OF_CONDUCT.md
+
+## AI policy
+
+This project follows the [Open Home Foundation AI Policy](../AI_POLICY.md). In
+short: AI tools are welcome as an aid, but you must fully understand and be
+able to explain every change you submit. Contributions made by autonomous
+agents are not accepted.

@@ -1,0 +1,331 @@
+{
+  "endpoint": "https://apigw.tuyaeu.com",
+  "mqtt_connected": true,
+  "disabled_by": null,
+  "disabled_polling": false,
+  "name": "TV",
+  "category": "pc",
+  "product_id": "avriaapskyik4eaa",
+  "product_name": "Konyks Priska Duo FR",
+  "online": true,
+  "sub": false,
+  "time_zone": "+02:00",
+  "active_time": "2026-06-06T20:59:35+00:00",
+  "create_time": "2026-06-06T20:59:35+00:00",
+  "update_time": "2026-06-06T20:59:35+00:00",
+  "function": {
+    "switch_1": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "switch_2": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "countdown_1": {
+      "type": "Integer",
+      "value": "{\"unit\":\"s\",\"min\":0,\"max\":86400,\"scale\":0,\"step\":1}"
+    },
+    "countdown_2": {
+      "type": "Integer",
+      "value": "{\"unit\":\"s\",\"min\":0,\"max\":86400,\"scale\":0,\"step\":1}"
+    },
+    "relay_status": {
+      "type": "Enum",
+      "value": "{\"range\":[\"power_off\",\"power_on\",\"last\"]}"
+    },
+    "light_mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"relay\",\"pos\",\"none\"]}"
+    },
+    "child_lock": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "cycle_time": {
+      "type": "String",
+      "value": "{}"
+    },
+    "random_time": {
+      "type": "String",
+      "value": "{}"
+    },
+    "switch_inching": {
+      "type": "String",
+      "value": "{}"
+    }
+  },
+  "local_strategy": {
+    "1": {
+      "value_convert": "default",
+      "status_code": "switch_1",
+      "config_item": {
+        "statusFormat": "{\"switch_1\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "avriaapskyik4eaa"
+      }
+    },
+    "2": {
+      "value_convert": "default",
+      "status_code": "switch_2",
+      "config_item": {
+        "statusFormat": "{\"switch_2\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "avriaapskyik4eaa"
+      }
+    },
+    "9": {
+      "value_convert": "default",
+      "status_code": "countdown_1",
+      "config_item": {
+        "statusFormat": "{\"countdown_1\":\"$\"}",
+        "valueDesc": "{\"unit\":\"s\",\"min\":0,\"max\":86400,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "avriaapskyik4eaa"
+      }
+    },
+    "10": {
+      "value_convert": "default",
+      "status_code": "countdown_2",
+      "config_item": {
+        "statusFormat": "{\"countdown_2\":\"$\"}",
+        "valueDesc": "{\"unit\":\"s\",\"min\":0,\"max\":86400,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "avriaapskyik4eaa"
+      }
+    },
+    "17": {
+      "value_convert": "default",
+      "status_code": "add_ele",
+      "config_item": {
+        "statusFormat": "{\"add_ele\":\"$\"}",
+        "valueDesc": "{\"min\":0,\"max\":50000,\"scale\":3,\"step\":100}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "avriaapskyik4eaa"
+      }
+    },
+    "18": {
+      "value_convert": "default",
+      "status_code": "cur_current",
+      "config_item": {
+        "statusFormat": "{\"cur_current\":\"$\"}",
+        "valueDesc": "{\"unit\":\"mA\",\"min\":0,\"max\":30000,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "avriaapskyik4eaa"
+      }
+    },
+    "19": {
+      "value_convert": "default",
+      "status_code": "cur_power",
+      "config_item": {
+        "statusFormat": "{\"cur_power\":\"$\"}",
+        "valueDesc": "{\"unit\":\"W\",\"min\":0,\"max\":80000,\"scale\":1,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "avriaapskyik4eaa"
+      }
+    },
+    "20": {
+      "value_convert": "default",
+      "status_code": "cur_voltage",
+      "config_item": {
+        "statusFormat": "{\"cur_voltage\":\"$\"}",
+        "valueDesc": "{\"unit\":\"V\",\"min\":0,\"max\":5000,\"scale\":1,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "avriaapskyik4eaa"
+      }
+    },
+    "38": {
+      "value_convert": "enum",
+      "status_code": "relay_status",
+      "config_item": {
+        "statusFormat": "{\"relay_status\":\"$\"}",
+        "valueDesc": "{\"range\":[\"power_off\",\"power_on\",\"last\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {
+          "0": {
+            "code": "relay_status",
+            "value": "power_off"
+          },
+          "1": {
+            "code": "relay_status",
+            "value": "power_on"
+          },
+          "2": {
+            "code": "relay_status",
+            "value": "last"
+          },
+          "memory": {
+            "code": "relay_status",
+            "value": "last"
+          },
+          "off": {
+            "code": "relay_status",
+            "value": "power_off"
+          },
+          "on": {
+            "code": "relay_status",
+            "value": "power_on"
+          }
+        },
+        "pid": "avriaapskyik4eaa"
+      }
+    },
+    "40": {
+      "value_convert": "default",
+      "status_code": "light_mode",
+      "config_item": {
+        "statusFormat": "{\"light_mode\":\"$\"}",
+        "valueDesc": "{\"range\":[\"relay\",\"pos\",\"none\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "avriaapskyik4eaa"
+      }
+    },
+    "41": {
+      "value_convert": "default",
+      "status_code": "child_lock",
+      "config_item": {
+        "statusFormat": "{\"child_lock\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "avriaapskyik4eaa"
+      }
+    },
+    "42": {
+      "value_convert": "default",
+      "status_code": "cycle_time",
+      "config_item": {
+        "statusFormat": "{\"cycle_time\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "String",
+        "enumMappingMap": {},
+        "pid": "avriaapskyik4eaa"
+      }
+    },
+    "43": {
+      "value_convert": "default",
+      "status_code": "random_time",
+      "config_item": {
+        "statusFormat": "{\"random_time\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "String",
+        "enumMappingMap": {},
+        "pid": "avriaapskyik4eaa"
+      }
+    },
+    "44": {
+      "value_convert": "default",
+      "status_code": "switch_inching",
+      "config_item": {
+        "statusFormat": "{\"switch_inching\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "String",
+        "enumMappingMap": {},
+        "pid": "avriaapskyik4eaa"
+      }
+    }
+  },
+  "status_range": {
+    "switch_1": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "switch_2": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "countdown_1": {
+      "type": "Integer",
+      "value": "{\"unit\":\"s\",\"min\":0,\"max\":86400,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "countdown_2": {
+      "type": "Integer",
+      "value": "{\"unit\":\"s\",\"min\":0,\"max\":86400,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "add_ele": {
+      "type": "Integer",
+      "value": "{\"min\":0,\"max\":50000,\"scale\":3,\"step\":100}",
+      "report_type": "sum"
+    },
+    "cur_current": {
+      "type": "Integer",
+      "value": "{\"unit\":\"mA\",\"min\":0,\"max\":30000,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "cur_power": {
+      "type": "Integer",
+      "value": "{\"unit\":\"W\",\"min\":0,\"max\":80000,\"scale\":1,\"step\":1}",
+      "report_type": null
+    },
+    "cur_voltage": {
+      "type": "Integer",
+      "value": "{\"unit\":\"V\",\"min\":0,\"max\":5000,\"scale\":1,\"step\":1}",
+      "report_type": null
+    },
+    "relay_status": {
+      "type": "Enum",
+      "value": "{\"range\":[\"power_off\",\"power_on\",\"last\"]}",
+      "report_type": null
+    },
+    "light_mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"relay\",\"pos\",\"none\"]}",
+      "report_type": null
+    },
+    "child_lock": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "cycle_time": {
+      "type": "String",
+      "value": "{}",
+      "report_type": null
+    },
+    "random_time": {
+      "type": "String",
+      "value": "{}",
+      "report_type": null
+    },
+    "switch_inching": {
+      "type": "String",
+      "value": "{}",
+      "report_type": null
+    }
+  },
+  "status": {
+    "switch_1": false,
+    "switch_2": true,
+    "countdown_1": 0,
+    "countdown_2": 0,
+    "add_ele": 100,
+    "cur_current": 1055,
+    "cur_power": 2171,
+    "cur_voltage": 2277,
+    "relay_status": "last",
+    "light_mode": "relay",
+    "child_lock": false,
+    "cycle_time": "",
+    "random_time": "",
+    "switch_inching": ""
+  },
+  "set_up": true,
+  "support_local": true,
+  "quirk": null,
+  "warnings": null
+}
