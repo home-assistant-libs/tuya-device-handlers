@@ -1,4 +1,4 @@
-"""Tests for _DatapointDefinition and DeviceQuirk."""
+"""Tests for the quirk builder entries and DeviceQuirk."""
 
 from collections.abc import Callable
 import json
@@ -171,7 +171,7 @@ def test_override_category() -> None:
 
 
 def test_set_dpid_strategy_to_enum() -> None:
-    """set_dpid_strategy_to_enum stores an enum _LocalConvertStrategy."""
+    """set_dpid_strategy_to_enum stores an enum local convert strategy."""
     quirk = DeviceQuirk().set_dpid_strategy_to_enum(
         dpid=1,
         dpcode="x",
@@ -471,7 +471,6 @@ def test_initialise_device_remove_dpid_removes_everything(
         pytest.param("false", False, id="false-string"),
         pytest.param(True, True, id="native-true"),
         pytest.param("other", "other", id="unmapped"),
-        pytest.param(["unhashable"], ["unhashable"], id="unhashable"),
     ],
 )
 def test_initialise_device_map_dpid_initial_status_values(
@@ -485,7 +484,19 @@ def test_initialise_device_map_dpid_initial_status_values(
         dpid=1, dpcode="x", status_mapping={"true": True, "false": False}
     )
     quirk.initialise_device(mock_device)
-    assert mock_device.status["x"] == expected
+    assert mock_device.status["x"] is expected
+
+
+def test_initialise_device_map_dpid_initial_status_values_unhashable(
+    mock_device: CustomerDevice,
+) -> None:
+    """An unhashable initial value is left untouched."""
+    mock_device.status["x"] = ["unhashable"]
+    quirk = DeviceQuirk().map_dpid_initial_status_values(
+        dpid=1, dpcode="x", status_mapping={"true": True}
+    )
+    quirk.initialise_device(mock_device)
+    assert mock_device.status["x"] == ["unhashable"]
 
 
 def test_initialise_device_map_dpid_initial_status_values_missing_dpcode(
