@@ -157,7 +157,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
     """Quirk for Tuya device."""
 
     _datapoint_definitions: list[QuirkEntry]
-    _local_strategy: list[LocalConvertStrategy | LocalStrategyRemoval]
+    _local_strategy: list[QuirkEntry]
     _type_information_overrides: dict[
         tuple[int, str], type[TypeInformation[Any]]
     ]
