@@ -1,5 +1,6 @@
 """Tests for DatapointDefinition and DeviceQuirk."""
 
+from collections.abc import Callable
 import json
 import pathlib
 
@@ -17,6 +18,7 @@ from tuya_device_handlers.builder.device_quirk import (
     DeviceQuirk,
     LocalConvertStrategy,
     LocalStrategyRemoval,
+    QuirkEntry,
 )
 from tuya_device_handlers.const import DPMode, DPType
 from tuya_device_handlers.registry import QuirksRegistry
@@ -299,23 +301,71 @@ def test_initialise_device_remove_dpid_strategy(
     assert 1 not in mock_device.local_strategy
 
 
+@pytest.mark.parametrize(
+    "add_entry",
+    [
+        lambda quirk, apply_when: quirk.set_dpid_strategy_to_enum(
+            dpid=1,
+            dpcode="x",
+            enum_mapping_map={"on": True},
+            apply_when=apply_when,
+        ),
+        lambda quirk, apply_when: quirk.remove_dpid_strategy(
+            dpid=1, dpcode="x", apply_when=apply_when
+        ),
+    ],
+    ids=["set_dpid_strategy_to_enum", "remove_dpid_strategy"],
+)
 def test_initialise_device_local_strategy_apply_when_not_met(
     mock_device: CustomerDevice,
+    add_entry: Callable[
+        [DeviceQuirk, Callable[[CustomerDevice], bool]], DeviceQuirk
+    ],
 ) -> None:
     """A local strategy whose apply_when returns False is skipped."""
     mock_device.support_local = True
-    mock_device.local_strategy = {}
-    quirk = DeviceQuirk()
-    quirk._local_strategy.append(
-        LocalConvertStrategy(
-            dpid=1,
-            dpcode="x",
-            value_convert="enum",
-            apply_when=lambda _device: False,
-        )
-    )
+    mock_device.local_strategy = {1: {"some": "thing"}}
+    quirk = add_entry(DeviceQuirk(), lambda _device: False)
     quirk.initialise_device(mock_device)
-    assert 1 not in mock_device.local_strategy
+    assert mock_device.local_strategy == {1: {"some": "thing"}}
+
+
+@pytest.mark.parametrize(
+    ("add_entry", "expected_entry_type"),
+    [
+        (
+            lambda quirk, apply_when: quirk.set_dpid_strategy_to_enum(
+                dpid=1,
+                dpcode="x",
+                enum_mapping_map={"on": True},
+                apply_when=apply_when,
+            ),
+            LocalConvertStrategy,
+        ),
+        (
+            lambda quirk, apply_when: quirk.remove_dpid_strategy(
+                dpid=1, dpcode="x", apply_when=apply_when
+            ),
+            LocalStrategyRemoval,
+        ),
+    ],
+    ids=["set_dpid_strategy_to_enum", "remove_dpid_strategy"],
+)
+def test_local_strategy_apply_when_is_stored(
+    add_entry: Callable[
+        [DeviceQuirk, Callable[[CustomerDevice], bool]], DeviceQuirk
+    ],
+    expected_entry_type: type[QuirkEntry],
+) -> None:
+    """The builder methods forward apply_when onto the stored entry."""
+
+    def apply_when(_device: CustomerDevice) -> bool:
+        return True
+
+    quirk = add_entry(DeviceQuirk(), apply_when)
+    entry = quirk._local_strategy[0]
+    assert isinstance(entry, expected_entry_type)
+    assert entry.apply_when is apply_when
 
 
 def test_mqtt_enum_strategy_mapping(

@@ -375,6 +375,7 @@ class DeviceQuirk(DeviceQuirkProtocol):
         dpid: int,
         dpcode: str,
         enum_mapping_map: dict[Any, Any],
+        apply_when: Callable[[CustomerDevice], bool] | None = None,
     ) -> Self:
         """Override local strategy for a datapoint."""
         self._local_strategy.append(
@@ -386,14 +387,23 @@ class DeviceQuirk(DeviceQuirkProtocol):
                     str(key): {"value": value}
                     for key, value in enum_mapping_map.items()
                 },
+                apply_when=apply_when,
             )
         )
         return self
 
-    def remove_dpid_strategy(self, *, dpid: int, dpcode: str) -> Self:
+    def remove_dpid_strategy(
+        self,
+        *,
+        dpid: int,
+        dpcode: str,
+        apply_when: Callable[[CustomerDevice], bool] | None = None,
+    ) -> Self:
         """Remove datapoint strategy."""
         self._local_strategy.append(
-            LocalStrategyRemoval(dpid=dpid, dpcode=dpcode)
+            LocalStrategyRemoval(
+                dpid=dpid, dpcode=dpcode, apply_when=apply_when
+            )
         )
         return self
 
