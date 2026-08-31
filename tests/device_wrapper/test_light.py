@@ -11,7 +11,8 @@ from tuya_device_handlers.device_wrapper.common import (
 )
 from tuya_device_handlers.device_wrapper.light import (
     BrightnessWrapper,
-    ColorDataWrapper,
+    ColorDataJsonWrapper,
+    ColorDataStringWrapper,
     ColorTempWrapper,
 )
 from tuya_device_handlers.utils import RemapHelper
@@ -81,7 +82,7 @@ def _inject_default_light(mock_device: CustomerDevice) -> None:
         ),
         (
             "default",
-            ColorDataWrapper,
+            ColorDataJsonWrapper,
             "colour_data",
             {},
             (228.6350974930362, 393.3070866141732, 1002.9330708661417),
@@ -214,7 +215,7 @@ def test_read_device_status(
         ),
         (
             "default",
-            ColorDataWrapper,
+            ColorDataJsonWrapper,
             "colour_data",
             (228.6350974930362, 393.3070866141732, 1002.9330708661417),
             [
@@ -332,4 +333,101 @@ def test_light_action_command(
                 brightness_wrapper.brightness_min.type_information, 0, 255
             )
         )
+    assert wrapper.get_update_commands(mock_device, action) == expected
+
+
+def _inject_hex_string_light(mock_device: CustomerDevice) -> None:
+    """Inject a light whose colour_data is a hex-encoded String DP."""
+    inject_dpcode(
+        mock_device,
+        "colour_data",
+        "007803e803e8",
+        dptype="String",
+        values='{"maxlen": 255}',
+    )
+
+
+@pytest.mark.parametrize(
+    ("status", "expected_device_status"),
+    [
+        (
+            "007800800040",
+            (119.33147632311977, 50.0, 63.24803149606299),
+        ),
+        ("00b400ff0080", (179.49860724233983, 100.0, 127.5)),
+    ],
+)
+def test_color_data_string_read_device_status(
+    status: str,
+    expected_device_status: tuple[float, float, float],
+    mock_device: CustomerDevice,
+) -> None:
+    """Test read_device_status for hex-encoded String colour_data."""
+    _inject_hex_string_light(mock_device)
+    mock_device.status["colour_data"] = status
+    wrapper = ColorDataStringWrapper.find_dpcode(mock_device, "colour_data")
+
+    assert wrapper
+    assert wrapper.read_device_status(mock_device) == expected_device_status
+
+
+@pytest.mark.parametrize(
+    "status",
+    [
+        # Non-hexadecimal, but correctly sized
+        "zzzzzzzzzzzz",
+        # Wrongly sized
+        "0078",
+        "",
+        # Not a string at all
+        None,
+        123456,
+    ],
+)
+def test_color_data_string_invalid_status(
+    status: Any,
+    mock_device: CustomerDevice,
+) -> None:
+    """Test unusable hex-encoded String colour_data values return None."""
+    _inject_hex_string_light(mock_device)
+    wrapper = ColorDataStringWrapper.find_dpcode(mock_device, "colour_data")
+
+    assert wrapper
+    mock_device.status["colour_data"] = status
+    assert wrapper.read_device_status(mock_device) is None
+
+
+def test_color_data_string_missing_status(mock_device: CustomerDevice) -> None:
+    """Test a missing hex-encoded String colour_data returns None."""
+    _inject_hex_string_light(mock_device)
+    wrapper = ColorDataStringWrapper.find_dpcode(mock_device, "colour_data")
+
+    assert wrapper
+    mock_device.status.pop("colour_data")
+    assert wrapper.read_device_status(mock_device) is None
+
+
+@pytest.mark.parametrize(
+    ("action", "expected"),
+    [
+        (
+            (119.33147632311977, 50.0, 63.24803149606299),
+            [{"code": "colour_data", "value": "007800800040"}],
+        ),
+        (
+            (179.49860724233983, 100.0, 127.5),
+            [{"code": "colour_data", "value": "00b400ff0080"}],
+        ),
+    ],
+)
+def test_color_data_string_action_command(
+    action: tuple[float, float, float],
+    expected: list[dict[str, Any]],
+    mock_device: CustomerDevice,
+) -> None:
+    """Test get_update_commands for hex-encoded String colour_data."""
+    _inject_hex_string_light(mock_device)
+    wrapper = ColorDataStringWrapper.find_dpcode(mock_device, "colour_data")
+
+    assert wrapper
     assert wrapper.get_update_commands(mock_device, action) == expected
