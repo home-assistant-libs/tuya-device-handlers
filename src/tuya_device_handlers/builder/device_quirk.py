@@ -209,6 +209,11 @@ class DeviceQuirk(DeviceQuirkProtocol):
             if definition.applies_to_device(device):
                 definition.apply(device)
 
+        # Local strategies must be applied after the datapoint definitions:
+        # LocalConvertStrategy.apply reads device.status_range, which
+        # DatapointDefinition.apply populates. Unlike DatapointDefinition,
+        # the local strategy entries do not check support_local themselves,
+        # so the guard below is the only one - keep the two loops separate.
         if device.support_local:
             for strategy in self._local_strategy:
                 if strategy.applies_to_device(device):
