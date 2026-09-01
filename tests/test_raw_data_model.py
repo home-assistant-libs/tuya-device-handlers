@@ -41,3 +41,17 @@ def test_electricity_data(
 
     asdict = None if raw_data is None else dataclasses.asdict(raw_data)
     assert asdict == snapshot
+
+
+def test_from_hex_matches_from_bytes() -> None:
+    """from_hex decodes the hex string then delegates to from_bytes."""
+    hex_string = "020F08800003E8002710000DAC0030D4500F"
+    assert ElectricityData.from_hex(hex_string) == ElectricityData.from_bytes(
+        bytes.fromhex(hex_string)
+    )
+
+
+@pytest.mark.parametrize("invalid", ["not-hex", "0F0", "ZZ"])
+def test_from_hex_invalid_returns_none(invalid: str) -> None:
+    """Invalid hex strings return None instead of raising."""
+    assert ElectricityData.from_hex(invalid) is None
