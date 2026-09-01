@@ -23,6 +23,13 @@
     'suggested_unit': 'kVA',
   })
 # ---
+# name: test_sensor_wrapper[ElectricityApparentPowerJsonWrapper-demo_json-{}-{"reactivePower": 0.5, "apparentPower": 0.9, "powerFactor": 0.9}]
+  dict({
+    'native_unit': 'kVA',
+    'state': 0.9,
+    'suggested_unit': None,
+  })
+# ---
 # name: test_sensor_wrapper[ElectricityApparentPowerRawWrapper-demo_raw-{}-Ag8JJQAASAAACAAAAAAACGME]
   dict({
     'native_unit': 'VA',
@@ -55,6 +62,13 @@
   dict({
     'native_unit': None,
     'state': 0.98,
+    'suggested_unit': None,
+  })
+# ---
+# name: test_sensor_wrapper[ElectricityPowerFactorJsonWrapper-demo_json-{}-{"reactivePower": 0.5, "apparentPower": 0.9, "powerFactor": 0.9}]
+  dict({
+    'native_unit': None,
+    'state': 0.9,
     'suggested_unit': None,
   })
 # ---
@@ -91,6 +105,13 @@
     'native_unit': 'var',
     'state': 500,
     'suggested_unit': 'kvar',
+  })
+# ---
+# name: test_sensor_wrapper[ElectricityReactivePowerJsonWrapper-demo_json-{}-{"reactivePower": 0.5, "apparentPower": 0.9, "powerFactor": 0.9}]
+  dict({
+    'native_unit': 'kvar',
+    'state': 0.5,
+    'suggested_unit': None,
   })
 # ---
 # name: test_sensor_wrapper[ElectricityReactivePowerRawWrapper-demo_raw-{}-Ag8JJQAASAAACAAAAAAACGME]
