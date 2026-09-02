@@ -236,6 +236,24 @@ def test_sensor_wrapper(
             "{}",
         ),
         (
+            ElectricityReactivePowerJsonWrapper,
+            "demo_json",
+            "{}",
+            "{}",
+        ),
+        (
+            ElectricityApparentPowerJsonWrapper,
+            "demo_json",
+            "{}",
+            "{}",
+        ),
+        (
+            ElectricityPowerFactorJsonWrapper,
+            "demo_json",
+            "{}",
+            "{}",
+        ),
+        (
             ElectricityCurrentRawWrapper,
             "demo_raw",
             "{}",
