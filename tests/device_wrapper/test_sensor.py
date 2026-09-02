@@ -231,6 +231,60 @@ def test_sensor_wrapper(
             "{}",
             "",
         ),
+        (
+            ElectricityReactivePowerRawWrapper,
+            "demo_raw",
+            "{}",
+            "",
+        ),
+        (
+            ElectricityApparentPowerRawWrapper,
+            "demo_raw",
+            "{}",
+            "",
+        ),
+        (
+            ElectricityPowerFactorRawWrapper,
+            "demo_raw",
+            "{}",
+            "",
+        ),
+        (
+            ElectricityCurrentHexStringWrapper,
+            "demo_string",
+            "{}",
+            "not-hex",
+        ),
+        (
+            ElectricityPowerHexStringWrapper,
+            "demo_string",
+            "{}",
+            "not-hex",
+        ),
+        (
+            ElectricityVoltageHexStringWrapper,
+            "demo_string",
+            "{}",
+            "not-hex",
+        ),
+        (
+            ElectricityReactivePowerHexStringWrapper,
+            "demo_string",
+            "{}",
+            "not-hex",
+        ),
+        (
+            ElectricityApparentPowerHexStringWrapper,
+            "demo_string",
+            "{}",
+            "not-hex",
+        ),
+        (
+            ElectricityPowerFactorHexStringWrapper,
+            "demo_string",
+            "{}",
+            "not-hex",
+        ),
     ],
 )
 def test_sensor_invalid_value(
