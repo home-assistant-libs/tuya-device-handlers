@@ -444,3 +444,31 @@ def test_electricity_raw_wrappers_real_device(
         states[wrapper_type.__name__] = wrapper.read_device_status(device)
 
     assert states == snapshot
+
+
+def test_electricity_json_wrappers_real_device(
+    snapshot: SnapshotAssertion,
+) -> None:
+    """Test the electricity JSON wrappers against a real zndb meter.
+
+    `zndb_iow5ux77dxy3yrpj` reports the phase datapoints as JSON, so it is
+    the real-world check that the six JSON keys (including reactive/apparent
+    power and power factor) are read the way the meter reports them.
+    """
+    device = create_device("zndb_iow5ux77dxy3yrpj.json")
+    dpcode = "phase_a"
+
+    states = {}
+    for wrapper_type in (
+        ElectricityCurrentJsonWrapper,
+        ElectricityPowerJsonWrapper,
+        ElectricityVoltageJsonWrapper,
+        ElectricityReactivePowerJsonWrapper,
+        ElectricityApparentPowerJsonWrapper,
+        ElectricityPowerFactorJsonWrapper,
+    ):
+        wrapper = wrapper_type.find_dpcode(device, dpcode)
+        assert wrapper
+        states[wrapper_type.__name__] = wrapper.read_device_status(device)
+
+    assert states == snapshot

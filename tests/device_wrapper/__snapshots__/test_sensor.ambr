@@ -1,4 +1,14 @@
 # serializer version: 1
+# name: test_electricity_json_wrappers_real_device
+  dict({
+    'ElectricityApparentPowerJsonWrapper': 2.35,
+    'ElectricityCurrentJsonWrapper': 10.0,
+    'ElectricityPowerFactorJsonWrapper': 0.98,
+    'ElectricityPowerJsonWrapper': 3.0,
+    'ElectricityReactivePowerJsonWrapper': 0.5,
+    'ElectricityVoltageJsonWrapper': 230.5,
+  })
+# ---
 # name: test_electricity_raw_wrappers_real_device
   dict({
     'ElectricityApparentPowerRawWrapper': 8,
