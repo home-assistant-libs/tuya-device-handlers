@@ -11,6 +11,7 @@ from .common import (
     DPCodeIntegerWrapper,
     DPCodeJsonWrapper,
     DPCodeRawWrapper,
+    DPCodeStringWrapper,
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -173,3 +174,131 @@ class ElectricityVoltageRawWrapper(DPCodeRawWrapper[float]):
         ) is None:
             return None
         return value.voltage
+
+
+class ElectricityReactivePowerRawWrapper(DPCodeRawWrapper[float]):
+    """Custom DPCode Wrapper for extracting reactive power from base64."""
+
+    native_unit = "var"
+    suggested_unit = "kvar"
+
+    def read_device_status(self, device: CustomerDevice) -> float | None:
+        """Read the device value for the dpcode."""
+        if (raw_value := self._read_dpcode_value(device)) is None or (
+            value := ElectricityData.from_bytes(raw_value)
+        ) is None:
+            return None
+        return value.reactive_power
+
+
+class ElectricityApparentPowerRawWrapper(DPCodeRawWrapper[float]):
+    """Custom DPCode Wrapper for extracting apparent power from base64."""
+
+    native_unit = "VA"
+    suggested_unit = "kVA"
+
+    def read_device_status(self, device: CustomerDevice) -> float | None:
+        """Read the device value for the dpcode."""
+        if (raw_value := self._read_dpcode_value(device)) is None or (
+            value := ElectricityData.from_bytes(raw_value)
+        ) is None:
+            return None
+        return value.apparent_power
+
+
+class ElectricityPowerFactorRawWrapper(DPCodeRawWrapper[float]):
+    """Custom DPCode Wrapper for extracting power factor from base64."""
+
+    def read_device_status(self, device: CustomerDevice) -> float | None:
+        """Read the device value for the dpcode."""
+        if (raw_value := self._read_dpcode_value(device)) is None or (
+            value := ElectricityData.from_bytes(raw_value)
+        ) is None:
+            return None
+        return value.power_factor
+
+
+class ElectricityCurrentHexStringWrapper(DPCodeStringWrapper[float]):
+    """Custom DPCode Wrapper for extracting current from a hex string."""
+
+    native_unit = "mA"
+    suggested_unit = "A"
+
+    def read_device_status(self, device: CustomerDevice) -> float | None:
+        """Read the device value for the dpcode."""
+        if (raw_value := self._read_dpcode_value(device)) is None or (
+            value := ElectricityData.from_hex(raw_value)
+        ) is None:
+            return None
+        return value.current
+
+
+class ElectricityPowerHexStringWrapper(DPCodeStringWrapper[float]):
+    """Custom DPCode Wrapper for extracting power from a hex string."""
+
+    native_unit = "W"
+    suggested_unit = "kW"
+
+    def read_device_status(self, device: CustomerDevice) -> float | None:
+        """Read the device value for the dpcode."""
+        if (raw_value := self._read_dpcode_value(device)) is None or (
+            value := ElectricityData.from_hex(raw_value)
+        ) is None:
+            return None
+        return value.power
+
+
+class ElectricityVoltageHexStringWrapper(DPCodeStringWrapper[float]):
+    """Custom DPCode Wrapper for extracting voltage from a hex string."""
+
+    native_unit = "V"
+
+    def read_device_status(self, device: CustomerDevice) -> float | None:
+        """Read the device value for the dpcode."""
+        if (raw_value := self._read_dpcode_value(device)) is None or (
+            value := ElectricityData.from_hex(raw_value)
+        ) is None:
+            return None
+        return value.voltage
+
+
+class ElectricityReactivePowerHexStringWrapper(DPCodeStringWrapper[float]):
+    """Custom DPCode Wrapper for extracting reactive power from a hex string."""
+
+    native_unit = "var"
+    suggested_unit = "kvar"
+
+    def read_device_status(self, device: CustomerDevice) -> float | None:
+        """Read the device value for the dpcode."""
+        if (raw_value := self._read_dpcode_value(device)) is None or (
+            value := ElectricityData.from_hex(raw_value)
+        ) is None:
+            return None
+        return value.reactive_power
+
+
+class ElectricityApparentPowerHexStringWrapper(DPCodeStringWrapper[float]):
+    """Custom DPCode Wrapper for extracting apparent power from a hex string."""
+
+    native_unit = "VA"
+    suggested_unit = "kVA"
+
+    def read_device_status(self, device: CustomerDevice) -> float | None:
+        """Read the device value for the dpcode."""
+        if (raw_value := self._read_dpcode_value(device)) is None or (
+            value := ElectricityData.from_hex(raw_value)
+        ) is None:
+            return None
+        return value.apparent_power
+
+
+class ElectricityPowerFactorHexStringWrapper(DPCodeStringWrapper[float]):
+    """Custom DPCode Wrapper for extracting power factor from a hex string."""
+
+    def read_device_status(self, device: CustomerDevice) -> float | None:
+        """Read the device value for the dpcode."""
+        if (raw_value := self._read_dpcode_value(device)) is None or (
+            value := ElectricityData.from_hex(raw_value)
+        ) is None:
+            return None
+        return value.power_factor

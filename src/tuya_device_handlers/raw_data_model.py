@@ -75,3 +75,12 @@ class ElectricityData:
             return cls(current=current, power=power, voltage=voltage)
 
         return None
+
+    @classmethod
+    def from_hex(cls, raw: str) -> Self | None:
+        """Parse a hex-encoded frame string (e.g. `phase_s` string DPs)."""
+        try:
+            data = bytes.fromhex(raw)
+        except ValueError:
+            return None
+        return cls.from_bytes(data)
