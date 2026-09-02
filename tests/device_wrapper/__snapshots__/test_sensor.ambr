@@ -1,4 +1,14 @@
 # serializer version: 1
+# name: test_electricity_json_wrappers_real_device
+  dict({
+    'ElectricityApparentPowerJsonWrapper': 2.35,
+    'ElectricityCurrentJsonWrapper': 10.0,
+    'ElectricityPowerFactorJsonWrapper': 0.98,
+    'ElectricityPowerJsonWrapper': 3.0,
+    'ElectricityReactivePowerJsonWrapper': 0.5,
+    'ElectricityVoltageJsonWrapper': 230.5,
+  })
+# ---
 # name: test_electricity_raw_wrappers_real_device
   dict({
     'ElectricityApparentPowerRawWrapper': 8,
@@ -21,6 +31,13 @@
     'native_unit': 'VA',
     'state': 2350,
     'suggested_unit': 'kVA',
+  })
+# ---
+# name: test_sensor_wrapper[ElectricityApparentPowerJsonWrapper-demo_json-{}-{"reactivePower": 0.5, "apparentPower": 0.9, "powerFactor": 0.9}]
+  dict({
+    'native_unit': 'kVA',
+    'state': 0.9,
+    'suggested_unit': None,
   })
 # ---
 # name: test_sensor_wrapper[ElectricityApparentPowerRawWrapper-demo_raw-{}-Ag8JJQAASAAACAAAAAAACGME]
@@ -58,6 +75,13 @@
     'suggested_unit': None,
   })
 # ---
+# name: test_sensor_wrapper[ElectricityPowerFactorJsonWrapper-demo_json-{}-{"reactivePower": 0.5, "apparentPower": 0.9, "powerFactor": 0.9}]
+  dict({
+    'native_unit': None,
+    'state': 0.9,
+    'suggested_unit': None,
+  })
+# ---
 # name: test_sensor_wrapper[ElectricityPowerFactorRawWrapper-demo_raw-{}-Ag8JJQAASAAACAAAAAAACGME]
   dict({
     'native_unit': None,
@@ -91,6 +115,13 @@
     'native_unit': 'var',
     'state': 500,
     'suggested_unit': 'kvar',
+  })
+# ---
+# name: test_sensor_wrapper[ElectricityReactivePowerJsonWrapper-demo_json-{}-{"reactivePower": 0.5, "apparentPower": 0.9, "powerFactor": 0.9}]
+  dict({
+    'native_unit': 'kvar',
+    'state': 0.5,
+    'suggested_unit': None,
   })
 # ---
 # name: test_sensor_wrapper[ElectricityReactivePowerRawWrapper-demo_raw-{}-Ag8JJQAASAAACAAAAAAACGME]

@@ -132,6 +132,40 @@ class ElectricityVoltageJsonWrapper(DPCodeJsonWrapper[float]):
         return status.get("voltage")
 
 
+class ElectricityReactivePowerJsonWrapper(DPCodeJsonWrapper[float]):
+    """Custom DPCode Wrapper for extracting reactive power from JSON."""
+
+    native_unit = "kvar"
+
+    def read_device_status(self, device: CustomerDevice) -> float | None:
+        """Read the device value for the dpcode."""
+        if (status := self._read_dpcode_value(device)) is None:
+            return None
+        return status.get("reactivePower")
+
+
+class ElectricityApparentPowerJsonWrapper(DPCodeJsonWrapper[float]):
+    """Custom DPCode Wrapper for extracting apparent power from JSON."""
+
+    native_unit = "kVA"
+
+    def read_device_status(self, device: CustomerDevice) -> float | None:
+        """Read the device value for the dpcode."""
+        if (status := self._read_dpcode_value(device)) is None:
+            return None
+        return status.get("apparentPower")
+
+
+class ElectricityPowerFactorJsonWrapper(DPCodeJsonWrapper[float]):
+    """Custom DPCode Wrapper for extracting power factor from JSON."""
+
+    def read_device_status(self, device: CustomerDevice) -> float | None:
+        """Read the device value for the dpcode."""
+        if (status := self._read_dpcode_value(device)) is None:
+            return None
+        return status.get("powerFactor")
+
+
 class ElectricityCurrentRawWrapper(DPCodeRawWrapper[float]):
     """Custom DPCode Wrapper for extracting electricity current from base64."""
 

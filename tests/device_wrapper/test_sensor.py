@@ -14,16 +14,19 @@ from tuya_device_handlers.device_wrapper.common import (
 from tuya_device_handlers.device_wrapper.sensor import (
     DeltaIntegerWrapper,
     ElectricityApparentPowerHexStringWrapper,
+    ElectricityApparentPowerJsonWrapper,
     ElectricityApparentPowerRawWrapper,
     ElectricityCurrentHexStringWrapper,
     ElectricityCurrentJsonWrapper,
     ElectricityCurrentRawWrapper,
     ElectricityPowerFactorHexStringWrapper,
+    ElectricityPowerFactorJsonWrapper,
     ElectricityPowerFactorRawWrapper,
     ElectricityPowerHexStringWrapper,
     ElectricityPowerJsonWrapper,
     ElectricityPowerRawWrapper,
     ElectricityReactivePowerHexStringWrapper,
+    ElectricityReactivePowerJsonWrapper,
     ElectricityReactivePowerRawWrapper,
     ElectricityVoltageHexStringWrapper,
     ElectricityVoltageJsonWrapper,
@@ -89,6 +92,24 @@ def _snapshot_sensor(
             "demo_json",
             "{}",
             '{"electricCurrent": 599.552, "power": 6.912, "voltage": 52.7}',
+        ),
+        (
+            ElectricityReactivePowerJsonWrapper,
+            "demo_json",
+            "{}",
+            '{"reactivePower": 0.5, "apparentPower": 0.9, "powerFactor": 0.9}',
+        ),
+        (
+            ElectricityApparentPowerJsonWrapper,
+            "demo_json",
+            "{}",
+            '{"reactivePower": 0.5, "apparentPower": 0.9, "powerFactor": 0.9}',
+        ),
+        (
+            ElectricityPowerFactorJsonWrapper,
+            "demo_json",
+            "{}",
+            '{"reactivePower": 0.5, "apparentPower": 0.9, "powerFactor": 0.9}',
         ),
         (
             ElectricityCurrentRawWrapper,
@@ -210,6 +231,24 @@ def test_sensor_wrapper(
         ),
         (
             ElectricityVoltageJsonWrapper,
+            "demo_json",
+            "{}",
+            "{}",
+        ),
+        (
+            ElectricityReactivePowerJsonWrapper,
+            "demo_json",
+            "{}",
+            "{}",
+        ),
+        (
+            ElectricityApparentPowerJsonWrapper,
+            "demo_json",
+            "{}",
+            "{}",
+        ),
+        (
+            ElectricityPowerFactorJsonWrapper,
             "demo_json",
             "{}",
             "{}",
@@ -417,6 +456,34 @@ def test_electricity_raw_wrappers_real_device(
         ElectricityReactivePowerRawWrapper,
         ElectricityApparentPowerRawWrapper,
         ElectricityPowerFactorRawWrapper,
+    ):
+        wrapper = wrapper_type.find_dpcode(device, dpcode)
+        assert wrapper
+        states[wrapper_type.__name__] = wrapper.read_device_status(device)
+
+    assert states == snapshot
+
+
+def test_electricity_json_wrappers_real_device(
+    snapshot: SnapshotAssertion,
+) -> None:
+    """Test the electricity JSON wrappers against a real zndb meter.
+
+    `zndb_iow5ux77dxy3yrpj` reports the phase datapoints as JSON, so it is
+    the real-world check that the six JSON keys (including reactive/apparent
+    power and power factor) are read the way the meter reports them.
+    """
+    device = create_device("zndb_iow5ux77dxy3yrpj.json")
+    dpcode = "phase_a"
+
+    states = {}
+    for wrapper_type in (
+        ElectricityCurrentJsonWrapper,
+        ElectricityPowerJsonWrapper,
+        ElectricityVoltageJsonWrapper,
+        ElectricityReactivePowerJsonWrapper,
+        ElectricityApparentPowerJsonWrapper,
+        ElectricityPowerFactorJsonWrapper,
     ):
         wrapper = wrapper_type.find_dpcode(device, dpcode)
         assert wrapper
