@@ -35,6 +35,8 @@ class ElectricityData:
         # - bit1 active power
         # - bit2 reactive
         # - bit3 power factor
+        # Apparent power has no sign bit: it is a magnitude (V_rms * I_rms)
+        # and is never negative.
 
         is_v1 = len(raw) == 17 and raw[0:2] == b"\x01\x0f"
         is_v2 = len(raw) == 18 and raw[0:2] == b"\x02\x0f"
