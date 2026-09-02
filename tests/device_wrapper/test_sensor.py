@@ -6,6 +6,7 @@ import pytest
 from syrupy.assertion import SnapshotAssertion
 from tuya_sharing import CustomerDevice
 
+from tests import create_device
 from tuya_device_handlers.device_wrapper import DeviceWrapper
 from tuya_device_handlers.device_wrapper.common import (
     DPCodeTypeInformationWrapper,
@@ -394,3 +395,31 @@ def test_delta_sensor(
         None,
     )
     assert wrapper.read_device_status(mock_device) == 35  # unchanged
+
+
+def test_electricity_raw_wrappers_real_device(
+    snapshot: SnapshotAssertion,
+) -> None:
+    """Test the electricity raw wrappers against a real v02 phase frame.
+
+    `dlq_cnpkf4xdmd9v49iq` is the only device fixture carrying an 18-byte
+    v02 frame, so it is the only real-world check that the six-parameter
+    layout is decoded the way the device reports it.
+    """
+    device = create_device("dlq_cnpkf4xdmd9v49iq.json")
+    dpcode = "phase_a"
+
+    states = {}
+    for wrapper_type in (
+        ElectricityCurrentRawWrapper,
+        ElectricityPowerRawWrapper,
+        ElectricityVoltageRawWrapper,
+        ElectricityReactivePowerRawWrapper,
+        ElectricityApparentPowerRawWrapper,
+        ElectricityPowerFactorRawWrapper,
+    ):
+        wrapper = wrapper_type.find_dpcode(device, dpcode)
+        assert wrapper
+        states[wrapper_type.__name__] = wrapper.read_device_status(device)
+
+    assert states == snapshot

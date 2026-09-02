@@ -1,4 +1,14 @@
 # serializer version: 1
+# name: test_electricity_raw_wrappers_real_device
+  dict({
+    'ElectricityApparentPowerRawWrapper': 8,
+    'ElectricityCurrentRawWrapper': 72,
+    'ElectricityPowerFactorRawWrapper': 0.99,
+    'ElectricityPowerRawWrapper': 8,
+    'ElectricityReactivePowerRawWrapper': 0,
+    'ElectricityVoltageRawWrapper': 234.1,
+  })
+# ---
 # name: test_sensor_wrapper[DeltaIntegerWrapper-demo_integer_sum-{"unit": "%","min": 0,"max": 1000,"scale": 1,"step": 1}-123]
   dict({
     'native_unit': '%',
