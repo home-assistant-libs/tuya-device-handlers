@@ -23,7 +23,6 @@
   dict({
     'native_unit': '%',
     'state': 0,
-    'suggested_unit': None,
   })
 # ---
 # name: test_sensor_wrapper[ElectricityApparentPowerHexStringWrapper-demo_string-{}-020F09010027100008FC0001F400092E6200]
@@ -58,14 +57,12 @@
   dict({
     'native_unit': 'A',
     'state': 599.552,
-    'suggested_unit': None,
   })
 # ---
 # name: test_sensor_wrapper[ElectricityCurrentRawWrapper-demo_raw-{}-Ag8JJQAASAAACAAAAAAACGME]
   dict({
     'native_unit': 'mA',
     'state': 72,
-    'suggested_unit': 'A',
   })
 # ---
 # name: test_sensor_wrapper[ElectricityPowerFactorHexStringWrapper-demo_string-{}-020F09010027100008FC0001F400092E6200]
@@ -100,14 +97,12 @@
   dict({
     'native_unit': 'kW',
     'state': 6.912,
-    'suggested_unit': None,
   })
 # ---
 # name: test_sensor_wrapper[ElectricityPowerRawWrapper-demo_raw-{}-Ag8JJQAASAAACAAAAAAACGME]
   dict({
     'native_unit': 'W',
     'state': 8,
-    'suggested_unit': 'kW',
   })
 # ---
 # name: test_sensor_wrapper[ElectricityReactivePowerHexStringWrapper-demo_string-{}-020F09010027100008FC0001F400092E6200]
@@ -142,14 +137,12 @@
   dict({
     'native_unit': 'V',
     'state': 52.7,
-    'suggested_unit': None,
   })
 # ---
 # name: test_sensor_wrapper[ElectricityVoltageRawWrapper-demo_raw-{}-Ag8JJQAASAAACAAAAAAACGME]
   dict({
     'native_unit': 'V',
     'state': 234.1,
-    'suggested_unit': None,
   })
 # ---
 # name: test_sensor_wrapper[WindDirectionEnumWrapper-demo_enum-{"range": ["north", "north_north_east", "north_east","east_north_east","east","east_south_east","south_east","south_south_east","south", "south_south_west", "south_west", "west_south_west", "west", "west_north_west", "north_west", "north_north_west"]}-north_north_east]
@@ -174,6 +167,5 @@
       'north_north_west',
     ]),
     'state': 22.5,
-    'suggested_unit': None,
   })
 # ---

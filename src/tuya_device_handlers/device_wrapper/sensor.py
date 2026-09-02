@@ -170,7 +170,6 @@ class ElectricityCurrentRawWrapper(DPCodeRawWrapper[float]):
     """Custom DPCode Wrapper for extracting electricity current from base64."""
 
     native_unit = "mA"
-    suggested_unit = "A"
 
     def read_device_status(self, device: CustomerDevice) -> float | None:
         """Read the device value for the dpcode."""
@@ -185,7 +184,6 @@ class ElectricityPowerRawWrapper(DPCodeRawWrapper[float]):
     """Custom DPCode Wrapper for extracting electricity power from base64."""
 
     native_unit = "W"
-    suggested_unit = "kW"
 
     def read_device_status(self, device: CustomerDevice) -> float | None:
         """Read the device value for the dpcode."""
