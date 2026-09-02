@@ -7,6 +7,7 @@ from tuya_sharing import CustomerDevice
 
 from tuya_device_handlers.const import ColorTempScale
 from tuya_device_handlers.type_information import IntegerTypeInformation
+from tuya_device_handlers.type_information_ex import ColorTempTypeInformationEx
 from tuya_device_handlers.utils import RemapHelper
 
 from .common import (
@@ -154,6 +155,10 @@ class ColorTempWrapper(DPCodeIntegerWrapper[int]):
     select `ColorTempScale.KELVIN` for a device that is linear in Kelvin
     instead. It only affects the conversion done here, the host
     integration always deals in Kelvin.
+
+    All three are taken from the datapoint's `ColorTempTypeInformationEx`
+    when a quirk provides one, so a device can be corrected without a
+    wrapper subclass.
     """
 
     MIN_KELVIN: ClassVar[int] = 2000  # 500 mireds
@@ -178,6 +183,10 @@ class ColorTempWrapper(DPCodeIntegerWrapper[int]):
     ) -> None:
         """Init DPCodeIntegerWrapper."""
         super().__init__(dpcode, type_information)
+        if isinstance(type_information, ColorTempTypeInformationEx):
+            self.min_kelvin = type_information.min_kelvin
+            self.max_kelvin = type_information.max_kelvin
+            self.color_temp_scale = type_information.color_temp_scale
         if self.color_temp_scale is ColorTempScale.KELVIN:
             self._remap_helper = RemapHelper.from_type_information(
                 type_information, self.min_kelvin, self.max_kelvin

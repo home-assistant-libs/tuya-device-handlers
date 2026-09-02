@@ -16,6 +16,7 @@ from tuya_device_handlers.device_wrapper.light import (
     ColorDataStringWrapper,
     ColorTempWrapper,
 )
+from tuya_device_handlers.type_information_ex import ColorTempTypeInformationEx
 from tuya_device_handlers.utils import RemapHelper
 
 from . import inject_dpcode
@@ -538,3 +539,29 @@ def test_color_temp_wrapper_default_scale(mock_device: CustomerDevice) -> None:
 
     assert wrapper
     assert wrapper.color_temp_scale is ColorTempScale.MIRED
+
+
+def test_color_temp_wrapper_type_information_override(
+    mock_device: CustomerDevice,
+) -> None:
+    """Test a quirk supplying the range and scale via type information."""
+
+    class CustomColorTempTypeInformation(ColorTempTypeInformationEx):
+        """Type information for a 1600-4000 K lamp, linear in Kelvin."""
+
+        min_kelvin = 1600
+        max_kelvin = 4000
+        color_temp_scale = ColorTempScale.KELVIN
+
+    _inject_default_light(mock_device)
+    mock_device.status["temp_value"] = 795
+    type_information = CustomColorTempTypeInformation.find_dpcode(
+        mock_device, "temp_value"
+    )
+    assert type_information is not None
+    wrapper = ColorTempWrapper("temp_value", type_information)
+
+    assert wrapper.min_kelvin == 1600
+    assert wrapper.max_kelvin == 4000
+    assert wrapper.color_temp_scale is ColorTempScale.KELVIN
+    assert wrapper.read_device_status(mock_device) == 3508
