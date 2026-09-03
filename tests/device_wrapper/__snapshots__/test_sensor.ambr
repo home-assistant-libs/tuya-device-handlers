@@ -1,4 +1,14 @@
 # serializer version: 1
+# name: test_electricity_hex_string_wrappers_real_device
+  dict({
+    'ElectricityApparentPowerHexStringWrapper': 2350,
+    'ElectricityCurrentHexStringWrapper': 10000,
+    'ElectricityPowerFactorHexStringWrapper': 0.98,
+    'ElectricityPowerHexStringWrapper': 3000,
+    'ElectricityReactivePowerHexStringWrapper': 500,
+    'ElectricityVoltageHexStringWrapper': 230.5,
+  })
+# ---
 # name: test_electricity_json_wrappers_real_device
   dict({
     'ElectricityApparentPowerJsonWrapper': 2.35,

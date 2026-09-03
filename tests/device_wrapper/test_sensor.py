@@ -490,3 +490,32 @@ def test_electricity_json_wrappers_real_device(
         states[wrapper_type.__name__] = wrapper.read_device_status(device)
 
     assert states == snapshot
+
+
+def test_electricity_hex_string_wrappers_real_device(
+    snapshot: SnapshotAssertion,
+) -> None:
+    """Test the electricity hex-string wrappers against a real zndb meter.
+
+    `zndb_uqzhc4bx5zqwpg2m` is a multi-metering meter that reports its phase
+    datapoints as hex-encoded frame strings (`phase_s*`), so it is the
+    real-world check that the hex-string wrappers decode the frame the way
+    the meter reports it.
+    """
+    device = create_device("zndb_uqzhc4bx5zqwpg2m.json")
+    dpcode = "phase_s1"
+
+    states = {}
+    for wrapper_type in (
+        ElectricityCurrentHexStringWrapper,
+        ElectricityPowerHexStringWrapper,
+        ElectricityVoltageHexStringWrapper,
+        ElectricityReactivePowerHexStringWrapper,
+        ElectricityApparentPowerHexStringWrapper,
+        ElectricityPowerFactorHexStringWrapper,
+    ):
+        wrapper = wrapper_type.find_dpcode(device, dpcode)
+        assert wrapper
+        states[wrapper_type.__name__] = wrapper.read_device_status(device)
+
+    assert states == snapshot
