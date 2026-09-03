@@ -1,0 +1,256 @@
+{
+  "endpoint": "[https://apigw.tuyaeu.com](https://apigw.tuyaeu.com)",
+  "mqtt_connected": true,
+  "disabled_by": null,
+  "disabled_polling": false,
+  "name": "RACER",
+  "category": "qt",
+  "product_id": "tgwxtim3atpa8jtp",
+  "product_name": "RACER",
+  "online": true,
+  "sub": false,
+  "time_zone": "+02:00",
+  "active_time": "2026-05-16T18:29:53+00:00",
+  "create_time": "2026-05-16T18:29:53+00:00",
+  "update_time": "2026-05-16T18:29:53+00:00",
+  "function": {
+    "switch": { "type": "Boolean", "value": "{}" },
+    "mode": { "type": "Enum", "value": "{\"range\": [\"normal\", \"time\"]}" },
+    "auto_boost": { "type": "Boolean", "value": "{}" },
+    "stepless_gear": {
+      "type": "Integer",
+      "value": "{\"unit\": \"%\", \"min\": 0, \"max\": 100, \"scale\": 0, \"step\": 20}"
+    },
+    "production_time": {
+      "type": "Integer",
+      "value": "{\"unit\": \"h\", \"min\": 0, \"max\": 24, \"scale\": 0, \"step\": 1}"
+    },
+    "boost_time": {
+      "type": "Integer",
+      "value": "{\"unit\": \"h\", \"min\": 0, \"max\": 96, \"scale\": 0, \"step\": 1}"
+    },
+    "pool_cover_enable": { "type": "Boolean", "value": "{}" },
+    "pool_cover_switch": { "type": "Boolean", "value": "{}" },
+    "pool_size": {
+      "type": "Integer",
+      "value": "{\"unit\": \"m\\u00b3\", \"min\": 0, \"max\": 200, \"scale\": 0, \"step\": 1}"
+    },
+    "start_time_hour": {
+      "type": "Integer",
+      "value": "{\"unit\": \"h\", \"min\": 0, \"max\": 23, \"scale\": 0, \"step\": 1}"
+    },
+    "start_time_min": {
+      "type": "Integer",
+      "value": "{\"unit\": \"min\", \"min\": 0, \"max\": 59, \"scale\": 0, \"step\": 1}"
+    },
+    "dev_set": { "type": "Boolean", "value": "{}" }
+  },
+  "local_strategy": {
+    "1": {
+      "value_convert": "default",
+      "status_code": "switch",
+      "config_item": {
+        "statusFormat": "{\"switch\": \"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "tgwxtim3atpa8jtp"
+      }
+    },
+    "2": {
+      "value_convert": "default",
+      "status_code": "mode",
+      "config_item": {
+        "statusFormat": "{\"mode\": \"$\"}",
+        "valueDesc": "{\"range\": [\"normal\", \"time\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "tgwxtim3atpa8jtp"
+      }
+    },
+    "3": {
+      "value_convert": "default",
+      "status_code": "auto_boost",
+      "config_item": {
+        "statusFormat": "{\"auto_boost\": \"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "tgwxtim3atpa8jtp"
+      }
+    },
+    "4": {
+      "value_convert": "default",
+      "status_code": "stepless_gear",
+      "config_item": {
+        "statusFormat": "{\"stepless_gear\": \"$\"}",
+        "valueDesc": "{\"unit\": \"%\", \"min\": 0, \"max\": 100, \"scale\": 0, \"step\": 20}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "tgwxtim3atpa8jtp"
+      }
+    },
+    "5": {
+      "value_convert": "default",
+      "status_code": "production_time",
+      "config_item": {
+        "statusFormat": "{\"production_time\": \"$\"}",
+        "valueDesc": "{\"unit\": \"h\", \"min\": 0, \"max\": 24, \"scale\": 0, \"step\": 1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "tgwxtim3atpa8jtp"
+      }
+    },
+    "6": {
+      "value_convert": "default",
+      "status_code": "boost_time",
+      "config_item": {
+        "statusFormat": "{\"boost_time\": \"$\"}",
+        "valueDesc": "{\"unit\": \"h\", \"min\": 0, \"max\": 96, \"scale\": 0, \"step\": 1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "tgwxtim3atpa8jtp"
+      }
+    },
+    "7": {
+      "value_convert": "default",
+      "status_code": "reverse_times",
+      "config_item": {
+        "statusFormat": "{\"reverse_times\": \"$\"}",
+        "valueDesc": "{\"unit\": \"cycles\", \"min\": 0, \"max\": 99999, \"scale\": 0, \"step\": 1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "tgwxtim3atpa8jtp"
+      }
+    },
+    "8": {
+      "value_convert": "default",
+      "status_code": "pool_cover_enable",
+      "config_item": {
+        "statusFormat": "{\"pool_cover_enable\": \"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "tgwxtim3atpa8jtp"
+      }
+    },
+    "9": {
+      "value_convert": "default",
+      "status_code": "pool_cover_switch",
+      "config_item": {
+        "statusFormat": "{\"pool_cover_switch\": \"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "tgwxtim3atpa8jtp"
+      }
+    },
+    "10": {
+      "value_convert": "default",
+      "status_code": "pool_size",
+      "config_item": {
+        "statusFormat": "{\"pool_size\": \"$\"}",
+        "valueDesc": "{\"unit\": \"m\\u00b3\", \"min\": 0, \"max\": 200, \"scale\": 0, \"step\": 1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "tgwxtim3atpa8jtp"
+      }
+    },
+    "11": {
+      "value_convert": "default",
+      "status_code": "start_time_hour",
+      "config_item": {
+        "statusFormat": "{\"start_time_hour\": \"$\"}",
+        "valueDesc": "{\"unit\": \"h\", \"min\": 0, \"max\": 23, \"scale\": 0, \"step\": 1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "tgwxtim3atpa8jtp"
+      }
+    },
+    "12": {
+      "value_convert": "default",
+      "status_code": "start_time_min",
+      "config_item": {
+        "statusFormat": "{\"start_time_min\": \"$\"}",
+        "valueDesc": "{\"unit\": \"min\", \"min\": 0, \"max\": 59, \"scale\": 0, \"step\": 1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "tgwxtim3atpa8jtp"
+      }
+    },
+    "13": {
+      "value_convert": "default",
+      "status_code": "dev_set",
+      "config_item": {
+        "statusFormat": "{\"dev_set\": \"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "tgwxtim3atpa8jtp"
+      }
+    }
+  },
+  "status_range": {
+    "switch": { "type": "Boolean", "value": "{}", "report_type": null },
+    "mode": {
+      "type": "Enum",
+      "value": "{\"range\": [\"normal\", \"time\"]}",
+      "report_type": null
+    },
+    "auto_boost": { "type": "Boolean", "value": "{}", "report_type": null },
+    "stepless_gear": {
+      "type": "Integer",
+      "value": "{\"unit\": \"%\", \"min\": 0, \"max\": 100, \"scale\": 0, \"step\": 20}",
+      "report_type": null
+    },
+    "production_time": {
+      "type": "Integer",
+      "value": "{\"unit\": \"h\", \"min\": 0, \"max\": 24, \"scale\": 0, \"step\": 1}",
+      "report_type": null
+    },
+    "boost_time": {
+      "type": "Integer",
+      "value": "{\"unit\": \"h\", \"min\": 0, \"max\": 96, \"scale\": 0, \"step\": 1}",
+      "report_type": null
+    },
+    "reverse_times": {
+      "type": "Integer",
+      "value": "{\"unit\": \"cycles\", \"min\": 0, \"max\": 99999, \"scale\": 0, \"step\": 1}",
+      "report_type": null
+    },
+    "pool_cover_enable": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "pool_cover_switch": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "pool_size": {
+      "type": "Integer",
+      "value": "{\"unit\": \"m\\u00b3\", \"min\": 0, \"max\": 200, \"scale\": 0, \"step\": 1}",
+      "report_type": null
+    },
+    "start_time_hour": {
+      "type": "Integer",
+      "value": "{\"unit\": \"h\", \"min\": 0, \"max\": 23, \"scale\": 0, \"step\": 1}",
+      "report_type": null
+    },
+    "start_time_min": {
+      "type": "Integer",
+      "value": "{\"unit\": \"min\", \"min\": 0, \"max\": 59, \"scale\": 0, \"step\": 1}",
+      "report_type": null
+    },
+    "dev_set": { "type": "Boolean", "value": "{}", "report_type": null }
+  },
+  "status": {},
+  "set_up": false,
+  "support_local": true,
+  "quirk": "/config/tuya_quirks/qt_tgwxtim3atpa8jtp.py:6",
+  "warnings": null,
+  "original_function": {},
+  "original_local_strategy": {},
+  "original_status_range": {}
+}
