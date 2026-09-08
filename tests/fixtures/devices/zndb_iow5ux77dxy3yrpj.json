@@ -96,28 +96,28 @@
     "forward_energy_total": 0,
     "reverse_energy_total": 0,
     "phase_a": {
-      "voltage": 230.5,
-      "electricCurrent": 10.0,
-      "power": 3.0,
-      "reactivePower": 0.5,
-      "apparentPower": 2.35,
-      "powerFactor": 0.98
+      "voltage": 230.1,
+      "electricCurrent": 53.86,
+      "power": 9.548,
+      "reactivePower": 0.0,
+      "apparentPower": 0.0,
+      "powerFactor": 0.77
     },
     "phase_b": {
-      "voltage": 231.2,
-      "electricCurrent": 8.5,
-      "power": 1.9,
-      "reactivePower": 0.42,
-      "apparentPower": 1.94,
-      "powerFactor": 0.97
+      "voltage": 231.8,
+      "electricCurrent": 49.202,
+      "power": 9.51,
+      "reactivePower": 0.0,
+      "apparentPower": 0.0,
+      "powerFactor": 0.83
     },
     "phase_c": {
       "voltage": 229.6,
-      "electricCurrent": 12.3,
-      "power": 2.75,
-      "reactivePower": -0.61,
-      "apparentPower": 2.81,
-      "powerFactor": 0.98
+      "electricCurrent": 50.914,
+      "power": 10.006,
+      "reactivePower": 0.0,
+      "apparentPower": 0.0,
+      "powerFactor": 0.86
     },
     "power_total": -99999999,
     "fault": 0,

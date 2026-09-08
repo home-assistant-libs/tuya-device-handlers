@@ -132,9 +132,21 @@ class ElectricityVoltageJsonWrapper(DPCodeJsonWrapper[float]):
         return status.get("voltage")
 
 
-class ElectricityReactivePowerJsonWrapper(DPCodeJsonWrapper[float]):
+class _OptionalElectricityJsonWrapper(DPCodeJsonWrapper[float]):
+    """Base wrapper for optional electricity values in JSON."""
+
+    _JSON_KEY: str
+
+    def is_supported(self, device: CustomerDevice) -> bool:
+        """Return whether the JSON payload supports this value."""
+        status = self._read_dpcode_value(device)
+        return status is None or self._JSON_KEY in status
+
+
+class ElectricityReactivePowerJsonWrapper(_OptionalElectricityJsonWrapper):
     """Custom DPCode Wrapper for extracting reactive power from JSON."""
 
+    _JSON_KEY = "reactivePower"
     native_unit = "kvar"
 
     def read_device_status(self, device: CustomerDevice) -> float | None:
@@ -144,9 +156,10 @@ class ElectricityReactivePowerJsonWrapper(DPCodeJsonWrapper[float]):
         return status.get("reactivePower")
 
 
-class ElectricityApparentPowerJsonWrapper(DPCodeJsonWrapper[float]):
+class ElectricityApparentPowerJsonWrapper(_OptionalElectricityJsonWrapper):
     """Custom DPCode Wrapper for extracting apparent power from JSON."""
 
+    _JSON_KEY = "apparentPower"
     native_unit = "kVA"
 
     def read_device_status(self, device: CustomerDevice) -> float | None:
@@ -156,8 +169,10 @@ class ElectricityApparentPowerJsonWrapper(DPCodeJsonWrapper[float]):
         return status.get("apparentPower")
 
 
-class ElectricityPowerFactorJsonWrapper(DPCodeJsonWrapper[float]):
+class ElectricityPowerFactorJsonWrapper(_OptionalElectricityJsonWrapper):
     """Custom DPCode Wrapper for extracting power factor from JSON."""
+
+    _JSON_KEY = "powerFactor"
 
     def read_device_status(self, device: CustomerDevice) -> float | None:
         """Read the device value for the dpcode."""
@@ -210,9 +225,26 @@ class ElectricityVoltageRawWrapper(DPCodeRawWrapper[float]):
         return value.voltage
 
 
-class ElectricityReactivePowerRawWrapper(DPCodeRawWrapper[float]):
+class _OptionalElectricityRawWrapper(DPCodeRawWrapper[float]):
+    """Base wrapper for optional electricity values in RAW data."""
+
+    _ATTRIBUTE: str
+
+    def is_supported(self, device: CustomerDevice) -> bool:
+        """Return whether the RAW payload supports this value."""
+        raw_value = self._read_dpcode_value(device)
+        if (
+            raw_value is None
+            or (value := ElectricityData.from_bytes(raw_value)) is None
+        ):
+            return True
+        return getattr(value, self._ATTRIBUTE) is not None
+
+
+class ElectricityReactivePowerRawWrapper(_OptionalElectricityRawWrapper):
     """Custom DPCode Wrapper for extracting reactive power from base64."""
 
+    _ATTRIBUTE = "reactive_power"
     native_unit = "var"
     suggested_unit = "kvar"
 
@@ -225,9 +257,10 @@ class ElectricityReactivePowerRawWrapper(DPCodeRawWrapper[float]):
         return value.reactive_power
 
 
-class ElectricityApparentPowerRawWrapper(DPCodeRawWrapper[float]):
+class ElectricityApparentPowerRawWrapper(_OptionalElectricityRawWrapper):
     """Custom DPCode Wrapper for extracting apparent power from base64."""
 
+    _ATTRIBUTE = "apparent_power"
     native_unit = "VA"
     suggested_unit = "kVA"
 
@@ -240,8 +273,10 @@ class ElectricityApparentPowerRawWrapper(DPCodeRawWrapper[float]):
         return value.apparent_power
 
 
-class ElectricityPowerFactorRawWrapper(DPCodeRawWrapper[float]):
+class ElectricityPowerFactorRawWrapper(_OptionalElectricityRawWrapper):
     """Custom DPCode Wrapper for extracting power factor from base64."""
+
+    _ATTRIBUTE = "power_factor"
 
     def read_device_status(self, device: CustomerDevice) -> float | None:
         """Read the device value for the dpcode."""
@@ -296,9 +331,28 @@ class ElectricityVoltageHexStringWrapper(DPCodeStringWrapper[float]):
         return value.voltage
 
 
-class ElectricityReactivePowerHexStringWrapper(DPCodeStringWrapper[float]):
+class _OptionalElectricityHexStringWrapper(DPCodeStringWrapper[float]):
+    """Base wrapper for optional electricity values in hex strings."""
+
+    _ATTRIBUTE: str
+
+    def is_supported(self, device: CustomerDevice) -> bool:
+        """Return whether the hex-string payload supports this value."""
+        raw_value = self._read_dpcode_value(device)
+        if (
+            raw_value is None
+            or (value := ElectricityData.from_hex(raw_value)) is None
+        ):
+            return True
+        return getattr(value, self._ATTRIBUTE) is not None
+
+
+class ElectricityReactivePowerHexStringWrapper(
+    _OptionalElectricityHexStringWrapper
+):
     """Custom DPCode Wrapper for extracting reactive power from a hex string."""
 
+    _ATTRIBUTE = "reactive_power"
     native_unit = "var"
     suggested_unit = "kvar"
 
@@ -311,9 +365,12 @@ class ElectricityReactivePowerHexStringWrapper(DPCodeStringWrapper[float]):
         return value.reactive_power
 
 
-class ElectricityApparentPowerHexStringWrapper(DPCodeStringWrapper[float]):
+class ElectricityApparentPowerHexStringWrapper(
+    _OptionalElectricityHexStringWrapper
+):
     """Custom DPCode Wrapper for extracting apparent power from a hex string."""
 
+    _ATTRIBUTE = "apparent_power"
     native_unit = "VA"
     suggested_unit = "kVA"
 
@@ -326,8 +383,12 @@ class ElectricityApparentPowerHexStringWrapper(DPCodeStringWrapper[float]):
         return value.apparent_power
 
 
-class ElectricityPowerFactorHexStringWrapper(DPCodeStringWrapper[float]):
+class ElectricityPowerFactorHexStringWrapper(
+    _OptionalElectricityHexStringWrapper
+):
     """Custom DPCode Wrapper for extracting power factor from a hex string."""
+
+    _ATTRIBUTE = "power_factor"
 
     def read_device_status(self, device: CustomerDevice) -> float | None:
         """Read the device value for the dpcode."""

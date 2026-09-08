@@ -11,12 +11,12 @@
 # ---
 # name: test_electricity_json_wrappers_real_device
   dict({
-    'ElectricityApparentPowerJsonWrapper': 2.35,
-    'ElectricityCurrentJsonWrapper': 10.0,
-    'ElectricityPowerFactorJsonWrapper': 0.98,
-    'ElectricityPowerJsonWrapper': 3.0,
-    'ElectricityReactivePowerJsonWrapper': 0.5,
-    'ElectricityVoltageJsonWrapper': 230.5,
+    'ElectricityApparentPowerJsonWrapper': 0.0,
+    'ElectricityCurrentJsonWrapper': 53.86,
+    'ElectricityPowerFactorJsonWrapper': 0.77,
+    'ElectricityPowerJsonWrapper': 9.548,
+    'ElectricityReactivePowerJsonWrapper': 0.0,
+    'ElectricityVoltageJsonWrapper': 230.1,
   })
 # ---
 # name: test_electricity_raw_wrappers_real_device
