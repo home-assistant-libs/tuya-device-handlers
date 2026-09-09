@@ -12,6 +12,10 @@ class ElectricityData:
     current: float
     power: float
     voltage: float
+
+    # `None` means the payload layout does not carry the attribute
+    # (the legacy layout only carries voltage, current and power),
+    # not that the device reported an unknown value.
     reactive_power: float | None = None
     apparent_power: float | None = None
     power_factor: float | None = None
