@@ -330,6 +330,9 @@ def test_raw_sensor_not_found(
     dpcode = "demo_raw"
     mock_device.status_range[dpcode].values = "{}"
 
+    # The wrapper is not found if the dpcode is not available
+    assert wrapper_type.find_dpcode(mock_device, "bad") is None
+
     mock_device.status[dpcode] = "AAA="
     assert wrapper_type.find_dpcode(mock_device, dpcode) is None
 
@@ -356,6 +359,9 @@ def test_hex_string_sensor_not_found(
     """Test hex string wrappers are not found if the payload is invalid."""
     dpcode = "demo_string"
     mock_device.status_range[dpcode].values = "{}"
+
+    # The wrapper is not found if the dpcode is not available
+    assert wrapper_type.find_dpcode(mock_device, "bad") is None
 
     mock_device.status[dpcode] = "not-hex"
     assert wrapper_type.find_dpcode(mock_device, dpcode) is None
