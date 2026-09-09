@@ -7,8 +7,14 @@ from tuya_device_handlers.definition.sensor import get_default_definition
 from tuya_device_handlers.device_wrapper.common import (
     DPCodeEnumWrapper,
     DPCodeIntegerWrapper,
+    DPCodeTypeInformationWrapper,
 )
-from tuya_device_handlers.device_wrapper.sensor import DeltaIntegerWrapper
+from tuya_device_handlers.device_wrapper.sensor import (
+    DeltaIntegerWrapper,
+    ElectricityApparentPowerJsonWrapper,
+    ElectricityPowerFactorJsonWrapper,
+    ElectricityReactivePowerJsonWrapper,
+)
 
 
 @pytest.mark.parametrize(
@@ -61,3 +67,44 @@ def test_get_default_definition_fails(
     """Test get_default_definition."""
     device = create_device("cs_zibqa9dutqyaxym2.json")
     assert not get_default_definition(device, "bad", lookup_type)  # ty: ignore[invalid-argument-type]
+
+
+@pytest.mark.parametrize(
+    ("fixture_filename", "dpcode", "wrapper_type"),
+    [
+        (
+            "zndb_iow5ux77dxy3yrpj.json",
+            "phase_a",
+            ElectricityReactivePowerJsonWrapper,
+        ),
+        (
+            "zndb_iow5ux77dxy3yrpj.json",
+            "phase_a",
+            ElectricityApparentPowerJsonWrapper,
+        ),
+        (
+            "zndb_iow5ux77dxy3yrpj.json",
+            "phase_a",
+            ElectricityPowerFactorJsonWrapper,
+        ),
+    ],
+)
+def test_get_optional_electricity_definition_supported(
+    fixture_filename: str,
+    dpcode: str,
+    wrapper_type: type[DPCodeTypeInformationWrapper],
+) -> None:
+    """Test optional electricity definitions with real device payloads."""
+    device = create_device(fixture_filename)
+
+    assert get_default_definition(device, dpcode, (wrapper_type,))
+
+
+def test_get_optional_electricity_definition_with_unknown_status() -> None:
+    """Test missing startup status does not hide optional definitions."""
+    device = create_device("zndb_iow5ux77dxy3yrpj.json")
+    device.status.pop("phase_a")
+
+    assert get_default_definition(
+        device, "phase_a", (ElectricityReactivePowerJsonWrapper,)
+    )
