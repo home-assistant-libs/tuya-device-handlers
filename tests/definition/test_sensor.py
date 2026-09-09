@@ -11,9 +11,15 @@ from tuya_device_handlers.device_wrapper.common import (
 )
 from tuya_device_handlers.device_wrapper.sensor import (
     DeltaIntegerWrapper,
+    ElectricityApparentPowerHexStringWrapper,
     ElectricityApparentPowerJsonWrapper,
+    ElectricityApparentPowerRawWrapper,
+    ElectricityPowerFactorHexStringWrapper,
     ElectricityPowerFactorJsonWrapper,
+    ElectricityPowerFactorRawWrapper,
+    ElectricityReactivePowerHexStringWrapper,
     ElectricityReactivePowerJsonWrapper,
+    ElectricityReactivePowerRawWrapper,
 )
 
 
@@ -87,6 +93,36 @@ def test_get_default_definition_fails(
             "phase_a",
             ElectricityPowerFactorJsonWrapper,
         ),
+        (
+            "dlq_cnpkf4xdmd9v49iq.json",
+            "phase_a",
+            ElectricityReactivePowerRawWrapper,
+        ),
+        (
+            "dlq_cnpkf4xdmd9v49iq.json",
+            "phase_a",
+            ElectricityApparentPowerRawWrapper,
+        ),
+        (
+            "dlq_cnpkf4xdmd9v49iq.json",
+            "phase_a",
+            ElectricityPowerFactorRawWrapper,
+        ),
+        (
+            "zndb_uqzhc4bx5zqwpg2m.json",
+            "phase_s1",
+            ElectricityReactivePowerHexStringWrapper,
+        ),
+        (
+            "zndb_uqzhc4bx5zqwpg2m.json",
+            "phase_s1",
+            ElectricityApparentPowerHexStringWrapper,
+        ),
+        (
+            "zndb_uqzhc4bx5zqwpg2m.json",
+            "phase_s1",
+            ElectricityPowerFactorHexStringWrapper,
+        ),
     ],
 )
 def test_get_optional_electricity_definition_supported(
@@ -100,11 +136,50 @@ def test_get_optional_electricity_definition_supported(
     assert get_default_definition(device, dpcode, (wrapper_type,))
 
 
-def test_get_optional_electricity_definition_with_unknown_status() -> None:
-    """Test missing startup status does not hide optional definitions."""
-    device = create_device("zndb_iow5ux77dxy3yrpj.json")
-    device.status.pop("phase_a")
+@pytest.mark.parametrize(
+    "wrapper_type",
+    [
+        ElectricityReactivePowerRawWrapper,
+        ElectricityApparentPowerRawWrapper,
+        ElectricityPowerFactorRawWrapper,
+    ],
+)
+def test_get_optional_electricity_definition_unsupported(
+    wrapper_type: type[DPCodeTypeInformationWrapper],
+) -> None:
+    """Test optional definitions are omitted for a real legacy RAW frame."""
+    device = create_device("zndb_ze8faryrxr0glqnn.json")
 
-    assert get_default_definition(
-        device, "phase_a", (ElectricityReactivePowerJsonWrapper,)
-    )
+    assert not get_default_definition(device, "phase_a", (wrapper_type,))
+
+
+@pytest.mark.parametrize(
+    ("fixture_filename", "dpcode", "wrapper_type"),
+    [
+        (
+            "zndb_iow5ux77dxy3yrpj.json",
+            "phase_a",
+            ElectricityReactivePowerJsonWrapper,
+        ),
+        (
+            "zndb_ze8faryrxr0glqnn.json",
+            "phase_a",
+            ElectricityReactivePowerRawWrapper,
+        ),
+        (
+            "zndb_uqzhc4bx5zqwpg2m.json",
+            "phase_s1",
+            ElectricityReactivePowerHexStringWrapper,
+        ),
+    ],
+)
+def test_get_optional_electricity_definition_with_unknown_status(
+    fixture_filename: str,
+    dpcode: str,
+    wrapper_type: type[DPCodeTypeInformationWrapper],
+) -> None:
+    """Test missing startup status does not hide optional definitions."""
+    device = create_device(fixture_filename)
+    device.status.pop(dpcode)
+
+    assert get_default_definition(device, dpcode, (wrapper_type,))
