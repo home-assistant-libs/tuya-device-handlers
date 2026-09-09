@@ -218,42 +218,6 @@ def test_sensor_wrapper(
             "north_northh_east",
         ),
         (
-            ElectricityCurrentJsonWrapper,
-            "demo_json",
-            "{}",
-            "{}",
-        ),
-        (
-            ElectricityPowerJsonWrapper,
-            "demo_json",
-            "{}",
-            "{}",
-        ),
-        (
-            ElectricityVoltageJsonWrapper,
-            "demo_json",
-            "{}",
-            "{}",
-        ),
-        (
-            ElectricityReactivePowerJsonWrapper,
-            "demo_json",
-            "{}",
-            "{}",
-        ),
-        (
-            ElectricityApparentPowerJsonWrapper,
-            "demo_json",
-            "{}",
-            "{}",
-        ),
-        (
-            ElectricityPowerFactorJsonWrapper,
-            "demo_json",
-            "{}",
-            "{}",
-        ),
-        (
             ElectricityCurrentRawWrapper,
             "demo_raw",
             "{}",
@@ -345,6 +309,33 @@ def test_sensor_invalid_value(
     # All wrappers return None if status is None
     mock_device.status[dpcode] = None
     assert wrapper.read_device_status(mock_device) is None
+
+
+@pytest.mark.parametrize(
+    "wrapper_type",
+    [
+        ElectricityCurrentJsonWrapper,
+        ElectricityPowerJsonWrapper,
+        ElectricityVoltageJsonWrapper,
+        ElectricityReactivePowerJsonWrapper,
+        ElectricityApparentPowerJsonWrapper,
+        ElectricityPowerFactorJsonWrapper,
+    ],
+)
+def test_json_attribute_sensor_not_found(
+    wrapper_type: type[DPCodeTypeInformationWrapper[Any, Any, Any]],
+    mock_device: CustomerDevice,
+) -> None:
+    """Test JSON attribute wrappers are not found if the value is missing."""
+    dpcode = "demo_json"
+    mock_device.status_range[dpcode].values = "{}"
+
+    mock_device.status[dpcode] = "{}"
+    assert wrapper_type.find_dpcode(mock_device, dpcode) is None
+
+    # The wrapper is found if the device has not reported a status yet
+    mock_device.status[dpcode] = None
+    assert wrapper_type.find_dpcode(mock_device, dpcode)
 
 
 def test_delta_sensor(
