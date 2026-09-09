@@ -12,10 +12,13 @@ from tuya_device_handlers.device_wrapper.common import (
 from tuya_device_handlers.device_wrapper.sensor import (
     DeltaIntegerWrapper,
     ElectricityApparentPowerHexStringWrapper,
+    ElectricityApparentPowerJsonWrapper,
     ElectricityApparentPowerRawWrapper,
     ElectricityPowerFactorHexStringWrapper,
+    ElectricityPowerFactorJsonWrapper,
     ElectricityPowerFactorRawWrapper,
     ElectricityReactivePowerHexStringWrapper,
+    ElectricityReactivePowerJsonWrapper,
     ElectricityReactivePowerRawWrapper,
 )
 
@@ -75,6 +78,21 @@ def test_get_default_definition_fails(
 @pytest.mark.parametrize(
     ("fixture_filename", "dpcode", "wrapper_type"),
     [
+        (
+            "zndb_iow5ux77dxy3yrpj.json",
+            "phase_a",
+            ElectricityReactivePowerJsonWrapper,
+        ),
+        (
+            "zndb_iow5ux77dxy3yrpj.json",
+            "phase_a",
+            ElectricityApparentPowerJsonWrapper,
+        ),
+        (
+            "zndb_iow5ux77dxy3yrpj.json",
+            "phase_a",
+            ElectricityPowerFactorJsonWrapper,
+        ),
         (
             "dlq_cnpkf4xdmd9v49iq.json",
             "phase_a",
@@ -138,6 +156,11 @@ def test_get_optional_electricity_definition_unsupported(
 @pytest.mark.parametrize(
     ("fixture_filename", "dpcode", "wrapper_type"),
     [
+        (
+            "zndb_iow5ux77dxy3yrpj.json",
+            "phase_a",
+            ElectricityReactivePowerJsonWrapper,
+        ),
         (
             "zndb_ze8faryrxr0glqnn.json",
             "phase_a",

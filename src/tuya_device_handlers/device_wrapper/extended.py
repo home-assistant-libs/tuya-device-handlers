@@ -13,6 +13,7 @@ from tuya_device_handlers.utils import RemapHelper
 from .common import (
     DPCodeBooleanWrapper,
     DPCodeIntegerWrapper,
+    DPCodeJsonWrapper,
     DPCodeTypeInformationWrapper,
 )
 
@@ -103,6 +104,46 @@ class DPCodeInvertedBooleanWrapper(DPCodeBooleanWrapper):
         self, device: CustomerDevice, value: Any
     ) -> bool:
         return not super()._convert_value_to_raw_value(device, value)
+
+
+class DPCodeJsonDictAttributeWrapper[T = float](DPCodeJsonWrapper[T]):
+    """Wrapper for a single attribute of a JSON dictionary value.
+
+    The wrapper is only found if the device reports the attribute, as not
+    all devices report the same set of attributes.
+    """
+
+    _ATTRIBUTE_NAME: ClassVar[str]
+
+    @classmethod
+    def find_dpcode(
+        cls,
+        device: CustomerDevice,
+        dpcodes: str | tuple[str, ...] | None,
+        *,
+        prefer_function: bool = False,
+    ) -> Self | None:
+        """Find the dpcode, unless the device omits the attribute.
+
+        The device may not have reported a status yet, in which case the
+        attribute is assumed to be supported.
+        """
+        if (
+            wrapper := super().find_dpcode(
+                device, dpcodes, prefer_function=prefer_function
+            )
+        ) is None:
+            return None
+        status = wrapper._read_dpcode_value(device)  # noqa: SLF001 # pylint: disable=protected-access
+        if status is None or cls._ATTRIBUTE_NAME in status:
+            return wrapper
+        return None
+
+    def read_device_status(self, device: CustomerDevice) -> T | None:
+        """Read the device value for the attribute."""
+        if (status := self._read_dpcode_value(device)) is None:
+            return None
+        return status.get(self._ATTRIBUTE_NAME)
 
 
 class DPCodeParsedAttributeWrapper[
