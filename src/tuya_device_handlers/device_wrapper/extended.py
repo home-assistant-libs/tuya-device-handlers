@@ -4,13 +4,17 @@ from typing import Any, ClassVar, Self
 
 from tuya_sharing import CustomerDevice
 
-from tuya_device_handlers.type_information import IntegerTypeInformation
+from tuya_device_handlers.type_information import (
+    IntegerTypeInformation,
+    TypeInformation,
+)
 from tuya_device_handlers.utils import RemapHelper
 
 from .common import (
     DPCodeBooleanWrapper,
     DPCodeIntegerWrapper,
     DPCodeJsonWrapper,
+    DPCodeTypeInformationWrapper,
 )
 
 
@@ -140,3 +144,59 @@ class DPCodeJsonDictAttributeWrapper[T = float](DPCodeJsonWrapper[T]):
         if (status := self._read_dpcode_value(device)) is None:
             return None
         return status.get(self._ATTRIBUTE_NAME)
+
+
+class DPCodeParsedAttributeWrapper[
+    UnderlyingT,
+    TypeInformationT: TypeInformation[Any],
+    ParsedT,
+    T = float,
+](DPCodeTypeInformationWrapper[TypeInformationT, UnderlyingT, T]):
+    """Wrapper for a single attribute of a parsed payload.
+
+    The wrapper is only found if the device reports the attribute, as not
+    all devices report the same set of attributes.
+    """
+
+    _ATTRIBUTE_NAME: ClassVar[str]
+
+    @classmethod
+    def _parse(cls, raw_value: UnderlyingT) -> ParsedT | None:
+        """Parse the raw payload."""
+        raise NotImplementedError
+
+    @classmethod
+    def find_dpcode(
+        cls,
+        device: CustomerDevice,
+        dpcodes: str | tuple[str, ...] | None,
+        *,
+        prefer_function: bool = False,
+    ) -> Self | None:
+        """Find the dpcode, unless the device omits the attribute.
+
+        The device may not have reported a payload yet, in which case the
+        attribute is assumed to be supported. A payload which cannot be
+        parsed does not provide any attribute.
+        """
+        if (
+            wrapper := super().find_dpcode(
+                device, dpcodes, prefer_function=prefer_function
+            )
+        ) is None:
+            return None
+        if not (raw_value := wrapper._read_dpcode_value(device)):  # noqa: SLF001 # pylint: disable=protected-access
+            return wrapper
+        if (value := cls._parse(raw_value)) is None or getattr(
+            value, cls._ATTRIBUTE_NAME
+        ) is None:
+            return None
+        return wrapper
+
+    def read_device_status(self, device: CustomerDevice) -> T | None:
+        """Read the device value for the attribute."""
+        if (raw_value := self._read_dpcode_value(device)) is None or (
+            value := self._parse(raw_value)
+        ) is None:
+            return None
+        return getattr(value, self._ATTRIBUTE_NAME)

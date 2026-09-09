@@ -253,42 +253,6 @@ def test_sensor_wrapper(
             "{}",
             "",
         ),
-        (
-            ElectricityCurrentHexStringWrapper,
-            "demo_string",
-            "{}",
-            "not-hex",
-        ),
-        (
-            ElectricityPowerHexStringWrapper,
-            "demo_string",
-            "{}",
-            "not-hex",
-        ),
-        (
-            ElectricityVoltageHexStringWrapper,
-            "demo_string",
-            "{}",
-            "not-hex",
-        ),
-        (
-            ElectricityReactivePowerHexStringWrapper,
-            "demo_string",
-            "{}",
-            "not-hex",
-        ),
-        (
-            ElectricityApparentPowerHexStringWrapper,
-            "demo_string",
-            "{}",
-            "not-hex",
-        ),
-        (
-            ElectricityPowerFactorHexStringWrapper,
-            "demo_string",
-            "{}",
-            "not-hex",
-        ),
     ],
 )
 def test_sensor_invalid_value(
@@ -335,6 +299,60 @@ def test_json_attribute_sensor_not_found(
 
     # The wrapper is found if the device has not reported a status yet
     mock_device.status[dpcode] = None
+    assert wrapper_type.find_dpcode(mock_device, dpcode)
+
+
+@pytest.mark.parametrize(
+    "wrapper_type",
+    [
+        ElectricityCurrentRawWrapper,
+        ElectricityPowerRawWrapper,
+        ElectricityVoltageRawWrapper,
+        ElectricityReactivePowerRawWrapper,
+        ElectricityApparentPowerRawWrapper,
+        ElectricityPowerFactorRawWrapper,
+    ],
+)
+def test_raw_sensor_not_found(
+    wrapper_type: type[DPCodeTypeInformationWrapper[Any, Any, Any]],
+    mock_device: CustomerDevice,
+) -> None:
+    """Test raw wrappers are not found if the payload is truncated."""
+    dpcode = "demo_raw"
+    mock_device.status_range[dpcode].values = "{}"
+
+    mock_device.status[dpcode] = "AAA="
+    assert wrapper_type.find_dpcode(mock_device, dpcode) is None
+
+    # The wrapper is found if the device has not reported a status yet
+    mock_device.status[dpcode] = ""
+    assert wrapper_type.find_dpcode(mock_device, dpcode)
+
+
+@pytest.mark.parametrize(
+    "wrapper_type",
+    [
+        ElectricityCurrentHexStringWrapper,
+        ElectricityPowerHexStringWrapper,
+        ElectricityVoltageHexStringWrapper,
+        ElectricityReactivePowerHexStringWrapper,
+        ElectricityApparentPowerHexStringWrapper,
+        ElectricityPowerFactorHexStringWrapper,
+    ],
+)
+def test_hex_string_sensor_not_found(
+    wrapper_type: type[DPCodeTypeInformationWrapper[Any, Any, Any]],
+    mock_device: CustomerDevice,
+) -> None:
+    """Test hex string wrappers are not found if the payload is invalid."""
+    dpcode = "demo_string"
+    mock_device.status_range[dpcode].values = "{}"
+
+    mock_device.status[dpcode] = "not-hex"
+    assert wrapper_type.find_dpcode(mock_device, dpcode) is None
+
+    # The wrapper is found if the device has not reported a status yet
+    mock_device.status[dpcode] = ""
     assert wrapper_type.find_dpcode(mock_device, dpcode)
 
 

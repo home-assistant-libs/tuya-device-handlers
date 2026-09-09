@@ -42,9 +42,7 @@ def get_default_definition(
     """Get DPCode wrapper for an entity description."""
     if wrapper_class:
         for cls in wrapper_class:
-            if (wrapper := cls.find_dpcode(device, dpcode)) and (
-                wrapper.is_supported(device)
-            ):
+            if wrapper := cls.find_dpcode(device, dpcode):
                 return SensorDefinition(sensor_wrapper=wrapper)
         return None
 
