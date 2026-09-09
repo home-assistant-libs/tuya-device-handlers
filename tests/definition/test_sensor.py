@@ -12,13 +12,10 @@ from tuya_device_handlers.device_wrapper.common import (
 from tuya_device_handlers.device_wrapper.sensor import (
     DeltaIntegerWrapper,
     ElectricityApparentPowerHexStringWrapper,
-    ElectricityApparentPowerJsonWrapper,
     ElectricityApparentPowerRawWrapper,
     ElectricityPowerFactorHexStringWrapper,
-    ElectricityPowerFactorJsonWrapper,
     ElectricityPowerFactorRawWrapper,
     ElectricityReactivePowerHexStringWrapper,
-    ElectricityReactivePowerJsonWrapper,
     ElectricityReactivePowerRawWrapper,
 )
 
@@ -94,21 +91,6 @@ def test_get_default_definition_fails(
             ElectricityPowerFactorRawWrapper,
         ),
         (
-            "zndb_iow5ux77dxy3yrpj.json",
-            "phase_a",
-            ElectricityReactivePowerJsonWrapper,
-        ),
-        (
-            "zndb_iow5ux77dxy3yrpj.json",
-            "phase_a",
-            ElectricityApparentPowerJsonWrapper,
-        ),
-        (
-            "zndb_iow5ux77dxy3yrpj.json",
-            "phase_a",
-            ElectricityPowerFactorJsonWrapper,
-        ),
-        (
             "zndb_uqzhc4bx5zqwpg2m.json",
             "phase_s1",
             ElectricityReactivePowerHexStringWrapper,
@@ -160,11 +142,6 @@ def test_get_optional_electricity_definition_unsupported(
             "zndb_ze8faryrxr0glqnn.json",
             "phase_a",
             ElectricityReactivePowerRawWrapper,
-        ),
-        (
-            "zndb_iow5ux77dxy3yrpj.json",
-            "phase_a",
-            ElectricityReactivePowerJsonWrapper,
         ),
         (
             "zndb_uqzhc4bx5zqwpg2m.json",

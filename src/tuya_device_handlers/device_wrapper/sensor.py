@@ -10,11 +10,8 @@ from tuya_device_handlers.type_information import (
     StringTypeInformation,
 )
 
-from .common import DPCodeEnumWrapper, DPCodeIntegerWrapper
-from .extended import (
-    DPCodeJsonDictAttributeWrapper,
-    DPCodeParsedAttributeWrapper,
-)
+from .common import DPCodeEnumWrapper, DPCodeIntegerWrapper, DPCodeJsonWrapper
+from .extended import DPCodeParsedAttributeWrapper
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -98,45 +95,74 @@ class DeltaIntegerWrapper(DPCodeIntegerWrapper):
         return self._accumulated_value
 
 
-class ElectricityCurrentJsonWrapper(DPCodeJsonDictAttributeWrapper):
+class ElectricityCurrentJsonWrapper(DPCodeJsonWrapper[float]):
     """Custom DPCode Wrapper for extracting electricity current from JSON."""
 
-    _ATTRIBUTE_NAME = "electricCurrent"
     native_unit = "A"
 
+    def read_device_status(self, device: CustomerDevice) -> float | None:
+        """Read the device value for the dpcode."""
+        if (status := self._read_dpcode_value(device)) is None:
+            return None
+        return status.get("electricCurrent")
 
-class ElectricityPowerJsonWrapper(DPCodeJsonDictAttributeWrapper):
+
+class ElectricityPowerJsonWrapper(DPCodeJsonWrapper[float]):
     """Custom DPCode Wrapper for extracting electricity power from JSON."""
 
-    _ATTRIBUTE_NAME = "power"
     native_unit = "kW"
 
+    def read_device_status(self, device: CustomerDevice) -> float | None:
+        """Read the device value for the dpcode."""
+        if (status := self._read_dpcode_value(device)) is None:
+            return None
+        return status.get("power")
 
-class ElectricityVoltageJsonWrapper(DPCodeJsonDictAttributeWrapper):
+
+class ElectricityVoltageJsonWrapper(DPCodeJsonWrapper[float]):
     """Custom DPCode Wrapper for extracting electricity voltage from JSON."""
 
-    _ATTRIBUTE_NAME = "voltage"
     native_unit = "V"
 
+    def read_device_status(self, device: CustomerDevice) -> float | None:
+        """Read the device value for the dpcode."""
+        if (status := self._read_dpcode_value(device)) is None:
+            return None
+        return status.get("voltage")
 
-class ElectricityReactivePowerJsonWrapper(DPCodeJsonDictAttributeWrapper):
+
+class ElectricityReactivePowerJsonWrapper(DPCodeJsonWrapper[float]):
     """Custom DPCode Wrapper for extracting reactive power from JSON."""
 
-    _ATTRIBUTE_NAME = "reactivePower"
     native_unit = "kvar"
 
+    def read_device_status(self, device: CustomerDevice) -> float | None:
+        """Read the device value for the dpcode."""
+        if (status := self._read_dpcode_value(device)) is None:
+            return None
+        return status.get("reactivePower")
 
-class ElectricityApparentPowerJsonWrapper(DPCodeJsonDictAttributeWrapper):
+
+class ElectricityApparentPowerJsonWrapper(DPCodeJsonWrapper[float]):
     """Custom DPCode Wrapper for extracting apparent power from JSON."""
 
-    _ATTRIBUTE_NAME = "apparentPower"
     native_unit = "kVA"
 
+    def read_device_status(self, device: CustomerDevice) -> float | None:
+        """Read the device value for the dpcode."""
+        if (status := self._read_dpcode_value(device)) is None:
+            return None
+        return status.get("apparentPower")
 
-class ElectricityPowerFactorJsonWrapper(DPCodeJsonDictAttributeWrapper):
+
+class ElectricityPowerFactorJsonWrapper(DPCodeJsonWrapper[float]):
     """Custom DPCode Wrapper for extracting power factor from JSON."""
 
-    _ATTRIBUTE_NAME = "powerFactor"
+    def read_device_status(self, device: CustomerDevice) -> float | None:
+        """Read the device value for the dpcode."""
+        if (status := self._read_dpcode_value(device)) is None:
+            return None
+        return status.get("powerFactor")
 
 
 class _ElectricityRawWrapper(
