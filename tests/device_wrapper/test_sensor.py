@@ -330,12 +330,17 @@ def test_json_attribute_sensor_not_found(
     dpcode = "demo_json"
     mock_device.status_range[dpcode].values = "{}"
 
+    # The wrapper is not found if the dpcode is not available
+    assert wrapper_type.find_dpcode(mock_device, "bad") is None
+
+    # The wrapper is not found if the device does not report the attribute
     mock_device.status[dpcode] = "{}"
     assert wrapper_type.find_dpcode(mock_device, dpcode) is None
 
     # The wrapper is found if the device has not reported a status yet
     mock_device.status[dpcode] = None
-    assert wrapper_type.find_dpcode(mock_device, dpcode)
+    assert (wrapper := wrapper_type.find_dpcode(mock_device, dpcode))
+    assert wrapper.read_device_status(mock_device) is None
 
 
 def test_delta_sensor(
