@@ -24,10 +24,6 @@ class DeviceWrapper[T]:
         Override in subclasses to perform initialization logic.
         """
 
-    def is_supported(self, device: CustomerDevice) -> bool:
-        """Return whether the wrapper is supported by the device."""
-        return True
-
     def skip_update(
         self,
         device: CustomerDevice,
