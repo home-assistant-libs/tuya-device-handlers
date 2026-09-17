@@ -66,3 +66,27 @@ def test_purge_custom_quirks_removes_quirks_under_root() -> None:
 
     assert "custom_product" not in reg._quirks
     assert reg._quirks.get("builtin_product") is builtin_quirk
+
+
+def test_purge_custom_quirks_concurrent_modification() -> None:
+    """purge_custom_quirks handles concurrent dict mutations safely."""
+    reg = QuirksRegistry()
+
+    custom_root = "/tmp/custom_quirks"
+    custom_quirk = Mock()
+
+    def _get_quirk_file(_self: Mock) -> pathlib.Path:
+        other_quirk = Mock(quirk_file=pathlib.Path("/usr/lib/other.py"))
+        reg.register("concurrent_product", other_quirk)
+        return pathlib.Path(f"{custom_root}/foo.py")
+
+    type(custom_quirk).quirk_file = property(_get_quirk_file)
+
+    reg.register("initial_product", custom_quirk)
+
+    # Without list(self._quirks.items()), this raises RuntimeError
+    reg.purge_custom_quirks(custom_root)
+
+    assert "initial_product" not in reg._quirks
+    # Cleanup
+    reg._quirks.pop("concurrent_product", None)
