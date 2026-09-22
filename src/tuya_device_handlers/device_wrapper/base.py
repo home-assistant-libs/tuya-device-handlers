@@ -9,7 +9,6 @@ class DeviceWrapper[T]:
     """Base device wrapper."""
 
     native_unit: str | None = None
-    suggested_unit: str | None = None
 
     max_value: float
     min_value: float

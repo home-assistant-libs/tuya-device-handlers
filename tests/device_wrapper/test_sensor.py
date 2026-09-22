@@ -46,7 +46,6 @@ def _snapshot_sensor(
     expected = {
         "native_unit": wrapper.native_unit,
         "state": wrapper.read_device_status(mock_device),
-        "suggested_unit": wrapper.suggested_unit,
     }
     for key in ("options",):
         if hasattr(wrapper, key):
