@@ -94,7 +94,7 @@ class QuirksRegistry:
         """Purge custom quirks from the registry."""
         to_remove = [
             product_id
-            for product_id, quirk in self._quirks.items()
+            for product_id, quirk in list(self._quirks.items())
             if quirk.quirk_file.is_relative_to(custom_quirks_root)
         ]
 
