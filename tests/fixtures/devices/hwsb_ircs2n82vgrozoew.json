@@ -1,0 +1,40 @@
+{
+  "endpoint": "https://apigw.tuyaus.com",
+  "mqtt_connected": true,
+  "disabled_by": null,
+  "disabled_polling": false,
+  "name": "Pool Pump",
+  "category": "hwsb",
+  "product_id": "ircs2n82vgrozoew",
+  "product_name": "InverFlow",
+  "online": true,
+  "sub": false,
+  "time_zone": "-04:00",
+  "active_time": 1788641646,
+  "create_time": 1788641646,
+  "update_time": 1788641646,
+  "function": {},
+  "local_strategy": {
+    "5": {
+      "value_convert": "default",
+      "status_code": "cur_power",
+      "config_item": {
+        "statusFormat": "{\"cur_power\":\"$\"}",
+        "valueDesc": "{\"unit\":\"W\",\"min\":0,\"max\":3000,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "ircs2n82vgrozoew"
+      }
+    }
+  },
+  "status_range": {
+    "cur_power": {
+      "type": "Integer",
+      "value": "{\"unit\":\"W\",\"min\":0,\"max\":3000,\"scale\":0,\"step\":1}",
+      "report_type": null
+    }
+  },
+  "status": {
+    "cur_power": 350
+  }
+}
