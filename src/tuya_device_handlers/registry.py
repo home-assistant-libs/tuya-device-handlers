@@ -111,8 +111,12 @@ class QuirksRegistry:
         is already complete, since built-ins cannot register twice.
         """
         with self._lock:
-            if not self._builtin_quirks:
-                self._builtin_quirks = dict(self._quirks)
+            self._capture_builtin_quirks_locked()
+
+    def _capture_builtin_quirks_locked(self) -> None:
+        """Snapshot the built-in quirks. Caller must hold `_lock`."""
+        if not self._builtin_quirks:
+            self._builtin_quirks = dict(self._quirks)
 
     @contextmanager
     def reloading(self) -> Iterator[None]:
@@ -144,10 +148,23 @@ class QuirksRegistry:
     ) -> None:
         """Register a quirk for a specific device type."""
         with self._lock:
-            if self._pending is not None:
-                self._pending[product_id] = quirk
-            else:
-                self._quirks = {**self._quirks, product_id: quirk}
+            self._register_locked(product_id, quirk)
+
+    def _register_locked(
+        self,
+        product_id: str,
+        quirk: DeviceQuirkProtocol,
+    ) -> None:
+        """Register a quirk. Caller must hold `_lock`.
+
+        Writes land in the staging copy while a `reloading()` block is open,
+        so they stay invisible to readers until it publishes. Otherwise
+        `_quirks` is rebound rather than mutated, to keep readers lock-free.
+        """
+        if self._pending is not None:
+            self._pending[product_id] = quirk
+        else:
+            self._quirks = {**self._quirks, product_id: quirk}
 
     def get_quirk_for_device(
         self, device: CustomerDevice
@@ -164,32 +181,39 @@ class QuirksRegistry:
     def purge_custom_quirks(self, custom_quirks_root: str) -> None:
         """Purge custom quirks from the registry."""
         with self._lock:
-            staged = self._pending is not None
-            target = self._pending if staged else dict(self._quirks)
-            if TYPE_CHECKING:
-                assert target is not None
+            self._purge_custom_quirks_locked(custom_quirks_root)
 
-            to_remove = [
-                product_id
-                for product_id, quirk in target.items()
-                if quirk.quirk_file.is_relative_to(custom_quirks_root)
-            ]
+    def _purge_custom_quirks_locked(self, custom_quirks_root: str) -> None:
+        """Purge custom quirks. Caller must hold `_lock`.
 
-            for product_id in to_remove:
-                if (
-                    builtin := self._builtin_quirks.get(product_id)
-                ) is not None:
-                    # The custom quirk was shadowing a built-in; uncover it
-                    # rather than dropping support for the device entirely.
-                    _LOGGER.debug(
-                        "Restoring built-in quirk shadowed by custom: %s",
-                        product_id,
-                    )
-                    target[product_id] = builtin
-                else:
-                    _LOGGER.debug("Removing stale custom quirk: %s", product_id)
-                    target.pop(product_id, None)
+        A custom quirk that shadows a built-in is replaced by the built-in
+        rather than dropped: quirks register as an import side effect, so the
+        built-in could not register itself again.
+        """
+        staged = self._pending is not None
+        target = self._pending if staged else dict(self._quirks)
+        if TYPE_CHECKING:
+            assert target is not None
 
-            if not staged:
-                # Publish as one swap; readers never see a partial purge.
-                self._quirks = target
+        to_remove = [
+            product_id
+            for product_id, quirk in target.items()
+            if quirk.quirk_file.is_relative_to(custom_quirks_root)
+        ]
+
+        for product_id in to_remove:
+            if (builtin := self._builtin_quirks.get(product_id)) is not None:
+                # The custom quirk was shadowing a built-in; uncover it
+                # rather than dropping support for the device entirely.
+                _LOGGER.debug(
+                    "Restoring built-in quirk shadowed by custom: %s",
+                    product_id,
+                )
+                target[product_id] = builtin
+            else:
+                _LOGGER.debug("Removing stale custom quirk: %s", product_id)
+                target.pop(product_id, None)
+
+        if not staged:
+            # Publish as one swap; readers never see a partial purge.
+            self._quirks = target
