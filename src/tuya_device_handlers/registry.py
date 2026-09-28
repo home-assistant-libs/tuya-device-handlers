@@ -60,6 +60,13 @@ class QuirksRegistry:
 
     _quirks: dict[str, DeviceQuirkProtocol]
 
+    # Snapshot of the built-in quirks, taken before any custom quirk is
+    # loaded. Registration happens as an import side effect, so a built-in
+    # can only ever register once per process -- without this, a custom quirk
+    # that shadows a built-in `product_id` and is then deleted would take the
+    # built-in with it until the host restarts.
+    _builtin_quirks: dict[str, DeviceQuirkProtocol]
+
     def __new__(cls) -> Self:
         """Create a new class."""
         if not hasattr(cls, "instance"):
@@ -70,6 +77,7 @@ class QuirksRegistry:
         """Initialize the registry."""
         if not hasattr(self, "_quirks"):
             self._quirks = {}
+            self._builtin_quirks = {}
 
     def register(
         self,
@@ -78,6 +86,16 @@ class QuirksRegistry:
     ) -> None:
         """Register a quirk for a specific device type."""
         self._quirks[product_id] = quirk
+
+    def capture_builtin_quirks(self) -> None:
+        """Remember the built-in quirks, so a purge can restore them.
+
+        Called once the built-in modules have been imported and before any
+        custom quirk is loaded. Later calls are ignored: the first snapshot
+        is already complete, since built-ins cannot register twice.
+        """
+        if not self._builtin_quirks:
+            self._builtin_quirks = dict(self._quirks)
 
     def get_quirk_for_device(
         self, device: CustomerDevice
@@ -99,5 +117,14 @@ class QuirksRegistry:
         ]
 
         for product_id in to_remove:
-            _LOGGER.debug("Removing stale custom quirk: %s", product_id)
-            self._quirks.pop(product_id, None)
+            if (builtin := self._builtin_quirks.get(product_id)) is not None:
+                # The custom quirk was shadowing a built-in; uncover it
+                # rather than dropping support for the device entirely.
+                _LOGGER.debug(
+                    "Restoring built-in quirk shadowed by custom: %s",
+                    product_id,
+                )
+                self._quirks[product_id] = builtin
+            else:
+                _LOGGER.debug("Removing stale custom quirk: %s", product_id)
+                self._quirks.pop(product_id, None)
