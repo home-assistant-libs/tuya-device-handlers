@@ -6,10 +6,7 @@ from dataclasses import dataclass
 from tuya_sharing import CustomerDevice
 
 from tuya_device_handlers.device_wrapper import DeviceWrapper
-from tuya_device_handlers.device_wrapper.common import (
-    DPCodeBooleanWrapper,
-    DPCodeTypeInformationWrapper,
-)
+from tuya_device_handlers.device_wrapper.common import DPCodeBooleanWrapper
 from tuya_device_handlers.device_wrapper.extended import DPCodePercentageWrapper
 
 from .base import BaseEntityQuirk
@@ -40,9 +37,6 @@ def get_default_definition(
     *,
     current_position_dpcode: str | tuple[str, ...] | None = None,
     set_position_dpcode: str | tuple[str, ...] | None = None,
-    position_wrapper: type[
-        DPCodeTypeInformationWrapper
-    ] = DPCodePercentageWrapper,
 ) -> ValveDefinition | None:
     """Get the default valve definition for a device."""
     if not (
@@ -54,10 +48,10 @@ def get_default_definition(
 
     return ValveDefinition(
         control_wrapper=control_wrapper,
-        current_position_wrapper=position_wrapper.find_dpcode(
+        current_position_wrapper=DPCodePercentageWrapper.find_dpcode(
             device, current_position_dpcode
         ),
-        set_position_wrapper=position_wrapper.find_dpcode(
+        set_position_wrapper=DPCodePercentageWrapper.find_dpcode(
             device, set_position_dpcode, prefer_function=True
         ),
     )
