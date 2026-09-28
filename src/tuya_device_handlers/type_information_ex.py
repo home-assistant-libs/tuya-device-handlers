@@ -1,7 +1,7 @@
 """Extended type information classes for the Tuya integration.
 
-These build on the core classes in :mod:`type_information` to cover common
-quirk needs that recur across several devices, so individual quirk files can
+These build on the core classes in :mod:`type_information` to cover quirk
+needs that are not specific to a single device, so individual quirk files can
 import a shared implementation instead of redefining one locally.
 """
 
@@ -64,6 +64,9 @@ class ColorTempTypeInformationEx(IntegerTypeInformation):
     See https://github.com/home-assistant/core/issues/166103.
     """
 
+    # ClassVar keeps these out of the dataclass fields, so a subclass can
+    # override them with a plain assignment; as fields, the generated
+    # __init__ would silently reassign the parent's default.
     min_kelvin: ClassVar[int] = 2000
     """Warmest color temperature the lamp can produce."""
 
