@@ -1,0 +1,133 @@
+{
+  "endpoint": "https://apigw.tuyaus.com",
+  "mqtt_connected": true,
+  "disabled_by": null,
+  "disabled_polling": false,
+  "name": "Solar Soil Sensor",
+  "category": "zwjcy",
+  "product_id": "16qjjjnzx7hyveiq",
+  "product_name": "Solar Soil Sensor",
+  "online": true,
+  "sub": false,
+  "time_zone": "-04:00",
+  "active_time": "2026-03-29T12:32:28+00:00",
+  "create_time": "2026-03-29T12:32:28+00:00",
+  "update_time": "2026-03-29T12:32:28+00:00",
+  "function": {
+    "temp_unit_convert": {
+      "type": "Enum",
+      "value": "{\"range\":[\"c\",\"f\"]}"
+    }
+  },
+  "status_range": {
+    "ph": {
+      "type": "Integer",
+      "value": "{\"unit\":\"ms/cm\",\"min\":1,\"max\":20000,\"scale\":3,\"step\":1}",
+      "report_type": "un_known"
+    },
+    "fertility": {
+      "type": "Enum",
+      "value": "{\"range\":[\"normal\",\"low\",\"high\"]}",
+      "report_type": null
+    },
+    "temp_current": {
+      "type": "Integer",
+      "value": "{\"unit\":\"℃\",\"min\":-100,\"max\":600,\"scale\":1,\"step\":1}",
+      "report_type": "un_known"
+    },
+    "temp_unit_convert": {
+      "type": "Enum",
+      "value": "{\"range\":[\"c\",\"f\"]}",
+      "report_type": null
+    },
+    "battery_state": {
+      "type": "Enum",
+      "value": "{\"range\":[\"low\",\"middle\",\"high\"]}",
+      "report_type": null
+    },
+    "battery_percentage": {
+      "type": "Integer",
+      "value": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+      "report_type": null
+    }
+  },
+  "status": {
+    "ph": 1,
+    "fertility": "low",
+    "temp_current": 266,
+    "temp_unit_convert": "f",
+    "battery_state": "low",
+    "battery_percentage": 88
+  },
+  "set_up": true,
+  "support_local": true,
+  "local_strategy": {
+    "1": {
+      "value_convert": "default",
+      "status_code": "ph",
+      "config_item": {
+        "statusFormat": "{\"ph\":\"$\"}",
+        "valueDesc": "{\"unit\":\"ms/cm\",\"min\":1,\"max\":20000,\"scale\":3,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "16qjjjnzx7hyveiq"
+      }
+    },
+    "4": {
+      "value_convert": "default",
+      "status_code": "fertility",
+      "config_item": {
+        "statusFormat": "{\"fertility\":\"$\"}",
+        "valueDesc": "{\"range\":[\"normal\",\"low\",\"high\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "16qjjjnzx7hyveiq"
+      }
+    },
+    "5": {
+      "value_convert": "default",
+      "status_code": "temp_current",
+      "config_item": {
+        "statusFormat": "{\"temp_current\":\"$\"}",
+        "valueDesc": "{\"unit\":\"℃\",\"min\":-100,\"max\":600,\"scale\":1,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "16qjjjnzx7hyveiq"
+      }
+    },
+    "9": {
+      "value_convert": "default",
+      "status_code": "temp_unit_convert",
+      "config_item": {
+        "statusFormat": "{\"temp_unit_convert\":\"$\"}",
+        "valueDesc": "{\"range\":[\"c\",\"f\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "16qjjjnzx7hyveiq"
+      }
+    },
+    "14": {
+      "value_convert": "default",
+      "status_code": "battery_state",
+      "config_item": {
+        "statusFormat": "{\"battery_state\":\"$\"}",
+        "valueDesc": "{\"range\":[\"low\",\"middle\",\"high\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "16qjjjnzx7hyveiq"
+      }
+    },
+    "15": {
+      "value_convert": "default",
+      "status_code": "battery_percentage",
+      "config_item": {
+        "statusFormat": "{\"battery_percentage\":\"$\"}",
+        "valueDesc": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "16qjjjnzx7hyveiq"
+      }
+    }
+  },
+  "warnings": null
+}
