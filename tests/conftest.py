@@ -18,9 +18,17 @@ from tuya_device_handlers.registry import QuirksRegistry
 
 @pytest.fixture(autouse=True)
 def auto_reset_quirks() -> Generator[None]:
-    """Ensure that quirks are reset before each test."""
-    with patch.dict(TUYA_QUIRKS_REGISTRY._quirks):
+    """Ensure that quirks are reset before each test.
+
+    The registry is copy-on-write, so `_quirks` is rebound rather than
+    mutated -- restoring the attribute is what isolates tests, not restoring
+    the contents of whichever dict it happened to point at.
+    """
+    original = TUYA_QUIRKS_REGISTRY._quirks
+    try:
         yield
+    finally:
+        TUYA_QUIRKS_REGISTRY._quirks = original
 
 
 @pytest.fixture(scope="module")

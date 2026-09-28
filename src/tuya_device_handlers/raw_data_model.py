@@ -12,6 +12,10 @@ class ElectricityData:
     current: float
     power: float
     voltage: float
+
+    # `None` means the payload layout does not carry the attribute
+    # (the legacy layout only carries voltage, current and power),
+    # not that the device reported an unknown value.
     reactive_power: float | None = None
     apparent_power: float | None = None
     power_factor: float | None = None
@@ -35,6 +39,8 @@ class ElectricityData:
         # - bit1 active power
         # - bit2 reactive
         # - bit3 power factor
+        # Apparent power has no sign bit: it is a magnitude (V_rms * I_rms)
+        # and is never negative.
 
         is_v1 = len(raw) == 17 and raw[0:2] == b"\x01\x0f"
         is_v2 = len(raw) == 18 and raw[0:2] == b"\x02\x0f"
@@ -75,3 +81,12 @@ class ElectricityData:
             return cls(current=current, power=power, voltage=voltage)
 
         return None
+
+    @classmethod
+    def from_hex(cls, raw: str) -> Self | None:
+        """Parse a hex-encoded frame string (e.g. `phase_s` string DPs)."""
+        try:
+            data = bytes.fromhex(raw)
+        except ValueError:
+            return None
+        return cls.from_bytes(data)

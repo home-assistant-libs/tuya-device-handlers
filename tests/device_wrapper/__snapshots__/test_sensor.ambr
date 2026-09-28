@@ -1,9 +1,67 @@
 # serializer version: 1
+# name: test_electricity_hex_string_wrappers_real_device
+  dict({
+    'ElectricityApparentPowerHexStringWrapper': 2350,
+    'ElectricityCurrentHexStringWrapper': 10000,
+    'ElectricityPowerFactorHexStringWrapper': 0.98,
+    'ElectricityPowerHexStringWrapper': 3000,
+    'ElectricityReactivePowerHexStringWrapper': 500,
+    'ElectricityVoltageHexStringWrapper': 230.5,
+  })
+# ---
+# name: test_electricity_json_wrappers_real_device
+  dict({
+    'ElectricityApparentPowerJsonWrapper': 2.35,
+    'ElectricityCurrentJsonWrapper': 10.0,
+    'ElectricityPowerFactorJsonWrapper': 0.98,
+    'ElectricityPowerJsonWrapper': 3.0,
+    'ElectricityReactivePowerJsonWrapper': 0.5,
+    'ElectricityVoltageJsonWrapper': 230.5,
+  })
+# ---
+# name: test_electricity_raw_wrappers_real_device
+  dict({
+    'ElectricityApparentPowerRawWrapper': 8,
+    'ElectricityCurrentRawWrapper': 72,
+    'ElectricityPowerFactorRawWrapper': 0.99,
+    'ElectricityPowerRawWrapper': 8,
+    'ElectricityReactivePowerRawWrapper': 0,
+    'ElectricityVoltageRawWrapper': 234.1,
+  })
+# ---
 # name: test_sensor_wrapper[DeltaIntegerWrapper-demo_integer_sum-{"unit": "%","min": 0,"max": 1000,"scale": 1,"step": 1}-123]
   dict({
     'native_unit': '%',
     'state': 0,
     'suggested_unit': None,
+  })
+# ---
+# name: test_sensor_wrapper[ElectricityApparentPowerHexStringWrapper-demo_string-{}-020F09010027100008FC0001F400092E6200]
+  dict({
+    'native_unit': 'VA',
+    'state': 2350,
+    'suggested_unit': 'kVA',
+  })
+# ---
+# name: test_sensor_wrapper[ElectricityApparentPowerJsonWrapper-demo_json-{}-{"reactivePower": 0.5, "apparentPower": 0.9, "powerFactor": 0.9}]
+  dict({
+    'native_unit': 'kVA',
+    'state': 0.9,
+    'suggested_unit': None,
+  })
+# ---
+# name: test_sensor_wrapper[ElectricityApparentPowerRawWrapper-demo_raw-{}-Ag8JJQAASAAACAAAAAAACGME]
+  dict({
+    'native_unit': 'VA',
+    'state': 8,
+    'suggested_unit': 'kVA',
+  })
+# ---
+# name: test_sensor_wrapper[ElectricityCurrentHexStringWrapper-demo_string-{}-020F09010027100008FC0001F400092E6200]
+  dict({
+    'native_unit': 'mA',
+    'state': 10000,
+    'suggested_unit': 'A',
   })
 # ---
 # name: test_sensor_wrapper[ElectricityCurrentJsonWrapper-demo_json-{}-{"electricCurrent": 599.552, "power": 6.912, "voltage": 52.7}]
@@ -20,6 +78,34 @@
     'suggested_unit': 'A',
   })
 # ---
+# name: test_sensor_wrapper[ElectricityPowerFactorHexStringWrapper-demo_string-{}-020F09010027100008FC0001F400092E6200]
+  dict({
+    'native_unit': None,
+    'state': 0.98,
+    'suggested_unit': None,
+  })
+# ---
+# name: test_sensor_wrapper[ElectricityPowerFactorJsonWrapper-demo_json-{}-{"reactivePower": 0.5, "apparentPower": 0.9, "powerFactor": 0.9}]
+  dict({
+    'native_unit': None,
+    'state': 0.9,
+    'suggested_unit': None,
+  })
+# ---
+# name: test_sensor_wrapper[ElectricityPowerFactorRawWrapper-demo_raw-{}-Ag8JJQAASAAACAAAAAAACGME]
+  dict({
+    'native_unit': None,
+    'state': 0.99,
+    'suggested_unit': None,
+  })
+# ---
+# name: test_sensor_wrapper[ElectricityPowerHexStringWrapper-demo_string-{}-020F09010027100008FC0001F400092E6200]
+  dict({
+    'native_unit': 'W',
+    'state': 2300,
+    'suggested_unit': 'kW',
+  })
+# ---
 # name: test_sensor_wrapper[ElectricityPowerJsonWrapper-demo_json-{}-{"electricCurrent": 599.552, "power": 6.912, "voltage": 52.7}]
   dict({
     'native_unit': 'kW',
@@ -32,6 +118,34 @@
     'native_unit': 'W',
     'state': 8,
     'suggested_unit': 'kW',
+  })
+# ---
+# name: test_sensor_wrapper[ElectricityReactivePowerHexStringWrapper-demo_string-{}-020F09010027100008FC0001F400092E6200]
+  dict({
+    'native_unit': 'var',
+    'state': 500,
+    'suggested_unit': 'kvar',
+  })
+# ---
+# name: test_sensor_wrapper[ElectricityReactivePowerJsonWrapper-demo_json-{}-{"reactivePower": 0.5, "apparentPower": 0.9, "powerFactor": 0.9}]
+  dict({
+    'native_unit': 'kvar',
+    'state': 0.5,
+    'suggested_unit': None,
+  })
+# ---
+# name: test_sensor_wrapper[ElectricityReactivePowerRawWrapper-demo_raw-{}-Ag8JJQAASAAACAAAAAAACGME]
+  dict({
+    'native_unit': 'var',
+    'state': 0,
+    'suggested_unit': 'kvar',
+  })
+# ---
+# name: test_sensor_wrapper[ElectricityVoltageHexStringWrapper-demo_string-{}-020F09010027100008FC0001F400092E6200]
+  dict({
+    'native_unit': 'V',
+    'state': 230.5,
+    'suggested_unit': None,
   })
 # ---
 # name: test_sensor_wrapper[ElectricityVoltageJsonWrapper-demo_json-{}-{"electricCurrent": 599.552, "power": 6.912, "voltage": 52.7}]
