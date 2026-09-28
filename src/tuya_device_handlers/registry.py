@@ -2,10 +2,13 @@
 
 from __future__ import annotations
 
+from contextlib import contextmanager
 import logging
-from typing import TYPE_CHECKING, Any, Protocol, Self
+import threading
+from typing import TYPE_CHECKING, Any, ClassVar, Protocol, Self
 
 if TYPE_CHECKING:
+    from collections.abc import Iterator
     import pathlib
 
     from tuya_sharing import CustomerDevice, DeviceFunction, DeviceStatusRange
@@ -58,7 +61,25 @@ class QuirksRegistry:
 
     instance: Self
 
+    # `_quirks` is copy-on-write: it is never mutated in place, only rebound
+    # to a freshly built dict. That keeps readers lock-free, which matters
+    # because they run on Home Assistant's event loop (`find_dpcode`, and so
+    # every `get_default_definition`, reaches `get_quirk_for_device`) while a
+    # reload may be executing arbitrary user quirk modules off it. A reader
+    # sees either the pre-reload or the post-reload mapping, never a
+    # partially purged one, and never blocks waiting for either.
+    #
+    # The lock serialises *writers* only. It is defined at class level so it
+    # exists before any instance does -- the `hasattr` guards in
+    # `__new__`/`__init__` are not themselves atomic -- and is reentrant
+    # because loading custom quirks executes quirk module bodies while the
+    # lock is held, and those call `register` on the same thread.
+    _lock: ClassVar[threading.RLock] = threading.RLock()
+
     _quirks: dict[str, DeviceQuirkProtocol]
+
+    # Staging area while a `reloading()` block is open; None otherwise.
+    _pending: dict[str, DeviceQuirkProtocol] | None
 
     # Snapshot of the built-in quirks, taken before any custom quirk is
     # loaded. Registration happens as an import side effect, so a built-in
@@ -69,23 +90,18 @@ class QuirksRegistry:
 
     def __new__(cls) -> Self:
         """Create a new class."""
-        if not hasattr(cls, "instance"):
-            cls.instance = super().__new__(cls)
-        return cls.instance
+        with cls._lock:
+            if not hasattr(cls, "instance"):
+                cls.instance = super().__new__(cls)
+            return cls.instance
 
     def __init__(self) -> None:
         """Initialize the registry."""
-        if not hasattr(self, "_quirks"):
-            self._quirks = {}
-            self._builtin_quirks = {}
-
-    def register(
-        self,
-        product_id: str,
-        quirk: DeviceQuirkProtocol,
-    ) -> None:
-        """Register a quirk for a specific device type."""
-        self._quirks[product_id] = quirk
+        with self._lock:
+            if not hasattr(self, "_quirks"):
+                self._quirks = {}
+                self._pending = None
+                self._builtin_quirks = {}
 
     def capture_builtin_quirks(self) -> None:
         """Remember the built-in quirks, so a purge can restore them.
@@ -94,13 +110,50 @@ class QuirksRegistry:
         custom quirk is loaded. Later calls are ignored: the first snapshot
         is already complete, since built-ins cannot register twice.
         """
-        if not self._builtin_quirks:
-            self._builtin_quirks = dict(self._quirks)
+        with self._lock:
+            if not self._builtin_quirks:
+                self._builtin_quirks = dict(self._quirks)
+
+    @contextmanager
+    def reloading(self) -> Iterator[None]:
+        """Stage a full purge-and-reload, publishing it as a single swap.
+
+        Writes inside the block accumulate off to the side and become visible
+        to readers all at once on exit, so no reader can observe the
+        intermediate state where custom quirks have been purged but not yet
+        re-registered. Readers are never blocked while the block is open.
+        """
+        with self._lock:
+            # Nested use must not publish early or re-snapshot.
+            outermost = self._pending is None
+            if outermost:
+                self._pending = dict(self._quirks)
+            try:
+                yield
+            finally:
+                if outermost:
+                    pending, self._pending = self._pending, None
+                    if TYPE_CHECKING:
+                        assert pending is not None
+                    self._quirks = pending
+
+    def register(
+        self,
+        product_id: str,
+        quirk: DeviceQuirkProtocol,
+    ) -> None:
+        """Register a quirk for a specific device type."""
+        with self._lock:
+            if self._pending is not None:
+                self._pending[product_id] = quirk
+            else:
+                self._quirks = {**self._quirks, product_id: quirk}
 
     def get_quirk_for_device(
         self, device: CustomerDevice
     ) -> DeviceQuirkProtocol | None:
         """Get the quirk for a specific device."""
+        # Deliberately lock-free: this runs on the host's event loop.
         return self._quirks.get(device.product_id)
 
     def initialise_device_quirk(self, device: CustomerDevice) -> None:
@@ -110,21 +163,33 @@ class QuirksRegistry:
 
     def purge_custom_quirks(self, custom_quirks_root: str) -> None:
         """Purge custom quirks from the registry."""
-        to_remove = [
-            product_id
-            for product_id, quirk in self._quirks.items()
-            if quirk.quirk_file.is_relative_to(custom_quirks_root)
-        ]
+        with self._lock:
+            staged = self._pending is not None
+            target = self._pending if staged else dict(self._quirks)
+            if TYPE_CHECKING:
+                assert target is not None
 
-        for product_id in to_remove:
-            if (builtin := self._builtin_quirks.get(product_id)) is not None:
-                # The custom quirk was shadowing a built-in; uncover it
-                # rather than dropping support for the device entirely.
-                _LOGGER.debug(
-                    "Restoring built-in quirk shadowed by custom: %s",
-                    product_id,
-                )
-                self._quirks[product_id] = builtin
-            else:
-                _LOGGER.debug("Removing stale custom quirk: %s", product_id)
-                self._quirks.pop(product_id, None)
+            to_remove = [
+                product_id
+                for product_id, quirk in target.items()
+                if quirk.quirk_file.is_relative_to(custom_quirks_root)
+            ]
+
+            for product_id in to_remove:
+                if (
+                    builtin := self._builtin_quirks.get(product_id)
+                ) is not None:
+                    # The custom quirk was shadowing a built-in; uncover it
+                    # rather than dropping support for the device entirely.
+                    _LOGGER.debug(
+                        "Restoring built-in quirk shadowed by custom: %s",
+                        product_id,
+                    )
+                    target[product_id] = builtin
+                else:
+                    _LOGGER.debug("Removing stale custom quirk: %s", product_id)
+                    target.pop(product_id, None)
+
+            if not staged:
+                # Publish as one swap; readers never see a partial purge.
+                self._quirks = target
