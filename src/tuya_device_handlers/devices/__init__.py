@@ -31,6 +31,9 @@ def register_tuya_quirks(custom_quirks_path: str | None = None) -> None:
         _LOGGER.debug("Loading quirks module %r", modname)
         importlib.import_module(modname)
 
+    # Snapshot them before any custom quirk can shadow one.
+    TUYA_QUIRKS_REGISTRY.capture_builtin_quirks()
+
     if custom_quirks_path is None:
         return
 
