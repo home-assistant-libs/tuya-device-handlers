@@ -30,6 +30,8 @@ Changelog = "https://github.com/home-assistant-libs/tuya-device-handlers/release
 [tool.poetry.group.dev.dependencies]
 codespell = "2.4.3"
 covdefaults = "2.3.0"
+# Imported by tuya-device-sharing-sdk but not declared as a dependency
+cryptography = "50.0.1"
 coverage = { version = "7.16.2", extras = ["toml"] }
 pre-commit-hooks = "6.0.0"
 prek = "0.5.4"
@@ -38,7 +40,6 @@ pytest = "9.1.1"
 pytest-asyncio = "1.4.0"
 pytest-cov = "7.1.0"
 ruff = "0.16.9"
-safety = "3.8.1"
 syrupy = "6.1.1"
 ty = "0.0.84"
 yamllint = "1.38.0"
