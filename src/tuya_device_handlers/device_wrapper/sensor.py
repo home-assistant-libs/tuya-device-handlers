@@ -170,7 +170,6 @@ class ElectricityCurrentRawWrapper(_ElectricityRawWrapper):
 
     _ATTRIBUTE_NAME = "current"
     native_unit = "mA"
-    suggested_unit = "A"
 
 
 class ElectricityPowerRawWrapper(_ElectricityRawWrapper):
@@ -178,7 +177,6 @@ class ElectricityPowerRawWrapper(_ElectricityRawWrapper):
 
     _ATTRIBUTE_NAME = "power"
     native_unit = "W"
-    suggested_unit = "kW"
 
 
 class ElectricityVoltageRawWrapper(_ElectricityRawWrapper):
