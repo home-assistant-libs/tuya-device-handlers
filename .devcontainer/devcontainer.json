@@ -1,6 +1,6 @@
 {
   "containerEnv": {
-    "POETRY_VIRTUALENVS_IN_PROJECT": "true"
+    "UV_LINK_MODE": "copy"
   },
   "customizations": {
     "codespaces": {
@@ -40,7 +40,6 @@
     }
   },
   "features": {
-    "ghcr.io/devcontainers-extra/features/poetry:2": {},
     "ghcr.io/devcontainers/features/github-cli:1": {},
     "ghcr.io/devcontainers/features/node:2": {},
     "ghcr.io/devcontainers/features/python:1": {
@@ -50,5 +49,6 @@
   },
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
   "name": "Tuya device quirks library",
-  "updateContentCommand": ". ${NVM_DIR}/nvm.sh && nvm install && nvm use && npm install && poetry install && poetry run prek install"
+  "onCreateCommand": "pipx install uv",
+  "updateContentCommand": ". ${NVM_DIR}/nvm.sh && nvm install && nvm use && npm install && uv sync && uv run prek install"
 }

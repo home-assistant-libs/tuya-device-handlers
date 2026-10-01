@@ -4,6 +4,7 @@ version = "0.0.0"
 description = "Tuya quirks library"
 authors = [{ name = "epenet" }]
 license = "MIT"
+license-files = ["LICENSE.md"]
 requires-python = ">=3.12"
 readme = "README.md"
 keywords = ["tuya"]
@@ -15,35 +16,33 @@ classifiers = [
     "Programming Language :: Python :: 3.14",
     "Topic :: Home Automation",
 ]
-dynamic = ["dependencies"]
-dependencies = ['tuya-device-sharing-sdk (>=0.2.8)']
-
-[tool.poetry]
-requires-poetry = '>=2.0'
+dependencies = ["tuya-device-sharing-sdk>=0.2.8"]
 
 [project.urls]
-homepage = "https://github.com/home-assistant-libs/tuya-device-handlers"
-repository = "https://github.com/home-assistant-libs/tuya-device-handlers"
-documentation = "https://github.com/home-assistant-libs/tuya-device-handlers"
+Homepage = "https://github.com/home-assistant-libs/tuya-device-handlers"
+Repository = "https://github.com/home-assistant-libs/tuya-device-handlers"
+Documentation = "https://github.com/home-assistant-libs/tuya-device-handlers"
 Changelog = "https://github.com/home-assistant-libs/tuya-device-handlers/releases"
 
-[tool.poetry.group.dev.dependencies]
-codespell = "2.4.3"
-covdefaults = "2.3.0"
-# Imported by tuya-device-sharing-sdk but not declared as a dependency
-cryptography = "50.0.2"
-coverage = { version = "7.16.2", extras = ["toml"] }
-pre-commit-hooks = "6.0.0"
-prek = "0.5.4"
-pylint = "4.1.1"
-pytest = "9.1.1"
-pytest-asyncio = "1.4.0"
-pytest-cov = "7.1.0"
-ruff = "0.16.9"
-syrupy = "6.1.1"
-ty = "0.0.84"
-yamllint = "1.38.0"
-zizmor = "1.30.1"
+[dependency-groups]
+dev = [
+    "codespell==2.4.3",
+    "covdefaults==2.3.0",
+    "coverage[toml]==7.16.2",
+    # Imported by tuya-device-sharing-sdk but not declared as a dependency
+    "cryptography==50.0.2",
+    "pre-commit-hooks==6.0.0",
+    "prek==0.5.4",
+    "pylint==4.1.1",
+    "pytest==9.1.1",
+    "pytest-asyncio==1.4.0",
+    "pytest-cov==7.1.0",
+    "ruff==0.16.9",
+    "syrupy==6.1.1",
+    "ty==0.0.84",
+    "yamllint==1.38.0",
+    "zizmor==1.30.1",
+]
 
 
 [tool.coverage.run]
@@ -58,7 +57,7 @@ fail_under = 90
 python-version = "3.13"
 
 [tool.codespell]
-skip = "node_modules,poetry.lock"
+skip = "node_modules,uv.lock"
 
 [tool.pylint.MASTER]
 ignore = ["tests"]
@@ -147,5 +146,5 @@ max-complexity = 10
 convention = "google"
 
 [build-system]
-requires = ["poetry-core>=2.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["uv_build>=0.12.21,<0.13"]
+build-backend = "uv_build"

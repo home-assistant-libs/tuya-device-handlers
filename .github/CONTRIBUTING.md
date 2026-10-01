@@ -39,7 +39,7 @@ The easiest way to get started is to use the [Dev Container][devcontainer]:
 
 [![Open in Dev Containers][devcontainer-shield]][devcontainer]
 
-This gives you a fully configured environment with Python, Poetry,
+This gives you a fully configured environment with Python, uv,
 Node.js, and all development tools pre-installed.
 
 [devcontainer]: https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/home-assistant-libs/tuya-device-handlers
@@ -47,15 +47,15 @@ Node.js, and all development tools pre-installed.
 
 ### Manual setup
 
-You need Python 3.13+, [Poetry], and [Node.js] (for Prettier).
+You need [uv] (which also installs Python) and [Node.js] (for Prettier).
 
 ```console
 $ npm install
-$ poetry install
-$ poetry run prek install
+$ uv sync
+$ uv run prek install
 ```
 
-[poetry]: https://python-poetry.org/
+[uv]: https://docs.astral.sh/uv/
 [node.js]: https://nodejs.org/
 
 ## How to test the project
@@ -63,14 +63,14 @@ $ poetry run prek install
 Run the test suite:
 
 ```console
-$ poetry run pytest --cov tuya_device_handlers tests
+$ uv run pytest --cov tuya_device_handlers tests
 ```
 
 Run linting and type checking:
 
 ```console
-$ poetry run ruff check .
-$ poetry run ty check src tests
+$ uv run ruff check .
+$ uv run ty check src tests
 ```
 
 Unit tests are located in the _tests_ directory,
@@ -92,7 +92,7 @@ Feel free to submit early, though—we can always iterate on this.
 To install pre-commit hooks for local development:
 
 ```console
-$ poetry run prek install
+$ uv run prek install
 ```
 
 It is recommended to open an issue before starting work on anything.

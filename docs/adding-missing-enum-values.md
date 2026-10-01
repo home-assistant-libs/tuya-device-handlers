@@ -226,7 +226,7 @@ You don't need deep Git knowledge — follow these commands.
    ```console
    git clone https://github.com/<your-username>/tuya-device-handlers.git
    cd tuya-device-handlers
-   poetry install
+   uv sync
    ```
 
 2. **Move your quirk** into the right folder (create the category folder if it
@@ -293,9 +293,9 @@ You don't need deep Git knowledge — follow these commands.
 5. **Run the checks locally.** All three should pass:
 
    ```console
-   poetry run pytest tests/devices/wk/test_kswbb80bbp4avryo.py
-   poetry run ruff check .
-   poetry run ruff format .
+   uv run pytest tests/devices/wk/test_kswbb80bbp4avryo.py
+   uv run ruff check .
+   uv run ruff format .
    ```
 
 6. **Commit and open the PR:**
