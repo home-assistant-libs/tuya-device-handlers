@@ -22,20 +22,20 @@ HA Core imports specific symbols from specific paths. Treat these as a stable co
 
 ## Tooling
 
-Poetry. Python 3.13 and 3.14 are both supported (CI runs both).
+uv. Python 3.13 and 3.14 are both supported (CI runs both).
 
-- `poetry install` — set up dev environment.
-- `poetry run pytest --cov tuya_device_handlers tests` — full test suite with coverage.
-- `poetry run pytest tests/path/to/test_file.py::test_name` — single test.
-- `poetry run ty check src tests` — type-check with ty.
-- `poetry run ruff check .` — lint with ruff.
-- `poetry run ruff format --check .` — check formatting.
-- `poetry run pylint src/tuya_device_handlers` — lint with pylint.
-- `poetry run yamllint .` — lint YAML files.
-- `poetry run codespell` — check for common misspellings.
-- `poetry run prek install` — install pre-commit hooks.
-- `poetry run prek run --all-files` — run all pre-commit hooks on all files.
-- `poetry run prek run ruff-check --all-files` — run a single hook on all files.
+- `uv sync` — set up dev environment.
+- `uv run pytest --cov tuya_device_handlers tests` — full test suite with coverage.
+- `uv run pytest tests/path/to/test_file.py::test_name` — single test.
+- `uv run ty check src tests` — type-check with ty.
+- `uv run ruff check .` — lint with ruff.
+- `uv run ruff format --check .` — check formatting.
+- `uv run pylint src/tuya_device_handlers` — lint with pylint.
+- `uv run yamllint .` — lint YAML files.
+- `uv run codespell` — check for common misspellings.
+- `uv run prek install` — install pre-commit hooks.
+- `uv run prek run --all-files` — run all pre-commit hooks on all files.
+- `uv run prek run ruff-check --all-files` — run a single hook on all files.
 
 Ruff config lives in [pyproject.toml](pyproject.toml) (line-length 80, isort with `force-sort-within-sections`, mccabe max-complexity 10). Type checking uses ty.
 
