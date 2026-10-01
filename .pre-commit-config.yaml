@@ -106,9 +106,17 @@ repos:
         entry: uv run trailing-whitespace-fixer
         language: system
         types: [text]
+        # syrupy snapshots must stay byte-for-byte as generated
+        exclude: \.ambr$
         stages: [pre-commit, pre-push, manual]
       - id: yamllint
         name: Check YAML files with yamllint
         language: system
         types: [yaml]
         entry: uv run yamllint
+      - id: zizmor
+        name: Audit GitHub Actions workflows with zizmor
+        language: system
+        files: ^\.github/workflows/
+        types: [yaml]
+        entry: uv run zizmor

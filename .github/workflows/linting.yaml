@@ -69,20 +69,12 @@ jobs:
           version: "0.12.21"
           python-version: ${{ env.DEFAULT_PYTHON }}
           enable-cache: true
-      - name: 🚀 Check Python AST
-        run: uv run --locked prek run check-ast --all-files
-      - name: 🚀 Check for case conflicts
-        run: uv run --locked prek run check-case-conflict --all-files
-      - name: 🚀 Check JSON files
-        run: uv run --locked prek run check-json --all-files
-      - name: 🚀 Check TOML files
-        run: uv run --locked prek run check-toml --all-files
-      - name: 🚀 Check YAML files
-        run: uv run --locked prek run check-yaml --all-files
-      - name: 🚀 Check End of Files
-        run: uv run --locked prek run end-of-file-fixer --all-files
-      - name: 🚀 Trim Trailing Whitespace
-        run: uv run --locked prek run trailing-whitespace --all-files
+      - name: 🚀 Run remaining prek hooks
+        env:
+          # Hooks with their own job in this workflow; no-commit-to-branch
+          # would fail on pushes to main
+          SKIP: no-commit-to-branch,codespell,ruff-check,ruff-format,prettier,yamllint,zizmor
+        run: uv run --locked prek run --all-files --show-diff-on-failure
 
   pylint:
     name: pylint
@@ -138,7 +130,7 @@ jobs:
           node-version-file: ".nvmrc"
           cache: "npm"
       - name: 🏗 Install NPM dependencies
-        run: npm install
+        run: npm ci
       - name: 🚀 Run prettier
         run: uv run --locked prek run prettier --all-files
 
