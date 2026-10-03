@@ -45,6 +45,20 @@ from . import inject_dpcode
             {"pause": False},
             None,
         ),
+        # Regression test for #178209: device reports status
+        # "charging" while actively cleaning in "smart" mode.
+        (
+            "status_and_mode_wrapper",
+            {"status": "charging", "mode": "smart"},
+            TuyaVacuumActivity.CLEANING,
+        ),
+        # Same status/mode wrapper present, but mode is NOT an
+        # active-cleaning mode -> should stay DOCKED as normal.
+        (
+            "status_and_mode_wrapper",
+            {"status": "charging", "mode": "chargego"},
+            TuyaVacuumActivity.DOCKED,
+        ),
     ],
 )
 def test_read_device_status(
@@ -55,13 +69,21 @@ def test_read_device_status(
 ) -> None:
     """Test read_device_status."""
     inject_dpcode(mock_device, "pause", False, dptype="Boolean")
-    if sample == "status_wrapper":
+    if sample in ("status_wrapper", "status_and_mode_wrapper"):
         inject_dpcode(
             mock_device,
             "status",
             "charge_done",
             dptype="Enum",
             values='{"range": ["standby","zone_clean","part_clean","cleaning","paused","goto_pos","pos_arrived","pos_unarrive","goto_charge","charging","charge_done","sleep"]}',  # noqa: E501
+        )
+    if sample == "status_and_mode_wrapper":
+        inject_dpcode(
+            mock_device,
+            "mode",
+            "chargego",
+            dptype="Enum",
+            values='{"range": ["random", "smart", "wall_follow", "chargego"]}',
         )
 
     mock_device.status.update(status_updates)
