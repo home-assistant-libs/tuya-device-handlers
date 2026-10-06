@@ -58,7 +58,7 @@ def test_inverflow_pool_pump_quirk(
 
     assert "flow_rate" in device.status_range
     assert json.loads(device.status_range["flow_rate"].values) == {
-        "unit": "gpm",
+        "unit": "gal/min",
         "min": 0,
         "max": 1000,
         "scale": 0,
