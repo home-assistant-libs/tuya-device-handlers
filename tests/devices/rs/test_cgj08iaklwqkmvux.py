@@ -10,17 +10,10 @@ from tuya_device_handlers.registry import QuirksRegistry
 def test_quirk(
     filled_quirks_registry: QuirksRegistry,
 ) -> None:
-    """Test quirk fixes temp_set's unit and remaps temp_current to WInTemp.
+    """Test quirk fixes temp_set's unit/range and remaps temp_current.
 
-    Confirmed live against the real device, not just a config-valid guess
-    (see docs/fairland-heat-pump-tuya.md in the consuming repo for the full
-    investigation). Retiring dpid 124 also drops any cached status value
-    for the "temp_current" dpcode (``_DatapointRemoval`` pops it), matching
-    what was actually observed live: current_temperature read ``None`` for
-    a few seconds right after the quirk took effect, then settled to a
-    real value once the next status push for dpid 102 arrived. The test
-    mirrors that by injecting the post-push value by hand rather than
-    having it already present in the fixture.
+    Retiring dpid 124 drops the cached "temp_current" value, so the test
+    injects the value a later status push for dpid 102 would provide.
     """
     device = create_device("rs_CGJ08iaKlWqKmVuX.json")
 
@@ -45,6 +38,8 @@ def test_quirk(
     set_wrapper = definition.set_temperature_wrapper
     assert isinstance(set_wrapper, DPCodeIntegerWrapper)
     assert set_wrapper.native_unit == "c"
+    assert set_wrapper.type_information.min == 18
+    assert set_wrapper.type_information.max == 40
     assert set_wrapper.read_device_status(device) == 31
 
     current_wrapper = definition.current_temperature_wrapper
@@ -56,3 +51,30 @@ def test_quirk(
     assert current_wrapper.read_device_status(device) is None
     device.status["temp_current"] = 18
     assert current_wrapper.read_device_status(device) == 18
+
+
+def test_fahrenheit_variant(
+    filled_quirks_registry: QuirksRegistry,
+) -> None:
+    """Test a Fahrenheit-reporting unit keeps its default unit handling."""
+    device = create_device("rs_CGJ08iaKlWqKmVuX.json")
+    device.status["temp_set"] = 88
+
+    filled_quirks_registry.initialise_device_quirk(device)
+
+    definition = get_default_definition(device, TuyaUnitOfTemperature.CELSIUS)
+    assert definition is not None
+    set_wrapper = definition.set_temperature_wrapper
+    assert isinstance(set_wrapper, DPCodeIntegerWrapper)
+    assert set_wrapper.type_information.unit == "f"
+    assert set_wrapper.type_information.min == -22
+    assert set_wrapper.type_information.max == 104
+    assert set_wrapper.read_device_status(device) == 88
+
+    # The dead dpid 124 is still replaced by WInTemp (dpid 102), with the
+    # unit taken from temp_unit_convert.
+    device.status["temp_current"] = 64
+    current_wrapper = definition.current_temperature_wrapper
+    assert isinstance(current_wrapper, DPCodeIntegerWrapper)
+    assert current_wrapper.type_information.unit == "f"
+    assert current_wrapper.read_device_status(device) == 64
