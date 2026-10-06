@@ -1,6 +1,8 @@
 """Test DeviceWrapper classes."""
 
+from datetime import UTC, datetime, timedelta
 from typing import Any
+from unittest.mock import patch
 
 import pytest
 from syrupy.assertion import SnapshotAssertion
@@ -31,10 +33,11 @@ from tuya_device_handlers.device_wrapper.sensor import (
     ElectricityVoltageHexStringWrapper,
     ElectricityVoltageJsonWrapper,
     ElectricityVoltageRawWrapper,
+    RemainingTimeTimestampWrapper,
     WindDirectionEnumWrapper,
 )
 
-from . import send_wrapper_update
+from . import inject_dpcode, send_wrapper_update
 
 
 def _snapshot_sensor(
@@ -539,3 +542,128 @@ def test_electricity_hex_string_wrappers_real_device(
         states[wrapper_type.__name__] = wrapper.read_device_status(device)
 
     assert states == snapshot
+
+
+@pytest.mark.parametrize(
+    ("unit", "remaining", "expected"),
+    [
+        ("min", 90, datetime(2024, 1, 1, 13, 30, tzinfo=UTC)),
+        ("s", 90, datetime(2024, 1, 1, 12, 1, 30, tzinfo=UTC)),
+        ("h", 2, datetime(2024, 1, 1, 14, 0, tzinfo=UTC)),
+        ("min", 0, None),
+        ("%", 90, None),
+        ("", 90, None),
+    ],
+)
+def test_remaining_time_timestamp_units(
+    mock_device: CustomerDevice,
+    unit: str,
+    remaining: int,
+    expected: datetime | None,
+) -> None:
+    """Test RemainingTimeTimestampWrapper converts the time units."""
+    dpcode = "demo_countdown_left"
+    inject_dpcode(
+        mock_device,
+        dpcode,
+        remaining,
+        dptype="Integer",
+        values=(
+            f'{{"unit": "{unit}", "min": 0, "max": 1440, '
+            '"scale": 0, "step": 1}'
+        ),
+    )
+    wrapper = RemainingTimeTimestampWrapper.find_dpcode(mock_device, dpcode)
+    assert wrapper
+    assert wrapper.native_unit is None
+
+    now = datetime(2024, 1, 1, 12, 0, tzinfo=UTC)
+    with patch(
+        "tuya_device_handlers.device_wrapper.sensor._utcnow", return_value=now
+    ):
+        assert wrapper.read_device_status(mock_device) == expected
+
+
+def test_remaining_time_timestamp_now(
+    mock_device: CustomerDevice,
+) -> None:
+    """Test RemainingTimeTimestampWrapper uses the current time."""
+    dpcode = "demo_countdown_left"
+    inject_dpcode(
+        mock_device,
+        dpcode,
+        90,
+        dptype="Integer",
+        values='{"unit": "min", "min": 0, "max": 1440, "scale": 0, "step": 1}',
+    )
+    wrapper = RemainingTimeTimestampWrapper.find_dpcode(mock_device, dpcode)
+    assert wrapper
+
+    before = datetime.now(UTC)
+    end_time = wrapper.read_device_status(mock_device)
+    after = datetime.now(UTC)
+    assert end_time is not None
+    assert (
+        before + timedelta(minutes=90)
+        <= end_time
+        <= after + timedelta(minutes=90)
+    )
+
+
+def test_remaining_time_timestamp_sensor(
+    mock_device: CustomerDevice,
+) -> None:
+    """Test RemainingTimeTimestampWrapper keeps a stable end time."""
+    dpcode = "demo_countdown_left"
+    inject_dpcode(
+        mock_device,
+        dpcode,
+        90,
+        dptype="Integer",
+        values='{"unit": "min", "min": 0, "max": 1440, "scale": 0, "step": 1}',
+    )
+    wrapper = RemainingTimeTimestampWrapper.find_dpcode(mock_device, dpcode)
+    assert wrapper
+
+    now = datetime(2024, 1, 1, 12, 0, tzinfo=UTC)
+    with patch(
+        "tuya_device_handlers.device_wrapper.sensor._utcnow"
+    ) as mock_utcnow:
+        mock_utcnow.return_value = now
+        assert wrapper.read_device_status(mock_device) == datetime(
+            2024, 1, 1, 13, 30, tzinfo=UTC
+        )
+
+        # Unrelated update: skipped
+        assert wrapper.skip_update(mock_device, ["demo_integer"])
+
+        # The device counts down, reported with some delay: the end time
+        # stays stable, and the update is skipped
+        mock_utcnow.return_value = now + timedelta(seconds=80)
+        mock_device.status[dpcode] = 89
+        assert wrapper.skip_update(mock_device, [dpcode])
+        assert wrapper.read_device_status(mock_device) == datetime(
+            2024, 1, 1, 13, 30, tzinfo=UTC
+        )
+
+        # A new countdown is set: the end time moves
+        mock_utcnow.return_value = now + timedelta(minutes=2)
+        mock_device.status[dpcode] = 240
+        assert not wrapper.skip_update(mock_device, [dpcode])
+        assert wrapper.read_device_status(mock_device) == datetime(
+            2024, 1, 1, 16, 2, tzinfo=UTC
+        )
+
+        # The countdown is cancelled
+        mock_device.status[dpcode] = 0
+        assert not wrapper.skip_update(mock_device, [dpcode])
+        assert wrapper.read_device_status(mock_device) is None
+
+        # A new countdown started shortly after does not reuse the
+        # previous end time
+        mock_utcnow.return_value = now + timedelta(minutes=2, seconds=30)
+        mock_device.status[dpcode] = 240
+        assert not wrapper.skip_update(mock_device, [dpcode])
+        assert wrapper.read_device_status(mock_device) == datetime(
+            2024, 1, 1, 16, 2, 30, tzinfo=UTC
+        )

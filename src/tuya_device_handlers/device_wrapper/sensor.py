@@ -1,11 +1,13 @@
 """Tuya device wrapper."""
 
+from datetime import UTC, datetime, timedelta
 import logging
 
 from tuya_sharing import CustomerDevice
 
 from tuya_device_handlers.raw_data_model import ElectricityData
 from tuya_device_handlers.type_information import (
+    IntegerTypeInformation,
     RawTypeInformation,
     StringTypeInformation,
 )
@@ -17,6 +19,11 @@ from .extended import (
 )
 
 _LOGGER = logging.getLogger(__name__)
+
+
+def _utcnow() -> datetime:
+    """Return the current UTC time (patched in tests)."""
+    return datetime.now(UTC)
 
 
 class WindDirectionEnumWrapper(DPCodeEnumWrapper[float]):
@@ -96,6 +103,75 @@ class DeltaIntegerWrapper(DPCodeIntegerWrapper):
     def read_device_status(self, device: CustomerDevice) -> float | None:
         """Read device status, returning accumulated value for delta reports."""
         return self._accumulated_value
+
+
+class RemainingTimeTimestampWrapper(DPCodeIntegerWrapper[datetime]):
+    """Wrapper for converting a remaining time into the time it will end.
+
+    The end time is only recalculated when the device reports a new value,
+    and variations smaller than `ignored_variance` are ignored, so that the
+    end time does not change every time the device counts down.
+    A remaining time of 0 (no countdown running) gives None.
+    """
+
+    ignored_variance = timedelta(minutes=1)
+
+    _TIME_UNITS = {"s": "seconds", "min": "minutes", "h": "hours"}
+
+    def __init__(
+        self, dpcode: str, type_information: IntegerTypeInformation
+    ) -> None:
+        """Init RemainingTimeTimestampWrapper."""
+        super().__init__(dpcode, type_information)
+        self.native_unit = None
+        self._time_unit = (
+            self._TIME_UNITS.get(type_information.unit)
+            if type_information.unit
+            else None
+        )
+        self._end_time: datetime | None = None
+        self._initialized = False
+
+    def _calculate_end_time(self, device: CustomerDevice) -> datetime | None:
+        """Calculate the end time from the remaining time reported."""
+        if (
+            self._time_unit is None
+            or (remaining := self._read_dpcode_value(device)) is None
+            or remaining <= 0
+        ):
+            return None
+        end_time = _utcnow() + timedelta(**{self._time_unit: remaining})
+        if (
+            self._end_time is not None
+            and abs(end_time - self._end_time) < self.ignored_variance
+        ):
+            return self._end_time
+        return end_time
+
+    def skip_update(
+        self,
+        device: CustomerDevice,
+        updated_status_properties: list[str],
+        dp_timestamps: dict[str, int] | None = None,
+    ) -> bool:
+        """Recalculate the end time, and skip if it did not change."""
+        if super().skip_update(
+            device, updated_status_properties, dp_timestamps
+        ):
+            return True
+        end_time = self._calculate_end_time(device)
+        if self._initialized and end_time == self._end_time:
+            return True
+        self._end_time = end_time
+        self._initialized = True
+        return False
+
+    def read_device_status(self, device: CustomerDevice) -> datetime | None:
+        """Return the end time."""
+        if not self._initialized:
+            self._end_time = self._calculate_end_time(device)
+            self._initialized = True
+        return self._end_time
 
 
 class ElectricityCurrentJsonWrapper(DPCodeJsonDictAttributeWrapper):
