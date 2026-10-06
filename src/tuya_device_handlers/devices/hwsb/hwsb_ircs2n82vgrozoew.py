@@ -58,7 +58,7 @@ from tuya_device_handlers.const import DPMode
         dpid=112,
         dpcode="flow_rate",
         dpmode=DPMode.READ,
-        unit="gpm",
+        unit="gal/min",
         min=0,
         max=1000,
         scale=0,
