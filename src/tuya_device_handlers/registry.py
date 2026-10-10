@@ -8,7 +8,7 @@ import threading
 from typing import TYPE_CHECKING, Any, ClassVar, Protocol, Self
 
 if TYPE_CHECKING:
-    from collections.abc import Iterator
+    from collections.abc import Generator
     import pathlib
 
     from tuya_sharing import CustomerDevice, DeviceFunction, DeviceStatusRange
@@ -119,7 +119,7 @@ class QuirksRegistry:
             self._builtin_quirks = dict(self._quirks)
 
     @contextmanager
-    def reloading(self) -> Iterator[None]:
+    def reloading(self) -> Generator[None]:
         """Stage a full purge-and-reload, publishing it as a single swap.
 
         Writes inside the block accumulate off to the side and become visible
