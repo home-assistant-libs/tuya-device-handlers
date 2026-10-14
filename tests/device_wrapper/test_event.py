@@ -11,7 +11,11 @@ from tuya_device_handlers.device_wrapper.common import (
 from tuya_device_handlers.device_wrapper.event import (
     Base64Utf8RawEventWrapper,
     Base64Utf8StringEventWrapper,
+    BooleanTriggerEventWrapper,
+    DoorbellRingEventWrapper,
+    IntegerUserIdEventWrapper,
     SimpleEventEnumWrapper,
+    UnlockUserIdEventWrapper,
 )
 
 
@@ -42,6 +46,30 @@ from tuya_device_handlers.device_wrapper.event import (
             "scene",
             ("scene", None),
         ),
+        (
+            BooleanTriggerEventWrapper,
+            "demo_boolean",
+            True,
+            ("triggered", None),
+        ),
+        (
+            DoorbellRingEventWrapper,
+            "demo_boolean",
+            True,
+            ("ring", None),
+        ),
+        (
+            IntegerUserIdEventWrapper,
+            "demo_integer",
+            3,
+            ("triggered", {"user_id": 3}),
+        ),
+        (
+            UnlockUserIdEventWrapper,
+            "demo_integer",
+            13,
+            ("unlocked", {"user_id": 13}),
+        ),
     ],
 )
 def test_read_device_status(
@@ -65,3 +93,45 @@ def test_read_device_status(
     # All wrappers return None if status is missing
     mock_device.status.pop(dpcode)
     assert wrapper.read_device_status(mock_device) is None
+
+
+@pytest.mark.parametrize(
+    ("wrapper_type", "expected_options"),
+    [
+        (BooleanTriggerEventWrapper, ["triggered"]),
+        (DoorbellRingEventWrapper, ["ring"]),
+    ],
+)
+def test_boolean_trigger_event(
+    wrapper_type: type[BooleanTriggerEventWrapper],
+    expected_options: list[str],
+    mock_device: CustomerDevice,
+) -> None:
+    """Test boolean trigger wrappers ignore false and expose their options."""
+    wrapper = wrapper_type.find_dpcode(mock_device, "demo_boolean")
+
+    assert wrapper
+    assert wrapper.options == expected_options
+
+    # A false report is not an event
+    mock_device.status["demo_boolean"] = False
+    assert wrapper.read_device_status(mock_device) is None
+
+
+@pytest.mark.parametrize(
+    ("wrapper_type", "expected_options"),
+    [
+        (IntegerUserIdEventWrapper, ["triggered"]),
+        (UnlockUserIdEventWrapper, ["unlocked"]),
+    ],
+)
+def test_integer_user_id_event_options(
+    wrapper_type: type[IntegerUserIdEventWrapper],
+    expected_options: list[str],
+    mock_device: CustomerDevice,
+) -> None:
+    """Test integer user id wrappers expose their options."""
+    wrapper = wrapper_type.find_dpcode(mock_device, "demo_integer")
+
+    assert wrapper
+    assert wrapper.options == expected_options
