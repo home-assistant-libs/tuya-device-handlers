@@ -1,0 +1,117 @@
+{
+  "endpoint": "https://apigw.tuyaeu.com",
+  "mqtt_connected": true,
+  "disabled_by": null,
+  "disabled_polling": false,
+  "name": "Inverter Pool Heat Pump",
+  "category": "rs",
+  "product_id": "CGJ08iaKlWqKmVuX",
+  "product_name": "Inverter Pool Heat Pump",
+  "online": true,
+  "sub": false,
+  "time_zone": "+02:00",
+  "active_time": "2026-10-01T15:47:10+00:00",
+  "create_time": "2026-10-01T15:47:10+00:00",
+  "update_time": "2026-10-01T15:47:10+00:00",
+  "function": {
+    "switch": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "temp_unit_convert": {
+      "type": "Enum",
+      "value": "{\"range\":[\"c\",\"f\"]}"
+    },
+    "temp_set": {
+      "type": "Integer",
+      "value": "{\"unit\":\"\",\"min\":-22,\"max\":104,\"scale\":0,\"step\":1}"
+    }
+  },
+  "local_strategy": {
+    "1": {
+      "value_convert": "default",
+      "status_code": "switch",
+      "config_item": {
+        "statusFormat": "{\"switch\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "CGJ08iaKlWqKmVuX"
+      }
+    },
+    "103": {
+      "value_convert": "enum",
+      "status_code": "temp_unit_convert",
+      "config_item": {
+        "statusFormat": "{\"temp_unit_convert\":\"$\"}",
+        "valueDesc": "{\"range\":[\"c\",\"f\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {
+          "false": {
+            "code": "temp_unit_convert",
+            "value": "c"
+          },
+          "true": {
+            "code": "temp_unit_convert",
+            "value": "f"
+          }
+        },
+        "pid": "CGJ08iaKlWqKmVuX"
+      }
+    },
+    "106": {
+      "value_convert": "default",
+      "status_code": "temp_set",
+      "config_item": {
+        "statusFormat": "{\"temp_set\":\"$\"}",
+        "valueDesc": "{\"unit\":\"\",\"min\":-22,\"max\":104,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "CGJ08iaKlWqKmVuX"
+      }
+    },
+    "124": {
+      "value_convert": "default",
+      "status_code": "temp_current",
+      "config_item": {
+        "statusFormat": "{\"temp_current\":\"$\"}",
+        "valueDesc": "{\"unit\":\"\",\"min\":-22,\"max\":250,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "CGJ08iaKlWqKmVuX"
+      }
+    }
+  },
+  "status_range": {
+    "switch": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "temp_unit_convert": {
+      "type": "Enum",
+      "value": "{\"range\":[\"c\",\"f\"]}",
+      "report_type": null
+    },
+    "temp_set": {
+      "type": "Integer",
+      "value": "{\"unit\":\"\",\"min\":-22,\"max\":104,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "temp_current": {
+      "type": "Integer",
+      "value": "{\"unit\":\"\",\"min\":-22,\"max\":250,\"scale\":0,\"step\":1}",
+      "report_type": null
+    }
+  },
+  "status": {
+    "switch": false,
+    "temp_unit_convert": "f",
+    "temp_set": 31,
+    "temp_current": -22
+  },
+  "set_up": true,
+  "support_local": true,
+  "quirk": null,
+  "warnings": null
+}
