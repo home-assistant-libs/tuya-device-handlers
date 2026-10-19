@@ -32,7 +32,7 @@ dev = [
     # Imported by tuya-device-sharing-sdk but not declared as a dependency
     "cryptography==50.0.2",
     "pre-commit-hooks==6.0.0",
-    "prek==0.5.5",
+    "prek==0.5.6",
     "pylint==4.1.3",
     "pytest==9.1.1",
     "pytest-asyncio==1.4.0",
