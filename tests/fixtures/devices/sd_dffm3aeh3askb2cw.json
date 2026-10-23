@@ -1,0 +1,1250 @@
+{
+	"endpoint": "https://apigw.tuyaeu.com",
+	"terminal_id": "1785998131364KXXact",
+	"mqtt_connected": true,
+	"disabled_by": null,
+	"disabled_polling": false,
+	"id": "bf8b8157c313223fb5jfje",
+	"name": "ABIR K30",
+	"category": "sd",
+	"product_id": "dffm3aeh3askb2cw",
+	"product_name": "ABIR K30",
+	"online": true,
+	"sub": false,
+	"time_zone": "+02:00",
+	"active_time": "2026-05-17T08:37:59+00:00",
+	"create_time": "2026-05-17T08:37:59+00:00",
+	"update_time": "2026-05-17T08:37:59+00:00",
+	"function": {
+	  "power_go": {
+		"type": "Boolean",
+		"value": "{}"
+	  },
+	  "pause": {
+		"type": "Boolean",
+		"value": "{}"
+	  },
+	  "switch_charge": {
+		"type": "Boolean",
+		"value": "{}"
+	  },
+	  "mode": {
+		"type": "Enum",
+		"value": "{\"range\":[\"smart\",\"zone\",\"pose\",\"part\"]}"
+	  },
+	  "suction": {
+		"type": "Enum",
+		"value": "{\"range\":[\"gentle\",\"normal\",\"strong\"]}"
+	  },
+	  "cistern": {
+		"type": "Enum",
+		"value": "{\"range\":[\"low\",\"middle\",\"high\"]}"
+	  },
+	  "seek": {
+		"type": "Boolean",
+		"value": "{}"
+	  },
+	  "direction_control": {
+		"type": "Enum",
+		"value": "{\"range\":[\"forward\",\"backward\",\"turn_left\",\"turn_right\",\"stop\"]}"
+	  },
+	  "reset_map": {
+		"type": "Boolean",
+		"value": "{}"
+	  },
+	  "path_data": {
+		"type": "Raw",
+		"value": "{}"
+	  },
+	  "command_trans": {
+		"type": "Raw",
+		"value": "{}"
+	  },
+	  "request": {
+		"type": "Enum",
+		"value": "{\"range\":[\"get_map\",\"get_path\",\"get_both\"]}"
+	  },
+	  "reset_edge_brush": {
+		"type": "Boolean",
+		"value": "{}"
+	  },
+	  "reset_roll_brush": {
+		"type": "Boolean",
+		"value": "{}"
+	  },
+	  "reset_filter": {
+		"type": "Boolean",
+		"value": "{}"
+	  },
+	  "reset_duster_cloth": {
+		"type": "Boolean",
+		"value": "{}"
+	  },
+	  "switch_disturb": {
+		"type": "Boolean",
+		"value": "{}"
+	  },
+	  "volume_set": {
+		"type": "Integer",
+		"value": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}"
+	  },
+	  "break_clean": {
+		"type": "Boolean",
+		"value": "{}"
+	  },
+	  "device_timer": {
+		"type": "Raw",
+		"value": "{}"
+	  },
+	  "disturb_time_set": {
+		"type": "Raw",
+		"value": "{}"
+	  },
+	  "voice_data": {
+		"type": "Raw",
+		"value": "{}"
+	  },
+	  "language": {
+		"type": "Enum",
+		"value": "{\"range\":[\"chinese_simplified\",\"chinese_traditional\",\"english\",\"german\",\"french\",\"russian\",\"spanish\",\"korean\",\"latin\",\"portuguese\",\"japanese\",\"italian\"]}"
+	  },
+	  "dust_collection_num": {
+		"type": "Integer",
+		"value": "{\"min\":0,\"max\":4,\"scale\":0,\"step\":1}"
+	  },
+	  "dust_collection_switch": {
+		"type": "Boolean",
+		"value": "{}"
+	  },
+	  "customize_mode_switch": {
+		"type": "Boolean",
+		"value": "{}"
+	  }
+	},
+	"local_strategy": {
+	  "1": {
+		"value_convert": "default",
+		"status_code": "power_go",
+		"config_item": {
+		  "statusFormat": "{\"power_go\":\"$\"}",
+		  "valueDesc": "{}",
+		  "valueType": "Boolean",
+		  "enumMappingMap": {},
+		  "pid": "dffm3aeh3askb2cw"
+		}
+	  },
+	  "2": {
+		"value_convert": "default",
+		"status_code": "pause",
+		"config_item": {
+		  "statusFormat": "{\"pause\":\"$\"}",
+		  "valueDesc": "{}",
+		  "valueType": "Boolean",
+		  "enumMappingMap": {},
+		  "pid": "dffm3aeh3askb2cw"
+		}
+	  },
+	  "3": {
+		"value_convert": "default",
+		"status_code": "switch_charge",
+		"config_item": {
+		  "statusFormat": "{\"switch_charge\":\"$\"}",
+		  "valueDesc": "{}",
+		  "valueType": "Boolean",
+		  "enumMappingMap": {},
+		  "pid": "dffm3aeh3askb2cw"
+		}
+	  },
+	  "4": {
+		"value_convert": "default",
+		"status_code": "mode",
+		"config_item": {
+		  "statusFormat": "{\"mode\":\"$\"}",
+		  "valueDesc": "{\"range\":[\"smart\",\"zone\",\"pose\",\"part\"]}",
+		  "valueType": "Enum",
+		  "enumMappingMap": {},
+		  "pid": "dffm3aeh3askb2cw"
+		}
+	  },
+	  "5": {
+		"value_convert": "default",
+		"status_code": "status",
+		"config_item": {
+		  "statusFormat": "{\"status\":\"$\"}",
+		  "valueDesc": "{\"range\":[\"standby\",\"zone_clean\",\"part_clean\",\"cleaning\",\"paused\",\"goto_pos\",\"pos_arrived\",\"pos_unarrive\",\"goto_charge\",\"charging\",\"charge_done\",\"sleep\"]}",
+		  "valueType": "Enum",
+		  "enumMappingMap": {},
+		  "pid": "dffm3aeh3askb2cw"
+		}
+	  },
+	  "6": {
+		"value_convert": "default",
+		"status_code": "clean_time",
+		"config_item": {
+		  "statusFormat": "{\"clean_time\":\"$\"}",
+		  "valueDesc": "{\"unit\":\"min\",\"min\":0,\"max\":9999,\"scale\":0,\"step\":1}",
+		  "valueType": "Integer",
+		  "enumMappingMap": {},
+		  "pid": "dffm3aeh3askb2cw"
+		}
+	  },
+	  "7": {
+		"value_convert": "default",
+		"status_code": "clean_area",
+		"config_item": {
+		  "statusFormat": "{\"clean_area\":\"$\"}",
+		  "valueDesc": "{\"unit\":\"\u33a1\",\"min\":0,\"max\":9999,\"scale\":0,\"step\":1}",
+		  "valueType": "Integer",
+		  "enumMappingMap": {},
+		  "pid": "dffm3aeh3askb2cw"
+		}
+	  },
+	  "8": {
+		"value_convert": "default",
+		"status_code": "electricity_left",
+		"config_item": {
+		  "statusFormat": "{\"electricity_left\":\"$\"}",
+		  "valueDesc": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+		  "valueType": "Integer",
+		  "enumMappingMap": {},
+		  "pid": "dffm3aeh3askb2cw"
+		}
+	  },
+	  "9": {
+		"value_convert": "default",
+		"status_code": "suction",
+		"config_item": {
+		  "statusFormat": "{\"suction\":\"$\"}",
+		  "valueDesc": "{\"range\":[\"closed\",\"gentle\",\"normal\",\"strong\"]}",
+		  "valueType": "Enum",
+		  "enumMappingMap": {},
+		  "pid": "dffm3aeh3askb2cw"
+		}
+	  },
+	  "10": {
+		"value_convert": "default",
+		"status_code": "cistern",
+		"config_item": {
+		  "statusFormat": "{\"cistern\":\"$\"}",
+		  "valueDesc": "{\"range\":[\"closed\",\"low\",\"middle\",\"high\"]}",
+		  "valueType": "Enum",
+		  "enumMappingMap": {},
+		  "pid": "dffm3aeh3askb2cw"
+		}
+	  },
+	  "11": {
+		"value_convert": "default",
+		"status_code": "seek",
+		"config_item": {
+		  "statusFormat": "{\"seek\":\"$\"}",
+		  "valueDesc": "{}",
+		  "valueType": "Boolean",
+		  "enumMappingMap": {},
+		  "pid": "dffm3aeh3askb2cw"
+		}
+	  },
+	  "12": {
+		"value_convert": "default",
+		"status_code": "direction_control",
+		"config_item": {
+		  "statusFormat": "{\"direction_control\":\"$\"}",
+		  "valueDesc": "{\"range\":[\"forward\",\"backward\",\"turn_left\",\"turn_right\",\"stop\"]}",
+		  "valueType": "Enum",
+		  "enumMappingMap": {},
+		  "pid": "dffm3aeh3askb2cw"
+		}
+	  },
+	  "13": {
+		"value_convert": "default",
+		"status_code": "reset_map",
+		"config_item": {
+		  "statusFormat": "{\"reset_map\":\"$\"}",
+		  "valueDesc": "{}",
+		  "valueType": "Boolean",
+		  "enumMappingMap": {},
+		  "pid": "dffm3aeh3askb2cw"
+		}
+	  },
+	  "14": {
+		"value_convert": "default",
+		"status_code": "path_data",
+		"config_item": {
+		  "statusFormat": "{\"path_data\":\"$\"}",
+		  "valueDesc": "{}",
+		  "valueType": "Raw",
+		  "enumMappingMap": {},
+		  "pid": "dffm3aeh3askb2cw"
+		}
+	  },
+	  "15": {
+		"value_convert": "default",
+		"status_code": "command_trans",
+		"config_item": {
+		  "statusFormat": "{\"command_trans\":\"$\"}",
+		  "valueDesc": "{}",
+		  "valueType": "Raw",
+		  "enumMappingMap": {},
+		  "pid": "dffm3aeh3askb2cw"
+		}
+	  },
+	  "16": {
+		"value_convert": "default",
+		"status_code": "request",
+		"config_item": {
+		  "statusFormat": "{\"request\":\"$\"}",
+		  "valueDesc": "{\"range\":[\"get_map\",\"get_path\",\"get_both\"]}",
+		  "valueType": "Enum",
+		  "enumMappingMap": {},
+		  "pid": "dffm3aeh3askb2cw"
+		}
+	  },
+	  "17": {
+		"value_convert": "default",
+		"status_code": "edge_brush",
+		"config_item": {
+		  "statusFormat": "{\"edge_brush\":\"$\"}",
+		  "valueDesc": "{\"unit\":\"hour\",\"min\":0,\"max\":150,\"scale\":0,\"step\":1}",
+		  "valueType": "Integer",
+		  "enumMappingMap": {},
+		  "pid": "dffm3aeh3askb2cw"
+		}
+	  },
+	  "18": {
+		"value_convert": "default",
+		"status_code": "reset_edge_brush",
+		"config_item": {
+		  "statusFormat": "{\"reset_edge_brush\":\"$\"}",
+		  "valueDesc": "{}",
+		  "valueType": "Boolean",
+		  "enumMappingMap": {},
+		  "pid": "dffm3aeh3askb2cw"
+		}
+	  },
+	  "19": {
+		"value_convert": "default",
+		"status_code": "roll_brush",
+		"config_item": {
+		  "statusFormat": "{\"roll_brush\":\"$\"}",
+		  "valueDesc": "{\"unit\":\"hour\",\"min\":0,\"max\":300,\"scale\":0,\"step\":1}",
+		  "valueType": "Integer",
+		  "enumMappingMap": {},
+		  "pid": "dffm3aeh3askb2cw"
+		}
+	  },
+	  "20": {
+		"value_convert": "default",
+		"status_code": "reset_roll_brush",
+		"config_item": {
+		  "statusFormat": "{\"reset_roll_brush\":\"$\"}",
+		  "valueDesc": "{}",
+		  "valueType": "Boolean",
+		  "enumMappingMap": {},
+		  "pid": "dffm3aeh3askb2cw"
+		}
+	  },
+	  "21": {
+		"value_convert": "default",
+		"status_code": "filter",
+		"config_item": {
+		  "statusFormat": "{\"filter\":\"$\"}",
+		  "valueDesc": "{\"unit\":\"hour\",\"min\":0,\"max\":150,\"scale\":0,\"step\":1}",
+		  "valueType": "Integer",
+		  "enumMappingMap": {},
+		  "pid": "dffm3aeh3askb2cw"
+		}
+	  },
+	  "22": {
+		"value_convert": "default",
+		"status_code": "reset_filter",
+		"config_item": {
+		  "statusFormat": "{\"reset_filter\":\"$\"}",
+		  "valueDesc": "{}",
+		  "valueType": "Boolean",
+		  "enumMappingMap": {},
+		  "pid": "dffm3aeh3askb2cw"
+		}
+	  },
+	  "23": {
+		"value_convert": "default",
+		"status_code": "duster_cloth",
+		"config_item": {
+		  "statusFormat": "{\"duster_cloth\":\"$\"}",
+		  "valueDesc": "{\"unit\":\"hour\",\"min\":0,\"max\":150,\"scale\":0,\"step\":1}",
+		  "valueType": "Integer",
+		  "enumMappingMap": {},
+		  "pid": "dffm3aeh3askb2cw"
+		}
+	  },
+	  "24": {
+		"value_convert": "default",
+		"status_code": "reset_duster_cloth",
+		"config_item": {
+		  "statusFormat": "{\"reset_duster_cloth\":\"$\"}",
+		  "valueDesc": "{}",
+		  "valueType": "Boolean",
+		  "enumMappingMap": {},
+		  "pid": "dffm3aeh3askb2cw"
+		}
+	  },
+	  "25": {
+		"value_convert": "default",
+		"status_code": "switch_disturb",
+		"config_item": {
+		  "statusFormat": "{\"switch_disturb\":\"$\"}",
+		  "valueDesc": "{}",
+		  "valueType": "Boolean",
+		  "enumMappingMap": {},
+		  "pid": "dffm3aeh3askb2cw"
+		}
+	  },
+	  "26": {
+		"value_convert": "default",
+		"status_code": "volume_set",
+		"config_item": {
+		  "statusFormat": "{\"volume_set\":\"$\"}",
+		  "valueDesc": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+		  "valueType": "Integer",
+		  "enumMappingMap": {},
+		  "pid": "dffm3aeh3askb2cw"
+		}
+	  },
+	  "27": {
+		"value_convert": "default",
+		"status_code": "break_clean",
+		"config_item": {
+		  "statusFormat": "{\"break_clean\":\"$\"}",
+		  "valueDesc": "{}",
+		  "valueType": "Boolean",
+		  "enumMappingMap": {},
+		  "pid": "dffm3aeh3askb2cw"
+		}
+	  },
+	  "28": {
+		"value_convert": "default",
+		"status_code": "fault",
+		"config_item": {
+		  "statusFormat": "{\"fault\":\"$\"}",
+		  "valueDesc": "{\"label\":[\"edge_sweep\",\"middle_sweep\",\"left_wheel\",\"right_wheel\",\"garbage_box\",\"land_check\",\"collision\",\"e1\",\"e2\",\"e3\",\"e4\",\"e5\",\"e6\",\"e7\",\"e8\",\"e9\",\"e10\",\"e11\",\"e12\",\"e13\",\"e14\",\"e15\",\"e16\",\"e17\",\"e18\",\"e19\",\"e20\",\"e21\",\"e22\",\"e23\"]}",
+		  "valueType": "Bitmap",
+		  "enumMappingMap": {},
+		  "pid": "dffm3aeh3askb2cw"
+		}
+	  },
+	  "29": {
+		"value_convert": "default",
+		"status_code": "total_clean_area",
+		"config_item": {
+		  "statusFormat": "{\"total_clean_area\":\"$\"}",
+		  "valueDesc": "{\"unit\":\"\u33a1\",\"min\":0,\"max\":99999,\"scale\":0,\"step\":1}",
+		  "valueType": "Integer",
+		  "enumMappingMap": {},
+		  "pid": "dffm3aeh3askb2cw"
+		}
+	  },
+	  "30": {
+		"value_convert": "default",
+		"status_code": "total_clean_count",
+		"config_item": {
+		  "statusFormat": "{\"total_clean_count\":\"$\"}",
+		  "valueDesc": "{\"min\":0,\"max\":99999,\"scale\":0,\"step\":1}",
+		  "valueType": "Integer",
+		  "enumMappingMap": {},
+		  "pid": "dffm3aeh3askb2cw"
+		}
+	  },
+	  "31": {
+		"value_convert": "default",
+		"status_code": "total_clean_time",
+		"config_item": {
+		  "statusFormat": "{\"total_clean_time\":\"$\"}",
+		  "valueDesc": "{\"unit\":\"min\",\"min\":0,\"max\":99999,\"scale\":0,\"step\":1}",
+		  "valueType": "Integer",
+		  "enumMappingMap": {},
+		  "pid": "dffm3aeh3askb2cw"
+		}
+	  },
+	  "32": {
+		"value_convert": "default",
+		"status_code": "device_timer",
+		"config_item": {
+		  "statusFormat": "{\"device_timer\":\"$\"}",
+		  "valueDesc": "{}",
+		  "valueType": "Raw",
+		  "enumMappingMap": {},
+		  "pid": "dffm3aeh3askb2cw"
+		}
+	  },
+	  "33": {
+		"value_convert": "default",
+		"status_code": "disturb_time_set",
+		"config_item": {
+		  "statusFormat": "{\"disturb_time_set\":\"$\"}",
+		  "valueDesc": "{}",
+		  "valueType": "Raw",
+		  "enumMappingMap": {},
+		  "pid": "dffm3aeh3askb2cw"
+		}
+	  },
+	  "34": {
+		"value_convert": "default",
+		"status_code": "device_info",
+		"config_item": {
+		  "statusFormat": "{\"device_info\":\"$\"}",
+		  "valueDesc": "{}",
+		  "valueType": "Raw",
+		  "enumMappingMap": {},
+		  "pid": "dffm3aeh3askb2cw"
+		}
+	  },
+	  "35": {
+		"value_convert": "default",
+		"status_code": "voice_data",
+		"config_item": {
+		  "statusFormat": "{\"voice_data\":\"$\"}",
+		  "valueDesc": "{}",
+		  "valueType": "Raw",
+		  "enumMappingMap": {},
+		  "pid": "dffm3aeh3askb2cw"
+		}
+	  },
+	  "36": {
+		"value_convert": "default",
+		"status_code": "language",
+		"config_item": {
+		  "statusFormat": "{\"language\":\"$\"}",
+		  "valueDesc": "{\"range\":[\"chinese_simplified\",\"chinese_traditional\",\"english\",\"german\",\"french\",\"russian\",\"spanish\",\"korean\",\"latin\",\"portuguese\",\"japanese\",\"italian\"]}",
+		  "valueType": "Enum",
+		  "enumMappingMap": {},
+		  "pid": "dffm3aeh3askb2cw"
+		}
+	  },
+	  "37": {
+		"value_convert": "default",
+		"status_code": "dust_collection_num",
+		"config_item": {
+		  "statusFormat": "{\"dust_collection_num\":\"$\"}",
+		  "valueDesc": "{\"min\":0,\"max\":4,\"scale\":0,\"step\":1}",
+		  "valueType": "Integer",
+		  "enumMappingMap": {},
+		  "pid": "dffm3aeh3askb2cw"
+		}
+	  },
+	  "38": {
+		"value_convert": "default",
+		"status_code": "dust_collection_switch",
+		"config_item": {
+		  "statusFormat": "{\"dust_collection_switch\":\"$\"}",
+		  "valueDesc": "{}",
+		  "valueType": "Boolean",
+		  "enumMappingMap": {},
+		  "pid": "dffm3aeh3askb2cw"
+		}
+	  },
+	  "39": {
+		"value_convert": "default",
+		"status_code": "customize_mode_switch",
+		"config_item": {
+		  "statusFormat": "{\"customize_mode_switch\":\"$\"}",
+		  "valueDesc": "{}",
+		  "valueType": "Boolean",
+		  "enumMappingMap": {},
+		  "pid": "dffm3aeh3askb2cw"
+		}
+	  }
+	},
+	"status_range": {
+	  "power_go": {
+		"type": "Boolean",
+		"value": "{}",
+		"report_type": null
+	  },
+	  "pause": {
+		"type": "Boolean",
+		"value": "{}",
+		"report_type": null
+	  },
+	  "switch_charge": {
+		"type": "Boolean",
+		"value": "{}",
+		"report_type": null
+	  },
+	  "mode": {
+		"type": "Enum",
+		"value": "{\"range\":[\"smart\",\"zone\",\"pose\",\"part\"]}",
+		"report_type": null
+	  },
+	  "status": {
+		"type": "Enum",
+		"value": "{\"range\":[\"standby\",\"zone_clean\",\"part_clean\",\"cleaning\",\"paused\",\"goto_pos\",\"pos_arrived\",\"pos_unarrive\",\"goto_charge\",\"charging\",\"charge_done\",\"sleep\"]}",
+		"report_type": null
+	  },
+	  "clean_time": {
+		"type": "Integer",
+		"value": "{\"unit\":\"min\",\"min\":0,\"max\":9999,\"scale\":0,\"step\":1}",
+		"report_type": null
+	  },
+	  "clean_area": {
+		"type": "Integer",
+		"value": "{\"unit\":\"\u33a1\",\"min\":0,\"max\":9999,\"scale\":0,\"step\":1}",
+		"report_type": null
+	  },
+	  "electricity_left": {
+		"type": "Integer",
+		"value": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+		"report_type": null
+	  },
+	  "suction": {
+		"type": "Enum",
+		"value": "{\"range\":[\"closed\",\"gentle\",\"normal\",\"strong\"]}",
+		"report_type": null
+	  },
+	  "cistern": {
+		"type": "Enum",
+		"value": "{\"range\":[\"closed\",\"low\",\"middle\",\"high\"]}",
+		"report_type": null
+	  },
+	  "seek": {
+		"type": "Boolean",
+		"value": "{}",
+		"report_type": null
+	  },
+	  "direction_control": {
+		"type": "Enum",
+		"value": "{\"range\":[\"forward\",\"backward\",\"turn_left\",\"turn_right\",\"stop\"]}",
+		"report_type": null
+	  },
+	  "reset_map": {
+		"type": "Boolean",
+		"value": "{}",
+		"report_type": null
+	  },
+	  "path_data": {
+		"type": "Raw",
+		"value": "{}",
+		"report_type": null
+	  },
+	  "command_trans": {
+		"type": "Raw",
+		"value": "{}",
+		"report_type": null
+	  },
+	  "request": {
+		"type": "Enum",
+		"value": "{\"range\":[\"get_map\",\"get_path\",\"get_both\"]}",
+		"report_type": null
+	  },
+	  "edge_brush": {
+		"type": "Integer",
+		"value": "{\"unit\":\"hour\",\"min\":0,\"max\":150,\"scale\":0,\"step\":1}",
+		"report_type": null
+	  },
+	  "reset_edge_brush": {
+		"type": "Boolean",
+		"value": "{}",
+		"report_type": null
+	  },
+	  "roll_brush": {
+		"type": "Integer",
+		"value": "{\"unit\":\"hour\",\"min\":0,\"max\":300,\"scale\":0,\"step\":1}",
+		"report_type": null
+	  },
+	  "reset_roll_brush": {
+		"type": "Boolean",
+		"value": "{}",
+		"report_type": null
+	  },
+	  "filter": {
+		"type": "Integer",
+		"value": "{\"unit\":\"hour\",\"min\":0,\"max\":150,\"scale\":0,\"step\":1}",
+		"report_type": null
+	  },
+	  "reset_filter": {
+		"type": "Boolean",
+		"value": "{}",
+		"report_type": null
+	  },
+	  "duster_cloth": {
+		"type": "Integer",
+		"value": "{\"unit\":\"hour\",\"min\":0,\"max\":150,\"scale\":0,\"step\":1}",
+		"report_type": null
+	  },
+	  "reset_duster_cloth": {
+		"type": "Boolean",
+		"value": "{}",
+		"report_type": null
+	  },
+	  "switch_disturb": {
+		"type": "Boolean",
+		"value": "{}",
+		"report_type": null
+	  },
+	  "volume_set": {
+		"type": "Integer",
+		"value": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+		"report_type": null
+	  },
+	  "break_clean": {
+		"type": "Boolean",
+		"value": "{}",
+		"report_type": null
+	  },
+	  "fault": {
+		"type": "Bitmap",
+		"value": "{\"label\":[\"edge_sweep\",\"middle_sweep\",\"left_wheel\",\"right_wheel\",\"garbage_box\",\"land_check\",\"collision\",\"e1\",\"e2\",\"e3\",\"e4\",\"e5\",\"e6\",\"e7\",\"e8\",\"e9\",\"e10\",\"e11\",\"e12\",\"e13\",\"e14\",\"e15\",\"e16\",\"e17\",\"e18\",\"e19\",\"e20\",\"e21\",\"e22\",\"e23\"]}",
+		"report_type": null
+	  },
+	  "total_clean_area": {
+		"type": "Integer",
+		"value": "{\"unit\":\"\u33a1\",\"min\":0,\"max\":99999,\"scale\":0,\"step\":1}",
+		"report_type": null
+	  },
+	  "total_clean_count": {
+		"type": "Integer",
+		"value": "{\"min\":0,\"max\":99999,\"scale\":0,\"step\":1}",
+		"report_type": null
+	  },
+	  "total_clean_time": {
+		"type": "Integer",
+		"value": "{\"unit\":\"min\",\"min\":0,\"max\":99999,\"scale\":0,\"step\":1}",
+		"report_type": null
+	  },
+	  "device_timer": {
+		"type": "Raw",
+		"value": "{}",
+		"report_type": null
+	  },
+	  "disturb_time_set": {
+		"type": "Raw",
+		"value": "{}",
+		"report_type": null
+	  },
+	  "device_info": {
+		"type": "Raw",
+		"value": "{}",
+		"report_type": null
+	  },
+	  "voice_data": {
+		"type": "Raw",
+		"value": "{}",
+		"report_type": null
+	  },
+	  "language": {
+		"type": "Enum",
+		"value": "{\"range\":[\"chinese_simplified\",\"chinese_traditional\",\"english\",\"german\",\"french\",\"russian\",\"spanish\",\"korean\",\"latin\",\"portuguese\",\"japanese\",\"italian\"]}",
+		"report_type": null
+	  },
+	  "dust_collection_num": {
+		"type": "Integer",
+		"value": "{\"min\":0,\"max\":4,\"scale\":0,\"step\":1}",
+		"report_type": null
+	  },
+	  "dust_collection_switch": {
+		"type": "Boolean",
+		"value": "{}",
+		"report_type": null
+	  },
+	  "customize_mode_switch": {
+		"type": "Boolean",
+		"value": "{}",
+		"report_type": null
+	  }
+	},
+	"status": {
+	  "power_go": false,
+	  "pause": false,
+	  "switch_charge": false,
+	  "mode": "goto_charge",
+	  "status": "charge_done",
+	  "clean_time": 75,
+	  "clean_area": 56,
+	  "electricity_left": 100,
+	  "suction": "gentle",
+	  "cistern": "middle",
+	  "seek": false,
+	  "direction_control": "forward",
+	  "reset_map": false,
+	  "path_data": "",
+	  "command_trans": "qgADFQEAFqoAARcXqgADKQEAKg==",
+	  "request": "get_map",
+	  "edge_brush": 0,
+	  "reset_edge_brush": false,
+	  "roll_brush": 105,
+	  "reset_roll_brush": false,
+	  "filter": 0,
+	  "reset_filter": false,
+	  "duster_cloth": 150,
+	  "reset_duster_cloth": false,
+	  "switch_disturb": false,
+	  "volume_set": 84,
+	  "break_clean": false,
+	  "fault": 4194304,
+	  "total_clean_area": 9119,
+	  "total_clean_count": 178,
+	  "total_clean_time": 11655,
+	  "device_timer": "qgAVMQICAR8KAAAAAgABAX8XAAAAAgAB/A==",
+	  "disturb_time_set": "qgAIMwIWAAAIAAFU",
+	  "device_info": "eyJXaUZpX05hbWUiOiJncm9iZWxuaWsgMi4wIiwiUlNTSSI6NjcsIklQIjoiMTkyLjE2OC42OC4xMDEiLCJNYWMiOiJBNDZCNDBGNUE3QkYiLCJNQ1VfVmVyc2lvbiI6IjEuMS43OCIsIkZpcm13YXJlX1ZlcnNpb24iOiIyLjYuOTgiLCJEZXZpY2VfU04iOiJkZmZtM2FlaDNhc2tiMmN3IiwiTW9kdWxlX1VVSUQiOiJ1dWlkM2QyMGZjZjc3MDgwYWM0NiJ9",
+	  "voice_data": "qwAAAAAHNQAAAAIDZJ4=",
+	  "language": "chinese_simplified",
+	  "dust_collection_num": 1,
+	  "dust_collection_switch": false,
+	  "customize_mode_switch": false
+	},
+	"set_up": true,
+	"support_local": true,
+	"quirk": null,
+	"warnings": [
+	  "enum_out_range|mode|goto_charge"
+	],
+	"home_assistant": {
+	  "name": "ABIR K30",
+	  "name_by_user": null,
+	  "disabled": false,
+	  "disabled_by": null,
+	  "entities": [
+		{
+		  "disabled": false,
+		  "disabled_by": null,
+		  "entity_category": "config",
+		  "device_class": null,
+		  "original_device_class": null,
+		  "icon": null,
+		  "original_icon": null,
+		  "unit_of_measurement": null,
+		  "state": {
+			"entity_id": "button.abir_k30_reset_duster_cloth",
+			"state": "unknown",
+			"attributes": {
+			  "friendly_name": "ABIR K30 Reset duster cloth"
+			},
+			"last_changed": "2026-10-07T16:16:06.781273+00:00",
+			"last_reported": "2026-10-07T16:16:06.781273+00:00",
+			"last_updated": "2026-10-07T16:16:06.781273+00:00"
+		  }
+		},
+		{
+		  "disabled": false,
+		  "disabled_by": null,
+		  "entity_category": "config",
+		  "device_class": null,
+		  "original_device_class": null,
+		  "icon": null,
+		  "original_icon": null,
+		  "unit_of_measurement": null,
+		  "state": {
+			"entity_id": "button.abir_k30_reset_edge_brush",
+			"state": "unknown",
+			"attributes": {
+			  "friendly_name": "ABIR K30 Reset edge brush"
+			},
+			"last_changed": "2026-10-07T16:16:06.782794+00:00",
+			"last_reported": "2026-10-07T16:16:06.782794+00:00",
+			"last_updated": "2026-10-07T16:16:06.782794+00:00"
+		  }
+		},
+		{
+		  "disabled": false,
+		  "disabled_by": null,
+		  "entity_category": "config",
+		  "device_class": null,
+		  "original_device_class": null,
+		  "icon": null,
+		  "original_icon": null,
+		  "unit_of_measurement": null,
+		  "state": {
+			"entity_id": "button.abir_k30_reset_filter",
+			"state": "unknown",
+			"attributes": {
+			  "friendly_name": "ABIR K30 Reset filter"
+			},
+			"last_changed": "2026-10-07T16:16:06.783769+00:00",
+			"last_reported": "2026-10-07T16:16:06.783769+00:00",
+			"last_updated": "2026-10-07T16:16:06.783769+00:00"
+		  }
+		},
+		{
+		  "disabled": false,
+		  "disabled_by": null,
+		  "entity_category": "config",
+		  "device_class": null,
+		  "original_device_class": null,
+		  "icon": null,
+		  "original_icon": null,
+		  "unit_of_measurement": null,
+		  "state": {
+			"entity_id": "button.abir_k30_reset_map",
+			"state": "unknown",
+			"attributes": {
+			  "friendly_name": "ABIR K30 Reset map"
+			},
+			"last_changed": "2026-10-07T16:16:06.784460+00:00",
+			"last_reported": "2026-10-07T16:16:06.784460+00:00",
+			"last_updated": "2026-10-07T16:16:06.784460+00:00"
+		  }
+		},
+		{
+		  "disabled": false,
+		  "disabled_by": null,
+		  "entity_category": "config",
+		  "device_class": null,
+		  "original_device_class": null,
+		  "icon": null,
+		  "original_icon": null,
+		  "unit_of_measurement": null,
+		  "state": {
+			"entity_id": "button.abir_k30_reset_roll_brush",
+			"state": "unknown",
+			"attributes": {
+			  "friendly_name": "ABIR K30 Reset roll brush"
+			},
+			"last_changed": "2026-10-07T16:16:06.785072+00:00",
+			"last_reported": "2026-10-07T16:16:06.785072+00:00",
+			"last_updated": "2026-10-07T16:16:06.785072+00:00"
+		  }
+		},
+		{
+		  "disabled": false,
+		  "disabled_by": null,
+		  "entity_category": "config",
+		  "device_class": null,
+		  "original_device_class": null,
+		  "icon": null,
+		  "original_icon": null,
+		  "unit_of_measurement": "%",
+		  "state": {
+			"entity_id": "number.abir_k30_volume",
+			"state": "84.0",
+			"attributes": {
+			  "min": 0.0,
+			  "max": 100.0,
+			  "step": 1.0,
+			  "mode": "auto",
+			  "unit_of_measurement": "%",
+			  "friendly_name": "ABIR K30 Volume"
+			},
+			"last_changed": "2026-10-07T16:16:06.802837+00:00",
+			"last_reported": "2026-10-07T16:16:06.802837+00:00",
+			"last_updated": "2026-10-07T16:16:06.802837+00:00"
+		  }
+		},
+		{
+		  "disabled": false,
+		  "disabled_by": null,
+		  "entity_category": "config",
+		  "device_class": null,
+		  "original_device_class": null,
+		  "icon": null,
+		  "original_icon": null,
+		  "unit_of_measurement": null,
+		  "state": {
+			"entity_id": "select.abir_k30_nastavitev_rezervoarja_za_vodo",
+			"state": "middle",
+			"attributes": {
+			  "options": [
+				"low",
+				"middle",
+				"high"
+			  ],
+			  "friendly_name": "ABIR K30 Nastavitev rezervoarja za vodo"
+			},
+			"last_changed": "2026-10-07T16:16:06.825477+00:00",
+			"last_reported": "2026-10-07T16:16:06.825477+00:00",
+			"last_updated": "2026-10-07T16:16:06.825477+00:00"
+		  }
+		},
+		{
+		  "disabled": false,
+		  "disabled_by": null,
+		  "entity_category": "config",
+		  "device_class": null,
+		  "original_device_class": null,
+		  "icon": null,
+		  "original_icon": null,
+		  "unit_of_measurement": null,
+		  "state": {
+			"entity_id": "select.abir_k30_nacin",
+			"state": "unknown",
+			"attributes": {
+			  "options": [
+				"smart",
+				"zone",
+				"pose",
+				"part"
+			  ],
+			  "friendly_name": "ABIR K30 Na\u010din"
+			},
+			"last_changed": "2026-10-07T16:16:06.826501+00:00",
+			"last_reported": "2026-10-07T16:16:06.826501+00:00",
+			"last_updated": "2026-10-07T16:16:06.826501+00:00"
+		  }
+		},
+		{
+		  "disabled": false,
+		  "disabled_by": null,
+		  "entity_category": null,
+		  "device_class": null,
+		  "original_device_class": null,
+		  "icon": null,
+		  "original_icon": null,
+		  "unit_of_measurement": "\u33a1",
+		  "state": {
+			"entity_id": "sensor.abir_k30_povrsina_ciscenja",
+			"state": "56.0",
+			"attributes": {
+			  "state_class": "measurement",
+			  "unit_of_measurement": "\u33a1",
+			  "friendly_name": "ABIR K30 Povr\u0161ina \u010di\u0161\u010denja"
+			},
+			"last_changed": "2026-10-07T16:16:06.899593+00:00",
+			"last_reported": "2026-10-07T16:16:06.899593+00:00",
+			"last_updated": "2026-10-07T16:16:06.899593+00:00"
+		  }
+		},
+		{
+		  "disabled": false,
+		  "disabled_by": null,
+		  "entity_category": null,
+		  "device_class": null,
+		  "original_device_class": null,
+		  "icon": null,
+		  "original_icon": null,
+		  "unit_of_measurement": "min",
+		  "state": {
+			"entity_id": "sensor.abir_k30_cas_ciscenja",
+			"state": "75.0",
+			"attributes": {
+			  "state_class": "measurement",
+			  "unit_of_measurement": "min",
+			  "friendly_name": "ABIR K30 \u010cas \u010di\u0161\u010denja"
+			},
+			"last_changed": "2026-10-07T16:16:06.900268+00:00",
+			"last_reported": "2026-10-07T16:16:06.900268+00:00",
+			"last_updated": "2026-10-07T16:16:06.900268+00:00"
+		  }
+		},
+		{
+		  "disabled": false,
+		  "disabled_by": null,
+		  "entity_category": null,
+		  "device_class": null,
+		  "original_device_class": null,
+		  "icon": null,
+		  "original_icon": null,
+		  "unit_of_measurement": "\u33a1",
+		  "state": {
+			"entity_id": "sensor.abir_k30_skupna_povrsina_ciscenja",
+			"state": "9119.0",
+			"attributes": {
+			  "state_class": "total_increasing",
+			  "unit_of_measurement": "\u33a1",
+			  "friendly_name": "ABIR K30 Skupna povr\u0161ina \u010di\u0161\u010denja"
+			},
+			"last_changed": "2026-10-07T16:16:06.901178+00:00",
+			"last_reported": "2026-10-07T16:16:06.901178+00:00",
+			"last_updated": "2026-10-07T16:16:06.901178+00:00"
+		  }
+		},
+		{
+		  "disabled": false,
+		  "disabled_by": null,
+		  "entity_category": null,
+		  "device_class": null,
+		  "original_device_class": null,
+		  "icon": null,
+		  "original_icon": null,
+		  "unit_of_measurement": "min",
+		  "state": {
+			"entity_id": "sensor.abir_k30_skupni_cas_ciscenja",
+			"state": "11655.0",
+			"attributes": {
+			  "state_class": "total_increasing",
+			  "unit_of_measurement": "min",
+			  "friendly_name": "ABIR K30 Skupni \u010das \u010di\u0161\u010denja"
+			},
+			"last_changed": "2026-10-07T16:16:06.901902+00:00",
+			"last_reported": "2026-10-07T16:16:06.901902+00:00",
+			"last_updated": "2026-10-07T16:16:06.901902+00:00"
+		  }
+		},
+		{
+		  "disabled": false,
+		  "disabled_by": null,
+		  "entity_category": null,
+		  "device_class": null,
+		  "original_device_class": null,
+		  "icon": null,
+		  "original_icon": null,
+		  "unit_of_measurement": null,
+		  "state": {
+			"entity_id": "sensor.abir_k30_total_cleaning_times",
+			"state": "178.0",
+			"attributes": {
+			  "state_class": "total_increasing",
+			  "friendly_name": "ABIR K30 Total cleaning times"
+			},
+			"last_changed": "2026-10-07T16:16:06.902609+00:00",
+			"last_reported": "2026-10-07T16:16:06.902609+00:00",
+			"last_updated": "2026-10-07T16:16:06.902609+00:00"
+		  }
+		},
+		{
+		  "disabled": false,
+		  "disabled_by": null,
+		  "entity_category": null,
+		  "device_class": null,
+		  "original_device_class": null,
+		  "icon": null,
+		  "original_icon": null,
+		  "unit_of_measurement": "hour",
+		  "state": {
+			"entity_id": "sensor.abir_k30_duster_cloth_lifetime",
+			"state": "150.0",
+			"attributes": {
+			  "state_class": "measurement",
+			  "unit_of_measurement": "hour",
+			  "friendly_name": "ABIR K30 Duster cloth lifetime"
+			},
+			"last_changed": "2026-10-07T16:16:06.903235+00:00",
+			"last_reported": "2026-10-07T16:16:06.903235+00:00",
+			"last_updated": "2026-10-07T16:16:06.903235+00:00"
+		  }
+		},
+		{
+		  "disabled": false,
+		  "disabled_by": null,
+		  "entity_category": null,
+		  "device_class": null,
+		  "original_device_class": null,
+		  "icon": null,
+		  "original_icon": null,
+		  "unit_of_measurement": "hour",
+		  "state": {
+			"entity_id": "sensor.abir_k30_zivljenjska_doba_stranske_krtace",
+			"state": "0.0",
+			"attributes": {
+			  "state_class": "measurement",
+			  "unit_of_measurement": "hour",
+			  "friendly_name": "ABIR K30 \u017divljenjska doba stranske krta\u010de"
+			},
+			"last_changed": "2026-10-07T16:16:06.903959+00:00",
+			"last_reported": "2026-10-07T16:16:06.903959+00:00",
+			"last_updated": "2026-10-07T16:16:06.903959+00:00"
+		  }
+		},
+		{
+		  "disabled": false,
+		  "disabled_by": null,
+		  "entity_category": null,
+		  "device_class": null,
+		  "original_device_class": null,
+		  "icon": null,
+		  "original_icon": null,
+		  "unit_of_measurement": "hour",
+		  "state": {
+			"entity_id": "sensor.abir_k30_zivljenjska_doba_filtra",
+			"state": "0.0",
+			"attributes": {
+			  "state_class": "measurement",
+			  "unit_of_measurement": "hour",
+			  "friendly_name": "ABIR K30 \u017divljenjska doba filtra"
+			},
+			"last_changed": "2026-10-07T16:16:06.904603+00:00",
+			"last_reported": "2026-10-07T16:16:06.904603+00:00",
+			"last_updated": "2026-10-07T16:16:06.904603+00:00"
+		  }
+		},
+		{
+		  "disabled": false,
+		  "disabled_by": null,
+		  "entity_category": null,
+		  "device_class": null,
+		  "original_device_class": null,
+		  "icon": null,
+		  "original_icon": null,
+		  "unit_of_measurement": "hour",
+		  "state": {
+			"entity_id": "sensor.abir_k30_zivljenjska_doba_valjcne_krtace",
+			"state": "105.0",
+			"attributes": {
+			  "state_class": "measurement",
+			  "unit_of_measurement": "hour",
+			  "friendly_name": "ABIR K30 \u017divljenjska doba valj\u010dne krta\u010de"
+			},
+			"last_changed": "2026-10-07T16:16:06.905279+00:00",
+			"last_reported": "2026-10-07T16:16:06.905279+00:00",
+			"last_updated": "2026-10-07T16:16:06.905279+00:00"
+		  }
+		},
+		{
+		  "disabled": false,
+		  "disabled_by": null,
+		  "entity_category": "diagnostic",
+		  "device_class": null,
+		  "original_device_class": "battery",
+		  "icon": null,
+		  "original_icon": null,
+		  "unit_of_measurement": "%",
+		  "state": {
+			"entity_id": "sensor.abir_k30_baterija",
+			"state": "100.0",
+			"attributes": {
+			  "state_class": "measurement",
+			  "unit_of_measurement": "%",
+			  "device_class": "battery",
+			  "friendly_name": "ABIR K30 Baterija"
+			},
+			"last_changed": "2026-10-07T16:16:06.906304+00:00",
+			"last_reported": "2026-10-07T16:16:06.906304+00:00",
+			"last_updated": "2026-10-07T16:16:06.906304+00:00"
+		  }
+		},
+		{
+		  "disabled": false,
+		  "disabled_by": null,
+		  "entity_category": "config",
+		  "device_class": null,
+		  "original_device_class": null,
+		  "icon": null,
+		  "original_icon": null,
+		  "unit_of_measurement": null,
+		  "state": {
+			"entity_id": "switch.abir_k30_ne_motite",
+			"state": "off",
+			"attributes": {
+			  "friendly_name": "ABIR K30 Ne motite"
+			},
+			"last_changed": "2026-10-07T16:16:06.931514+00:00",
+			"last_reported": "2026-10-07T16:16:06.931514+00:00",
+			"last_updated": "2026-10-07T16:16:06.931514+00:00"
+		  }
+		},
+		{
+		  "disabled": false,
+		  "disabled_by": null,
+		  "entity_category": null,
+		  "device_class": null,
+		  "original_device_class": null,
+		  "icon": null,
+		  "original_icon": null,
+		  "unit_of_measurement": null,
+		  "state": {
+			"entity_id": "vacuum.abir_k30",
+			"state": "docked",
+			"attributes": {
+			  "fan_speed_list": [
+				"gentle",
+				"normal",
+				"strong"
+			  ],
+			  "fan_speed": "gentle",
+			  "friendly_name": "ABIR K30",
+			  "supported_features": 13116
+			},
+			"last_changed": "2026-10-07T16:16:06.937097+00:00",
+			"last_reported": "2026-10-07T16:16:06.937097+00:00",
+			"last_updated": "2026-10-07T16:16:06.937097+00:00"
+		  }
+		}
+	  ]
+	}
+}
