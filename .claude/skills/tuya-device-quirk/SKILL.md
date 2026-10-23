@@ -13,7 +13,7 @@ description: How to add, test and review a Tuya device quirk in this repository,
 
 ## Rules
 
-- A quirk can only rewrite datapoints (`function`, `status_range`, `local_strategy`). If a datapoint is already present and correct in the diagnostics but never becomes an entity, the fix belongs in Home Assistant Core, not here (see [docs/unsupported-category-or-dpcode.md](../../../docs/unsupported-category-or-dpcode.md)).
+- A quirk can rewrite datapoints (`function`, `status_range`, `local_strategy`) and override the device category (`.override_category(...)`, e.g. `devices/tdq/tdq_a9fn0xcsckjoqpnd.py`). If the category and datapoints are already correct in the diagnostics but an entity is never created, the fix belongs in Home Assistant Core, not here (see [docs/unsupported-category-or-dpcode.md](../../../docs/unsupported-category-or-dpcode.md)).
 - Each quirk file contains exactly one `DeviceQuirk()...register(TUYA_QUIRKS_REGISTRY)` chain at module top level. Provenance (`quirk_file`/`quirk_file_line`) and custom-quirk reload depend on it.
 - Quirk modules have a module docstring that explains what is wrong with the device and links the upstream issue when there is one.
 - Use the enums in `tuya_device_handlers.helpers.homeassistant` rather than importing Home Assistant.

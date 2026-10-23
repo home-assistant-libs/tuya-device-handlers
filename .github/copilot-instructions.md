@@ -84,21 +84,21 @@ uv. Python 3.13 and 3.14 are both supported (CI runs both).
 - `uv run prek run --all-files` — run all pre-commit hooks on all files.
 - `uv run prek run ruff-check --all-files` — run a single hook on all files.
 
-Ruff config lives in [pyproject.toml](pyproject.toml) (line-length 80, isort with `force-sort-within-sections`, mccabe max-complexity 10). Type checking uses ty.
+Ruff config lives in [pyproject.toml](../pyproject.toml) (line-length 80, isort with `force-sort-within-sections`, mccabe max-complexity 10). Type checking uses ty.
 
 ## Architecture
 
 ### Registry and the quirks lookup path
 
-[src/tuya_device_handlers/\_\_init\_\_.py](src/tuya_device_handlers/__init__.py) exposes `TUYA_QUIRKS_REGISTRY`, the single `QuirksRegistry` instance consumers import. The registry is a singleton: `QuirksRegistry.__new__` reuses the class-level `instance`, and `__init__` is guarded to not wipe `_quirks` on re-instantiation (see commit `e4cf692`). Treat re-instantiation as a no-op — never reset state by constructing a new registry.
+[src/tuya_device_handlers/\_\_init\_\_.py](../src/tuya_device_handlers/__init__.py) exposes `TUYA_QUIRKS_REGISTRY`, the single `QuirksRegistry` instance consumers import. The registry is a singleton: `QuirksRegistry.__new__` reuses the class-level `instance`, and `__init__` is guarded to not wipe `_quirks` on re-instantiation (see commit `e4cf692`). Treat re-instantiation as a no-op — never reset state by constructing a new registry.
 
-`QuirksRegistry` ([src/tuya_device_handlers/registry.py](src/tuya_device_handlers/registry.py)) maps `product_id → DeviceQuirkProtocol`. The protocol has three keys: `original_function`/`original_local_strategy`/`original_status_range` (snapshots taken at apply time), `quirk_file`/`quirk_file_line` (provenance for diagnostics), and `initialise_device(device)` (the mutation step).
+`QuirksRegistry` ([src/tuya_device_handlers/registry.py](../src/tuya_device_handlers/registry.py)) maps `product_id → DeviceQuirkProtocol`. The protocol has three keys: `original_function`/`original_local_strategy`/`original_status_range` (snapshots taken at apply time), `quirk_file`/`quirk_file_line` (provenance for diagnostics), and `initialise_device(device)` (the mutation step).
 
 `purge_custom_quirks(custom_quirks_root)` filters quirks by `quirk_file.is_relative_to(...)` — this is what makes user-supplied quirks reloadable without restarting the host. Built-in quirks are not affected.
 
 ### Loading quirks
 
-[src/tuya_device_handlers/devices/\_\_init\_\_.py](src/tuya_device_handlers/devices/__init__.py) — `register_tuya_quirks(custom_quirks_path=None)`:
+[src/tuya_device_handlers/devices/\_\_init\_\_.py](../src/tuya_device_handlers/devices/__init__.py) — `register_tuya_quirks(custom_quirks_path=None)`:
 
 1. Purge previously-loaded custom quirks (by file path).
 2. `pkgutil.walk_packages` over the `devices/` subpackage: importing each module registers its quirks as a side effect (the module body runs the `DeviceQuirk()...register(TUYA_QUIRKS_REGISTRY)` chain).
@@ -108,7 +108,7 @@ Quirk discovery is therefore import-driven. A new quirk file under `src/tuya_dev
 
 ### Building a quirk
 
-[src/tuya_device_handlers/builder/device_quirk.py](src/tuya_device_handlers/builder/device_quirk.py) — `DeviceQuirk` is a fluent builder:
+[src/tuya_device_handlers/builder/device_quirk.py](../src/tuya_device_handlers/builder/device_quirk.py) — `DeviceQuirk` is a fluent builder:
 
 ```python
 (
@@ -124,7 +124,7 @@ Quirk discovery is therefore import-driven. A new quirk file under `src/tuya_dev
 
 `initialise_device` snapshots the device's original maps then walks `_datapoint_definitions`. For each entry it adds/removes from `device.function` (WRITE flag), `device.status_range` (READ flag), and `device.local_strategy` (only when `device.support_local`). A `None` value means "remove this dpid/dpcode entirely".
 
-`DPMode` is an `IntFlag` (`READ=1`, `WRITE=2`) so combine with `|`. `DPType` is a `StrEnum` and has a forgiving `try_parse` for ill-formed cloud values (see [const.py](src/tuya_device_handlers/const.py)).
+`DPMode` is an `IntFlag` (`READ=1`, `WRITE=2`) so combine with `|`. `DPType` is a `StrEnum` and has a forgiving `try_parse` for ill-formed cloud values (see [const.py](../src/tuya_device_handlers/const.py)).
 
 ### Device categories
 
@@ -134,23 +134,23 @@ Quirk discovery is therefore import-driven. A new quirk file under `src/tuya_dev
 
 These two layers exist because the cloud-side device shape (datapoints) doesn't map 1:1 to Home Assistant entities.
 
-- `definition/` — per-platform dataclasses (`TuyaClimateDefinition`, etc.) the host integration consumes to build HA entities. All inherit from `BaseEntityQuirk` ([base.py](src/tuya_device_handlers/definition/base.py)) with a single `key` field.
-- `device_wrapper/` — `DeviceWrapper[T]` + typed `DPCodeWrapper[T]` subclasses (`DPCodeBooleanWrapper`, `DPCodeIntegerWrapper`, …) that encapsulate the read/write conversion between a raw DPCode value and the HA-facing value. `read_device_status` and `_convert_value_to_raw_value` are the override points; `find_dpcode(device, code, prefer_function=...)` is the standard lookup. Wrappers read the current value via `_read_dpcode_value`, not `device.status.get(self.dpcode)`. When a device needs custom scaling/encoding of a single datapoint, prefer `.override_dpid_type_information_cls(...)` with a class from [type_information_ex.py](src/tuya_device_handlers/type_information_ex.py) (see [devices/cl/cl_68nvbio9.py](src/tuya_device_handlers/devices/cl/cl_68nvbio9.py)).
+- `definition/` — per-platform dataclasses (`TuyaClimateDefinition`, etc.) the host integration consumes to build HA entities. All inherit from `BaseEntityQuirk` ([base.py](../src/tuya_device_handlers/definition/base.py)) with a single `key` field.
+- `device_wrapper/` — `DeviceWrapper[T]` + typed `DPCodeWrapper[T]` subclasses (`DPCodeBooleanWrapper`, `DPCodeIntegerWrapper`, …) that encapsulate the read/write conversion between a raw DPCode value and the HA-facing value. `read_device_status` and `_convert_value_to_raw_value` are the override points; `find_dpcode(device, code, prefer_function=...)` is the standard lookup. Wrappers read the current value via `_read_dpcode_value`, not `device.status.get(self.dpcode)`. When a device needs custom scaling/encoding of a single datapoint, prefer `.override_dpid_type_information_cls(...)` with a class from [type_information_ex.py](../src/tuya_device_handlers/type_information_ex.py) (see [devices/cl/cl_68nvbio9.py](../src/tuya_device_handlers/devices/cl/cl_68nvbio9.py)).
 - `raw_data_model.py` — parsers for base64-encoded RAW DPs (e.g. `ElectricityData.from_bytes` handles legacy/v01/v02 layouts).
 
 ### Helpers
 
-[helpers/homeassistant.py](src/tuya_device_handlers/helpers/homeassistant.py) re-exports HA enums (`TuyaSensorDeviceClass`, `TuyaEntityCategory`, `TuyaUnitOfTemperature`, …) so quirks don't import Home Assistant directly. Keep new HA-shaped constants here.
+[helpers/homeassistant.py](../src/tuya_device_handlers/helpers/homeassistant.py) re-exports HA enums (`TuyaSensorDeviceClass`, `TuyaEntityCategory`, `TuyaUnitOfTemperature`, …) so quirks don't import Home Assistant directly. Keep new HA-shaped constants here.
 
 ## Tests
 
-`tests/` mirrors `src/tuya_device_handlers/`. Per-device JSON fixtures live under [tests/fixtures/devices/](tests/fixtures/devices/) named `<category>_<product_id>.json` — these capture real `CustomerDevice` payloads. Snapshot tests use `syrupy` (`__snapshots__/` directories). [tests/conftest.py](tests/conftest.py) provides `mock_device` (a `CustomerDevice` Mock pre-populated with `demo_*` DPs covering every `DPType`) and `filled_quirks_registry` (calls `register_tuya_quirks()` once per module).
+`tests/` mirrors `src/tuya_device_handlers/`. Per-device JSON fixtures live under [tests/fixtures/devices/](../tests/fixtures/devices/) named `<category>_<product_id>.json` — these capture real `CustomerDevice` payloads. Snapshot tests use `syrupy` (`__snapshots__/` directories). [tests/conftest.py](../tests/conftest.py) provides `mock_device` (a `CustomerDevice` Mock pre-populated with `demo_*` DPs covering every `DPType`) and `filled_quirks_registry` (calls `register_tuya_quirks()` once per module).
 
-When adding or reviewing a device quirk (including turning a diagnostics file into a fixture), follow the `tuya-device-quirk` skill in [.claude/skills/tuya-device-quirk/SKILL.md](.claude/skills/tuya-device-quirk/SKILL.md).
+When adding or reviewing a device quirk (including turning a diagnostics file into a fixture), follow the `tuya-device-quirk` skill in [.claude/skills/tuya-device-quirk/SKILL.md](../.claude/skills/tuya-device-quirk/SKILL.md).
 
 ## AI policy
 
-This project follows the [Open Home Foundation AI Policy](AI_POLICY.md).
+This project follows the [Open Home Foundation AI Policy](../AI_POLICY.md).
 Autonomous contributions are not accepted: a human must review, understand,
 and be able to explain every change before it is submitted. Do not open
 issues or pull requests autonomously, and do not post comments on behalf of
