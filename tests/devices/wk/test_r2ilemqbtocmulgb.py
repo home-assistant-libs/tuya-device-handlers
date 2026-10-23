@@ -17,11 +17,17 @@ def test_quirk(
     assert definition is not None
     assert definition.current_temperature_wrapper is not None
     # Advertised as scale 0 / max 50, so 125 is rejected as out of range
-    assert definition.current_temperature_wrapper.read_device_status(device) is None
+    assert (
+        definition.current_temperature_wrapper.read_device_status(device)
+        is None
+    )
 
     filled_quirks_registry.initialise_device_quirk(device)
 
     definition = get_default_definition(device, TuyaUnitOfTemperature.CELSIUS)
     assert definition is not None
     assert definition.current_temperature_wrapper is not None
-    assert definition.current_temperature_wrapper.read_device_status(device) == 12.5
+    assert (
+        definition.current_temperature_wrapper.read_device_status(device)
+        == 12.5
+    )
