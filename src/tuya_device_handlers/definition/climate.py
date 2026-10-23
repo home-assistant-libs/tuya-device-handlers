@@ -184,6 +184,21 @@ def get_default_definition(
     current_temperature_wrapper, set_temperature_wrapper, temperature_unit = (
         _get_default_temperature_wrappers(device, system_temperature_unit)
     )
+    switch_wrapper = DPCodeBooleanWrapper.find_dpcode(
+        device, ("switch", "power_switch"), prefer_function=True
+    )
+    # A mode DP without any HVAC values only holds presets: when there is a
+    # switch DP, ignore the mode DP for HVAC so the hvac mode follows the switch
+    if (
+        (
+            hvac_mode_wrapper := DefaultHVACModeWrapper.find_dpcode(
+                device, "mode", prefer_function=True
+            )
+        )
+        and not hvac_mode_wrapper.options
+        and switch_wrapper
+    ):
+        hvac_mode_wrapper = None
     return ClimateDefinition(
         current_humidity_wrapper=DPCodeRoundedIntegerWrapper.find_dpcode(
             device, "humidity_current"
@@ -194,17 +209,13 @@ def get_default_definition(
             ("fan_speed_enum", "level", "windspeed"),
             prefer_function=True,
         ),
-        hvac_mode_wrapper=DefaultHVACModeWrapper.find_dpcode(
-            device, "mode", prefer_function=True
-        ),
+        hvac_mode_wrapper=hvac_mode_wrapper,
         preset_wrapper=DefaultPresetModeWrapper.find_dpcode(
             device, "mode", prefer_function=True
         ),
         set_temperature_wrapper=set_temperature_wrapper,
         swing_wrapper=SwingModeCompositeWrapper.find_dpcode(device),
-        switch_wrapper=DPCodeBooleanWrapper.find_dpcode(
-            device, ("switch", "power_switch"), prefer_function=True
-        ),
+        switch_wrapper=switch_wrapper,
         target_humidity_wrapper=DPCodeRoundedIntegerWrapper.find_dpcode(
             device, "humidity_set", prefer_function=True
         ),
