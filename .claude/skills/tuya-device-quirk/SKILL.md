@@ -14,6 +14,7 @@ description: How to add, test and review a Tuya device quirk in this repository,
 ## Rules
 
 - A quirk can rewrite datapoints (`function`, `status_range`, `local_strategy`) and override the device category (`.override_category(...)`, e.g. `devices/tdq/tdq_a9fn0xcsckjoqpnd.py`). If the category and datapoints are already correct in the diagnostics but an entity is never created, the fix belongs in Home Assistant Core, not here (see [docs/unsupported-category-or-dpcode.md](../../../docs/unsupported-category-or-dpcode.md)).
+- `applies_to(product_id=...)` must use the product id exactly as it appears in the diagnostics, including case: the registry lookup is case-sensitive. Only the quirk filename is lowercased.
 - Each quirk file contains exactly one `DeviceQuirk()...register(TUYA_QUIRKS_REGISTRY)` chain at module top level. Provenance (`quirk_file`/`quirk_file_line`) and custom-quirk reload depend on it.
 - Quirk modules have a module docstring that explains what is wrong with the device and links the upstream issue when there is one.
 - Use the enums in `tuya_device_handlers.helpers.homeassistant` rather than importing Home Assistant.
@@ -28,7 +29,8 @@ Device support requests usually attach a Home Assistant diagnostics JSON (downlo
 
 1. Take **only the contents of the top-level `data` property**. That object is the captured `CustomerDevice` payload. Discard everything else (`home_assistant`, `custom_components`, `integration_manifest`, `setup_times`, `issues`, …).
 2. From that object, **remove the `id`, `terminal_id`, and `home_assistant` keys**. `id`/`terminal_id` are per-account identifiers; `home_assistant` is a nested diagnostics block, not part of the device payload.
-3. Write the result to `tests/fixtures/devices/<category>_<product_id>.json`, using the device's own `category` and `product_id` fields for the filename (e.g. a `cl` device with product id `nfq1essvr99qsvvd` → `cl_nfq1essvr99qsvvd.json`). Pretty-print with 2-space indent and a trailing newline.
+3. **Check `status` for personal data.** Some devices report a base64-encoded `device_info` holding the Wi-Fi name, local IP, MAC address and serial number: replace it with an empty string. Look out for similar values in other datapoints.
+4. Write the result to `tests/fixtures/devices/<category>_<product_id>.json`, using the device's own `category` and `product_id` fields for the filename (e.g. a `cl` device with product id `nfq1essvr99qsvvd` → `cl_nfq1essvr99qsvvd.json`). Pretty-print with 2-space indent and a trailing newline.
 
 One-liner (input `diag.json`):
 
@@ -38,6 +40,8 @@ import json
 d = json.load(open('diag.json'))['data']
 for k in ('id', 'terminal_id', 'home_assistant'):
     d.pop(k, None)
+if 'device_info' in d.get('status', {}):
+    d['status']['device_info'] = ''
 name = f\"tests/fixtures/devices/{d['category']}_{d['product_id']}.json\"
 with open(name, 'w') as f:
     json.dump(d, f, indent=2, ensure_ascii=False)
@@ -50,7 +54,10 @@ print(name)
 
 Check that:
 
-- the fixture contains no `id`, `terminal_id` or `home_assistant` keys, and its filename matches its `category` and `product_id`;
-- the quirk filename, `applies_to(product_id=...)` and the fixture agree on the product id;
-- the tests exercise what the quirk changes, rather than only asserting that it registers;
+- the PR contains the quirk module itself, and a new category has an `__init__.py` in both `src/tuya_device_handlers/devices/<category>/` and `tests/devices/<category>/` (without it, the quirk is never imported);
+- the fixture contains no `id`, `terminal_id` or `home_assistant` keys and no personal data (e.g. `device_info`), and its filename matches its `category` and `product_id`. If personal data was committed, ask for it to be removed and the branch force-pushed;
+- the quirk filename, `applies_to(product_id=...)` and the fixture agree on the product id, with `applies_to` matching the fixture's case;
+- the test file is named `test_<product_id>.py` and exercises what the quirk changes, rather than only asserting that it registers (or being a copy of the quirk);
+- the datapoints the quirk changes are actually used by this library or Home Assistant Core. If not, ask which entity is wrong and what the user sees;
+- a quirk PR does not also change shared code (`builder/`, `definition/`, `device_wrapper/`, …). If it does, ask for it to be split;
 - the change does not belong in Home Assistant Core instead (see Rules above).
