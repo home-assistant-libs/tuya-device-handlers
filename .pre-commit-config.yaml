@@ -67,6 +67,12 @@ repos:
         language: system
         types: [text]
         stages: [pre-commit, pre-push, manual]
+      - id: gen-copilot-instructions
+        name: Generate Copilot instructions
+        language: system
+        entry: uv run python -m script.gen_copilot_instructions
+        pass_filenames: false
+        files: ^(AGENTS\.md|\.github/(copilot-instructions|PULL_REQUEST_TEMPLATE)\.md|script/gen_copilot_instructions\.py)$
       - id: no-commit-to-branch
         name: Don't commit to main branch
         language: system
