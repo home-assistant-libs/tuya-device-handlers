@@ -1,0 +1,317 @@
+{
+  "name": "S1",
+  "category": "sd",
+  "product_id": "txitlmevigna7hyc",
+  "product_name": "S1",
+  "online": true,
+  "sub": false,
+  "time_zone": "-04:00",
+  "active_time": "2026-09-01T14:42:22+00:00",
+  "create_time": "2026-09-01T14:42:22+00:00",
+  "update_time": "2026-09-01T14:42:22+00:00",
+  "function": {
+    "power": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "power_go": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"standby\",\"random\",\"wall_follow\",\"spiral\",\"chargego\"]}"
+    },
+    "direction_control": {
+      "type": "Enum",
+      "value": "{\"range\":[\"forward\",\"backward\",\"turn_left\",\"turn_right\",\"stop\"]}"
+    },
+    "reset_edge_brush": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "reset_filter": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "seek": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "suction": {
+      "type": "Enum",
+      "value": "{\"range\":[\"gentle\",\"normal\",\"strong\"]}"
+    },
+    "cistern": {
+      "type": "Enum",
+      "value": "{\"range\":[\"low\",\"middle\",\"high\"]}"
+    }
+  },
+  "local_strategy": {
+    "1": {
+      "value_convert": "default",
+      "status_code": "power",
+      "config_item": {
+        "statusFormat": "{\"power\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "txitlmevigna7hyc"
+      }
+    },
+    "2": {
+      "value_convert": "default",
+      "status_code": "power_go",
+      "config_item": {
+        "statusFormat": "{\"power_go\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "txitlmevigna7hyc"
+      }
+    },
+    "3": {
+      "value_convert": "default",
+      "status_code": "mode",
+      "config_item": {
+        "statusFormat": "{\"mode\":\"$\"}",
+        "valueDesc": "{\"range\":[\"standby\",\"random\",\"wall_follow\",\"spiral\",\"chargego\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "txitlmevigna7hyc"
+      }
+    },
+    "4": {
+      "value_convert": "default",
+      "status_code": "direction_control",
+      "config_item": {
+        "statusFormat": "{\"direction_control\":\"$\"}",
+        "valueDesc": "{\"range\":[\"forward\",\"backward\",\"turn_left\",\"turn_right\",\"stop\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "txitlmevigna7hyc"
+      }
+    },
+    "5": {
+      "value_convert": "default",
+      "status_code": "status",
+      "config_item": {
+        "statusFormat": "{\"status\":\"$\"}",
+        "valueDesc": "{\"range\":[\"standby\",\"smart_clean\",\"wall_clean\",\"spot_clean\",\"mop_clean\",\"goto_charge\",\"charging\",\"charge_done\",\"paused\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "txitlmevigna7hyc"
+      }
+    },
+    "6": {
+      "value_convert": "default",
+      "status_code": "electricity_left",
+      "config_item": {
+        "statusFormat": "{\"electricity_left\":\"$\"}",
+        "valueDesc": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "txitlmevigna7hyc"
+      }
+    },
+    "7": {
+      "value_convert": "default",
+      "status_code": "edge_brush",
+      "config_item": {
+        "statusFormat": "{\"edge_brush\":\"$\"}",
+        "valueDesc": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "txitlmevigna7hyc"
+      }
+    },
+    "9": {
+      "value_convert": "default",
+      "status_code": "filter",
+      "config_item": {
+        "statusFormat": "{\"filter\":\"$\"}",
+        "valueDesc": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "txitlmevigna7hyc"
+      }
+    },
+    "10": {
+      "value_convert": "default",
+      "status_code": "reset_edge_brush",
+      "config_item": {
+        "statusFormat": "{\"reset_edge_brush\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "txitlmevigna7hyc"
+      }
+    },
+    "12": {
+      "value_convert": "default",
+      "status_code": "reset_filter",
+      "config_item": {
+        "statusFormat": "{\"reset_filter\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "txitlmevigna7hyc"
+      }
+    },
+    "13": {
+      "value_convert": "default",
+      "status_code": "seek",
+      "config_item": {
+        "statusFormat": "{\"seek\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "txitlmevigna7hyc"
+      }
+    },
+    "14": {
+      "value_convert": "default",
+      "status_code": "suction",
+      "config_item": {
+        "statusFormat": "{\"suction\":\"$\"}",
+        "valueDesc": "{\"range\":[\"gentle\",\"normal\",\"strong\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "txitlmevigna7hyc"
+      }
+    },
+    "17": {
+      "value_convert": "default",
+      "status_code": "clean_time",
+      "config_item": {
+        "statusFormat": "{\"clean_time\":\"$\"}",
+        "valueDesc": "{\"unit\":\"min\",\"min\":0,\"max\":9999,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "txitlmevigna7hyc"
+      }
+    },
+    "18": {
+      "value_convert": "default",
+      "status_code": "fault",
+      "config_item": {
+        "statusFormat": "{\"fault\":\"$\"}",
+        "valueDesc": "{\"label\":[\"edge_sweep\",\"middle_sweep\",\"left_wheel\",\"right_wheel\",\"garbage_box\",\"land_check\",\"collision\",\"low_power\",\"Gro_Error\"]}",
+        "valueType": "Bitmap",
+        "enumMappingMap": {},
+        "pid": "txitlmevigna7hyc"
+      }
+    },
+    "20": {
+      "value_convert": "default",
+      "status_code": "cistern",
+      "config_item": {
+        "statusFormat": "{\"cistern\":\"$\"}",
+        "valueDesc": "{\"range\":[\"closed\",\"low\",\"middle\",\"high\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "txitlmevigna7hyc"
+      }
+    }
+  },
+  "status_range": {
+    "power": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "power_go": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"standby\",\"random\",\"wall_follow\",\"spiral\",\"chargego\"]}",
+      "report_type": null
+    },
+    "direction_control": {
+      "type": "Enum",
+      "value": "{\"range\":[\"forward\",\"backward\",\"turn_left\",\"turn_right\",\"stop\"]}",
+      "report_type": null
+    },
+    "status": {
+      "type": "Enum",
+      "value": "{\"range\":[\"standby\",\"smart_clean\",\"wall_clean\",\"spot_clean\",\"mop_clean\",\"goto_charge\",\"charging\",\"charge_done\",\"paused\"]}",
+      "report_type": null
+    },
+    "electricity_left": {
+      "type": "Integer",
+      "value": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "edge_brush": {
+      "type": "Integer",
+      "value": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "filter": {
+      "type": "Integer",
+      "value": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "reset_edge_brush": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "reset_filter": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "seek": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "suction": {
+      "type": "Enum",
+      "value": "{\"range\":[\"gentle\",\"normal\",\"strong\"]}",
+      "report_type": null
+    },
+    "clean_time": {
+      "type": "Integer",
+      "value": "{\"unit\":\"min\",\"min\":0,\"max\":9999,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "fault": {
+      "type": "Bitmap",
+      "value": "{\"label\":[\"edge_sweep\",\"middle_sweep\",\"left_wheel\",\"right_wheel\",\"garbage_box\",\"land_check\",\"collision\",\"low_power\",\"Gro_Error\"]}",
+      "report_type": null
+    },
+    "cistern": {
+      "type": "Enum",
+      "value": "{\"range\":[\"closed\",\"low\",\"middle\",\"high\"]}",
+      "report_type": null
+    }
+  },
+  "status": {
+    "power": true,
+    "power_go": false,
+    "mode": "chargego",
+    "direction_control": "stop",
+    "status": "charging",
+    "electricity_left": 66,
+    "edge_brush": 56,
+    "filter": 56,
+    "reset_edge_brush": true,
+    "reset_filter": true,
+    "seek": true,
+    "suction": "strong",
+    "clean_time": 63,
+    "fault": 0,
+    "cistern": "middle"
+  },
+  "set_up": true,
+  "support_local": true,
+  "quirk": null,
+  "warnings": [
+    "enum_out_range|status|Random_Clean"
+  ]
+}
