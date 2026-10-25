@@ -8,6 +8,7 @@ from tuya_sharing import CustomerDevice
 from tuya_device_handlers.const import CELSIUS_ALIASES, FAHRENHEIT_ALIASES
 from tuya_device_handlers.device_wrapper import DeviceWrapper
 from tuya_device_handlers.device_wrapper.climate import (
+    DefaultClimateActionWrapper,
     DefaultHVACModeWrapper,
     DefaultPresetModeWrapper,
     SwingModeCompositeWrapper,
@@ -21,6 +22,7 @@ from tuya_device_handlers.device_wrapper.extended import (
     DPCodeRoundedIntegerWrapper,
 )
 from tuya_device_handlers.helpers.homeassistant import (
+    TuyaClimateAction,
     TuyaClimateHVACMode,
     TuyaClimateSwingMode,
     TuyaUnitOfTemperature,
@@ -33,6 +35,7 @@ from .base import BaseEntityQuirk
 class ClimateDefinition:
     """Definition for a climate entity."""
 
+    action_wrapper: DeviceWrapper[TuyaClimateAction] | None
     current_humidity_wrapper: DeviceWrapper[int] | None
     current_temperature_wrapper: DeviceWrapper[float] | None
     fan_mode_wrapper: DeviceWrapper[str] | None
@@ -185,6 +188,9 @@ def get_default_definition(
         _get_default_temperature_wrappers(device, system_temperature_unit)
     )
     return ClimateDefinition(
+        action_wrapper=DefaultClimateActionWrapper.find_dpcode(
+            device, ("work_state", "work_state_e")
+        ),
         current_humidity_wrapper=DPCodeRoundedIntegerWrapper.find_dpcode(
             device, "humidity_current"
         ),

@@ -167,6 +167,22 @@ class TuyaClimateSwingMode(StrEnum):
     HORIZONTAL = "horizontal"
 
 
+class TuyaClimateAction(StrEnum):
+    """HVAC action for climate devices.
+
+    Keep synchronized with homeassistant.components.climate.HVACAction.
+    """
+
+    OFF = "off"
+    PREHEATING = "preheating"
+    HEATING = "heating"
+    COOLING = "cooling"
+    DRYING = "drying"
+    IDLE = "idle"
+    FAN = "fan"
+    DEFROSTING = "defrosting"
+
+
 class TuyaCoverAction(StrEnum):
     """Cover entity actions."""
 

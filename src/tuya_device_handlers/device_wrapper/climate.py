@@ -7,6 +7,7 @@ from typing import Any, Self
 from tuya_sharing import CustomerDevice
 
 from tuya_device_handlers.helpers.homeassistant import (
+    TuyaClimateAction,
     TuyaClimateHVACMode,
     TuyaClimateSwingMode,
 )
@@ -189,6 +190,32 @@ class DefaultHVACModeWrapper(DPCodeEnumWrapper[TuyaClimateHVACMode]):
             tuya_mode
             for tuya_mode, ha_mode in self._mappings.items()
             if ha_mode == value
+        )
+
+
+_DEFAULT_DEVICE_WORK_STATE_TO_ACTION = {
+    "heating": TuyaClimateAction.HEATING,
+    "cooling": TuyaClimateAction.COOLING,
+    "idle": TuyaClimateAction.IDLE,
+    "standby": TuyaClimateAction.IDLE,
+    "keep_warm": TuyaClimateAction.IDLE,
+    "off": TuyaClimateAction.OFF,
+    "closed": TuyaClimateAction.OFF,
+}
+
+
+class DefaultClimateActionWrapper(DPCodeEnumWrapper[TuyaClimateAction]):
+    """Wrapper for managing climate HVAC action.
+
+    Read-only: the work state is reported by the device and cannot be set.
+    """
+
+    def read_device_status(
+        self, device: CustomerDevice
+    ) -> TuyaClimateAction | None:
+        """Read the device status."""
+        return _DEFAULT_DEVICE_WORK_STATE_TO_ACTION.get(
+            self._read_dpcode_value(device)
         )
 
 

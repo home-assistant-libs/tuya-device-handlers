@@ -6,11 +6,13 @@ import pytest
 from tuya_sharing import CustomerDevice
 
 from tuya_device_handlers.device_wrapper.climate import (
+    DefaultClimateActionWrapper,
     DefaultHVACModeWrapper,
     DefaultPresetModeWrapper,
     SwingModeCompositeWrapper,
 )
 from tuya_device_handlers.helpers.homeassistant import (
+    TuyaClimateAction,
     TuyaClimateHVACMode,
     TuyaClimateSwingMode,
 )
@@ -237,3 +239,40 @@ def test_hvac_action_command(
 
     assert wrapper
     assert wrapper.get_update_commands(mock_device, action) == expected
+
+
+@pytest.mark.parametrize(
+    ("raw_value", "expected"),
+    [
+        ("heating", TuyaClimateAction.HEATING),
+        ("cooling", TuyaClimateAction.COOLING),
+        ("idle", TuyaClimateAction.IDLE),
+        ("standby", TuyaClimateAction.IDLE),
+        ("keep_warm", TuyaClimateAction.IDLE),
+        ("off", TuyaClimateAction.OFF),
+        ("closed", TuyaClimateAction.OFF),
+        ("unknown_state", None),
+    ],
+)
+def test_read_climate_action(
+    raw_value: str,
+    expected: TuyaClimateAction | None,
+    mock_device: CustomerDevice,
+) -> None:
+    """Test reading HVAC action from the work_state datapoint."""
+    inject_dpcode(
+        mock_device,
+        "work_state",
+        None,
+        dptype="Enum",
+        values=(
+            '{"range": ["heating", "cooling", "idle", "standby", '
+            '"keep_warm", "off", "closed", "unknown_state"]}'
+        ),
+    )
+    mock_device.status["work_state"] = raw_value
+
+    wrapper = DefaultClimateActionWrapper.find_dpcode(mock_device, "work_state")
+
+    assert wrapper
+    assert wrapper.read_device_status(mock_device) == expected
