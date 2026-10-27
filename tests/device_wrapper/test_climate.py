@@ -245,12 +245,14 @@ def test_hvac_action_command(
     ("raw_value", "expected"),
     [
         ("heating", TuyaClimateAction.HEATING),
+        ("keep_warm", TuyaClimateAction.HEATING),
+        ("opened", TuyaClimateAction.HEATING),
         ("cooling", TuyaClimateAction.COOLING),
+        ("defrost", TuyaClimateAction.DEFROSTING),
         ("idle", TuyaClimateAction.IDLE),
         ("standby", TuyaClimateAction.IDLE),
-        ("keep_warm", TuyaClimateAction.IDLE),
+        ("closed", TuyaClimateAction.IDLE),
         ("off", TuyaClimateAction.OFF),
-        ("closed", TuyaClimateAction.OFF),
         ("unknown_state", None),
     ],
 )
@@ -267,7 +269,8 @@ def test_read_climate_action(
         dptype="Enum",
         values=(
             '{"range": ["heating", "cooling", "idle", "standby", '
-            '"keep_warm", "off", "closed", "unknown_state"]}'
+            '"keep_warm", "off", "closed", "opened", "defrost", '
+            '"unknown_state"]}'
         ),
     )
     mock_device.status["work_state"] = raw_value
@@ -276,3 +279,57 @@ def test_read_climate_action(
 
     assert wrapper
     assert wrapper.read_device_status(mock_device) == expected
+
+
+def test_climate_action_reads_value_outside_declared_range(
+    mock_device: CustomerDevice,
+) -> None:
+    """Test reading a work_state outside the declared enum range."""
+    inject_dpcode(
+        mock_device,
+        "work_state",
+        None,
+        dptype="Enum",
+        values='{"range": ["heating"]}',
+    )
+    mock_device.status["work_state"] = "idle"
+
+    wrapper = DefaultClimateActionWrapper.find_dpcode(mock_device, "work_state")
+
+    assert wrapper
+    assert wrapper.read_device_status(mock_device) == TuyaClimateAction.IDLE
+
+
+def test_climate_action_options(mock_device: CustomerDevice) -> None:
+    """Test options expose the mapped actions, not the raw values."""
+    inject_dpcode(
+        mock_device,
+        "work_state",
+        None,
+        dptype="Enum",
+        values='{"range": ["heating", "idle", "closed", "unknown_state"]}',
+    )
+
+    wrapper = DefaultClimateActionWrapper.find_dpcode(mock_device, "work_state")
+
+    assert wrapper
+    assert wrapper.options == [
+        TuyaClimateAction.HEATING,
+        TuyaClimateAction.IDLE,
+    ]
+
+
+def test_climate_action_rejects_writes(mock_device: CustomerDevice) -> None:
+    """Test the read-only work_state wrapper rejects update commands."""
+    inject_dpcode(
+        mock_device,
+        "work_state",
+        None,
+        dptype="Enum",
+        values='{"range": ["heating", "idle"]}',
+    )
+    wrapper = DefaultClimateActionWrapper.find_dpcode(mock_device, "work_state")
+
+    assert wrapper
+    with pytest.raises(NotImplementedError):
+        wrapper.get_update_commands(mock_device, TuyaClimateAction.HEATING)

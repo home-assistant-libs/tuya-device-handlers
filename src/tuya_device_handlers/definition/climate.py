@@ -35,7 +35,7 @@ from .base import BaseEntityQuirk
 class ClimateDefinition:
     """Definition for a climate entity."""
 
-    action_wrapper: DeviceWrapper[TuyaClimateAction] | None
+    action_wrapper: DeviceWrapper[TuyaClimateAction] | None = None
     current_humidity_wrapper: DeviceWrapper[int] | None
     current_temperature_wrapper: DeviceWrapper[float] | None
     fan_mode_wrapper: DeviceWrapper[str] | None

@@ -195,12 +195,14 @@ class DefaultHVACModeWrapper(DPCodeEnumWrapper[TuyaClimateHVACMode]):
 
 _DEFAULT_DEVICE_WORK_STATE_TO_ACTION = {
     "heating": TuyaClimateAction.HEATING,
+    "keep_warm": TuyaClimateAction.HEATING,
+    "opened": TuyaClimateAction.HEATING,
     "cooling": TuyaClimateAction.COOLING,
+    "defrost": TuyaClimateAction.DEFROSTING,
     "idle": TuyaClimateAction.IDLE,
     "standby": TuyaClimateAction.IDLE,
-    "keep_warm": TuyaClimateAction.IDLE,
+    "closed": TuyaClimateAction.IDLE,
     "off": TuyaClimateAction.OFF,
-    "closed": TuyaClimateAction.OFF,
 }
 
 
@@ -210,13 +212,41 @@ class DefaultClimateActionWrapper(DPCodeEnumWrapper[TuyaClimateAction]):
     Read-only: the work state is reported by the device and cannot be set.
     """
 
+    def __init__(
+        self, dpcode: str, type_information: EnumTypeInformation
+    ) -> None:
+        """Init DefaultClimateActionWrapper."""
+        super().__init__(dpcode, type_information)
+        self.options = list(
+            dict.fromkeys(
+                action
+                for raw in type_information.range
+                if (action := _DEFAULT_DEVICE_WORK_STATE_TO_ACTION.get(raw))
+                is not None
+            )
+        )
+
     def read_device_status(
         self, device: CustomerDevice
     ) -> TuyaClimateAction | None:
-        """Read the device status."""
+        """Read the device status.
+
+        The raw status value is read rather than the enum-validated value:
+        some devices report work states outside their declared range.
+        """
         return _DEFAULT_DEVICE_WORK_STATE_TO_ACTION.get(
-            self._read_dpcode_value(device)
+            device.status.get(self.dpcode)
         )
+
+    def get_update_commands(
+        self, device: CustomerDevice, value: TuyaClimateAction
+    ) -> list[dict[str, Any]]:
+        """Reject writes: the work state is read-only."""
+        msg = (
+            "The climate work state is reported by the device "
+            "and cannot be set."
+        )
+        raise NotImplementedError(msg)
 
 
 class DefaultPresetModeWrapper(DPCodeEnumWrapper):
