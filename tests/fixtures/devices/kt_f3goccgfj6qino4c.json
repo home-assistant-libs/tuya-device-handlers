@@ -1,0 +1,364 @@
+{
+  "endpoint": "https://apigw.tuyaus.com",
+  "mqtt_connected": true,
+  "disabled_by": null,
+  "disabled_polling": false,
+  "name": "AC master",
+  "category": "kt",
+  "product_id": "f3goccgfj6qino4c",
+  "product_name": "Air Conditioner",
+  "online": true,
+  "sub": false,
+  "time_zone": "+02:00",
+  "active_time": "2025-02-23T20:36:25+00:00",
+  "create_time": "2025-02-23T20:36:25+00:00",
+  "update_time": "2025-02-23T20:36:25+00:00",
+  "function": {
+    "switch": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "eco": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "drying": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "cleaning": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "temp_unit_convert": {
+      "type": "Enum",
+      "value": "{\"range\":[\"c\",\"f\"]}"
+    },
+    "temp_set": {
+      "type": "Integer",
+      "value": "{\"unit\":\"℃\",\"min\":160,\"max\":880,\"scale\":1,\"step\":10}"
+    },
+    "mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"auto\",\"cold\",\"wet\",\"heat\",\"fan\"]}"
+    },
+    "heat": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "light": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "sleep": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "health": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "fan_speed_enum": {
+      "type": "Enum",
+      "value": "{\"range\":[\"auto\",\"low\",\"low_mid\",\"mid\",\"mid_high\",\"high\",\"mute\",\"turbo\"]}"
+    }
+  },
+  "local_strategy": {
+    "1": {
+      "value_convert": "default",
+      "status_code": "switch",
+      "config_item": {
+        "statusFormat": "{\"switch\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "f3goccgfj6qino4c"
+      }
+    },
+    "5": {
+      "value_convert": "enum",
+      "status_code": "fan_speed_enum",
+      "config_item": {
+        "statusFormat": "{\"fan_speed_enum\":\"$\"}",
+        "valueDesc": "{\"range\":[\"auto\",\"low\",\"low_mid\",\"mid\",\"mid_high\",\"high\",\"mute\",\"turbo\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {
+          "auto": {
+            "code": "fan_speed_enum",
+            "value": "auto"
+          },
+          "high": {
+            "code": "fan_speed_enum",
+            "value": "high"
+          },
+          "low": {
+            "code": "fan_speed_enum",
+            "value": "low"
+          },
+          "low_mid": {
+            "code": "fan_speed_enum",
+            "value": "level_2"
+          },
+          "mid": {
+            "code": "fan_speed_enum",
+            "value": "middle"
+          },
+          "mid_high": {
+            "code": "fan_speed_enum",
+            "value": "level_4"
+          },
+          "mute": {
+            "code": "fan_speed_enum",
+            "value": "mute"
+          },
+          "turbo": {
+            "code": "fan_speed_enum",
+            "value": "strong"
+          }
+        },
+        "pid": "f3goccgfj6qino4c"
+      }
+    },
+    "8": {
+      "value_convert": "default",
+      "status_code": "eco",
+      "config_item": {
+        "statusFormat": "{\"eco\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "f3goccgfj6qino4c"
+      }
+    },
+    "9": {
+      "value_convert": "default",
+      "status_code": "drying",
+      "config_item": {
+        "statusFormat": "{\"drying\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "f3goccgfj6qino4c"
+      }
+    },
+    "111": {
+      "value_convert": "default",
+      "status_code": "cleaning",
+      "config_item": {
+        "statusFormat": "{\"cleaning\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "f3goccgfj6qino4c"
+      }
+    },
+    "105": {
+      "value_convert": "default",
+      "status_code": "temp_unit_convert",
+      "config_item": {
+        "statusFormat": "{\"temp_unit_convert\":\"$\"}",
+        "valueDesc": "{\"range\":[\"c\",\"f\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "f3goccgfj6qino4c"
+      }
+    },
+    "2": {
+      "value_convert": "default",
+      "status_code": "temp_set",
+      "config_item": {
+        "statusFormat": "{\"temp_set\":\"$\"}",
+        "valueDesc": "{\"unit\":\"℃\",\"min\":160,\"max\":880,\"scale\":1,\"step\":10}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "f3goccgfj6qino4c"
+      }
+    },
+    "3": {
+      "value_convert": "default",
+      "status_code": "temp_current",
+      "config_item": {
+        "statusFormat": "{\"temp_current\":\"$\"}",
+        "valueDesc": "{\"unit\":\"℃\",\"min\":0,\"max\":600,\"scale\":1,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "f3goccgfj6qino4c"
+      }
+    },
+    "4": {
+      "value_convert": "enum",
+      "status_code": "mode",
+      "config_item": {
+        "statusFormat": "{\"mode\":\"$\"}",
+        "valueDesc": "{\"range\":[\"auto\",\"cold\",\"wet\",\"heat\",\"fan\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {
+          "auto": {
+            "code": "mode",
+            "value": "auto"
+          },
+          "cold": {
+            "code": "mode",
+            "value": "cold"
+          },
+          "fan": {
+            "code": "mode",
+            "value": "wind"
+          },
+          "heat": {
+            "code": "mode",
+            "value": "hot"
+          }
+        },
+        "pid": "f3goccgfj6qino4c"
+      }
+    },
+    "12": {
+      "value_convert": "default",
+      "status_code": "heat",
+      "config_item": {
+        "statusFormat": "{\"heat\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "f3goccgfj6qino4c"
+      }
+    },
+    "13": {
+      "value_convert": "default",
+      "status_code": "light",
+      "config_item": {
+        "statusFormat": "{\"light\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "f3goccgfj6qino4c"
+      }
+    },
+    "22": {
+      "value_convert": "default",
+      "status_code": "countdown_left",
+      "config_item": {
+        "statusFormat": "{\"countdown_left\":\"$\"}",
+        "valueDesc": "{\"unit\":\"分钟\",\"min\":0,\"max\":1440,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "f3goccgfj6qino4c"
+      }
+    },
+    "109": {
+      "value_convert": "default",
+      "status_code": "sleep",
+      "config_item": {
+        "statusFormat": "{\"sleep\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "f3goccgfj6qino4c"
+      }
+    },
+    "110": {
+      "value_convert": "default",
+      "status_code": "health",
+      "config_item": {
+        "statusFormat": "{\"health\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "f3goccgfj6qino4c"
+      }
+    }
+  },
+  "status_range": {
+    "switch": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "fan_speed_enum": {
+      "type": "Enum",
+      "value": "{\"range\":[\"auto\",\"low\",\"low_mid\",\"mid\",\"mid_high\",\"high\",\"mute\",\"turbo\"]}",
+      "report_type": null
+    },
+    "eco": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "drying": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "cleaning": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "temp_unit_convert": {
+      "type": "Enum",
+      "value": "{\"range\":[\"c\",\"f\"]}",
+      "report_type": null
+    },
+    "temp_set": {
+      "type": "Integer",
+      "value": "{\"unit\":\"℃\",\"min\":160,\"max\":880,\"scale\":1,\"step\":10}",
+      "report_type": null
+    },
+    "temp_current": {
+      "type": "Integer",
+      "value": "{\"unit\":\"℃\",\"min\":0,\"max\":600,\"scale\":1,\"step\":1}",
+      "report_type": "un_known"
+    },
+    "mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"auto\",\"cold\",\"wet\",\"heat\",\"fan\"]}",
+      "report_type": null
+    },
+    "heat": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "light": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "countdown_left": {
+      "type": "Integer",
+      "value": "{\"unit\":\"分钟\",\"min\":0,\"max\":1440,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "sleep": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "health": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    }
+  },
+  "status": {
+    "switch": true,
+    "temp_set": 240,
+    "temp_current": 250,
+    "mode": "cold",
+    "fan_speed_enum": "low",
+    "eco": false,
+    "drying": false,
+    "heat": false,
+    "light": true,
+    "countdown_left": 0,
+    "temp_unit_convert": "c",
+    "sleep": false,
+    "health": true,
+    "cleaning": false
+  },
+  "set_up": true,
+  "support_local": true,
+  "quirk": null,
+  "warnings": null
+}
