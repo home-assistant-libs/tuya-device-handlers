@@ -37,10 +37,10 @@ def _light_definition(device: CustomerDevice) -> LightDefinition | None:
     )
 
 
-def test_default_encodes_colour_data_on_255_scale(
+def test_quirk_encodes_colour_data_on_1000_scale(
     filled_quirks_registry: QuirksRegistry,
 ) -> None:
-    """Without the quirk, colour_data is packed on the 0-255 fallback."""
+    """Without the quirk colour_data is capped at 255, with it on 0-1000."""
     device = create_device("bzyd_45idzfufidgee7ir.json")
 
     with patch.dict(TUYA_QUIRKS_REGISTRY._quirks, clear=True):
@@ -51,3 +51,36 @@ def test_default_encodes_colour_data_on_255_scale(
     assert wrapper.get_update_commands(device, (120.0, 100.0, 255.0)) == [
         {"code": "colour_data", "value": '{"h": 121, "s": 255, "v": 255}'}
     ]
+
+    filled_quirks_registry.initialise_device_quirk(device)
+
+    definition = _light_definition(device)
+    assert definition is not None
+    wrapper = definition.color_data_wrapper
+    assert isinstance(wrapper, ColorDataJsonWrapper)
+    assert wrapper.get_update_commands(device, (120.0, 100.0, 255.0)) == [
+        {"code": "colour_data", "value": '{"h": 120, "s": 1000, "v": 1000}'}
+    ]
+    assert wrapper.get_update_commands(device, (360.0, 100.0, 255.0)) == [
+        {"code": "colour_data", "value": '{"h": 360, "s": 1000, "v": 1000}'}
+    ]
+
+
+def test_quirk_reads_cloud_status(
+    filled_quirks_registry: QuirksRegistry,
+) -> None:
+    """With the quirk, the cloud's colour_data status reads on HA scales."""
+    device = create_device("bzyd_45idzfufidgee7ir.json")
+
+    filled_quirks_registry.initialise_device_quirk(device)
+    definition = _light_definition(device)
+    assert definition is not None
+    wrapper = definition.color_data_wrapper
+    assert isinstance(wrapper, ColorDataJsonWrapper)
+    assert wrapper.read_device_status(device) == (240.0, 100.0, 255.0)
+
+    device.status["colour_data"] = '{"h": 0, "s": 0, "v": 0}'
+    assert wrapper.read_device_status(device) == (0.0, 0.0, 0.0)
+
+    device.status["colour_data"] = '{"h": 360, "s": 1000, "v": 1000}'
+    assert wrapper.read_device_status(device) == (360.0, 100.0, 255.0)

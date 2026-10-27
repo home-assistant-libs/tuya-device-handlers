@@ -6,12 +6,13 @@ import a shared implementation instead of redefining one locally.
 """
 
 from dataclasses import dataclass
-from typing import Any, ClassVar
+import json
+from typing import Any, ClassVar, Self
 
 from tuya_sharing import CustomerDevice
 
 from .const import ColorTempScale
-from .type_information import IntegerTypeInformation
+from .type_information import IntegerTypeInformation, JsonTypeInformation
 
 
 @dataclass(kw_only=True)
@@ -75,3 +76,41 @@ class ColorTempTypeInformationEx(IntegerTypeInformation):
 
     color_temp_scale: ClassVar[ColorTempScale] = ColorTempScale.MIRED
     """How the raw range maps onto the Kelvin range."""
+
+
+@dataclass(kw_only=True)
+class ColorDataJsonTypeInformationEx(JsonTypeInformation):
+    """JsonTypeInformation declaring the colour_data h/s/v ranges.
+
+    Some devices report ``colour_data`` with saturation and value on a
+    0-1000 scale while their Json datapoint declares no ranges, so
+    ``_get_color_data_json_wrapper`` falls back to a 0-255 scale and every
+    colour preset comes out washed out and dim. Applying this class via
+    ``override_dpid_type_information_cls`` declares the device's actual
+    ranges in the type data, which the colour_data wrapper already reads.
+
+    See https://github.com/home-assistant/core/issues/188634.
+    """
+
+    _TYPE_DATA: ClassVar[str] = json.dumps(
+        {
+            "h": {"min": 0, "max": 360},
+            "s": {"min": 0, "max": 1000},
+            "v": {"min": 0, "max": 1000},
+        }
+    )
+
+    @classmethod
+    def _from_json(
+        cls,
+        dpcode: str,
+        type_data: str,  # noqa: ARG003 - replaced by _TYPE_DATA below
+        *,
+        report_type: str | None,
+    ) -> Self:
+        """Return type information declaring the 0-1000 colour ranges."""
+        return cls(
+            dpcode=dpcode,
+            type_data=cls._TYPE_DATA,
+            report_type=report_type,
+        )
