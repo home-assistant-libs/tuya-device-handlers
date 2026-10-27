@@ -1,0 +1,165 @@
+{
+  "endpoint": "https://apigw.tuyaus.com",
+  "mqtt_connected": true,
+  "disabled_by": null,
+  "disabled_polling": false,
+  "name": "E30",
+  "category": "sd",
+  "product_id": "qv442aix6nlsktmi",
+  "product_name": "E30",
+  "online": true,
+  "sub": false,
+  "time_zone": "-05:00",
+  "active_time": "2026-06-23T02:09:39+00:00",
+  "create_time": "2026-06-23T02:09:39+00:00",
+  "update_time": "2026-06-23T02:09:39+00:00",
+  "function": {
+    "power": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "power_go": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "direction_control": {
+      "type": "Enum",
+      "value": "{\"range\":[\"forward\",\"backward\",\"turn_left\",\"turn_right\",\"stop\"]}"
+    },
+    "suction": {
+      "type": "Enum",
+      "value": "{\"range\":[\"strong\",\"normal\",\"quiet\",\"gentle\",\"closed\"]}"
+    },
+    "seek": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "reset_roll_brush": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "reset_edge_brush": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "reset_filter": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"standby\",\"random\",\"smart\",\"wall_follow\",\"mop\",\"spiral\",\"left_spiral\",\"right_spiral\",\"bow\",\"left_bow\",\"right_bow\",\"partial_bow\",\"chargego\",\"single\",\"zone\",\"pose\",\"point\",\"part\",\"pick_zone\"]}"
+    }
+  },
+  "local_strategy": {},
+  "status_range": {
+    "power": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "power_go": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "direction_control": {
+      "type": "Enum",
+      "value": "{\"range\":[\"forward\",\"backward\",\"turn_left\",\"turn_right\",\"stop\"]}",
+      "report_type": null
+    },
+    "suction": {
+      "type": "Enum",
+      "value": "{\"range\":[\"strong\",\"normal\",\"quiet\",\"gentle\",\"closed\"]}",
+      "report_type": null
+    },
+    "seek": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "status": {
+      "type": "Enum",
+      "value": "{\"range\":[\"standby\",\"smart_clean\",\"wall_clean\",\"spot_clean\",\"mop_clean\",\"goto_charge\",\"charging\",\"charge_done\",\"paused\",\"cleaning\",\"zone_clean\",\"part_clean\",\"pick_zone_clean\",\"goto_pos\",\"pos_arrived\",\"pos_unarrive\",\"sleep\"]}",
+      "report_type": null
+    },
+    "electricity_left": {
+      "type": "Integer",
+      "value": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "clean_record": {
+      "type": "String",
+      "value": "{\"maxlen\":255}",
+      "report_type": null
+    },
+    "clean_time": {
+      "type": "Integer",
+      "value": "{\"unit\":\"min\",\"min\":0,\"max\":9999,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "edge_brush": {
+      "type": "Integer",
+      "value": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "roll_brush": {
+      "type": "Integer",
+      "value": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "filter": {
+      "type": "Integer",
+      "value": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "reset_roll_brush": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "reset_edge_brush": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "reset_filter": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "clean_area": {
+      "type": "Integer",
+      "value": "{\"unit\":\"㎡\",\"min\":0,\"max\":9999,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"standby\",\"random\",\"smart\",\"wall_follow\",\"mop\",\"spiral\",\"left_spiral\",\"right_spiral\",\"bow\",\"left_bow\",\"right_bow\",\"partial_bow\",\"chargego\",\"single\",\"zone\",\"pose\",\"point\",\"part\",\"pick_zone\"]}",
+      "report_type": null
+    }
+  },
+  "status": {
+    "power_go": false,
+    "mode": "standby",
+    "direction_control": "stop",
+    "status": "Charge_Comp",
+    "electricity_left": 100,
+    "edge_brush": 62,
+    "roll_brush": 81,
+    "filter": 62,
+    "reset_edge_brush": false,
+    "reset_roll_brush": false,
+    "reset_filter": false,
+    "seek": false,
+    "clean_record": "20260707091803003623272",
+    "clean_area": 365,
+    "clean_time": 30
+  },
+  "set_up": true,
+  "support_local": false,
+  "quirk": null,
+  "warnings": [
+    "enum_out_range|status|Charge_Comp"
+  ]
+}
