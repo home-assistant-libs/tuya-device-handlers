@@ -311,7 +311,5 @@
   "set_up": true,
   "support_local": true,
   "quirk": null,
-  "warnings": [
-    "enum_out_range|status|Random_Clean"
-  ]
+  "warnings": ["enum_out_range|status|Random_Clean"]
 }
