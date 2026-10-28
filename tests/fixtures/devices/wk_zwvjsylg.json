@@ -184,8 +184,5 @@
   "set_up": true,
   "support_local": true,
   "quirk": null,
-  "warnings": [
-    "enum_out_range|mode|comfort",
-    "enum_out_range|mode|off"
-  ]
+  "warnings": ["enum_out_range|mode|comfort", "enum_out_range|mode|off"]
 }
