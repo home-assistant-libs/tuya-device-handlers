@@ -58,6 +58,8 @@ python-version = "3.13"
 
 [tool.codespell]
 skip = "node_modules,uv.lock"
+# Firmware spelling used by fs_icihqzrdrvywnryy
+ignore-words-list = "temprature"
 
 [tool.pylint.MASTER]
 ignore = ["tests"]
