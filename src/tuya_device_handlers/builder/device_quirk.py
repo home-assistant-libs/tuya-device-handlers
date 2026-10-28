@@ -64,11 +64,25 @@ class _LocalConvertStrategy(_QuirkEntry):
             device.product_id,
             device.status_range.get(self.dpcode),
         )
+        # The initial status comes from the cloud, with the same raw values
+        # as the device, but the SDK only converts later local updates
+        if self.enum_mapping_map and (
+            mapping := self.enum_mapping_map.get(
+                str(device.status.get(self.dpcode))
+            )
+        ):
+            device.status[self.dpcode] = mapping["value"]
 
     def to_local_strategy(
         self, product_id: str, status_range: DeviceStatusRange | None
     ) -> dict[str, Any]:
         """Convert to LocalStrategy."""
+        enum_mapping_map = dict(self.enum_mapping_map or {})
+        if status_range and status_range.type == "Enum":
+            # The SDK converts any raw value missing from the mapping to the
+            # first value of the range, so map unchanged values to themselves
+            for value in json.loads(status_range.values).get("range", []):
+                enum_mapping_map.setdefault(str(value), {"value": value})
         return {
             "value_convert": self.value_convert,
             "status_code": self.dpcode,
@@ -76,7 +90,7 @@ class _LocalConvertStrategy(_QuirkEntry):
                 "statusFormat": json.dumps({self.dpcode: "$"}),
                 "valueDesc": status_range.values if status_range else "",
                 "valueType": status_range.type if status_range else "",
-                "enumMappingMap": self.enum_mapping_map or {},
+                "enumMappingMap": enum_mapping_map,
                 "pid": product_id,
             },
         }
@@ -426,7 +440,12 @@ class DeviceQuirk(DeviceQuirkProtocol):
         enum_mapping_map: dict[Any, Any],
         apply_when: Callable[[CustomerDevice], bool] | None = None,
     ) -> Self:
-        """Override local strategy for a datapoint."""
+        """Override local strategy for a datapoint.
+
+        `enum_mapping_map` only needs the raw values that differ: values of
+        an Enum range are mapped to themselves. The mapping is also applied
+        to the initial status, as the cloud reports the same raw values.
+        """
         self._quirk_entries.append(
             _LocalConvertStrategy(
                 dpid=dpid,
