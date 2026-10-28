@@ -206,7 +206,5 @@
   "set_up": true,
   "support_local": true,
   "quirk": null,
-  "warnings": [
-    "enum_out_range|mode|temprature"
-  ]
+  "warnings": ["enum_out_range|mode|temprature"]
 }
