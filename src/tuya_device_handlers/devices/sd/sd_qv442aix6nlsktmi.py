@@ -2,7 +2,7 @@
 
 The cloud database does not list `Charge_Comp` for the `status`
 datapoint, but the device reports it, so it is rejected as an invalid
-ENUM value. Redeclare the full range so Home Assistant accepts it.
+ENUM value. Redeclare the full range so the value is no longer rejected.
 
 Upstream issue: https://github.com/home-assistant-libs/tuya-device-handlers/issues/402
 """

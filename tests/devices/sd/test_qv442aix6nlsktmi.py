@@ -12,18 +12,14 @@ def test_quirk(
     device = create_device("sd_qv442aix6nlsktmi.json")
     assert device.status["status"] == "Charge_Comp"
 
-    wrapper = DPCodeEnumWrapper.find_dpcode(
-        device, "status", prefer_function=True
-    )
+    wrapper = DPCodeEnumWrapper.find_dpcode(device, "status")
     assert wrapper is not None
     assert "Charge_Comp" not in wrapper.options
     assert wrapper.read_device_status(device) is None
 
     filled_quirks_registry.initialise_device_quirk(device)
 
-    wrapper = DPCodeEnumWrapper.find_dpcode(
-        device, "status", prefer_function=True
-    )
+    wrapper = DPCodeEnumWrapper.find_dpcode(device, "status")
     assert wrapper is not None
     assert "Charge_Comp" in wrapper.options
     assert wrapper.read_device_status(device) == "Charge_Comp"

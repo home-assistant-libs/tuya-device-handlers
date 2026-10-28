@@ -159,7 +159,5 @@
   "set_up": true,
   "support_local": false,
   "quirk": null,
-  "warnings": [
-    "enum_out_range|status|Charge_Comp"
-  ]
+  "warnings": ["enum_out_range|status|Charge_Comp"]
 }
