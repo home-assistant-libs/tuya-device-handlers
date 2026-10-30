@@ -180,29 +180,20 @@ from tuya_device_handlers.const import DPMode
             # values that already match (auto/cold/wet) need no entry
         },
     )
-    # ...and translate the initial status, which comes from the cloud.
-    .map_dpid_initial_status_values(
-        dpid=4,
-        dpcode="mode",
-        status_mapping={"hot": "heat", "wind": "fan"},
-    )
     .register(TUYA_QUIRKS_REGISTRY)
 )
 ```
 
 Notes for the mapping variant:
 
-- `set_dpid_strategy_to_enum` is applied to values the device pushes locally
-  (over MQTT), so the device must be a local one — you'll see
+- The mapping is applied to the initial status and to values the device
+  pushes locally (over MQTT), so the device must be a local one — you'll see
   `"support_local": true` in the diagnostics. If in doubt, capture the raw
   values from the warning logs and ask in the issue; a maintainer can confirm
   which variant fits.
 - Only map the raw values that differ; values that already match a range entry
   don't need an entry.
-- The status loaded from the cloud at startup is not converted by
-  `set_dpid_strategy_to_enum`, so map it with `map_dpid_initial_status_values`
-  (again, only the raw values that differ).
-- Keep the file to a **single** `DeviceQuirk()...register(...)` block (the
+- Keep the file to a **single** `DeviceQuirk()...register(...)` block (the two
   builder calls above are part of one chain).
 
 > Not sure which variant you have? Attach your diagnostics to the issue and say
