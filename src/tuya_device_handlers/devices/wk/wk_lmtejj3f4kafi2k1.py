@@ -1,3 +1,10 @@
+""" 
+The thermostat displays current room temperature in Smart Life, but Home Assistant’s climate entity reported current_temperature: null. 
+
+Tuya’s declared status range omitted DP 105. Debug logs showed the device actively reporting.
+
+"""
+
 from tuya_device_handlers import TUYA_QUIRKS_REGISTRY
 from tuya_device_handlers.builder import DeviceQuirk
 from tuya_device_handlers.const import DPMode
