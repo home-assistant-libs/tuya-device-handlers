@@ -69,6 +69,7 @@ class _LocalConvertStrategy(_QuirkEntry):
         self, product_id: str, status_range: DeviceStatusRange | None
     ) -> dict[str, Any]:
         """Convert to LocalStrategy."""
+        # Copy, as the quirk is applied to every matching device
         enum_mapping_map = dict(self.enum_mapping_map or {})
         if status_range and status_range.type == "Enum":
             # The SDK converts any raw value missing from the mapping to the
