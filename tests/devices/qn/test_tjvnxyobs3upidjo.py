@@ -7,6 +7,7 @@ from tuya_device_handlers.definition.climate import (
     get_default_definition as get_climate_definition,
 )
 from tuya_device_handlers.helpers.homeassistant import (
+    TuyaClimateAction,
     TuyaClimateHVACMode,
     TuyaUnitOfTemperature,
 )
@@ -52,3 +53,20 @@ def test_heater_exposes_off_hvac_mode(
     assert definition.hvac_mode_wrapper.options == [TuyaClimateHVACMode.OFF]
     assert definition.preset_wrapper is not None
     assert definition.preset_wrapper.options == ["eco"]
+
+
+def test_heater_reports_idle_action() -> None:
+    """Test work_state is read even though it is outside the declared range.
+
+    The fixture declares `work_state` range as ["heating"] but the device
+    reports "idle"; the action wrapper must still report IDLE.
+    """
+    device = create_device("qn_tjvnxyobs3upidjo.json")
+
+    definition = get_climate_definition(device, TuyaUnitOfTemperature.CELSIUS)
+
+    assert definition.action_wrapper is not None
+    assert (
+        definition.action_wrapper.read_device_status(device)
+        == TuyaClimateAction.IDLE
+    )
