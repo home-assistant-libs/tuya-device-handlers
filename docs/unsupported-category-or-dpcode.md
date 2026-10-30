@@ -21,7 +21,7 @@ only do that for a **device category** and a **DPCode** it knows about.
 | Device shows up as the wrong kind of thing (thermostat instead of a valve, …)                                        | **Here** — write a quirk                                                                   |
 | A datapoint **is in the diagnostics** but never becomes an entity                                                    | [home-assistant/core](https://github.com/home-assistant/core)                              |
 | Device creates **no entities at all** and its category is unknown to core                                            | [home-assistant/core](https://github.com/home-assistant/core)                              |
-| Entities show the right state, but **commands are rejected** with error `2008`                                       | Neither — see [Commands rejected by the cloud](#commands-rejected-by-the-cloud-error-2008) |
+| Entities show the right state, but the **cloud rejects commands** with error `2008`                                  | Neither — see [Commands rejected by the cloud](#commands-rejected-by-the-cloud-error-2008) |
 
 The discriminator for a missing entity is simple:
 
@@ -151,14 +151,18 @@ for setting up the environment and submitting the PR.
 
 A quirk can add a datapoint the cloud doesn't list, and Home Assistant then
 reads it from the device's reports. Commands are different: Home Assistant
-sends them through the Tuya cloud, by DPCode, and the cloud checks each one
-against the product's own instruction set. A quirk only changes Home
-Assistant's local copy of the device's definition, so a code missing from the
-cloud's `function` is still rejected with error `2008`.
+sends them through the Tuya cloud, by DPCode, and the cloud decides whether to
+accept them. A quirk only changes Home Assistant's local copy of the device's
+definition, and has no influence on that decision.
+
+We don't know the exact rules the cloud applies. Commands for datapoints or
+ENUM values missing from the cloud's definition (`original_function` in
+diagnostics taken with a quirk active) are typically rejected with error
+`2008`, but the cloud may also reject commands for datapoints it does list.
 
 Neither this library nor core can work around it: commands can't be sent by
 dpId, and the integration has no local control. Only the manufacturer (or
-Tuya support) can fix the product's instruction set in the Tuya cloud.
+Tuya support) can change what the Tuya cloud accepts.
 
 A quirk is still worth contributing for the readings. Declare the datapoints
 that are meant to be writable as `DPMode.READ | DPMode.WRITE` anyway, and
