@@ -69,6 +69,13 @@ class _LocalConvertStrategy(_QuirkEntry):
         self, product_id: str, status_range: DeviceStatusRange | None
     ) -> dict[str, Any]:
         """Convert to LocalStrategy."""
+        # Copy, as the quirk is applied to every matching device
+        enum_mapping_map = dict(self.enum_mapping_map or {})
+        if status_range and status_range.type == "Enum":
+            # The SDK converts any raw value missing from the mapping to the
+            # first value of the range, so map unchanged values to themselves
+            for value in json.loads(status_range.values).get("range", []):
+                enum_mapping_map.setdefault(str(value), {"value": value})
         return {
             "value_convert": self.value_convert,
             "status_code": self.dpcode,
@@ -76,7 +83,7 @@ class _LocalConvertStrategy(_QuirkEntry):
                 "statusFormat": json.dumps({self.dpcode: "$"}),
                 "valueDesc": status_range.values if status_range else "",
                 "valueType": status_range.type if status_range else "",
-                "enumMappingMap": self.enum_mapping_map or {},
+                "enumMappingMap": enum_mapping_map,
                 "pid": product_id,
             },
         }
@@ -426,7 +433,12 @@ class DeviceQuirk(DeviceQuirkProtocol):
         enum_mapping_map: dict[Any, Any],
         apply_when: Callable[[CustomerDevice], bool] | None = None,
     ) -> Self:
-        """Override local strategy for a datapoint."""
+        """Override local strategy for a datapoint.
+
+        `enum_mapping_map` only needs the raw values that differ: values of
+        an Enum range are mapped to themselves. The mapping is not applied
+        to the initial status, see `map_dpid_initial_status_values`.
+        """
         self._quirk_entries.append(
             _LocalConvertStrategy(
                 dpid=dpid,

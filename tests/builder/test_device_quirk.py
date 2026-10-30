@@ -324,6 +324,35 @@ def test_quirk_entries_are_applied_in_builder_call_order(
     assert strategy["config_item"]["valueType"] == DPType.BOOLEAN.value
 
 
+def test_initialise_device_enum_strategy_maps_whole_range(
+    mock_device: CustomerDevice,
+) -> None:
+    """Enum range values without a mapping are mapped to themselves."""
+    mock_device.support_local = True
+    mock_device.local_strategy = {}
+    mock_device.status_range["mode"] = DeviceStatusRange(
+        code="mode",
+        type="Enum",
+        values='{"range":["auto","cold","heat","fan"]}',
+    )
+    quirk = DeviceQuirk().set_dpid_strategy_to_enum(
+        dpid=4,
+        dpcode="mode",
+        enum_mapping_map={"hot": "heat", "wind": "fan", "fan": "auto"},
+    )
+    quirk.initialise_device(mock_device)
+
+    assert mock_device.local_strategy[4]["config_item"]["enumMappingMap"] == {
+        "hot": {"value": "heat"},
+        "wind": {"value": "fan"},
+        # Explicit mappings take precedence over the range values
+        "fan": {"value": "auto"},
+        "auto": {"value": "auto"},
+        "cold": {"value": "cold"},
+        "heat": {"value": "heat"},
+    }
+
+
 def test_initialise_device_remove_dpid_strategy(
     mock_device: CustomerDevice,
 ) -> None:
