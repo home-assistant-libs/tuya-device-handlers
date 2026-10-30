@@ -60,7 +60,7 @@ def _snapshot_sensor(
 @pytest.mark.parametrize(
     ("wrapper_type", "dpcode", "status_range", "status"),
     [
-        (
+        pytest.param(
             WindDirectionEnumWrapper,
             "demo_enum",
             (
@@ -71,6 +71,7 @@ def _snapshot_sensor(
                 '"north_north_west"]}'
             ),
             "north_north_east",
+            id="WindDirectionEnumWrapper-demo_enum-north_north_east",
         ),
         (
             DeltaIntegerWrapper,
@@ -208,7 +209,7 @@ def test_sensor_wrapper(
 @pytest.mark.parametrize(
     ("wrapper_type", "dpcode", "status_range", "status"),
     [
-        (
+        pytest.param(
             WindDirectionEnumWrapper,
             "demo_enum",
             (
@@ -219,6 +220,7 @@ def test_sensor_wrapper(
                 '"north_north_west"]}'
             ),
             "north_northh_east",
+            id="WindDirectionEnumWrapper-demo_enum-north_northh_east",
         ),
         (
             ElectricityCurrentRawWrapper,

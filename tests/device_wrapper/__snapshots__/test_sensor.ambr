@@ -162,7 +162,7 @@
     'suggested_unit': None,
   })
 # ---
-# name: test_sensor_wrapper[WindDirectionEnumWrapper-demo_enum-{"range": ["north", "north_north_east", "north_east","east_north_east","east","east_south_east","south_east","south_south_east","south", "south_south_west", "south_west", "west_south_west", "west", "west_north_west", "north_west", "north_north_west"]}-north_north_east]
+# name: test_sensor_wrapper[WindDirectionEnumWrapper-demo_enum-north_north_east]
   dict({
     'native_unit': None,
     'options': list([
