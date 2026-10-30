@@ -170,15 +170,24 @@ from tuya_device_handlers.const import DPMode
         dpmode=DPMode.READ | DPMode.WRITE,
         enum_range=["auto", "cold", "wet", "heat", "fan"],
     )
-    # ...then translate the raw codes the device actually sends.
+    # ...then translate EVERY raw value the device sends, including the
+    # ones that already match.
     .set_dpid_strategy_to_enum(
         dpid=4,
         dpcode="mode",
         enum_mapping_map={
-            "wind": "fan",  # raw `wind` -> standard `fan`
+            "auto": "auto",
+            "cold": "cold",
+            "wet": "wet",
             "hot": "heat",  # raw `hot`  -> standard `heat`
-            # values that already match (auto/cold/wet) need no entry
+            "wind": "fan",  # raw `wind` -> standard `fan`
         },
+    )
+    # ...and translate the initial status, which comes from the cloud.
+    .map_dpid_initial_status_values(
+        dpid=4,
+        dpcode="mode",
+        status_mapping={"hot": "heat", "wind": "fan"},
     )
     .register(TUYA_QUIRKS_REGISTRY)
 )
@@ -186,13 +195,18 @@ from tuya_device_handlers.const import DPMode
 
 Notes for the mapping variant:
 
-- The mapping is applied to values the device pushes locally (over MQTT), so
-  the device must be a local one — you'll see `"support_local": true` in the
-  diagnostics. If in doubt, capture the raw values from the warning logs and
-  ask in the issue; a maintainer can confirm which variant fits.
-- Only map the raw values that differ; values that already match a range entry
-  don't need an entry.
-- Keep the file to a **single** `DeviceQuirk()...register(...)` block (the two
+- `set_dpid_strategy_to_enum` is applied to values the device pushes locally
+  (over MQTT), so the device must be a local one — you'll see
+  `"support_local": true` in the diagnostics. If in doubt, capture the raw
+  values from the warning logs and ask in the issue; a maintainer can confirm
+  which variant fits.
+- `enum_mapping_map` must list **every** raw value, including those that
+  already match a range entry: a raw value missing from the map is converted
+  to the first value of the range.
+- The status loaded from the cloud at startup is not converted by
+  `set_dpid_strategy_to_enum`, so `map_dpid_initial_status_values` only needs
+  the raw values that differ.
+- Keep the file to a **single** `DeviceQuirk()...register(...)` block (the
   builder calls above are part of one chain).
 
 > Not sure which variant you have? Attach your diagnostics to the issue and say
