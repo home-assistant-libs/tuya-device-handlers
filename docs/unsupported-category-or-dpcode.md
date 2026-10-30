@@ -154,11 +154,7 @@ reads it from the device's reports. Commands are different: Home Assistant
 sends them through the Tuya cloud, by DPCode, and the cloud checks each one
 against the product's own instruction set. A quirk only changes Home
 Assistant's local copy of the device's definition, so a code missing from the
-cloud's `function` is still rejected:
-
-```
-response before decrypt ret = {'code': '2008', 'msg': '2008', ..., 'success': False}
-```
+cloud's `function` is still rejected with error `2008`.
 
 Neither this library nor core can work around it: commands can't be sent by
 dpId, and the integration has no local control. Only the manufacturer (or
