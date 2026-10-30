@@ -14,6 +14,7 @@ description: How to add, test and review a Tuya device quirk in this repository,
 ## Rules
 
 - A quirk can rewrite datapoints (`function`, `status_range`, `local_strategy`) and override the device category (`.override_category(...)`, e.g. `devices/tdq/tdq_a9fn0xcsckjoqpnd.py`). If the category and datapoints are already correct in the diagnostics but an entity is never created, the fix belongs in Home Assistant Core, not here (see [docs/unsupported-category-or-dpcode.md](../../../docs/unsupported-category-or-dpcode.md)).
+- Commands are sent through the Tuya cloud by DPCode, and the cloud rejects codes missing from the product's original `function` (error `2008`). A quirk can make such a datapoint readable, but not writable. Still declare datapoints that are meant to be writable as `DPMode.READ | DPMode.WRITE`.
 - `applies_to(product_id=...)` must use the product id exactly as it appears in the diagnostics, including case: the registry lookup is case-sensitive. Only the quirk filename is lowercased.
 - Each quirk file contains exactly one `DeviceQuirk()...register(TUYA_QUIRKS_REGISTRY)` chain at module top level. Provenance (`quirk_file`/`quirk_file_line`) and custom-quirk reload depend on it.
 - Quirk modules have a module docstring that explains what is wrong with the device and links the upstream issue when there is one.

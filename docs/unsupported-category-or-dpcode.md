@@ -15,12 +15,13 @@ A quirk in this repository can only rewrite a device's **datapoints** — the
 Turning a datapoint into a Home Assistant entity is core's job, and core can
 only do that for a **device category** and a **DPCode** it knows about.
 
-| Symptom                                                                                                              | Where the fix belongs                                         |
-| -------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
-| A datapoint is **absent from the diagnostics**, or present with the wrong type, unit, scale, or a missing ENUM value | **Here** — write a quirk                                      |
-| Device shows up as the wrong kind of thing (thermostat instead of a valve, …)                                        | **Here** — write a quirk                                      |
-| A datapoint **is in the diagnostics** but never becomes an entity                                                    | [home-assistant/core](https://github.com/home-assistant/core) |
-| Device creates **no entities at all** and its category is unknown to core                                            | [home-assistant/core](https://github.com/home-assistant/core) |
+| Symptom                                                                                                              | Where the fix belongs                                                                      |
+| -------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| A datapoint is **absent from the diagnostics**, or present with the wrong type, unit, scale, or a missing ENUM value | **Here** — write a quirk                                                                   |
+| Device shows up as the wrong kind of thing (thermostat instead of a valve, …)                                        | **Here** — write a quirk                                                                   |
+| A datapoint **is in the diagnostics** but never becomes an entity                                                    | [home-assistant/core](https://github.com/home-assistant/core)                              |
+| Device creates **no entities at all** and its category is unknown to core                                            | [home-assistant/core](https://github.com/home-assistant/core)                              |
+| Entities show the right state, but **commands are rejected** with error `2008`                                       | Neither — see [Commands rejected by the cloud](#commands-rejected-by-the-cloud-error-2008) |
 
 The discriminator for a missing entity is simple:
 
@@ -145,6 +146,27 @@ Attach your diagnostics to the pull request — core's Tuya tests are snapshot
 based and reviewers will want the real payload. Follow the
 [Home Assistant developer documentation](https://developers.home-assistant.io/docs/development_index)
 for setting up the environment and submitting the PR.
+
+## Commands rejected by the cloud (error `2008`)
+
+A quirk can add a datapoint the cloud doesn't list, and Home Assistant then
+reads it from the device's reports. Commands are different: Home Assistant
+sends them through the Tuya cloud, by DPCode, and the cloud checks each one
+against the product's own instruction set. A quirk only changes Home
+Assistant's local copy of the device's definition, so a code missing from the
+cloud's `function` is still rejected:
+
+```
+response before decrypt ret = {'code': '2008', 'msg': '2008', ..., 'success': False}
+```
+
+Neither this library nor core can work around it: commands can't be sent by
+dpId, and the integration has no local control. Only the manufacturer (or
+Tuya support) can fix the product's instruction set in the Tuya cloud.
+
+A quirk is still worth contributing for the readings. Declare the datapoints
+that are meant to be writable as `DPMode.READ | DPMode.WRITE` anyway, and
+mention the limitation in the quirk's docstring.
 
 ## What to do with your issue here
 
