@@ -71,121 +71,140 @@ def _snapshot_sensor(
                 '"north_north_west"]}'
             ),
             "north_north_east",
-            id="WindDirectionEnumWrapper-demo_enum-north_north_east",
+            id="WindDirectionEnumWrapper",
         ),
-        (
+        pytest.param(
             DeltaIntegerWrapper,
             "demo_integer_sum",
             '{"unit": "%","min": 0,"max": 1000,"scale": 1,"step": 1}',
             123,
+            id="DeltaIntegerWrapper",
         ),
-        (
+        pytest.param(
             ElectricityCurrentJsonWrapper,
             "demo_json",
             "{}",
             '{"electricCurrent": 599.552, "power": 6.912, "voltage": 52.7}',
+            id="ElectricityCurrentJsonWrapper",
         ),
-        (
+        pytest.param(
             ElectricityPowerJsonWrapper,
             "demo_json",
             "{}",
             '{"electricCurrent": 599.552, "power": 6.912, "voltage": 52.7}',
+            id="ElectricityPowerJsonWrapper",
         ),
-        (
+        pytest.param(
             ElectricityVoltageJsonWrapper,
             "demo_json",
             "{}",
             '{"electricCurrent": 599.552, "power": 6.912, "voltage": 52.7}',
+            id="ElectricityVoltageJsonWrapper",
         ),
-        (
+        pytest.param(
             ElectricityReactivePowerJsonWrapper,
             "demo_json",
             "{}",
             '{"reactivePower": 0.5, "apparentPower": 0.9, "powerFactor": 0.9}',
+            id="ElectricityReactivePowerJsonWrapper",
         ),
-        (
+        pytest.param(
             ElectricityApparentPowerJsonWrapper,
             "demo_json",
             "{}",
             '{"reactivePower": 0.5, "apparentPower": 0.9, "powerFactor": 0.9}',
+            id="ElectricityApparentPowerJsonWrapper",
         ),
-        (
+        pytest.param(
             ElectricityPowerFactorJsonWrapper,
             "demo_json",
             "{}",
             '{"reactivePower": 0.5, "apparentPower": 0.9, "powerFactor": 0.9}',
+            id="ElectricityPowerFactorJsonWrapper",
         ),
-        (
+        pytest.param(
             ElectricityCurrentRawWrapper,
             "demo_raw",
             "{}",
             "Ag8JJQAASAAACAAAAAAACGME",
+            id="ElectricityCurrentRawWrapper",
         ),
-        (
+        pytest.param(
             ElectricityPowerRawWrapper,
             "demo_raw",
             "{}",
             "Ag8JJQAASAAACAAAAAAACGME",
+            id="ElectricityPowerRawWrapper",
         ),
-        (
+        pytest.param(
             ElectricityVoltageRawWrapper,
             "demo_raw",
             "{}",
             "Ag8JJQAASAAACAAAAAAACGME",
+            id="ElectricityVoltageRawWrapper",
         ),
-        (
+        pytest.param(
             ElectricityReactivePowerRawWrapper,
             "demo_raw",
             "{}",
             "Ag8JJQAASAAACAAAAAAACGME",
+            id="ElectricityReactivePowerRawWrapper",
         ),
-        (
+        pytest.param(
             ElectricityApparentPowerRawWrapper,
             "demo_raw",
             "{}",
             "Ag8JJQAASAAACAAAAAAACGME",
+            id="ElectricityApparentPowerRawWrapper",
         ),
-        (
+        pytest.param(
             ElectricityPowerFactorRawWrapper,
             "demo_raw",
             "{}",
             "Ag8JJQAASAAACAAAAAAACGME",
+            id="ElectricityPowerFactorRawWrapper",
         ),
-        (
+        pytest.param(
             ElectricityCurrentHexStringWrapper,
             "demo_string",
             "{}",
             "020F09010027100008FC0001F400092E6200",
+            id="ElectricityCurrentHexStringWrapper",
         ),
-        (
+        pytest.param(
             ElectricityPowerHexStringWrapper,
             "demo_string",
             "{}",
             "020F09010027100008FC0001F400092E6200",
+            id="ElectricityPowerHexStringWrapper",
         ),
-        (
+        pytest.param(
             ElectricityVoltageHexStringWrapper,
             "demo_string",
             "{}",
             "020F09010027100008FC0001F400092E6200",
+            id="ElectricityVoltageHexStringWrapper",
         ),
-        (
+        pytest.param(
             ElectricityReactivePowerHexStringWrapper,
             "demo_string",
             "{}",
             "020F09010027100008FC0001F400092E6200",
+            id="ElectricityReactivePowerHexStringWrapper",
         ),
-        (
+        pytest.param(
             ElectricityApparentPowerHexStringWrapper,
             "demo_string",
             "{}",
             "020F09010027100008FC0001F400092E6200",
+            id="ElectricityApparentPowerHexStringWrapper",
         ),
-        (
+        pytest.param(
             ElectricityPowerFactorHexStringWrapper,
             "demo_string",
             "{}",
             "020F09010027100008FC0001F400092E6200",
+            id="ElectricityPowerFactorHexStringWrapper",
         ),
     ],
 )
@@ -220,43 +239,49 @@ def test_sensor_wrapper(
                 '"north_north_west"]}'
             ),
             "north_northh_east",
-            id="WindDirectionEnumWrapper-demo_enum-north_northh_east",
+            id="WindDirectionEnumWrapper",
         ),
-        (
+        pytest.param(
             ElectricityCurrentRawWrapper,
             "demo_raw",
             "{}",
             "",
+            id="ElectricityCurrentRawWrapper",
         ),
-        (
+        pytest.param(
             ElectricityPowerRawWrapper,
             "demo_raw",
             "{}",
             "",
+            id="ElectricityPowerRawWrapper",
         ),
-        (
+        pytest.param(
             ElectricityVoltageRawWrapper,
             "demo_raw",
             "{}",
             "",
+            id="ElectricityVoltageRawWrapper",
         ),
-        (
+        pytest.param(
             ElectricityReactivePowerRawWrapper,
             "demo_raw",
             "{}",
             "",
+            id="ElectricityReactivePowerRawWrapper",
         ),
-        (
+        pytest.param(
             ElectricityApparentPowerRawWrapper,
             "demo_raw",
             "{}",
             "",
+            id="ElectricityApparentPowerRawWrapper",
         ),
-        (
+        pytest.param(
             ElectricityPowerFactorRawWrapper,
             "demo_raw",
             "{}",
             "",
+            id="ElectricityPowerFactorRawWrapper",
         ),
     ],
 )
