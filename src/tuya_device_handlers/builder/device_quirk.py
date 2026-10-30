@@ -64,14 +64,6 @@ class _LocalConvertStrategy(_QuirkEntry):
             device.product_id,
             device.status_range.get(self.dpcode),
         )
-        # The initial status comes from the cloud, with the same raw values
-        # as the device, but the SDK only converts later local updates
-        if self.enum_mapping_map and (
-            mapping := self.enum_mapping_map.get(
-                str(device.status.get(self.dpcode))
-            )
-        ):
-            device.status[self.dpcode] = mapping["value"]
 
     def to_local_strategy(
         self, product_id: str, status_range: DeviceStatusRange | None
@@ -443,8 +435,8 @@ class DeviceQuirk(DeviceQuirkProtocol):
         """Override local strategy for a datapoint.
 
         `enum_mapping_map` only needs the raw values that differ: values of
-        an Enum range are mapped to themselves. The mapping is also applied
-        to the initial status, as the cloud reports the same raw values.
+        an Enum range are mapped to themselves. The mapping is not applied
+        to the initial status, see `map_dpid_initial_status_values`.
         """
         self._quirk_entries.append(
             _LocalConvertStrategy(
