@@ -353,6 +353,37 @@ def test_initialise_device_enum_strategy_maps_whole_range(
     }
 
 
+@pytest.mark.parametrize(
+    ("support_local", "initial_status", "expected_status"),
+    [
+        (True, "hot", "heat"),
+        (True, "cold", "cold"),
+        (True, None, None),
+        (False, "hot", "hot"),
+    ],
+)
+def test_initialise_device_enum_strategy_maps_initial_status(
+    mock_device: CustomerDevice,
+    support_local: bool,
+    initial_status: str | None,
+    expected_status: str | None,
+) -> None:
+    """The enum mapping is also applied to the initial status."""
+    mock_device.support_local = support_local
+    mock_device.local_strategy = {}
+    mock_device.status_range["mode"] = DeviceStatusRange(
+        code="mode", type="Enum", values='{"range":["cold","heat"]}'
+    )
+    if initial_status is not None:
+        mock_device.status["mode"] = initial_status
+    quirk = DeviceQuirk().set_dpid_strategy_to_enum(
+        dpid=4, dpcode="mode", enum_mapping_map={"hot": "heat"}
+    )
+    quirk.initialise_device(mock_device)
+
+    assert mock_device.status.get("mode") == expected_status
+
+
 def test_initialise_device_remove_dpid_strategy(
     mock_device: CustomerDevice,
 ) -> None:
