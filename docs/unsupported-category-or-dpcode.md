@@ -152,8 +152,8 @@ for setting up the environment and submitting the PR.
 A quirk can add a datapoint the cloud doesn't list, and Home Assistant then
 reads it from the device's reports. Commands are different: Home Assistant
 sends them through the Tuya cloud, by DPCode, and the cloud decides whether to
-accept them. A quirk only changes Home Assistant's local copy of the device's
-definition, and has no influence on that decision.
+accept them. A quirk can change what Home Assistant sends (which code, which
+values), but not whether the cloud accepts it.
 
 We don't know the exact rules the cloud applies. Commands for datapoints or
 ENUM values missing from the cloud's definition (`original_function` in
