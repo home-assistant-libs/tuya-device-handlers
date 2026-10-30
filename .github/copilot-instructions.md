@@ -76,7 +76,7 @@ HA Core imports specific symbols from specific paths. Treat these as a stable co
 
 ## Tooling
 
-uv. Python 3.13 and 3.14 are both supported (CI runs both).
+uv. Python 3.13, 3.14 and 3.15 are supported (CI runs all three).
 
 - `uv sync` — set up dev environment.
 - `uv run pytest --cov tuya_device_handlers tests` — full test suite with coverage.
