@@ -1,4 +1,10 @@
-"""Quirk for PC311_W_TY dual-clamp energy meter (vfwxetkavqrvg02u)."""
+"""Quirk for PC311_W_TY dual-clamp energy meter (vfwxetkavqrvg02u).
+
+The cloud schema only lists the total datapoints. Declare the missing
+per-circuit and frequency datapoints (dpids 101-112 and 117).
+
+See https://github.com/home-assistant-libs/tuya-device-handlers/issues/626
+"""
 
 from tuya_device_handlers import TUYA_QUIRKS_REGISTRY
 from tuya_device_handlers.builder import DeviceQuirk
