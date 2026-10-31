@@ -1,0 +1,147 @@
+"""Quirk for PC311_W_TY dual-clamp energy meter (vfwxetkavqrvg02u).
+
+The cloud schema only lists the total datapoints. Declare the missing
+per-circuit and frequency datapoints (dpids 101-112 and 117).
+
+See https://github.com/home-assistant-libs/tuya-device-handlers/issues/626
+"""
+
+from tuya_device_handlers import TUYA_QUIRKS_REGISTRY
+from tuya_device_handlers.builder import DeviceQuirk
+from tuya_device_handlers.const import DPMode
+
+(
+    DeviceQuirk()
+    .applies_to(product_id="vfwxetkavqrvg02u")
+    .add_dpid_integer(
+        dpid=101,
+        dpcode="total_energy1",
+        dpmode=DPMode.READ,
+        unit="kWh",
+        min=0,
+        max=999999999,
+        scale=2,
+        step=1,
+    )
+    .add_dpid_integer(
+        dpid=102,
+        dpcode="reserve_energy_circuit_1",
+        dpmode=DPMode.READ,
+        unit="kWh",
+        min=0,
+        max=999999999,
+        scale=2,
+        step=1,
+    )
+    .add_dpid_integer(
+        dpid=103,
+        dpcode="total_energy2",
+        dpmode=DPMode.READ,
+        unit="kWh",
+        min=0,
+        max=999999999,
+        scale=2,
+        step=1,
+    )
+    .add_dpid_integer(
+        dpid=104,
+        dpcode="reserve_energy_circuit_2",
+        dpmode=DPMode.READ,
+        unit="kWh",
+        min=0,
+        max=999999999,
+        scale=2,
+        step=1,
+    )
+    .add_dpid_integer(
+        dpid=105,
+        dpcode="cur_current",
+        dpmode=DPMode.READ,
+        unit="A",
+        min=-999999999,
+        max=999999999,
+        scale=3,
+        step=1,
+    )
+    .add_dpid_integer(
+        dpid=106,
+        dpcode="cur_voltage",
+        dpmode=DPMode.READ,
+        unit="V",
+        min=0,
+        max=999999999,
+        scale=1,
+        step=1,
+    )
+    .add_dpid_integer(
+        dpid=107,
+        dpcode="cur_current1",
+        dpmode=DPMode.READ,
+        unit="A",
+        min=-999999999,
+        max=999999999,
+        scale=3,
+        step=1,
+    )
+    .add_dpid_integer(
+        dpid=108,
+        dpcode="cur_power1",
+        dpmode=DPMode.READ,
+        unit="W",
+        min=-999999999,
+        max=999999999,
+        scale=0,
+        step=1,
+    )
+    .add_dpid_integer(
+        dpid=109,
+        dpcode="pf_circuit_1",
+        dpmode=DPMode.READ,
+        unit="",
+        min=0,
+        max=100,
+        scale=2,
+        step=1,
+    )
+    .add_dpid_integer(
+        dpid=110,
+        dpcode="cur_current2",
+        dpmode=DPMode.READ,
+        unit="A",
+        min=-999999999,
+        max=999999999,
+        scale=3,
+        step=1,
+    )
+    .add_dpid_integer(
+        dpid=111,
+        dpcode="cur_power2",
+        dpmode=DPMode.READ,
+        unit="W",
+        min=-999999999,
+        max=999999999,
+        scale=0,
+        step=1,
+    )
+    .add_dpid_integer(
+        dpid=112,
+        dpcode="pf_circuit_2",
+        dpmode=DPMode.READ,
+        unit="",
+        min=0,
+        max=100,
+        scale=2,
+        step=1,
+    )
+    .add_dpid_integer(
+        dpid=117,
+        dpcode="supply_frequency",
+        dpmode=DPMode.READ,
+        unit="Hz",
+        min=0,
+        max=999,
+        scale=0,
+        step=1,
+    )
+    .register(TUYA_QUIRKS_REGISTRY)
+)
