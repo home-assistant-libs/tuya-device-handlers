@@ -69,3 +69,37 @@ def test_energy_meter_datapoints_added(
 
     # AFTER the quirk: the datapoint is present and correctly defined.
     assert json.loads(device.status_range[dpcode].values) == expected
+
+
+@pytest.mark.parametrize(
+    ("dpid", "dpcode"),
+    [
+        (101, "total_energy1"),
+        (102, "reserve_energy_circuit_1"),
+        (103, "total_energy2"),
+        (104, "reserve_energy_circuit_2"),
+        (105, "cur_current"),
+        (106, "cur_voltage"),
+        (107, "cur_current1"),
+        (108, "cur_power1"),
+        (109, "pf_circuit_1"),
+        (110, "cur_current2"),
+        (111, "cur_power2"),
+        (112, "pf_circuit_2"),
+        (117, "supply_frequency"),
+    ],
+)
+def test_energy_meter_local_strategy(
+    filled_quirks_registry: QuirksRegistry,
+    dpid: int,
+    dpcode: str,
+) -> None:
+    """Missing DPID reports resolve to the correct status codes."""
+    device = create_device("zndb_vfwxetkavqrvg02u.json")
+    assert dpid not in device.local_strategy
+
+    filled_quirks_registry.initialise_device_quirk(device)
+
+    strategy = device.local_strategy[dpid]
+    assert strategy["status_code"] == dpcode
+    assert json.loads(strategy["config_item"]["statusFormat"]) == {dpcode: "$"}
