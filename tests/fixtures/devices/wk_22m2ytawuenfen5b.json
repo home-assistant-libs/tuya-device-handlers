@@ -226,7 +226,5 @@
   "set_up": true,
   "support_local": true,
   "quirk": null,
-  "warnings": [
-    "enum_out_range|mode|home"
-  ]
+  "warnings": ["enum_out_range|mode|home"]
 }
