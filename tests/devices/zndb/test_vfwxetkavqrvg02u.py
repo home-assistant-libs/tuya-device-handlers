@@ -8,17 +8,24 @@ from tests import create_device
 from tuya_device_handlers.registry import QuirksRegistry
 
 ENERGY = {"unit": "kWh", "min": 0, "max": 999999999, "scale": 2, "step": 1}
-CURRENT = {
+CURRENT_CIRCUIT = {
     "unit": "A",
-    "min": -999999999,
-    "max": 999999999,
+    "min": 0,
+    "max": 1000000,
     "scale": 3,
     "step": 1,
 }
 POWER = {
     "unit": "W",
-    "min": -999999999,
-    "max": 999999999,
+    "min": -1000000000,
+    "max": 1000000000,
+    "scale": 0,
+    "step": 1,
+}
+INACTIVE_POWER = {
+    "unit": "var",
+    "min": -1000000000,
+    "max": 1000000000,
     "scale": 0,
     "step": 1,
 }
@@ -29,24 +36,34 @@ EXPECTED = {
     "reserve_energy_circuit_1": ENERGY,
     "total_energy2": ENERGY,
     "reserve_energy_circuit_2": ENERGY,
-    "cur_current": CURRENT,
+    "cur_current": {
+        "unit": "A",
+        "min": 0,
+        "max": 1000000000,
+        "scale": 3,
+        "step": 1,
+    },
     "cur_voltage": {
         "unit": "V",
         "min": 0,
-        "max": 999999999,
+        "max": 1000000,
         "scale": 1,
         "step": 1,
     },
-    "cur_current1": CURRENT,
+    "cur_current1": CURRENT_CIRCUIT,
     "cur_power1": POWER,
     "pf_circuit_1": PF,
-    "cur_current2": CURRENT,
+    "cur_current2": CURRENT_CIRCUIT,
     "cur_power2": POWER,
     "pf_circuit_2": PF,
+    "ct_dir_circuit_1": {},
+    "ct_dir_circuit_2": {},
+    "inactive_power_circuit_1": INACTIVE_POWER,
+    "inactive_power_circuit_2": INACTIVE_POWER,
     "supply_frequency": {
         "unit": "Hz",
         "min": 0,
-        "max": 999,
+        "max": 10000,
         "scale": 0,
         "step": 1,
     },
@@ -86,6 +103,10 @@ def test_energy_meter_datapoints_added(
         (110, "cur_current2"),
         (111, "cur_power2"),
         (112, "pf_circuit_2"),
+        (113, "ct_dir_circuit_1"),
+        (114, "ct_dir_circuit_2"),
+        (115, "inactive_power_circuit_1"),
+        (116, "inactive_power_circuit_2"),
         (117, "supply_frequency"),
     ],
 )

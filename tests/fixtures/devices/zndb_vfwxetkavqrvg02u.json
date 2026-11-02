@@ -106,7 +106,7 @@
       "status_code": "cur_current",
       "config_item": {
         "statusFormat": "{\"cur_current\": \"$\"}",
-        "valueDesc": "{\"unit\": \"A\", \"min\": -999999999, \"max\": 999999999, \"scale\": 3, \"step\": 1}",
+        "valueDesc": "{\"unit\": \"A\", \"min\": 0, \"max\": 1000000000, \"scale\": 3, \"step\": 1}",
         "valueType": "Integer",
         "enumMappingMap": {},
         "pid": "vfwxetkavqrvg02u"
@@ -117,7 +117,7 @@
       "status_code": "cur_voltage",
       "config_item": {
         "statusFormat": "{\"cur_voltage\": \"$\"}",
-        "valueDesc": "{\"unit\": \"V\", \"min\": 0, \"max\": 999999999, \"scale\": 1, \"step\": 1}",
+        "valueDesc": "{\"unit\": \"V\", \"min\": 0, \"max\": 1000000, \"scale\": 1, \"step\": 1}",
         "valueType": "Integer",
         "enumMappingMap": {},
         "pid": "vfwxetkavqrvg02u"
@@ -128,7 +128,7 @@
       "status_code": "cur_current1",
       "config_item": {
         "statusFormat": "{\"cur_current1\": \"$\"}",
-        "valueDesc": "{\"unit\": \"A\", \"min\": -999999999, \"max\": 999999999, \"scale\": 3, \"step\": 1}",
+        "valueDesc": "{\"unit\": \"A\", \"min\": 0, \"max\": 1000000, \"scale\": 3, \"step\": 1}",
         "valueType": "Integer",
         "enumMappingMap": {},
         "pid": "vfwxetkavqrvg02u"
@@ -139,7 +139,7 @@
       "status_code": "cur_power1",
       "config_item": {
         "statusFormat": "{\"cur_power1\": \"$\"}",
-        "valueDesc": "{\"unit\": \"W\", \"min\": -999999999, \"max\": 999999999, \"scale\": 0, \"step\": 1}",
+        "valueDesc": "{\"unit\": \"W\", \"min\": -1000000000, \"max\": 1000000000, \"scale\": 0, \"step\": 1}",
         "valueType": "Integer",
         "enumMappingMap": {},
         "pid": "vfwxetkavqrvg02u"
@@ -161,7 +161,7 @@
       "status_code": "cur_current2",
       "config_item": {
         "statusFormat": "{\"cur_current2\": \"$\"}",
-        "valueDesc": "{\"unit\": \"A\", \"min\": -999999999, \"max\": 999999999, \"scale\": 3, \"step\": 1}",
+        "valueDesc": "{\"unit\": \"A\", \"min\": 0, \"max\": 1000000, \"scale\": 3, \"step\": 1}",
         "valueType": "Integer",
         "enumMappingMap": {},
         "pid": "vfwxetkavqrvg02u"
@@ -172,7 +172,7 @@
       "status_code": "cur_power2",
       "config_item": {
         "statusFormat": "{\"cur_power2\": \"$\"}",
-        "valueDesc": "{\"unit\": \"W\", \"min\": -999999999, \"max\": 999999999, \"scale\": 0, \"step\": 1}",
+        "valueDesc": "{\"unit\": \"W\", \"min\": -1000000000, \"max\": 1000000000, \"scale\": 0, \"step\": 1}",
         "valueType": "Integer",
         "enumMappingMap": {},
         "pid": "vfwxetkavqrvg02u"
@@ -189,12 +189,56 @@
         "pid": "vfwxetkavqrvg02u"
       }
     },
+    "113": {
+      "value_convert": "default",
+      "status_code": "ct_dir_circuit_1",
+      "config_item": {
+        "statusFormat": "{\"ct_dir_circuit_1\": \"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "vfwxetkavqrvg02u"
+      }
+    },
+    "114": {
+      "value_convert": "default",
+      "status_code": "ct_dir_circuit_2",
+      "config_item": {
+        "statusFormat": "{\"ct_dir_circuit_2\": \"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "vfwxetkavqrvg02u"
+      }
+    },
+    "115": {
+      "value_convert": "default",
+      "status_code": "inactive_power_circuit_1",
+      "config_item": {
+        "statusFormat": "{\"inactive_power_circuit_1\": \"$\"}",
+        "valueDesc": "{\"unit\": \"var\", \"min\": -1000000000, \"max\": 1000000000, \"scale\": 0, \"step\": 1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "vfwxetkavqrvg02u"
+      }
+    },
+    "116": {
+      "value_convert": "default",
+      "status_code": "inactive_power_circuit_2",
+      "config_item": {
+        "statusFormat": "{\"inactive_power_circuit_2\": \"$\"}",
+        "valueDesc": "{\"unit\": \"var\", \"min\": -1000000000, \"max\": 1000000000, \"scale\": 0, \"step\": 1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "vfwxetkavqrvg02u"
+      }
+    },
     "117": {
       "value_convert": "default",
       "status_code": "supply_frequency",
       "config_item": {
         "statusFormat": "{\"supply_frequency\": \"$\"}",
-        "valueDesc": "{\"unit\": \"Hz\", \"min\": 0, \"max\": 999, \"scale\": 0, \"step\": 1}",
+        "valueDesc": "{\"unit\": \"Hz\", \"min\": 0, \"max\": 10000, \"scale\": 0, \"step\": 1}",
         "valueType": "Integer",
         "enumMappingMap": {},
         "pid": "vfwxetkavqrvg02u"
@@ -239,22 +283,22 @@
     },
     "cur_current": {
       "type": "Integer",
-      "value": "{\"unit\": \"A\", \"min\": -999999999, \"max\": 999999999, \"scale\": 3, \"step\": 1}",
+      "value": "{\"unit\": \"A\", \"min\": 0, \"max\": 1000000000, \"scale\": 3, \"step\": 1}",
       "report_type": null
     },
     "cur_voltage": {
       "type": "Integer",
-      "value": "{\"unit\": \"V\", \"min\": 0, \"max\": 999999999, \"scale\": 1, \"step\": 1}",
+      "value": "{\"unit\": \"V\", \"min\": 0, \"max\": 1000000, \"scale\": 1, \"step\": 1}",
       "report_type": null
     },
     "cur_current1": {
       "type": "Integer",
-      "value": "{\"unit\": \"A\", \"min\": -999999999, \"max\": 999999999, \"scale\": 3, \"step\": 1}",
+      "value": "{\"unit\": \"A\", \"min\": 0, \"max\": 1000000, \"scale\": 3, \"step\": 1}",
       "report_type": null
     },
     "cur_power1": {
       "type": "Integer",
-      "value": "{\"unit\": \"W\", \"min\": -999999999, \"max\": 999999999, \"scale\": 0, \"step\": 1}",
+      "value": "{\"unit\": \"W\", \"min\": -1000000000, \"max\": 1000000000, \"scale\": 0, \"step\": 1}",
       "report_type": null
     },
     "pf_circuit_1": {
@@ -264,12 +308,12 @@
     },
     "cur_current2": {
       "type": "Integer",
-      "value": "{\"unit\": \"A\", \"min\": -999999999, \"max\": 999999999, \"scale\": 3, \"step\": 1}",
+      "value": "{\"unit\": \"A\", \"min\": 0, \"max\": 1000000, \"scale\": 3, \"step\": 1}",
       "report_type": null
     },
     "cur_power2": {
       "type": "Integer",
-      "value": "{\"unit\": \"W\", \"min\": -999999999, \"max\": 999999999, \"scale\": 0, \"step\": 1}",
+      "value": "{\"unit\": \"W\", \"min\": -1000000000, \"max\": 1000000000, \"scale\": 0, \"step\": 1}",
       "report_type": null
     },
     "pf_circuit_2": {
@@ -277,33 +321,55 @@
       "value": "{\"unit\": \"\", \"min\": 0, \"max\": 100, \"scale\": 2, \"step\": 1}",
       "report_type": null
     },
+    "ct_dir_circuit_1": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "ct_dir_circuit_2": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "inactive_power_circuit_1": {
+      "type": "Integer",
+      "value": "{\"unit\": \"var\", \"min\": -1000000000, \"max\": 1000000000, \"scale\": 0, \"step\": 1}",
+      "report_type": null
+    },
+    "inactive_power_circuit_2": {
+      "type": "Integer",
+      "value": "{\"unit\": \"var\", \"min\": -1000000000, \"max\": 1000000000, \"scale\": 0, \"step\": 1}",
+      "report_type": null
+    },
     "supply_frequency": {
       "type": "Integer",
-      "value": "{\"unit\": \"Hz\", \"min\": 0, \"max\": 999, \"scale\": 0, \"step\": 1}",
+      "value": "{\"unit\": \"Hz\", \"min\": 0, \"max\": 10000, \"scale\": 0, \"step\": 1}",
       "report_type": null
     }
   },
   "status": {
-    "forward_energy_total": 678,
+    "forward_energy_total": 1096,
     "reverse_energy_total": 0,
-    "power_total": 1225,
-    "cur_power2": 367,
-    "cur_voltage": 2292,
-    "cur_current2": 2563,
-    "cur_current": 6278,
-    "total_energy2": 194,
-    "pf_circuit_2": 62,
-    "total_energy1": 484,
+    "power_total": 13,
+    "cur_current2": 187,
+    "pf_circuit_2": 30,
+    "cur_current": 187,
+    "inactive_power_circuit_2": -42,
+    "cur_voltage": 2355,
+    "cur_power2": 13,
+    "total_energy1": 866,
     "reserve_energy_circuit_1": 0,
+    "total_energy2": 230,
     "reserve_energy_circuit_2": 0,
+    "inactive_power_circuit_1": 0,
     "supply_frequency": 50,
-    "cur_current1": 3715,
-    "cur_power1": 858,
-    "pf_circuit_1": 100
+    "cur_current1": 0,
+    "cur_power1": 0,
+    "pf_circuit_1": 0
   },
   "set_up": true,
   "support_local": true,
-  "quirk": "/config/tuya_quirks/zndb_vfwxetkavqrvg02u.py:8",
+  "quirk": "/config/tuya_quirks/zndb_vfwxetkavqrvg02u.py:22",
   "warnings": null,
   "original_category": "zndb",
   "original_function": {
