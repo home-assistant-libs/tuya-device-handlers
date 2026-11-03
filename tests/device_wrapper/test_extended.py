@@ -14,6 +14,11 @@ from tuya_device_handlers.device_wrapper.extended import (
     DPCodePercentageWrapper,
     DPCodeRoundedIntegerWrapper,
 )
+from tuya_device_handlers.device_wrapper.sensor import (
+    ElectricityCurrentRawWrapper,
+)
+
+from . import inject_dpcode, inject_dpcode_function, inject_dpcode_status_range
 
 
 @pytest.mark.parametrize(
@@ -87,3 +92,28 @@ def test_get_update_commands(
 
     assert wrapper
     assert wrapper.get_update_commands(mock_device, value) == expected
+
+
+@pytest.mark.parametrize(
+    ("prefer_function", "expected"),
+    [(False, '{"source":"status_range"}'), (True, '{"source":"function"}')],
+)
+def test_parsed_attribute_default_lookup(
+    mock_device: CustomerDevice, prefer_function: bool, expected: str
+) -> None:
+    """Default candidate lookup preserves class and preferred schema."""
+    inject_dpcode(
+        mock_device, "phase_1", "Ag8I/QAETAAA0gAAMgAA3F8A", dptype="Raw"
+    )
+    inject_dpcode_status_range(
+        mock_device, "phase_1", "Raw", '{"source":"status_range"}'
+    )
+    inject_dpcode_function(
+        mock_device, "phase_1", "Raw", '{"source":"function"}'
+    )
+    wrapper = ElectricityCurrentRawWrapper.find_dpcode(
+        mock_device, "phase_1", prefer_function=prefer_function
+    )
+    assert type(wrapper) is ElectricityCurrentRawWrapper
+    assert wrapper.type_information.type_data == expected
+    assert wrapper.read_device_status(mock_device) == 1100
