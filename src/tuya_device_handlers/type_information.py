@@ -16,7 +16,14 @@ from .const import DEVICE_WARNINGS, DPType
 _LOGGER = logging.getLogger(__name__)
 
 # Datapoints reported as is in `back` mode, for each category
-_BACK_MODE_DPCODES = {"clkg": ("percent_control", "percent_control_2")}
+_BACK_MODE_DPCODES = {
+    "clkg": (
+        "angle_horizontal",
+        "angle_vertical",
+        "percent_control",
+        "percent_control_2",
+    )
+}
 
 _LOG_OR_QUIRK = (
     "please report this defect to Tuya support, or create a quirk "

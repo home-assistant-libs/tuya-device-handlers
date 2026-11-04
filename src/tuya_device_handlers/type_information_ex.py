@@ -19,8 +19,9 @@ from .type_information import IntegerTypeInformation, JsonTypeInformation
 class InvertedIntegerTypeInformationEx(IntegerTypeInformation):
     """IntegerTypeInformation that inverts the value within its range.
 
-    Read: returns ``scale_value(max) - value`` instead of ``value``.
-    Write: sends ``scale_value(max) - value`` to the device.
+    Read: returns ``scale_value(min) + scale_value(max) - value`` instead of
+    ``value``.
+    Write: sends ``scale_value(min) + scale_value(max) - value`` to the device.
 
     Intended for devices that report a value in the opposite direction to
     what the default wrapper expects.  For example, if the wrapper inverts
@@ -37,20 +38,22 @@ class InvertedIntegerTypeInformationEx(IntegerTypeInformation):
         """Check if the value should be inverted."""
         return True
 
+    def _invert(self, value: float) -> float:
+        """Reflect the value within its range."""
+        return self.scale_value(self.min) + self.scale_value(self.max) - value
+
     def read_device_value(self, device: CustomerDevice) -> float | None:
         """Read and invert the device value."""
         value = super().read_device_value(device)
         if value is None or not self._is_inverted(device):
             return value
-        return self.scale_value(self.max) - value
+        return self._invert(value)
 
     def prepare_set_value(self, device: CustomerDevice, value: Any) -> int:
         """Invert and prepare a value to be sent to the device."""
         if not isinstance(value, (int, float)) or not self._is_inverted(device):
             return super().prepare_set_value(device, value)
-        return super().prepare_set_value(
-            device, self.scale_value(self.max) - value
-        )
+        return super().prepare_set_value(device, self._invert(value))
 
 
 @dataclass(kw_only=True)

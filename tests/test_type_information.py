@@ -336,7 +336,15 @@ def test_prepare_set_value_out_of_range(
         type_information.prepare_set_value(mock_device, value)
 
 
-@pytest.mark.parametrize("dpcode", ["percent_control", "percent_control_2"])
+@pytest.mark.parametrize(
+    "dpcode",
+    [
+        "angle_horizontal",
+        "angle_vertical",
+        "percent_control",
+        "percent_control_2",
+    ],
+)
 def test_find_dpcode_category_default(
     mock_device: CustomerDevice, dpcode: str
 ) -> None:

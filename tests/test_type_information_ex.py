@@ -1,7 +1,7 @@
 """Test extended TypeInformation classes."""
 
 import pytest
-from tuya_sharing import CustomerDevice
+from tuya_sharing import CustomerDevice, DeviceStatusRange
 
 from tuya_device_handlers.device_wrapper.extended import (
     DPCodeInvertedPercentageWrapper,
@@ -154,3 +154,17 @@ def test_combinations_through_cover_wrapper(
     assert wrapper.read_device_status(mock_device) == back_position
     mock_device.status["control_back_mode"] = "forward"
     assert wrapper.read_device_status(mock_device) == forward_position
+
+
+def test_inverts_within_nonzero_range(mock_device: CustomerDevice) -> None:
+    """The value is reflected around both bounds of the range."""
+    mock_device.status_range["demo_integer"] = DeviceStatusRange(
+        code="demo_integer",
+        type="Integer",
+        values='{"min":10,"max":90,"scale":0,"step":1}',
+    )
+    mock_device.status["demo_integer"] = 10
+    type_information = _find(mock_device)
+
+    assert type_information.read_device_value(mock_device) == 90
+    assert type_information.prepare_set_value(mock_device, 25) == 75
