@@ -3,12 +3,8 @@
 import pytest
 from tuya_sharing import CustomerDevice
 
-from tuya_device_handlers.device_wrapper.cover import (
-    ControlBackModePercentageMappingWrapper,
-)
 from tuya_device_handlers.device_wrapper.extended import (
     DPCodeInvertedPercentageWrapper,
-    DPCodePercentageWrapper,
 )
 from tuya_device_handlers.type_information import (
     IntegerTypeInformation,
@@ -132,74 +128,27 @@ def test_mode_inverted_edge_values(
 
 
 @pytest.mark.parametrize(
-    (
-        "wrapper_cls",
-        "type_information_cls",
-        "back_position",
-        "forward_position",
-    ),
+    ("type_information_cls", "back_position", "forward_position"),
     [
-        # Default wrapper for most categories, including `cl`
-        (
-            DPCodeInvertedPercentageWrapper,
-            InvertedIntegerTypeInformationEx,
-            20,
-            20,
-        ),
-        (DPCodeInvertedPercentageWrapper, IntegerTypeInformation, 80, 80),
-        (
-            DPCodeInvertedPercentageWrapper,
-            BackModeInvertedIntegerTypeInformationEx,
-            20,
-            80,
-        ),
-        (
-            DPCodeInvertedPercentageWrapper,
-            ForwardModeInvertedIntegerTypeInformationEx,
-            80,
-            20,
-        ),
-        # Wrapper for `clkg`
-        (
-            ControlBackModePercentageMappingWrapper,
-            ForwardModeInvertedIntegerTypeInformationEx,
-            20,
-            20,
-        ),
-        (
-            ControlBackModePercentageMappingWrapper,
-            BackModeInvertedIntegerTypeInformationEx,
-            80,
-            80,
-        ),
-        (
-            ControlBackModePercentageMappingWrapper,
-            IntegerTypeInformation,
-            20,
-            80,
-        ),
-        (
-            ControlBackModePercentageMappingWrapper,
-            InvertedIntegerTypeInformationEx,
-            80,
-            20,
-        ),
+        (IntegerTypeInformation, 80, 80),
+        (InvertedIntegerTypeInformationEx, 20, 20),
+        (BackModeInvertedIntegerTypeInformationEx, 20, 80),
+        (ForwardModeInvertedIntegerTypeInformationEx, 80, 20),
     ],
 )
-def test_combinations_through_cover_wrappers(
+def test_combinations_through_cover_wrapper(
     mock_device: CustomerDevice,
-    wrapper_cls: type[DPCodePercentageWrapper],
     type_information_cls: type[IntegerTypeInformation],
     back_position: int,
     forward_position: int,
 ) -> None:
-    """All four combinations are reachable through both cover wrappers."""
+    """All four combinations are reachable through the cover wrapper."""
     mock_device.status["demo_integer"] = 200
     type_information = type_information_cls.find_dpcode(
         mock_device, "demo_integer"
     )
     assert type_information is not None
-    wrapper = wrapper_cls("demo_integer", type_information)
+    wrapper = DPCodeInvertedPercentageWrapper("demo_integer", type_information)
 
     mock_device.status["control_back_mode"] = "back"
     assert wrapper.read_device_status(mock_device) == back_position
