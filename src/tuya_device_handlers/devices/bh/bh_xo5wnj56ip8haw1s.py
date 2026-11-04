@@ -13,8 +13,9 @@ from tuya_device_handlers.builder import DeviceQuirk
     DeviceQuirk()
     .applies_to(
         product_id="xo5wnj56ip8haw1s",
-        manufacturer="Tuya",
-        model="ALDI: KT2217AC",
+        manufacturer="ALDI",
+        model="Smart kettle",
+        model_id="KT2217AC",
     )
     .set_dpid_strategy_to_enum(
         dpid=9,
