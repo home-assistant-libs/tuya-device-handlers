@@ -1,0 +1,108 @@
+{
+  "endpoint": "https://apigw.tuyaeu.com",
+  "mqtt_connected": true,
+  "disabled_by": null,
+  "disabled_polling": false,
+  "name": "VITAL+",
+  "category": "ktkzq",
+  "product_id": "urzivdhumrwfakie",
+  "product_name": "VITAL+",
+  "online": true,
+  "sub": false,
+  "time_zone": "+10:00",
+  "active_time": "2026-07-16T10:14:21+00:00",
+  "create_time": "2026-07-16T10:14:21+00:00",
+  "update_time": "2026-07-16T10:14:21+00:00",
+  "function": {
+    "temp_set": {
+      "type": "Integer",
+      "value": "{\"unit\":\"\u2103\",\"min\":3,\"max\":45,\"scale\":0,\"step\":1}"
+    },
+    "child_lock": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "power_switch": {
+      "type": "Boolean",
+      "value": "{}"
+    }
+  },
+  "local_strategy": {
+    "2": {
+      "value_convert": "default",
+      "status_code": "temp_set",
+      "config_item": {
+        "statusFormat": "{\"temp_set\":\"$\"}",
+        "valueDesc": "{\"unit\":\"\u2103\",\"min\":3,\"max\":45,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "urzivdhumrwfakie"
+      }
+    },
+    "3": {
+      "value_convert": "default",
+      "status_code": "temp_current",
+      "config_item": {
+        "statusFormat": "{\"temp_current\":\"$\"}",
+        "valueDesc": "{\"unit\":\"\u2103\",\"min\":-400,\"max\":1000,\"scale\":1,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "urzivdhumrwfakie"
+      }
+    },
+    "7": {
+      "value_convert": "default",
+      "status_code": "child_lock",
+      "config_item": {
+        "statusFormat": "{\"child_lock\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "urzivdhumrwfakie"
+      }
+    },
+    "108": {
+      "value_convert": "default",
+      "status_code": "power_switch",
+      "config_item": {
+        "statusFormat": "{\"power_switch\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "urzivdhumrwfakie"
+      }
+    }
+  },
+  "status_range": {
+    "temp_set": {
+      "type": "Integer",
+      "value": "{\"unit\":\"\u2103\",\"min\":3,\"max\":45,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "temp_current": {
+      "type": "Integer",
+      "value": "{\"unit\":\"\u2103\",\"min\":-400,\"max\":1000,\"scale\":1,\"step\":1}",
+      "report_type": "un_known"
+    },
+    "child_lock": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "power_switch": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    }
+  },
+  "status": {
+    "temp_set": 13,
+    "temp_current": 48,
+    "child_lock": true,
+    "power_switch": true
+  },
+  "set_up": false,
+  "support_local": true,
+  "quirk": null,
+  "warnings": null
+}

@@ -1,0 +1,210 @@
+{
+  "endpoint": "https://apigw.tuyaeu.com",
+  "mqtt_connected": true,
+  "disabled_by": null,
+  "disabled_polling": false,
+  "name": "Klassfan Ceiling fan",
+  "category": "fs",
+  "product_id": "icihqzrdrvywnryy",
+  "product_name": "Klassfan Ceiling fan",
+  "online": true,
+  "sub": false,
+  "time_zone": "+02:00",
+  "function": {
+    "switch": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"sleep\",\"nature\"]}"
+    },
+    "fan_speed_percent": {
+      "type": "Integer",
+      "value": "{\"unit\":\"\",\"min\":1,\"max\":6,\"scale\":0,\"step\":1}"
+    },
+    "fan_direction": {
+      "type": "Enum",
+      "value": "{\"range\":[\"forward\",\"reverse\"]}"
+    },
+    "light": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "bright_value": {
+      "type": "Integer",
+      "value": "{\"unit\":\"\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}"
+    },
+    "temp_value": {
+      "type": "Integer",
+      "value": "{\"unit\":\"\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}"
+    },
+    "countdown_set": {
+      "type": "Enum",
+      "value": "{\"range\":[\"cancel\",\"1h\",\"2h\",\"4h\"]}"
+    }
+  },
+  "local_strategy": {
+    "1": {
+      "value_convert": "default",
+      "status_code": "switch",
+      "config_item": {
+        "statusFormat": "{\"switch\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "icihqzrdrvywnryy"
+      }
+    },
+    "2": {
+      "value_convert": "default",
+      "status_code": "mode",
+      "config_item": {
+        "statusFormat": "{\"mode\":\"$\"}",
+        "valueDesc": "{\"range\":[\"sleep\",\"nature\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "icihqzrdrvywnryy"
+      }
+    },
+    "3": {
+      "value_convert": "default",
+      "status_code": "fan_speed_percent",
+      "config_item": {
+        "statusFormat": "{\"fan_speed_percent\":\"$\"}",
+        "valueDesc": "{\"unit\":\"\",\"min\":1,\"max\":6,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "icihqzrdrvywnryy"
+      }
+    },
+    "8": {
+      "value_convert": "default",
+      "status_code": "fan_direction",
+      "config_item": {
+        "statusFormat": "{\"fan_direction\":\"$\"}",
+        "valueDesc": "{\"range\":[\"forward\",\"reverse\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "icihqzrdrvywnryy"
+      }
+    },
+    "15": {
+      "value_convert": "default",
+      "status_code": "light",
+      "config_item": {
+        "statusFormat": "{\"light\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "icihqzrdrvywnryy"
+      }
+    },
+    "16": {
+      "value_convert": "default",
+      "status_code": "bright_value",
+      "config_item": {
+        "statusFormat": "{\"bright_value\":\"$\"}",
+        "valueDesc": "{\"unit\":\"\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "icihqzrdrvywnryy"
+      }
+    },
+    "17": {
+      "value_convert": "default",
+      "status_code": "temp_value",
+      "config_item": {
+        "statusFormat": "{\"temp_value\":\"$\"}",
+        "valueDesc": "{\"unit\":\"\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "icihqzrdrvywnryy"
+      }
+    },
+    "21": {
+      "value_convert": "default",
+      "status_code": "temp_current",
+      "config_item": {
+        "statusFormat": "{\"temp_current\":\"$\"}",
+        "valueDesc": "{\"unit\":\"℃\",\"min\":0,\"max\":50,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "icihqzrdrvywnryy"
+      }
+    },
+    "22": {
+      "value_convert": "default",
+      "status_code": "countdown_set",
+      "config_item": {
+        "statusFormat": "{\"countdown_set\":\"$\"}",
+        "valueDesc": "{\"range\":[\"cancel\",\"1h\",\"2h\",\"4h\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "icihqzrdrvywnryy"
+      }
+    }
+  },
+  "status_range": {
+    "switch": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"sleep\",\"nature\"]}",
+      "report_type": null
+    },
+    "fan_speed_percent": {
+      "type": "Integer",
+      "value": "{\"unit\":\"\",\"min\":1,\"max\":6,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "fan_direction": {
+      "type": "Enum",
+      "value": "{\"range\":[\"forward\",\"reverse\"]}",
+      "report_type": null
+    },
+    "light": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "bright_value": {
+      "type": "Integer",
+      "value": "{\"unit\":\"\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "temp_value": {
+      "type": "Integer",
+      "value": "{\"unit\":\"\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "temp_current": {
+      "type": "Integer",
+      "value": "{\"unit\":\"℃\",\"min\":0,\"max\":50,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "countdown_set": {
+      "type": "Enum",
+      "value": "{\"range\":[\"cancel\",\"1h\",\"2h\",\"4h\"]}",
+      "report_type": null
+    }
+  },
+  "status": {
+    "switch": true,
+    "mode": "temprature",
+    "fan_speed_percent": 2,
+    "fan_direction": "reverse",
+    "light": false,
+    "bright_value": 16,
+    "temp_value": 100,
+    "temp_current": 20,
+    "countdown_set": "cancel"
+  },
+  "set_up": true,
+  "support_local": true,
+  "quirk": null,
+  "warnings": ["enum_out_range|mode|temprature"]
+}

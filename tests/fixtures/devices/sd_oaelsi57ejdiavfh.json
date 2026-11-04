@@ -1,0 +1,798 @@
+{
+  "endpoint": "https://apigw.tuyaeu.com",
+  "mqtt_connected": true,
+  "disabled_by": null,
+  "disabled_polling": false,
+  "name": "L15 Ultra",
+  "category": "sd",
+  "product_id": "oaelsi57ejdiavfh",
+  "product_name": "L15 Ultra",
+  "online": true,
+  "sub": false,
+  "time_zone": "+01:00",
+  "active_time": "2026-09-03T13:55:22+00:00",
+  "create_time": "2026-09-03T13:55:22+00:00",
+  "update_time": "2026-09-03T13:55:22+00:00",
+  "function": {
+    "power_go": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "pause": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "switch_charge": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"smart\",\"zone\",\"pose\",\"part\"]}"
+    },
+    "suction": {
+      "type": "Enum",
+      "value": "{\"range\":[\"gentle\",\"normal\",\"strong\"]}"
+    },
+    "cistern": {
+      "type": "Enum",
+      "value": "{\"range\":[\"low\",\"middle\",\"high\"]}"
+    },
+    "seek": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "direction_control": {
+      "type": "Enum",
+      "value": "{\"range\":[\"forward\",\"turn_left\",\"turn_right\",\"stop\"]}"
+    },
+    "reset_map": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "path_data": {
+      "type": "Raw",
+      "value": "{}"
+    },
+    "command_trans": {
+      "type": "Raw",
+      "value": "{}"
+    },
+    "request": {
+      "type": "Enum",
+      "value": "{\"range\":[\"get_map\",\"get_path\",\"get_both\"]}"
+    },
+    "reset_edge_brush": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "reset_roll_brush": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "reset_filter": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "reset_duster_cloth": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "switch_disturb": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "volume_set": {
+      "type": "Integer",
+      "value": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}"
+    },
+    "break_clean": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "device_timer": {
+      "type": "Raw",
+      "value": "{}"
+    },
+    "disturb_time_set": {
+      "type": "Raw",
+      "value": "{}"
+    },
+    "voice_data": {
+      "type": "Raw",
+      "value": "{}"
+    },
+    "language": {
+      "type": "Enum",
+      "value": "{\"range\":[\"chinese_simplified\",\"chinese_traditional\",\"english\",\"german\",\"french\",\"russian\",\"spanish\",\"korean\",\"latin\",\"portuguese\",\"japanese\",\"italian\"]}"
+    },
+    "dust_collection_num": {
+      "type": "Integer",
+      "value": "{\"min\":0,\"max\":4,\"scale\":0,\"step\":1}"
+    },
+    "dust_collection_switch": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "customize_mode_switch": {
+      "type": "Boolean",
+      "value": "{}"
+    }
+  },
+  "local_strategy": {
+    "1": {
+      "value_convert": "default",
+      "status_code": "power_go",
+      "config_item": {
+        "statusFormat": "{\"power_go\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "oaelsi57ejdiavfh"
+      }
+    },
+    "2": {
+      "value_convert": "default",
+      "status_code": "pause",
+      "config_item": {
+        "statusFormat": "{\"pause\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "oaelsi57ejdiavfh"
+      }
+    },
+    "3": {
+      "value_convert": "default",
+      "status_code": "switch_charge",
+      "config_item": {
+        "statusFormat": "{\"switch_charge\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "oaelsi57ejdiavfh"
+      }
+    },
+    "4": {
+      "value_convert": "default",
+      "status_code": "mode",
+      "config_item": {
+        "statusFormat": "{\"mode\":\"$\"}",
+        "valueDesc": "{\"range\":[\"smart\",\"zone\",\"pose\",\"part\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "oaelsi57ejdiavfh"
+      }
+    },
+    "5": {
+      "value_convert": "default",
+      "status_code": "status",
+      "config_item": {
+        "statusFormat": "{\"status\":\"$\"}",
+        "valueDesc": "{\"range\":[\"standby\",\"zone_clean\",\"part_clean\",\"cleaning\",\"paused\",\"goto_pos\",\"pos_arrived\",\"pos_unarrive\",\"goto_charge\",\"charging\",\"charge_done\",\"sleep\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "oaelsi57ejdiavfh"
+      }
+    },
+    "6": {
+      "value_convert": "default",
+      "status_code": "clean_time",
+      "config_item": {
+        "statusFormat": "{\"clean_time\":\"$\"}",
+        "valueDesc": "{\"unit\":\"min\",\"min\":0,\"max\":9999,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "oaelsi57ejdiavfh"
+      }
+    },
+    "7": {
+      "value_convert": "default",
+      "status_code": "clean_area",
+      "config_item": {
+        "statusFormat": "{\"clean_area\":\"$\"}",
+        "valueDesc": "{\"unit\":\"㎡\",\"min\":0,\"max\":9999,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "oaelsi57ejdiavfh"
+      }
+    },
+    "8": {
+      "value_convert": "default",
+      "status_code": "electricity_left",
+      "config_item": {
+        "statusFormat": "{\"electricity_left\":\"$\"}",
+        "valueDesc": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "oaelsi57ejdiavfh"
+      }
+    },
+    "9": {
+      "value_convert": "default",
+      "status_code": "suction",
+      "config_item": {
+        "statusFormat": "{\"suction\":\"$\"}",
+        "valueDesc": "{\"range\":[\"closed\",\"gentle\",\"normal\",\"strong\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "oaelsi57ejdiavfh"
+      }
+    },
+    "10": {
+      "value_convert": "default",
+      "status_code": "cistern",
+      "config_item": {
+        "statusFormat": "{\"cistern\":\"$\"}",
+        "valueDesc": "{\"range\":[\"closed\",\"low\",\"middle\",\"high\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "oaelsi57ejdiavfh"
+      }
+    },
+    "11": {
+      "value_convert": "default",
+      "status_code": "seek",
+      "config_item": {
+        "statusFormat": "{\"seek\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "oaelsi57ejdiavfh"
+      }
+    },
+    "12": {
+      "value_convert": "default",
+      "status_code": "direction_control",
+      "config_item": {
+        "statusFormat": "{\"direction_control\":\"$\"}",
+        "valueDesc": "{\"range\":[\"forward\",\"turn_left\",\"turn_right\",\"stop\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "oaelsi57ejdiavfh"
+      }
+    },
+    "13": {
+      "value_convert": "default",
+      "status_code": "reset_map",
+      "config_item": {
+        "statusFormat": "{\"reset_map\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "oaelsi57ejdiavfh"
+      }
+    },
+    "14": {
+      "value_convert": "default",
+      "status_code": "path_data",
+      "config_item": {
+        "statusFormat": "{\"path_data\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Raw",
+        "enumMappingMap": {},
+        "pid": "oaelsi57ejdiavfh"
+      }
+    },
+    "15": {
+      "value_convert": "default",
+      "status_code": "command_trans",
+      "config_item": {
+        "statusFormat": "{\"command_trans\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Raw",
+        "enumMappingMap": {},
+        "pid": "oaelsi57ejdiavfh"
+      }
+    },
+    "16": {
+      "value_convert": "default",
+      "status_code": "request",
+      "config_item": {
+        "statusFormat": "{\"request\":\"$\"}",
+        "valueDesc": "{\"range\":[\"get_map\",\"get_path\",\"get_both\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "oaelsi57ejdiavfh"
+      }
+    },
+    "17": {
+      "value_convert": "default",
+      "status_code": "edge_brush",
+      "config_item": {
+        "statusFormat": "{\"edge_brush\":\"$\"}",
+        "valueDesc": "{\"unit\":\"min\",\"min\":0,\"max\":9000,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "oaelsi57ejdiavfh"
+      }
+    },
+    "18": {
+      "value_convert": "default",
+      "status_code": "reset_edge_brush",
+      "config_item": {
+        "statusFormat": "{\"reset_edge_brush\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "oaelsi57ejdiavfh"
+      }
+    },
+    "19": {
+      "value_convert": "default",
+      "status_code": "roll_brush",
+      "config_item": {
+        "statusFormat": "{\"roll_brush\":\"$\"}",
+        "valueDesc": "{\"unit\":\"min\",\"min\":0,\"max\":18000,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "oaelsi57ejdiavfh"
+      }
+    },
+    "20": {
+      "value_convert": "default",
+      "status_code": "reset_roll_brush",
+      "config_item": {
+        "statusFormat": "{\"reset_roll_brush\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "oaelsi57ejdiavfh"
+      }
+    },
+    "21": {
+      "value_convert": "default",
+      "status_code": "filter",
+      "config_item": {
+        "statusFormat": "{\"filter\":\"$\"}",
+        "valueDesc": "{\"unit\":\"min\",\"min\":0,\"max\":9000,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "oaelsi57ejdiavfh"
+      }
+    },
+    "22": {
+      "value_convert": "default",
+      "status_code": "reset_filter",
+      "config_item": {
+        "statusFormat": "{\"reset_filter\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "oaelsi57ejdiavfh"
+      }
+    },
+    "23": {
+      "value_convert": "default",
+      "status_code": "duster_cloth",
+      "config_item": {
+        "statusFormat": "{\"duster_cloth\":\"$\"}",
+        "valueDesc": "{\"unit\":\"min\",\"min\":0,\"max\":9000,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "oaelsi57ejdiavfh"
+      }
+    },
+    "24": {
+      "value_convert": "default",
+      "status_code": "reset_duster_cloth",
+      "config_item": {
+        "statusFormat": "{\"reset_duster_cloth\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "oaelsi57ejdiavfh"
+      }
+    },
+    "25": {
+      "value_convert": "default",
+      "status_code": "switch_disturb",
+      "config_item": {
+        "statusFormat": "{\"switch_disturb\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "oaelsi57ejdiavfh"
+      }
+    },
+    "26": {
+      "value_convert": "default",
+      "status_code": "volume_set",
+      "config_item": {
+        "statusFormat": "{\"volume_set\":\"$\"}",
+        "valueDesc": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "oaelsi57ejdiavfh"
+      }
+    },
+    "27": {
+      "value_convert": "default",
+      "status_code": "break_clean",
+      "config_item": {
+        "statusFormat": "{\"break_clean\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "oaelsi57ejdiavfh"
+      }
+    },
+    "28": {
+      "value_convert": "default",
+      "status_code": "fault",
+      "config_item": {
+        "statusFormat": "{\"fault\":\"$\"}",
+        "valueDesc": "{\"label\":[\"low_power\",\"poweroff\",\"wheel_trap\",\"cannot_upgrade\",\"collision_stuck\",\"dust_station_full\",\"tile_error\",\"lidar_speed_err\",\"lidar_cover\",\"lidar_point_err\",\"front_wall_dirty\",\"psd_dirty\",\"middle_sweep\",\"side_sweep\",\"fan_speed\",\"dustbox_out\",\"dustbox_full\",\"no_dust_box\",\"dustbox_fullout\",\"trapped\",\"pick_up\",\"no_dust_water_box\",\"water_box_empty\",\"forbid_area\",\"land_check\",\"findcharge_fail\",\"battery_err\",\"kit_wheel\",\"kit_lidar\",\"kit_water_pump\"]}",
+        "valueType": "Bitmap",
+        "enumMappingMap": {},
+        "pid": "oaelsi57ejdiavfh"
+      }
+    },
+    "29": {
+      "value_convert": "default",
+      "status_code": "total_clean_area",
+      "config_item": {
+        "statusFormat": "{\"total_clean_area\":\"$\"}",
+        "valueDesc": "{\"unit\":\"㎡\",\"min\":0,\"max\":99999,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "oaelsi57ejdiavfh"
+      }
+    },
+    "30": {
+      "value_convert": "default",
+      "status_code": "total_clean_count",
+      "config_item": {
+        "statusFormat": "{\"total_clean_count\":\"$\"}",
+        "valueDesc": "{\"min\":0,\"max\":99999,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "oaelsi57ejdiavfh"
+      }
+    },
+    "31": {
+      "value_convert": "default",
+      "status_code": "total_clean_time",
+      "config_item": {
+        "statusFormat": "{\"total_clean_time\":\"$\"}",
+        "valueDesc": "{\"unit\":\"min\",\"min\":0,\"max\":99999,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "oaelsi57ejdiavfh"
+      }
+    },
+    "32": {
+      "value_convert": "default",
+      "status_code": "device_timer",
+      "config_item": {
+        "statusFormat": "{\"device_timer\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Raw",
+        "enumMappingMap": {},
+        "pid": "oaelsi57ejdiavfh"
+      }
+    },
+    "33": {
+      "value_convert": "default",
+      "status_code": "disturb_time_set",
+      "config_item": {
+        "statusFormat": "{\"disturb_time_set\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Raw",
+        "enumMappingMap": {},
+        "pid": "oaelsi57ejdiavfh"
+      }
+    },
+    "34": {
+      "value_convert": "default",
+      "status_code": "device_info",
+      "config_item": {
+        "statusFormat": "{\"device_info\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Raw",
+        "enumMappingMap": {},
+        "pid": "oaelsi57ejdiavfh"
+      }
+    },
+    "35": {
+      "value_convert": "default",
+      "status_code": "voice_data",
+      "config_item": {
+        "statusFormat": "{\"voice_data\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Raw",
+        "enumMappingMap": {},
+        "pid": "oaelsi57ejdiavfh"
+      }
+    },
+    "36": {
+      "value_convert": "default",
+      "status_code": "language",
+      "config_item": {
+        "statusFormat": "{\"language\":\"$\"}",
+        "valueDesc": "{\"range\":[\"chinese_simplified\",\"chinese_traditional\",\"english\",\"german\",\"french\",\"russian\",\"spanish\",\"korean\",\"latin\",\"portuguese\",\"japanese\",\"italian\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "oaelsi57ejdiavfh"
+      }
+    },
+    "37": {
+      "value_convert": "default",
+      "status_code": "dust_collection_num",
+      "config_item": {
+        "statusFormat": "{\"dust_collection_num\":\"$\"}",
+        "valueDesc": "{\"min\":0,\"max\":4,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "oaelsi57ejdiavfh"
+      }
+    },
+    "38": {
+      "value_convert": "default",
+      "status_code": "dust_collection_switch",
+      "config_item": {
+        "statusFormat": "{\"dust_collection_switch\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "oaelsi57ejdiavfh"
+      }
+    },
+    "39": {
+      "value_convert": "default",
+      "status_code": "customize_mode_switch",
+      "config_item": {
+        "statusFormat": "{\"customize_mode_switch\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "oaelsi57ejdiavfh"
+      }
+    }
+  },
+  "status_range": {
+    "power_go": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "pause": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "switch_charge": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"smart\",\"zone\",\"pose\",\"part\"]}",
+      "report_type": null
+    },
+    "status": {
+      "type": "Enum",
+      "value": "{\"range\":[\"standby\",\"zone_clean\",\"part_clean\",\"cleaning\",\"paused\",\"goto_pos\",\"pos_arrived\",\"pos_unarrive\",\"goto_charge\",\"charging\",\"charge_done\",\"sleep\"]}",
+      "report_type": null
+    },
+    "clean_time": {
+      "type": "Integer",
+      "value": "{\"unit\":\"min\",\"min\":0,\"max\":9999,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "clean_area": {
+      "type": "Integer",
+      "value": "{\"unit\":\"㎡\",\"min\":0,\"max\":9999,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "electricity_left": {
+      "type": "Integer",
+      "value": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "suction": {
+      "type": "Enum",
+      "value": "{\"range\":[\"closed\",\"gentle\",\"normal\",\"strong\"]}",
+      "report_type": null
+    },
+    "cistern": {
+      "type": "Enum",
+      "value": "{\"range\":[\"closed\",\"low\",\"middle\",\"high\"]}",
+      "report_type": null
+    },
+    "seek": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "direction_control": {
+      "type": "Enum",
+      "value": "{\"range\":[\"forward\",\"turn_left\",\"turn_right\",\"stop\"]}",
+      "report_type": null
+    },
+    "reset_map": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "path_data": {
+      "type": "Raw",
+      "value": "{}",
+      "report_type": null
+    },
+    "command_trans": {
+      "type": "Raw",
+      "value": "{}",
+      "report_type": null
+    },
+    "request": {
+      "type": "Enum",
+      "value": "{\"range\":[\"get_map\",\"get_path\",\"get_both\"]}",
+      "report_type": null
+    },
+    "edge_brush": {
+      "type": "Integer",
+      "value": "{\"unit\":\"min\",\"min\":0,\"max\":9000,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "reset_edge_brush": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "roll_brush": {
+      "type": "Integer",
+      "value": "{\"unit\":\"min\",\"min\":0,\"max\":18000,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "reset_roll_brush": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "filter": {
+      "type": "Integer",
+      "value": "{\"unit\":\"min\",\"min\":0,\"max\":9000,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "reset_filter": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "duster_cloth": {
+      "type": "Integer",
+      "value": "{\"unit\":\"min\",\"min\":0,\"max\":9000,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "reset_duster_cloth": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "switch_disturb": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "volume_set": {
+      "type": "Integer",
+      "value": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "break_clean": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "fault": {
+      "type": "Bitmap",
+      "value": "{\"label\":[\"low_power\",\"poweroff\",\"wheel_trap\",\"cannot_upgrade\",\"collision_stuck\",\"dust_station_full\",\"tile_error\",\"lidar_speed_err\",\"lidar_cover\",\"lidar_point_err\",\"front_wall_dirty\",\"psd_dirty\",\"middle_sweep\",\"side_sweep\",\"fan_speed\",\"dustbox_out\",\"dustbox_full\",\"no_dust_box\",\"dustbox_fullout\",\"trapped\",\"pick_up\",\"no_dust_water_box\",\"water_box_empty\",\"forbid_area\",\"land_check\",\"findcharge_fail\",\"battery_err\",\"kit_wheel\",\"kit_lidar\",\"kit_water_pump\"]}",
+      "report_type": null
+    },
+    "total_clean_area": {
+      "type": "Integer",
+      "value": "{\"unit\":\"㎡\",\"min\":0,\"max\":99999,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "total_clean_count": {
+      "type": "Integer",
+      "value": "{\"min\":0,\"max\":99999,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "total_clean_time": {
+      "type": "Integer",
+      "value": "{\"unit\":\"min\",\"min\":0,\"max\":99999,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "device_timer": {
+      "type": "Raw",
+      "value": "{}",
+      "report_type": null
+    },
+    "disturb_time_set": {
+      "type": "Raw",
+      "value": "{}",
+      "report_type": null
+    },
+    "device_info": {
+      "type": "Raw",
+      "value": "{}",
+      "report_type": null
+    },
+    "voice_data": {
+      "type": "Raw",
+      "value": "{}",
+      "report_type": null
+    },
+    "language": {
+      "type": "Enum",
+      "value": "{\"range\":[\"chinese_simplified\",\"chinese_traditional\",\"english\",\"german\",\"french\",\"russian\",\"spanish\",\"korean\",\"latin\",\"portuguese\",\"japanese\",\"italian\"]}",
+      "report_type": null
+    },
+    "dust_collection_num": {
+      "type": "Integer",
+      "value": "{\"min\":0,\"max\":4,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "dust_collection_switch": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "customize_mode_switch": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    }
+  },
+  "status": {
+    "power_go": false,
+    "pause": false,
+    "switch_charge": false,
+    "mode": "smart",
+    "status": "charging",
+    "clean_time": 35,
+    "clean_area": 31,
+    "electricity_left": 79,
+    "suction": "gentle",
+    "cistern": "closed",
+    "seek": false,
+    "direction_control": "forward",
+    "reset_map": false,
+    "path_data": "",
+    "command_trans": "qgABFxc=",
+    "request": "get_map",
+    "edge_brush": 8039,
+    "reset_edge_brush": false,
+    "roll_brush": 17102,
+    "reset_roll_brush": false,
+    "filter": 8113,
+    "reset_filter": false,
+    "duster_cloth": 8964,
+    "reset_duster_cloth": false,
+    "switch_disturb": false,
+    "volume_set": 100,
+    "break_clean": false,
+    "fault": 0,
+    "total_clean_area": 1034,
+    "total_clean_count": 38,
+    "total_clean_time": 1111,
+    "device_timer": "qgADMQEAMg==",
+    "disturb_time_set": "qgAIMwEWAAAIAABS",
+    "device_info": "",
+    "voice_data": "qwAAAAAHNQAAAAADZJw=",
+    "language": "chinese_simplified",
+    "dust_collection_num": 1,
+    "dust_collection_switch": false,
+    "customize_mode_switch": false
+  },
+  "set_up": true,
+  "support_local": true,
+  "quirk": null,
+  "warnings": [
+    "enum_out_range|mode|goto_charge",
+    "enum_out_range|cistern|closed"
+  ]
+}

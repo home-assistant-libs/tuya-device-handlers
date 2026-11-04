@@ -1,14 +1,21 @@
 """Tuya device wrapper."""
 
 import json
-from typing import Any
+from typing import Any, ClassVar
 
 from tuya_sharing import CustomerDevice
 
+from tuya_device_handlers.const import ColorTempScale
 from tuya_device_handlers.type_information import IntegerTypeInformation
+from tuya_device_handlers.type_information_ex import ColorTempTypeInformationEx
 from tuya_device_handlers.utils import RemapHelper
 
-from .common import DPCodeIntegerWrapper, DPCodeJsonWrapper
+from .common import (
+    DPCodeIntegerWrapper,
+    DPCodeJsonWrapper,
+    DPCodeStringWrapper,
+    DPCodeWrapper,
+)
 
 
 class BrightnessWrapper(DPCodeIntegerWrapper[int]):
@@ -135,11 +142,31 @@ class ColorTempWrapper(DPCodeIntegerWrapper[int]):
 
     A round-trip from Tuya range to Kelvin via Mireds is done for
     historical reason, and because mired scale is a better measure
-    of perceptual color difference
+    of perceptual color difference.
+
+    `min_kelvin` / `max_kelvin` describe the color temperature range the
+    lamp actually covers. The Tuya cloud never reports it, so they
+    default to the range assumed for all Tuya lights; a subclass may
+    override them for a device that deviates. The host integration reads
+    them to report the entity's supported range.
+
+    `color_temp_scale` tells how the raw range maps onto that Kelvin
+    range. Tuya lights are assumed to be linear in mireds; a subclass may
+    select `ColorTempScale.KELVIN` for a device that is linear in Kelvin
+    instead. It only affects the conversion done here, the host
+    integration always deals in Kelvin.
+
+    All three are taken from the datapoint's `ColorTempTypeInformationEx`
+    when a quirk provides one, so a device can be corrected without a
+    wrapper subclass.
     """
 
-    MIN_KELVIN = 2000  # 500 mireds
-    MAX_KELVIN = 6500  # 153 mireds
+    MIN_KELVIN: ClassVar[int] = 2000  # 500 mireds
+    MAX_KELVIN: ClassVar[int] = 6500  # 153 mireds
+
+    min_kelvin: int = MIN_KELVIN
+    max_kelvin: int = MAX_KELVIN
+    color_temp_scale: ColorTempScale = ColorTempScale.MIRED
 
     @staticmethod
     def kelvin_to_mired(kelvin: int) -> float:
@@ -156,16 +183,28 @@ class ColorTempWrapper(DPCodeIntegerWrapper[int]):
     ) -> None:
         """Init DPCodeIntegerWrapper."""
         super().__init__(dpcode, type_information)
-        max_mireds = self.kelvin_to_mired(self.MIN_KELVIN)
-        min_mireds = self.kelvin_to_mired(self.MAX_KELVIN)
-        self._remap_helper = RemapHelper.from_type_information(
-            type_information, min_mireds, max_mireds
-        )
+        if isinstance(type_information, ColorTempTypeInformationEx):
+            self.min_kelvin = type_information.min_kelvin
+            self.max_kelvin = type_information.max_kelvin
+            self.color_temp_scale = type_information.color_temp_scale
+        if self.color_temp_scale is ColorTempScale.KELVIN:
+            self._remap_helper = RemapHelper.from_type_information(
+                type_information, self.min_kelvin, self.max_kelvin
+            )
+        else:
+            max_mireds = self.kelvin_to_mired(self.min_kelvin)
+            min_mireds = self.kelvin_to_mired(self.max_kelvin)
+            self._remap_helper = RemapHelper.from_type_information(
+                type_information, min_mireds, max_mireds
+            )
 
     def read_device_status(self, device: CustomerDevice) -> int | None:
         """Return the color temperature value in Kelvin."""
         if (temperature := self._read_dpcode_value(device)) is None:
             return None
+
+        if self.color_temp_scale is ColorTempScale.KELVIN:
+            return round(self._remap_helper.remap_value_to(temperature))
 
         return self.mired_to_kelvin(
             self._remap_helper.remap_value_to(temperature, reverse=True)
@@ -175,13 +214,14 @@ class ColorTempWrapper(DPCodeIntegerWrapper[int]):
         self, device: CustomerDevice, value: int
     ) -> Any:
         """Convert HA value (Kelvin) to a raw device value."""
-        return super()._convert_value_to_raw_value(
-            device,
-            self._remap_helper.remap_value_from(
+        if self.color_temp_scale is ColorTempScale.KELVIN:
+            raw_value = self._remap_helper.remap_value_from(value)
+        else:
+            raw_value = self._remap_helper.remap_value_from(
                 self.kelvin_to_mired(value),
                 reverse=True,
-            ),
-        )
+            )
+        return super()._convert_value_to_raw_value(device, raw_value)
 
 
 DEFAULT_H_TYPE = RemapHelper(
@@ -206,12 +246,23 @@ DEFAULT_V_TYPE_V2 = RemapHelper(
 )
 
 
-class ColorDataWrapper(DPCodeJsonWrapper[tuple[float, float, float]]):
-    """Wrapper for color data DP code."""
+class ColorDataWrapper(DPCodeWrapper[tuple[float, float, float]]):
+    """Base for colour_data wrappers, holding the H/S/V remap ranges.
+
+    The ranges are set by the light definition once the encoding (V1 or
+    V2) is known, so every colour_data wrapper exposes them regardless of
+    how the datapoint itself is encoded.
+    """
 
     h_type = DEFAULT_H_TYPE
     s_type = DEFAULT_S_TYPE
     v_type = DEFAULT_V_TYPE
+
+
+class ColorDataJsonWrapper(
+    ColorDataWrapper, DPCodeJsonWrapper[tuple[float, float, float]]
+):
+    """Wrapper for a JSON-encoded color data DP code."""
 
     def read_device_status(
         self, device: CustomerDevice
@@ -236,4 +287,47 @@ class ColorDataWrapper(DPCodeJsonWrapper[tuple[float, float, float]]):
                 "s": round(self.s_type.remap_value_from(saturation)),
                 "v": round(self.v_type.remap_value_from(brightness)),
             }
+        )
+
+
+class ColorDataStringWrapper(
+    ColorDataWrapper, DPCodeStringWrapper[tuple[float, float, float]]
+):
+    """Wrapper for a hex-encoded color data DP code.
+
+    Some devices report ``colour_data`` (or ``colour_data_v2``) as a
+    ``String`` datapoint whose value packs the hue, saturation and value as
+    three consecutive 4-digit hexadecimal numbers (``HHHHSSSSVVVV``), instead
+    of the JSON object handled by ``ColorDataJsonWrapper``.
+    """
+
+    def read_device_status(
+        self, device: CustomerDevice
+    ) -> tuple[float, float, float] | None:
+        """Return a tuple (H, S, V) from this color data."""
+        status = self._read_dpcode_value(device)
+        # Expect exactly "HHHHSSSSVVVV"; reject other types or lengths.
+        if not isinstance(status, str) or len(status) != 12:
+            return None
+        try:
+            hue = int(status[0:4], 16)
+            saturation = int(status[4:8], 16)
+            value = int(status[8:12], 16)
+        except ValueError:
+            return None
+        return (
+            self.h_type.remap_value_to(hue),
+            self.s_type.remap_value_to(saturation),
+            self.v_type.remap_value_to(value),
+        )
+
+    def _convert_value_to_raw_value(
+        self, device: CustomerDevice, value: tuple[float, float, float]
+    ) -> Any:
+        """Convert HA tuple (H, S, V) to a raw device value."""
+        hue, saturation, brightness = value
+        return (
+            f"{round(self.h_type.remap_value_from(hue)):04x}"
+            f"{round(self.s_type.remap_value_from(saturation)):04x}"
+            f"{round(self.v_type.remap_value_from(brightness)):04x}"
         )

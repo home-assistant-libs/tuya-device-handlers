@@ -2,9 +2,15 @@ name: Testing
 
 # yamllint disable-line rule:truthy
 on:
-  push:
   pull_request:
+  push:
+    branches:
+      - main
   workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 env:
   DEFAULT_PYTHON: "3.13"
@@ -18,30 +24,22 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python: ["3.13", "3.14"]
+        python: ["3.13", "3.14", "3.15"]
     steps:
       - name: ⤵️ Check out code from GitHub
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - name: 🏗 Set up Poetry
-        run: pipx install poetry
-      - name: 🏗 Set up Python ${{ matrix.python }}
-        id: python
-        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+      - name: 🏗 Set up uv and Python ${{ matrix.python }}
+        uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
         with:
+          version: "0.13.7"
           python-version: ${{ matrix.python }}
-          cache: "poetry"
-      - name: 🏗 Install workflow dependencies
-        run: |
-          poetry config virtualenvs.create true
-          poetry config virtualenvs.in-project true
-      - name: 🏗 Install dependencies
-        run: poetry install --no-interaction
+          enable-cache: true
       - name: 🚀 Run pytest
-        run: poetry run pytest --cov tuya_device_handlers tests
+        run: uv run --locked pytest --cov tuya_device_handlers tests
       - name: ⬆️ Upload coverage artifact
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: coverage-${{ matrix.python }}
           include-hidden-files: true
@@ -52,29 +50,21 @@ jobs:
     needs: pytest
     steps:
       - name: ⤵️ Check out code from GitHub
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
           persist-credentials: false
       - name: ⬇️ Download coverage data
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
-      - name: 🏗 Set up Poetry
-        run: pipx install poetry
-      - name: 🏗 Set up Python ${{ env.DEFAULT_PYTHON }}
-        id: python
-        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+      - name: 🏗 Set up uv and Python ${{ env.DEFAULT_PYTHON }}
+        uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
         with:
+          version: "0.13.7"
           python-version: ${{ env.DEFAULT_PYTHON }}
-          cache: "poetry"
-      - name: 🏗 Install workflow dependencies
-        run: |
-          poetry config virtualenvs.create true
-          poetry config virtualenvs.in-project true
-      - name: 🏗 Install dependencies
-        run: poetry install --no-interaction
+          enable-cache: true
       - name: 🚀 Process coverage results
         run: |
-          poetry run coverage combine coverage*/.coverage*
-          poetry run coverage xml -i
+          uv run --locked coverage combine coverage*/.coverage*
+          uv run --locked coverage xml -i
       - name: 🚀 Upload coverage report
-        uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
+        uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 # v7.1.1
