@@ -4,9 +4,9 @@ This walkthrough fixes a cover whose position is backwards in Home Assistant.
 You can follow it **even if you don't write Python**: you will find out how
 your device behaves, then copy a short quirk.
 
-> The classes used below for devices that follow `control_back_mode` are
-> available from the first release after `tuya-device-handlers` 0.0.33. Your
-> version is listed in the diagnostics, under `requirements`.
+> The classes used below for devices that follow `control_back_mode` need
+> `tuya-device-handlers` 0.0.34 or later, included in Home Assistant 2026.11.
+> Your version is listed in the diagnostics, under `requirements`.
 
 ## When to use this
 
@@ -185,6 +185,9 @@ def test_quirk_corrects_position(
         {"code": "percent_control", "value": 70}
     ]
 ```
+
+If your cover reads `percent_control` (`clkg` covers, and covers without
+`percent_state`), set `device.status["percent_control"] = 25` instead.
 
 If your device follows `control_back_mode`, test both modes by setting
 `device.status["control_back_mode"]` before reading.
