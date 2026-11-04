@@ -70,6 +70,8 @@ Each quirk file should contain exactly one `DeviceQuirk()...register(...)` chain
 
 > **Entities missing — all of them, or just some?** A quirk can only rewrite a device's datapoints; turning them into entities is Home Assistant's job, and it can only do that for a category and a DPCode it knows. If a datapoint is _absent_ from the diagnostics, a quirk can add it; if it's _present_ but never becomes an entity, the fix belongs in core. See [Recipe: missing entities](docs/unsupported-category-or-dpcode.md).
 
+> **Cover position backwards?** A closed blind shows as open, or the open button closes it. See [Recipe: inverted covers](docs/inverted-covers.md).
+
 ### 3. Test it inside Home Assistant
 
 1. Restart the Tuya integration (**Settings → Devices & services → Tuya → ⋮ → Reload**). Quirks under `<config>/tuya_quirks/` are reloaded each time, so you don't need to restart Home Assistant itself.
