@@ -45,8 +45,8 @@ from tuya_device_handlers.const import DPMode
         dpcode="ext_temp",
         dpmode=DPMode.READ,
         unit="℃",
-        min=-200,
-        max=600,
+        min=-400,
+        max=1200,
         scale=1,
         step=1,
     )
