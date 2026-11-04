@@ -1,9 +1,10 @@
 """Tuya device wrapper."""
 
-from typing import Any, ClassVar, Self
+from typing import Any, ClassVar, Self, cast
 
 from tuya_sharing import CustomerDevice
 
+from tuya_device_handlers import TUYA_QUIRKS_REGISTRY
 from tuya_device_handlers.type_information import (
     IntegerTypeInformation,
     TypeInformation,
@@ -81,6 +82,28 @@ class DPCodePercentageWrapper(DPCodeRemappedIntegerWrapper):
     ) -> None:
         """Init DPCodePercentageWrapper."""
         super().__init__(dpcode, type_information, target_min=0, target_max=100)
+
+    @classmethod
+    def find_dpcode(
+        cls,
+        device: CustomerDevice,
+        dpcodes: str | tuple[str, ...] | None,
+        *,
+        prefer_function: bool = False,
+    ) -> Self | None:
+        """Find a wrapper for the given DP codes, applying quirk overrides."""
+        wrapper = super().find_dpcode(
+            device, dpcodes, prefer_function=prefer_function
+        )
+        if (
+            wrapper
+            and (quirk := TUYA_QUIRKS_REGISTRY.get_quirk_for_device(device))
+            and (new_cls := quirk.get_wrapper_cls(dpcode=wrapper.dpcode))
+        ):
+            return cast(type[Self], new_cls)(
+                wrapper.dpcode, wrapper.type_information
+            )
+        return wrapper
 
 
 class DPCodeInvertedPercentageWrapper(DPCodePercentageWrapper):

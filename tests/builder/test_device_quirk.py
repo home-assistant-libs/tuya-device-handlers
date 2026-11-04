@@ -22,6 +22,7 @@ from tuya_device_handlers.builder.device_quirk import (
     _QuirkEntry,
 )
 from tuya_device_handlers.const import DPMode, DPType
+from tuya_device_handlers.device_wrapper.extended import DPCodePercentageWrapper
 from tuya_device_handlers.registry import QuirksRegistry
 from tuya_device_handlers.type_information import (
     BitmapTypeInformation,
@@ -800,3 +801,27 @@ def test_register_without_applies_to_raises() -> None:
         ValueError, match="does not have an applies_to condition"
     ):
         quirk.register(QuirksRegistry())
+
+
+def test_get_wrapper_cls_returns_override() -> None:
+    """get_wrapper_cls returns the override registered on the quirk."""
+    quirk = DeviceQuirk().override_dpid_wrapper_cls(
+        dpid=2,
+        dpcode="percent_control",
+        wrapper_cls=DPCodePercentageWrapper,
+    )
+    assert (
+        quirk.get_wrapper_cls(dpcode="percent_control")
+        is DPCodePercentageWrapper
+    )
+
+
+def test_get_wrapper_cls_returns_none_for_other_dpcode() -> None:
+    """get_wrapper_cls returns None for a dpcode without an override."""
+    quirk = DeviceQuirk().override_dpid_wrapper_cls(
+        dpid=2,
+        dpcode="percent_control",
+        wrapper_cls=DPCodePercentageWrapper,
+    )
+    assert quirk.get_wrapper_cls(dpcode="percent_state") is None
+    assert DeviceQuirk().get_wrapper_cls(dpcode="percent_control") is None

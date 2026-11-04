@@ -1,14 +1,18 @@
 """Test DeviceWrapper classes."""
 
 from typing import Any
+from unittest.mock import patch
 
 import pytest
 from tuya_sharing import CustomerDevice
 
+from tuya_device_handlers import TUYA_QUIRKS_REGISTRY
+from tuya_device_handlers.builder.device_quirk import DeviceQuirk
 from tuya_device_handlers.device_wrapper.common import (
     DPCodeTypeInformationWrapper,
 )
 from tuya_device_handlers.device_wrapper.cover import (
+    ControlBackModeInvertedPercentageMappingWrapper,
     ControlBackModePercentageMappingWrapper,
     CoverClosedEnumWrapper,
     CoverInstructionBooleanWrapper,
@@ -51,6 +55,24 @@ from . import inject_dpcode
             "demo_integer",
             {"demo_integer": 200, "control_back_mode": "forward"},
             80,
+        ),
+        (
+            ControlBackModeInvertedPercentageMappingWrapper,
+            "demo_integer",
+            {"demo_integer": 200},
+            20,
+        ),
+        (
+            ControlBackModeInvertedPercentageMappingWrapper,
+            "demo_integer",
+            {"demo_integer": 200, "control_back_mode": "back"},
+            80,
+        ),
+        (
+            ControlBackModeInvertedPercentageMappingWrapper,
+            "demo_integer",
+            {"demo_integer": 200, "control_back_mode": "forward"},
+            20,
         ),
         (
             CoverClosedEnumWrapper,
@@ -183,3 +205,62 @@ def test_cover_action_command(
 
     assert wrapper
     assert wrapper.get_update_commands(mock_device, action) == expected
+
+
+def _register_wrapper_override(device: CustomerDevice, dpcode: str) -> None:
+    (
+        DeviceQuirk()
+        .applies_to(product_id=device.product_id)
+        .override_dpid_wrapper_cls(
+            dpid=2,
+            dpcode=dpcode,
+            wrapper_cls=ControlBackModeInvertedPercentageMappingWrapper,
+        )
+        .register(TUYA_QUIRKS_REGISTRY)
+    )
+
+
+@pytest.mark.parametrize(
+    "requested_wrapper",
+    [
+        DPCodePercentageWrapper,
+        DPCodeInvertedPercentageWrapper,
+        ControlBackModePercentageMappingWrapper,
+    ],
+)
+def test_find_dpcode_applies_quirk_wrapper_override(
+    mock_device: CustomerDevice,
+    requested_wrapper: type[DPCodePercentageWrapper],
+) -> None:
+    """A quirk's wrapper wins, whichever wrapper the caller asks for."""
+    with patch.dict(TUYA_QUIRKS_REGISTRY._quirks, clear=True):
+        _register_wrapper_override(mock_device, "demo_integer")
+        wrapper = requested_wrapper.find_dpcode(mock_device, "demo_integer")
+
+    assert type(wrapper) is ControlBackModeInvertedPercentageMappingWrapper
+    assert wrapper.dpcode == "demo_integer"
+
+
+def test_find_dpcode_ignores_override_for_other_dpcode(
+    mock_device: CustomerDevice,
+) -> None:
+    """A quirk's wrapper only applies to its own datapoint."""
+    with patch.dict(TUYA_QUIRKS_REGISTRY._quirks, clear=True):
+        _register_wrapper_override(mock_device, "other")
+        wrapper = DPCodeInvertedPercentageWrapper.find_dpcode(
+            mock_device, "demo_integer"
+        )
+
+    assert type(wrapper) is DPCodeInvertedPercentageWrapper
+
+
+def test_find_dpcode_returns_none_for_missing_dpcode(
+    mock_device: CustomerDevice,
+) -> None:
+    """No wrapper is built for a datapoint the device doesn't have."""
+    with patch.dict(TUYA_QUIRKS_REGISTRY._quirks, clear=True):
+        _register_wrapper_override(mock_device, "bad")
+        assert (
+            DPCodeInvertedPercentageWrapper.find_dpcode(mock_device, "bad")
+            is None
+        )
