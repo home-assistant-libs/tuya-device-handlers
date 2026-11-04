@@ -13,7 +13,11 @@ from tuya_device_handlers.const import DPMode
 
 (
     DeviceQuirk()
-    .applies_to(product_id="22m2ytawuenfen5b")
+    .applies_to(
+        product_id="22m2ytawuenfen5b",
+        manufacturer="Beok",
+        model_id="TOL47WIFI-WPB",
+    )
     .add_dpid_enum(
         dpid=4,
         dpcode="mode",
