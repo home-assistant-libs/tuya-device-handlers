@@ -15,6 +15,9 @@ from .const import DEVICE_WARNINGS, DPType
 
 _LOGGER = logging.getLogger(__name__)
 
+# Datapoints reported as is in `back` mode, for each category
+_BACK_MODE_DPCODES = {"clkg": ("percent_control", "percent_control_2")}
+
 _LOG_OR_QUIRK = (
     "please report this defect to Tuya support, or create a quirk "
     "at https://github.com/home-assistant-libs/tuya-device-handlers"
@@ -96,6 +99,18 @@ class TypeInformation[T](abc.ABC):
                 new_cls := quirk.get_type_information_cls(dpcode=dpcode)
             ):
                 type_cls = cast(type[Self], new_cls)
+            elif (
+                cls is IntegerTypeInformation
+                and dpcode in _BACK_MODE_DPCODES.get(device.category, ())
+            ):
+                # pylint: disable-next=import-outside-toplevel
+                from .type_information_ex import (  # noqa: PLC0415
+                    BackModeInvertedIntegerTypeInformationEx,
+                )
+
+                type_cls = cast(
+                    type[Self], BackModeInvertedIntegerTypeInformationEx
+                )
             for device_specs in lookup_tuple:
                 if (
                     (current_definition := device_specs.get(dpcode))

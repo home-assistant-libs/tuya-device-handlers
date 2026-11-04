@@ -33,20 +33,46 @@ class InvertedIntegerTypeInformationEx(IntegerTypeInformation):
     See https://github.com/home-assistant/core/issues/159800.
     """
 
+    def _is_inverted(self, device: CustomerDevice) -> bool:
+        """Check if the value should be inverted."""
+        return True
+
     def read_device_value(self, device: CustomerDevice) -> float | None:
         """Read and invert the device value."""
         value = super().read_device_value(device)
-        if value is None:
-            return None
+        if value is None or not self._is_inverted(device):
+            return value
         return self.scale_value(self.max) - value
 
     def prepare_set_value(self, device: CustomerDevice, value: Any) -> int:
         """Invert and prepare a value to be sent to the device."""
-        if not isinstance(value, (int, float)):
+        if not isinstance(value, (int, float)) or not self._is_inverted(device):
             return super().prepare_set_value(device, value)
         return super().prepare_set_value(
             device, self.scale_value(self.max) - value
         )
+
+
+@dataclass(kw_only=True)
+class BackModeInvertedIntegerTypeInformationEx(
+    InvertedIntegerTypeInformationEx
+):
+    """Invert the value only when `control_back_mode` is `back`."""
+
+    def _is_inverted(self, device: CustomerDevice) -> bool:
+        """Check if the value should be inverted."""
+        return bool(device.status.get("control_back_mode") == "back")
+
+
+@dataclass(kw_only=True)
+class ForwardModeInvertedIntegerTypeInformationEx(
+    InvertedIntegerTypeInformationEx
+):
+    """Invert the value unless `control_back_mode` is `back`."""
+
+    def _is_inverted(self, device: CustomerDevice) -> bool:
+        """Check if the value should be inverted."""
+        return bool(device.status.get("control_back_mode") != "back")
 
 
 @dataclass(kw_only=True)

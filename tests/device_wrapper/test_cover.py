@@ -44,7 +44,7 @@ from . import inject_dpcode
             ControlBackModePercentageMappingWrapper,
             "demo_integer",
             {"demo_integer": 200, "control_back_mode": "back"},
-            20,
+            80,
         ),
         (
             ControlBackModePercentageMappingWrapper,

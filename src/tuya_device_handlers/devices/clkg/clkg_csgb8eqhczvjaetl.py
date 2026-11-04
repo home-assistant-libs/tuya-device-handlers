@@ -1,14 +1,12 @@
 """Quirk for Tuya 6Gen Roller Shutter Switch (product_id csgb8eqhczvjaetl).
 
-This device reports ``percent_state`` in the standard HA convention
-(0 = closed, 100 = open).  The default CL mapping uses
-``DPCodeInvertedPercentageWrapper`` because most Tuya curtain/blind motors
-report position inverted (0 = open, 100 = closed), which causes the
-position to be displayed and set backwards for this device.
+This device reports its position in the opposite direction to the default
+CLKG mapping in both ``control_back_mode`` values, which causes the position
+to be displayed and set backwards.
 
-Applying ``InvertedIntegerTypeInformationEx`` pre-inverts the value at the
-TypeInformation level, so the wrapper's own inversion cancels out and the
-position is reported and set correctly.
+Applying ``ForwardModeInvertedIntegerTypeInformationEx`` pre-inverts the value
+in ``forward`` mode, so the wrapper's own inversion cancels out there and
+remains active in ``back`` mode.
 
 See https://github.com/home-assistant/core/issues/159800.
 """
@@ -16,7 +14,7 @@ See https://github.com/home-assistant/core/issues/159800.
 from tuya_device_handlers import TUYA_QUIRKS_REGISTRY
 from tuya_device_handlers.builder import DeviceQuirk
 from tuya_device_handlers.type_information_ex import (
-    InvertedIntegerTypeInformationEx,
+    ForwardModeInvertedIntegerTypeInformationEx,
 )
 
 (
@@ -25,12 +23,12 @@ from tuya_device_handlers.type_information_ex import (
     .override_dpid_type_information_cls(
         dpid=2,
         dpcode="percent_control",
-        type_information_cls=InvertedIntegerTypeInformationEx,
+        type_information_cls=ForwardModeInvertedIntegerTypeInformationEx,
     )
     .override_dpid_type_information_cls(
         dpid=3,
         dpcode="percent_state",
-        type_information_cls=InvertedIntegerTypeInformationEx,
+        type_information_cls=ForwardModeInvertedIntegerTypeInformationEx,
     )
     .register(TUYA_QUIRKS_REGISTRY)
 )
