@@ -1,0 +1,22 @@
+name: PR Labeler
+
+# pull_request_target is needed to label PRs from forks. It is safe here as
+# the PR code is never checked out or run: the action only lists the changed
+# files and reads its configuration from the base branch.
+# yamllint disable-line rule:truthy
+on:
+  pull_request_target: # zizmor: ignore[dangerous-triggers]
+
+permissions:
+  contents: read
+
+jobs:
+  pr_labeler:
+    name: 🏷️ Label PR
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: 🚀 Run Labeler
+        uses: actions/labeler@bf12e9b00b37c5c0ca2b87b79b2daf7891dbda13 # v7.0.0
