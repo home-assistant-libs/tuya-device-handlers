@@ -1,24 +1,14 @@
-"""Quirk for Tuya roller blind motor (product_id crfwyri5jzt5cxec).
+"""Quirk for ZM25RW01 roller blind motor (product_id crfwyri5jzt5cxec).
 
-This device (ZM25RW01) reports and accepts position in the standard HA
-convention (0 = closed, 100 = open) while its ``control_back_mode`` is
-``back``. The default CL (curtain) mapping wraps both the read DP
-(``percent_state``) and the write DP (``percent_control``) in
-``DPCodeInvertedPercentageWrapper``, because most Tuya curtain/blind motors
-use the opposite convention (0 = open, 100 = closed).
-
-For this device that wrapper is wrong in *both* directions:
-
-* Reads: a closed blind (``percent_state`` 0) is shown as open at 100%.
-* Writes: ``async_open_cover`` sends a position of 100, which the wrapper
-  flips to 0 - so the open button drives the blind closed, and vice versa.
+This device reports and accepts position in the standard HA convention
+(0 = closed, 100 = open), but the default CL mapping inverts it, so a closed
+blind shows as open and the open button closes it.
 
 Applying ``InvertedIntegerTypeInformationEx`` pre-inverts the value at the
-TypeInformation level on both DPs, so the wrapper's own inversion cancels
-out and the position is reported and set correctly.
+TypeInformation level, so the wrapper's own inversion cancels out.
 
-Note that the quirk is not conditional on ``control_back_mode``: it assumes
-the motor is in ``back`` mode, which is how the Tuya app shows it.
+The quirk is not conditional on ``control_back_mode``: it assumes the motor
+is in ``back`` mode, which is how the Tuya app shows it.
 """
 
 from tuya_device_handlers import TUYA_QUIRKS_REGISTRY

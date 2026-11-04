@@ -1,10 +1,4 @@
-"""Tests for the crfwyri5jzt5cxec cover position quirk.
-
-This device (ZM25RW01) reports and accepts position in HA convention
-(0=closed, 100=open) while control_back_mode is "back". Without the quirk
-the default DPCodeInvertedPercentageWrapper incorrectly inverts position
-values in both directions.
-"""
+"""Tests for the crfwyri5jzt5cxec cover position quirk."""
 
 from unittest.mock import patch
 
