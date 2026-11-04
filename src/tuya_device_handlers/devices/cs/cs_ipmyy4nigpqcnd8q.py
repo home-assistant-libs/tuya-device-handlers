@@ -9,6 +9,8 @@ Limitation: the Tuya cloud rejects every command for this product with
 error `2008` (command or value not supported), so the added datapoints are
 effectively read-only in Home Assistant. They are still declared writable
 so the entities match the device's capabilities.
+
+Upstream issue: https://github.com/home-assistant-libs/tuya-device-handlers/issues/693
 """
 
 from tuya_device_handlers import TUYA_QUIRKS_REGISTRY
@@ -17,7 +19,11 @@ from tuya_device_handlers.const import DPMode
 
 (
     DeviceQuirk()
-    .applies_to(product_id="ipmyy4nigpqcnd8q")
+    .applies_to(
+        product_id="ipmyy4nigpqcnd8q",
+        manufacturer="Pro Breeze",
+        model="30L Compressor Dehumidifier",
+    )
     .remove_dpid(dpid=5, dpcode="anion")
     .add_dpid_boolean(
         dpid=1,
