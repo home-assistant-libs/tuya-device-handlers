@@ -12,7 +12,6 @@ from tuya_sharing import CustomerDevice, DeviceFunction, DeviceStatusRange
 
 from tuya_device_handlers.const import DPMode, DPType
 from tuya_device_handlers.device_wrapper.base import DeviceWrapper
-from tuya_device_handlers.device_wrapper.extended import DPCodePercentageWrapper
 from tuya_device_handlers.device_wrapper.service_feeder_schedule import (
     FeederSchedule,
 )
@@ -210,7 +209,6 @@ class DeviceQuirk(DeviceQuirkProtocol):
     _type_information_overrides: dict[
         tuple[int, str], type[TypeInformation[Any]]
     ]
-    _wrapper_overrides: dict[tuple[int, str], type[DPCodePercentageWrapper]]
     _get_wrapper_functions: dict[
         str,
         Callable[[CustomerDevice], DeviceWrapper | None],
@@ -223,7 +221,6 @@ class DeviceQuirk(DeviceQuirkProtocol):
 
         self._quirk_entries = []
         self._type_information_overrides = {}
-        self._wrapper_overrides = {}
         self._get_wrapper_functions = {}
 
         current_frame = inspect.currentframe()
@@ -423,17 +420,6 @@ class DeviceQuirk(DeviceQuirkProtocol):
         self._type_information_overrides[(dpid, dpcode)] = type_information_cls
         return self
 
-    def override_dpid_wrapper_cls(
-        self,
-        *,
-        dpid: int,
-        dpcode: str,
-        wrapper_cls: type[DPCodePercentageWrapper],
-    ) -> Self:
-        """Override the percentage wrapper class used for a datapoint."""
-        self._wrapper_overrides[(dpid, dpcode)] = wrapper_cls
-        return self
-
     def remove_dpid(
         self,
         *,
@@ -520,13 +506,4 @@ class DeviceQuirk(DeviceQuirkProtocol):
         for (_, code), type_cls in self._type_information_overrides.items():
             if code == dpcode:
                 return type_cls
-        return None
-
-    def get_wrapper_cls(
-        self, *, dpcode: str
-    ) -> type[DPCodePercentageWrapper] | None:
-        """Get the wrapper class override for a dpcode."""
-        for (_, code), wrapper_cls in self._wrapper_overrides.items():
-            if code == dpcode:
-                return wrapper_cls
         return None

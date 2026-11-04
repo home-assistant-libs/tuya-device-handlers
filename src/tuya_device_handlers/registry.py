@@ -16,7 +16,6 @@ if TYPE_CHECKING:
     # We don't want to accidentally create a circular import, so we import
     # these here for type checking only
     from .device_wrapper.base import DeviceWrapper
-    from .device_wrapper.extended import DPCodePercentageWrapper
     from .device_wrapper.service_feeder_schedule import FeederSchedule
     from .type_information import TypeInformation
 
@@ -55,11 +54,6 @@ class DeviceQuirkProtocol(Protocol):
         self, *, dpcode: str
     ) -> type[TypeInformation[Any]] | None:
         """Get the type information class override for a dpcode."""
-
-    def get_wrapper_cls(
-        self, *, dpcode: str
-    ) -> type[DPCodePercentageWrapper] | None:
-        """Get the wrapper class override for a dpcode."""
 
 
 class QuirksRegistry:
