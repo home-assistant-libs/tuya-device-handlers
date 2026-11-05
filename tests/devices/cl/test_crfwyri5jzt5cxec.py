@@ -69,3 +69,24 @@ def test_quirk_corrects_position_write(
     assert wrapper.get_update_commands(device, 70) == [
         {"code": "percent_control", "value": 70}
     ]
+
+
+def test_quirk_follows_control_back_mode(
+    filled_quirks_registry: QuirksRegistry,
+) -> None:
+    """In forward mode, the position stays inverted by the default wrapper."""
+    device = create_device("cl_crfwyri5jzt5cxec.json")
+    device.status["control_back_mode"] = "forward"
+    device.status["percent_state"] = 25
+
+    filled_quirks_registry.initialise_device_quirk(device)
+
+    definitions = get_cover_default_definitions(device)
+    read_wrapper = definitions["control"].current_position_wrapper
+    write_wrapper = definitions["control"].set_position_wrapper
+    assert read_wrapper is not None
+    assert write_wrapper is not None
+    assert read_wrapper.read_device_status(device) == 75
+    assert write_wrapper.get_update_commands(device, 70) == [
+        {"code": "percent_control", "value": 30}
+    ]
