@@ -22,7 +22,7 @@ description: How to add, test and review a Tuya device quirk in this repository,
 - For custom scaling/encoding of a single datapoint, use `.override_dpid_type_information_cls(...)` with a class from `type_information_ex.py` instead of a custom wrapper.
 - Every new quirk needs a fixture built from a real diagnostics file **and** tests that load it via `create_device("<fixture>.json")`. Where the quirk changes behaviour, tests should ideally show it both without the quirk (`patch.dict(TUYA_QUIRKS_REGISTRY._quirks, clear=True)`) and with it (`filled_quirks_registry.initialise_device_quirk(device)`). See `tests/devices/cl/test_68nvbio9.py`.
 
-For a worked example of the most common fix (missing ENUM values), see [docs/adding-missing-enum-values.md](../../../docs/adding-missing-enum-values.md).
+For a worked example of the most common fix (missing ENUM values), see [docs/adding-missing-enum-values.md](../../../docs/adding-missing-enum-values.md). For a cover whose position is backwards, see [docs/inverted-covers.md](../../../docs/inverted-covers.md).
 
 ## Converting a diagnostics file into a fixture
 

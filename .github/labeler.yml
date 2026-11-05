@@ -1,0 +1,5 @@
+---
+device-quirk:
+  - changed-files:
+      # Every glob must match every file, so this has to stay a single glob.
+      - all-globs-to-all-files: "{src/tuya_device_handlers/devices,tests/devices,tests/fixtures/devices}/**"

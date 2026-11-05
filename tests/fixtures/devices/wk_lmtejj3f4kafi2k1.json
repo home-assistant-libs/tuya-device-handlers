@@ -1,0 +1,316 @@
+{
+  "endpoint": "https://apigw.tuyaeu.com",
+  "mqtt_connected": true,
+  "disabled_by": null,
+  "disabled_polling": false,
+  "name": "En Suite Bathroom UFH",
+  "category": "wk",
+  "product_id": "lmtejj3f4kafi2k1",
+  "product_name": "Thermostat",
+  "online": true,
+  "sub": false,
+  "time_zone": "+01:00",
+  "active_time": "2026-05-28T12:31:43+00:00",
+  "create_time": "2026-05-28T12:31:43+00:00",
+  "update_time": "2026-05-28T12:31:43+00:00",
+  "function": {
+    "switch": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "temp_set": {
+      "type": "Integer",
+      "value": "{\"unit\":\"\",\"min\":41,\"max\":1040,\"scale\":1,\"step\":1}"
+    },
+    "temp_unit_convert": {
+      "type": "Enum",
+      "value": "{\"range\":[\"c\",\"f\"]}"
+    },
+    "child_lock": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "holiday_days_set": {
+      "type": "Integer",
+      "value": "{\"unit\":\"day\",\"min\":0,\"max\":99,\"scale\":0,\"step\":1}"
+    },
+    "factory_reset": {
+      "type": "Boolean",
+      "value": "{}"
+    }
+  },
+  "local_strategy": {
+    "101": {
+      "value_convert": "default",
+      "status_code": "switch",
+      "config_item": {
+        "statusFormat": "{\"switch\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "lmtejj3f4kafi2k1"
+      }
+    },
+    "102": {
+      "value_convert": "default",
+      "status_code": "temp_set",
+      "config_item": {
+        "statusFormat": "{\"temp_set\":\"$\"}",
+        "valueDesc": "{\"unit\":\"\",\"min\":41,\"max\":1040,\"scale\":1,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "lmtejj3f4kafi2k1"
+      }
+    },
+    "107": {
+      "value_convert": "enum",
+      "status_code": "temp_unit_convert",
+      "config_item": {
+        "statusFormat": "{\"temp_unit_convert\":\"$\"}",
+        "valueDesc": "{\"range\":[\"c\",\"f\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {
+          "false": {
+            "code": "temp_unit_convert",
+            "value": "c"
+          },
+          "true": {
+            "code": "temp_unit_convert",
+            "value": "f"
+          }
+        },
+        "pid": "lmtejj3f4kafi2k1"
+      }
+    },
+    "108": {
+      "value_convert": "default",
+      "status_code": "child_lock",
+      "config_item": {
+        "statusFormat": "{\"child_lock\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "lmtejj3f4kafi2k1"
+      }
+    },
+    "109": {
+      "value_convert": "default",
+      "status_code": "holiday_days_set",
+      "config_item": {
+        "statusFormat": "{\"holiday_days_set\":\"$\"}",
+        "valueDesc": "{\"unit\":\"day\",\"min\":0,\"max\":99,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "lmtejj3f4kafi2k1"
+      }
+    },
+    "115": {
+      "value_convert": "default",
+      "status_code": "factory_reset",
+      "config_item": {
+        "statusFormat": "{\"factory_reset\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "lmtejj3f4kafi2k1"
+      }
+    },
+    "105": {
+      "value_convert": "default",
+      "status_code": "temp_current",
+      "config_item": {
+        "statusFormat": "{\"temp_current\": \"$\"}",
+        "valueDesc": "{\"unit\": \"\\u00b0C\", \"min\": 0, \"max\": 850, \"scale\": 1, \"step\": 1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "lmtejj3f4kafi2k1"
+      }
+    }
+  },
+  "status_range": {
+    "switch": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "temp_set": {
+      "type": "Integer",
+      "value": "{\"unit\":\"\",\"min\":41,\"max\":1040,\"scale\":1,\"step\":1}",
+      "report_type": null
+    },
+    "temp_unit_convert": {
+      "type": "Enum",
+      "value": "{\"range\":[\"c\",\"f\"]}",
+      "report_type": null
+    },
+    "child_lock": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "holiday_days_set": {
+      "type": "Integer",
+      "value": "{\"unit\":\"day\",\"min\":0,\"max\":99,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "factory_reset": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "temp_current": {
+      "type": "Integer",
+      "value": "{\"unit\": \"\\u00b0C\", \"min\": 0, \"max\": 850, \"scale\": 1, \"step\": 1}",
+      "report_type": null
+    }
+  },
+  "status": {
+    "switch": true,
+    "temp_set": 220,
+    "temp_unit_convert": "c",
+    "child_lock": false,
+    "holiday_days_set": 0,
+    "factory_reset": false,
+    "temp_current": 215
+  },
+  "set_up": true,
+  "support_local": true,
+  "quirk": "/config/tuya_quirks/wk_lmtejj3f4kafi2k1.py:6",
+  "warnings": null,
+  "original_category": "wk",
+  "original_function": {
+    "switch": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "temp_set": {
+      "type": "Integer",
+      "value": "{\"unit\":\"\",\"min\":41,\"max\":1040,\"scale\":1,\"step\":1}"
+    },
+    "temp_unit_convert": {
+      "type": "Enum",
+      "value": "{\"range\":[\"c\",\"f\"]}"
+    },
+    "child_lock": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "holiday_days_set": {
+      "type": "Integer",
+      "value": "{\"unit\":\"day\",\"min\":0,\"max\":99,\"scale\":0,\"step\":1}"
+    },
+    "factory_reset": {
+      "type": "Boolean",
+      "value": "{}"
+    }
+  },
+  "original_local_strategy": {
+    "101": {
+      "value_convert": "default",
+      "status_code": "switch",
+      "config_item": {
+        "statusFormat": "{\"switch\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "lmtejj3f4kafi2k1"
+      }
+    },
+    "102": {
+      "value_convert": "default",
+      "status_code": "temp_set",
+      "config_item": {
+        "statusFormat": "{\"temp_set\":\"$\"}",
+        "valueDesc": "{\"unit\":\"\",\"min\":41,\"max\":1040,\"scale\":1,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "lmtejj3f4kafi2k1"
+      }
+    },
+    "107": {
+      "value_convert": "enum",
+      "status_code": "temp_unit_convert",
+      "config_item": {
+        "statusFormat": "{\"temp_unit_convert\":\"$\"}",
+        "valueDesc": "{\"range\":[\"c\",\"f\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {
+          "false": {
+            "code": "temp_unit_convert",
+            "value": "c"
+          },
+          "true": {
+            "code": "temp_unit_convert",
+            "value": "f"
+          }
+        },
+        "pid": "lmtejj3f4kafi2k1"
+      }
+    },
+    "108": {
+      "value_convert": "default",
+      "status_code": "child_lock",
+      "config_item": {
+        "statusFormat": "{\"child_lock\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "lmtejj3f4kafi2k1"
+      }
+    },
+    "109": {
+      "value_convert": "default",
+      "status_code": "holiday_days_set",
+      "config_item": {
+        "statusFormat": "{\"holiday_days_set\":\"$\"}",
+        "valueDesc": "{\"unit\":\"day\",\"min\":0,\"max\":99,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "lmtejj3f4kafi2k1"
+      }
+    },
+    "115": {
+      "value_convert": "default",
+      "status_code": "factory_reset",
+      "config_item": {
+        "statusFormat": "{\"factory_reset\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "lmtejj3f4kafi2k1"
+      }
+    }
+  },
+  "original_status_range": {
+    "switch": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "temp_set": {
+      "type": "Integer",
+      "value": "{\"unit\":\"\",\"min\":41,\"max\":1040,\"scale\":1,\"step\":1}",
+      "report_type": null
+    },
+    "temp_unit_convert": {
+      "type": "Enum",
+      "value": "{\"range\":[\"c\",\"f\"]}",
+      "report_type": null
+    },
+    "child_lock": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "holiday_days_set": {
+      "type": "Integer",
+      "value": "{\"unit\":\"day\",\"min\":0,\"max\":99,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "factory_reset": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    }
+  }
+}
