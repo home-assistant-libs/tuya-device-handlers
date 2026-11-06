@@ -1,9 +1,10 @@
 """Tests for cover definition."""
 
 from typing import Any
+from unittest.mock import patch
 
 import pytest
-from tuya_sharing import CustomerDevice
+from tuya_sharing import CustomerDevice, DeviceFunction, DeviceStatusRange
 
 from tests import create_device
 from tuya_device_handlers import TUYA_QUIRKS_REGISTRY
@@ -11,6 +12,7 @@ from tuya_device_handlers.builder.device_quirk import DeviceQuirk
 from tuya_device_handlers.definition.cover import get_default_definition
 from tuya_device_handlers.device_wrapper.common import DPCodeIntegerWrapper
 from tuya_device_handlers.device_wrapper.cover import (
+    ControlBackModePercentageMappingWrapper,
     CoverClosedEnumWrapper,
     CoverInstructionEnumWrapper,
 )
@@ -126,4 +128,109 @@ def test_cover_position_quirk_type_information_override(
     assert position_wrapper.read_device_status(device) == expected_position
     assert position_wrapper.get_update_commands(device, 70) == [
         {"code": "percent_state", "value": expected_raw_write}
+    ]
+
+
+@pytest.mark.parametrize(
+    "position_wrapper",
+    [
+        # What Home Assistant Core passes for clkg today
+        ControlBackModePercentageMappingWrapper,
+        # What it will use once the category override is removed
+        DPCodeInvertedPercentageWrapper,
+    ],
+)
+@pytest.mark.parametrize(
+    ("control_back_mode", "expected_position", "expected_raw_write"),
+    [("back", 25, 70), ("forward", 75, 30), (None, 75, 30)],
+)
+def test_clkg_position_without_quirk(
+    position_wrapper: type[DPCodeInvertedPercentageWrapper],
+    control_back_mode: str | None,
+    expected_position: int,
+    expected_raw_write: int,
+) -> None:
+    """A clkg position follows control_back_mode, whichever wrapper is used."""
+    device = create_device("clkg_csgb8eqhczvjaetl.json")
+    device.status["percent_control"] = 25
+    device.status["control_back_mode"] = control_back_mode
+    with patch.dict(TUYA_QUIRKS_REGISTRY._quirks, clear=True):
+        definition = get_default_definition(
+            device,
+            current_position_dpcode="percent_control",
+            instruction_dpcode="control",
+            position_wrapper=position_wrapper,
+            set_position_dpcode="percent_control",
+        )
+    assert definition is not None
+    assert definition.current_position_wrapper is not None
+    assert definition.set_position_wrapper is not None
+
+    assert (
+        definition.current_position_wrapper.read_device_status(device)
+        == expected_position
+    )
+    assert definition.set_position_wrapper.get_update_commands(device, 70) == [
+        {"code": "percent_control", "value": expected_raw_write}
+    ]
+
+
+@pytest.mark.parametrize(
+    "position_wrapper",
+    [
+        ControlBackModePercentageMappingWrapper,
+        DPCodeInvertedPercentageWrapper,
+    ],
+)
+@pytest.mark.parametrize(
+    ("control_back_mode", "expected_position", "expected_raw_write"),
+    [("back", 19, 66), ("forward", 81, 34), (None, 81, 34)],
+)
+@pytest.mark.parametrize(
+    ("dpcode", "wrapper_attributes"),
+    [
+        (
+            "percent_control",
+            ("current_position_wrapper", "set_position_wrapper"),
+        ),
+        (
+            "angle_horizontal",
+            ("tilt_position_wrapper", "tilt_position_wrapper"),
+        ),
+    ],
+)
+def test_clkg_position_and_tilt_nonzero_range(
+    position_wrapper: type[DPCodeInvertedPercentageWrapper],
+    control_back_mode: str | None,
+    expected_position: int,
+    expected_raw_write: int,
+    dpcode: str,
+    wrapper_attributes: tuple[str, str],
+) -> None:
+    """Position and tilt follow control_back_mode, for any range."""
+    device = create_device("clkg_csgb8eqhczvjaetl.json")
+    values = '{"unit":"%","min":10,"max":90,"scale":0,"step":1}'
+    device.function[dpcode] = DeviceFunction(
+        code=dpcode, type="Integer", values=values
+    )
+    device.status_range[dpcode] = DeviceStatusRange(
+        code=dpcode, type="Integer", values=values
+    )
+    device.status[dpcode] = 25
+    device.status["control_back_mode"] = control_back_mode
+    with patch.dict(TUYA_QUIRKS_REGISTRY._quirks, clear=True):
+        definition = get_default_definition(
+            device,
+            current_position_dpcode="percent_control",
+            instruction_dpcode="control",
+            position_wrapper=position_wrapper,
+            set_position_dpcode="percent_control",
+        )
+    assert definition is not None
+    read_wrapper = getattr(definition, wrapper_attributes[0])
+    write_wrapper = getattr(definition, wrapper_attributes[1])
+
+    assert read_wrapper.read_device_status(device) == expected_position
+    assert write_wrapper.get_update_commands(device, 70) == [
+        {"code": dpcode, "value": expected_raw_write}
     ]

@@ -1,0 +1,188 @@
+{
+  "endpoint": "https://apigw.tuyaeu.com",
+  "mqtt_connected": true,
+  "disabled_by": null,
+  "disabled_polling": false,
+  "name": "Salon",
+  "category": "wk",
+  "product_id": "zwvjsylg",
+  "product_name": "Thermostat Connecté",
+  "online": true,
+  "sub": true,
+  "time_zone": "+02:00",
+  "active_time": "2026-10-20T06:59:14+00:00",
+  "create_time": "2026-10-20T06:59:14+00:00",
+  "update_time": "2026-10-20T06:59:14+00:00",
+  "function": {
+    "switch": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"eco\"]}"
+    },
+    "temp_correction": {
+      "type": "Integer",
+      "value": "{\"unit\":\"\",\"min\":-80,\"max\":80,\"scale\":1,\"step\":5}"
+    },
+    "factory_reset": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "window_check": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "temp_set": {
+      "type": "Integer",
+      "value": "{\"unit\":\"℃\",\"min\":50,\"max\":350,\"scale\":1,\"step\":5}"
+    }
+  },
+  "local_strategy": {
+    "1": {
+      "value_convert": "default",
+      "status_code": "switch",
+      "config_item": {
+        "statusFormat": "{\"switch\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "zwvjsylg"
+      }
+    },
+    "2": {
+      "value_convert": "default",
+      "status_code": "mode",
+      "config_item": {
+        "statusFormat": "{\"mode\":\"$\"}",
+        "valueDesc": "{\"range\":[\"eco\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "zwvjsylg"
+      }
+    },
+    "16": {
+      "value_convert": "default",
+      "status_code": "temp_current",
+      "config_item": {
+        "statusFormat": "{\"temp_current\":\"$\"}",
+        "valueDesc": "{\"unit\":\"℃\",\"min\":0,\"max\":500,\"scale\":1,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "zwvjsylg"
+      }
+    },
+    "19": {
+      "value_convert": "default",
+      "status_code": "temp_correction",
+      "config_item": {
+        "statusFormat": "{\"temp_correction\":\"$\"}",
+        "valueDesc": "{\"unit\":\"\",\"min\":-80,\"max\":80,\"scale\":1,\"step\":5}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "zwvjsylg"
+      }
+    },
+    "20": {
+      "value_convert": "default",
+      "status_code": "fault",
+      "config_item": {
+        "statusFormat": "{\"fault\":\"$\"}",
+        "valueDesc": "{\"label\":[\"high_protect\",\"low_protect\",\"int_sensor\",\"ext_sensor\",\"battary_low\",\"device_offline\"]}",
+        "valueType": "Bitmap",
+        "enumMappingMap": {},
+        "pid": "zwvjsylg"
+      }
+    },
+    "28": {
+      "value_convert": "default",
+      "status_code": "factory_reset",
+      "config_item": {
+        "statusFormat": "{\"factory_reset\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "zwvjsylg"
+      }
+    },
+    "29": {
+      "value_convert": "default",
+      "status_code": "window_check",
+      "config_item": {
+        "statusFormat": "{\"window_check\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "zwvjsylg"
+      }
+    },
+    "50": {
+      "value_convert": "default",
+      "status_code": "temp_set",
+      "config_item": {
+        "statusFormat": "{\"temp_set\":\"$\"}",
+        "valueDesc": "{\"unit\":\"℃\",\"min\":50,\"max\":350,\"scale\":1,\"step\":5}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "zwvjsylg"
+      }
+    }
+  },
+  "status_range": {
+    "switch": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"eco\"]}",
+      "report_type": null
+    },
+    "temp_current": {
+      "type": "Integer",
+      "value": "{\"unit\":\"℃\",\"min\":0,\"max\":500,\"scale\":1,\"step\":1}",
+      "report_type": null
+    },
+    "temp_correction": {
+      "type": "Integer",
+      "value": "{\"unit\":\"\",\"min\":-80,\"max\":80,\"scale\":1,\"step\":5}",
+      "report_type": null
+    },
+    "fault": {
+      "type": "Bitmap",
+      "value": "{\"label\":[\"high_protect\",\"low_protect\",\"int_sensor\",\"ext_sensor\",\"battary_low\",\"device_offline\"]}",
+      "report_type": null
+    },
+    "factory_reset": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "window_check": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "temp_set": {
+      "type": "Integer",
+      "value": "{\"unit\":\"℃\",\"min\":50,\"max\":350,\"scale\":1,\"step\":5}",
+      "report_type": null
+    }
+  },
+  "status": {
+    "switch": true,
+    "mode": "off",
+    "temp_current": 210,
+    "temp_correction": 0,
+    "fault": 0,
+    "factory_reset": false,
+    "window_check": true,
+    "temp_set": 165
+  },
+  "set_up": true,
+  "support_local": true,
+  "quirk": null,
+  "warnings": ["enum_out_range|mode|comfort", "enum_out_range|mode|off"]
+}

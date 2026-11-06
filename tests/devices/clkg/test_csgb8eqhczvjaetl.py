@@ -1,11 +1,8 @@
 """Tests for the csgb8eqhczvjaetl cover position quirk.
 
-This 6Gen Roller Shutter Switch reports its position in the standard HA
-convention (0=closed, 100=open). The default clkg mapping uses
-``ControlBackModePercentageMappingWrapper`` which inverts the position unless
-``control_back_mode`` is ``"back"``. The quirk pre-inverts the value at the
-``TypeInformation`` level so the wrapper's own inversion cancels out and the
-position is reported and set correctly.
+This 6Gen Roller Shutter Switch reports its position in the opposite direction
+to the default clkg mapping, which inverts the position unless
+``control_back_mode`` is ``"back"``. The quirk inverts it only in ``"back"``.
 
 See https://github.com/home-assistant/core/issues/159800.
 """
@@ -23,14 +20,15 @@ from tuya_device_handlers.type_information import (
     PrepareSetValueError,
 )
 from tuya_device_handlers.type_information_ex import (
-    InvertedIntegerTypeInformationEx,
+    BackModeInvertedIntegerTypeInformationEx,
+    ForwardModeInvertedIntegerTypeInformationEx,
 )
 
 
 def test_quirk_overrides_type_information(
     filled_quirks_registry: QuirksRegistry,
 ) -> None:
-    """The quirk swaps in the inverting TypeInformation for percent_control."""
+    """The quirk replaces the category's TypeInformation for percent_control."""
     device = create_device("clkg_csgb8eqhczvjaetl.json")
     assert "csgb8eqhczvjaetl" in filled_quirks_registry._quirks
 
@@ -39,12 +37,16 @@ def test_quirk_overrides_type_information(
             device, "percent_control"
         )
     assert type_information is not None
-    assert not isinstance(type_information, InvertedIntegerTypeInformationEx)
+    assert isinstance(
+        type_information, BackModeInvertedIntegerTypeInformationEx
+    )
 
     type_information = IntegerTypeInformation.find_dpcode(
         device, "percent_control"
     )
-    assert isinstance(type_information, InvertedIntegerTypeInformationEx)
+    assert isinstance(
+        type_information, ForwardModeInvertedIntegerTypeInformationEx
+    )
 
 
 def test_quirk_cancels_wrapper_inversion_when_forward(

@@ -1,6 +1,9 @@
 """Tests for light definition."""
 
+from unittest.mock import patch
+
 from tests import create_device
+from tuya_device_handlers import TUYA_QUIRKS_REGISTRY
 from tuya_device_handlers.definition.light import (
     FallbackColorDataMode,
     get_default_definition,
@@ -138,8 +141,9 @@ def test_get_default_definition_without_colour_data() -> None:
 def test_json_colour_data_without_ranges() -> None:
     """Test JSON colour_data without ranges falls back to the V1 ranges."""
     device = create_device("bzyd_45idzfufidgee7ir.json")
-    assert (
-        definition := get_default_definition(
+    # This device has a quirk overriding the colour_data ranges
+    with patch.dict(TUYA_QUIRKS_REGISTRY._quirks, clear=True):
+        definition = get_default_definition(
             device,
             switch_dpcode="switch_led",
             brightness_dpcode=None,
@@ -150,7 +154,7 @@ def test_json_colour_data_without_ranges() -> None:
             color_temp_dpcode=None,
             fallback_color_data_mode=FallbackColorDataMode.V1,
         )
-    )
+    assert definition is not None
     assert isinstance(definition.color_data_wrapper, ColorDataJsonWrapper)
     # Empty type data and no brightness DP: keep the V1 (default) ranges
     assert definition.color_data_wrapper.h_type is DEFAULT_H_TYPE
@@ -184,8 +188,9 @@ def test_json_colour_data_without_ranges_v2() -> None:
 def test_json_colour_data_without_ranges_fallback_v2() -> None:
     """Test JSON colour_data without ranges honours the V2 fallback mode."""
     device = create_device("bzyd_45idzfufidgee7ir.json")
-    assert (
-        definition := get_default_definition(
+    # This device has a quirk overriding the colour_data ranges
+    with patch.dict(TUYA_QUIRKS_REGISTRY._quirks, clear=True):
+        definition = get_default_definition(
             device,
             switch_dpcode="switch_led",
             brightness_dpcode=None,
@@ -196,7 +201,7 @@ def test_json_colour_data_without_ranges_fallback_v2() -> None:
             color_temp_dpcode=None,
             fallback_color_data_mode=FallbackColorDataMode.V2,
         )
-    )
+    assert definition is not None
     assert isinstance(definition.color_data_wrapper, ColorDataJsonWrapper)
     assert definition.color_data_wrapper.h_type is DEFAULT_H_TYPE_V2
     assert definition.color_data_wrapper.s_type is DEFAULT_S_TYPE_V2
