@@ -1,0 +1,18 @@
+{
+  "mqtt_connected": true,
+  "disabled_by": null,
+  "disabled_polling": false,
+  "category": "cz",
+  "product_id": "79a7z01v3n35kytb",
+  "product_name": "Double Digital Meter",
+  "online": true,
+  "sub": false,
+  "function": {},
+  "local_strategy": {},
+  "status_range": {},
+  "status": {},
+  "set_up": false,
+  "support_local": true,
+  "quirk": null,
+  "warnings": null
+}
