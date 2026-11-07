@@ -22,6 +22,10 @@ from tuya_device_handlers.type_information import (
     StringTypeInformation,
     TypeInformation,
 )
+from tuya_device_handlers.type_information_ex import (
+    BackModeInvertedIntegerTypeInformationEx,
+    InvertedIntegerTypeInformationEx,
+)
 
 
 @pytest.mark.parametrize(
@@ -330,3 +334,84 @@ def test_prepare_set_value_out_of_range(
     assert type_information
     with pytest.raises(PrepareSetValueError, match=match):
         type_information.prepare_set_value(mock_device, value)
+
+
+@pytest.mark.parametrize(
+    "dpcode",
+    [
+        "angle_horizontal",
+        "angle_vertical",
+        "percent_control",
+        "percent_control_2",
+    ],
+)
+def test_find_dpcode_category_default(
+    mock_device: CustomerDevice, dpcode: str
+) -> None:
+    """On clkg, the position follows control_back_mode by default."""
+    mock_device.category = "clkg"
+    mock_device.status_range[dpcode] = mock_device.status_range["demo_integer"]
+
+    type_information = IntegerTypeInformation.find_dpcode(mock_device, dpcode)
+
+    assert isinstance(
+        type_information, BackModeInvertedIntegerTypeInformationEx
+    )
+
+
+@pytest.mark.parametrize(
+    ("category", "dpcode"),
+    [("cl", "percent_control"), ("clkg", "demo_integer")],
+)
+def test_find_dpcode_category_default_not_applicable(
+    mock_device: CustomerDevice, category: str, dpcode: str
+) -> None:
+    """Other categories and datapoints keep the requested class."""
+    mock_device.category = category
+    mock_device.status_range[dpcode] = mock_device.status_range["demo_integer"]
+
+    type_information = IntegerTypeInformation.find_dpcode(mock_device, dpcode)
+
+    assert type(type_information) is IntegerTypeInformation
+
+
+def test_find_dpcode_category_default_requires_plain_class(
+    mock_device: CustomerDevice,
+) -> None:
+    """A caller asking for a specific class gets that class."""
+    mock_device.category = "clkg"
+    mock_device.status_range["percent_control"] = mock_device.status_range[
+        "demo_integer"
+    ]
+
+    type_information = InvertedIntegerTypeInformationEx.find_dpcode(
+        mock_device, "percent_control"
+    )
+
+    assert type(type_information) is InvertedIntegerTypeInformationEx
+
+
+def test_find_dpcode_quirk_overrides_category_default(
+    mock_device: CustomerDevice,
+) -> None:
+    """A quirk's class wins over the category default."""
+    mock_device.category = "clkg"
+    mock_device.status_range["percent_control"] = mock_device.status_range[
+        "demo_integer"
+    ]
+    with patch.dict(TUYA_QUIRKS_REGISTRY._quirks, clear=True):
+        (
+            DeviceQuirk()
+            .applies_to(product_id=mock_device.product_id)
+            .override_dpid_type_information_cls(
+                dpid=2,
+                dpcode="percent_control",
+                type_information_cls=IntegerTypeInformation,
+            )
+            .register(TUYA_QUIRKS_REGISTRY)
+        )
+        type_information = IntegerTypeInformation.find_dpcode(
+            mock_device, "percent_control"
+        )
+
+    assert type(type_information) is IntegerTypeInformation

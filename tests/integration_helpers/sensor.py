@@ -378,6 +378,7 @@ _SENSORS: dict[str, tuple[SensorEntityDescription, ...]] = {
     ),
     "wsdcg": (
         SensorEntityDescription("va_temperature"),
+        SensorEntityDescription("ext_temp"),
         SensorEntityDescription("temp_current"),
         SensorEntityDescription("va_humidity"),
         SensorEntityDescription("humidity_value"),

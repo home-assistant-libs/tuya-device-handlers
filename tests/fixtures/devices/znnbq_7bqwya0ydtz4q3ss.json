@@ -1,0 +1,98 @@
+{
+  "endpoint": "https://apigw.tuyaeu.com",
+  "mqtt_connected": true,
+  "disabled_by": null,
+  "disabled_polling": false,
+  "name": "WVC Mikro-Wechselrichter",
+  "category": "znnbq",
+  "product_id": "7bqwya0ydtz4q3ss",
+  "product_name": "WVC-micro inverter",
+  "online": true,
+  "sub": false,
+  "time_zone": "+02:00",
+  "active_time": "2023-10-08T14:03:42+00:00",
+  "create_time": "2023-10-08T14:03:42+00:00",
+  "update_time": "2023-10-08T14:03:42+00:00",
+  "function": {
+    "work_mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"power_off\",\"inverter_power\",\"grid_power\",\"battery_power\"]}"
+    }
+  },
+  "local_strategy": {
+    "2": {
+      "value_convert": "default",
+      "status_code": "reverse_energy_total",
+      "config_item": {
+        "statusFormat": "{\"reverse_energy_total\":\"$\"}",
+        "valueDesc": "{\"unit\":\"kW·h\",\"min\":0,\"max\":99999999,\"scale\":2,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "7bqwya0ydtz4q3ss"
+      }
+    },
+    "10": {
+      "value_convert": "default",
+      "status_code": "power_total",
+      "config_item": {
+        "statusFormat": "{\"power_total\":\"$\"}",
+        "valueDesc": "{\"unit\":\"kW\",\"min\":0,\"max\":50000000,\"scale\":3,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "7bqwya0ydtz4q3ss"
+      }
+    },
+    "12": {
+      "value_convert": "default",
+      "status_code": "work_mode",
+      "config_item": {
+        "statusFormat": "{\"work_mode\":\"$\"}",
+        "valueDesc": "{\"range\":[\"power_off\",\"inverter_power\",\"grid_power\",\"battery_power\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "7bqwya0ydtz4q3ss"
+      }
+    },
+    "18": {
+      "value_convert": "default",
+      "status_code": "temp_current",
+      "config_item": {
+        "statusFormat": "{\"temp_current\":\"$\"}",
+        "valueDesc": "{\"unit\":\"℃\",\"min\":-40,\"max\":150,\"scale\":1,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "7bqwya0ydtz4q3ss"
+      }
+    }
+  },
+  "status_range": {
+    "reverse_energy_total": {
+      "type": "Integer",
+      "value": "{\"unit\":\"kW·h\",\"min\":0,\"max\":99999999,\"scale\":2,\"step\":1}",
+      "report_type": "minux"
+    },
+    "power_total": {
+      "type": "Integer",
+      "value": "{\"unit\":\"kW\",\"min\":0,\"max\":50000000,\"scale\":3,\"step\":1}",
+      "report_type": "un_known"
+    },
+    "work_mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"power_off\",\"inverter_power\",\"grid_power\",\"battery_power\"]}",
+      "report_type": null
+    },
+    "temp_current": {
+      "type": "Integer",
+      "value": "{\"unit\":\"℃\",\"min\":-40,\"max\":150,\"scale\":1,\"step\":1}",
+      "report_type": null
+    }
+  },
+  "status": {
+    "reverse_energy_total": 115440,
+    "power_total": 179641,
+    "work_mode": "power_off",
+    "temp_current": 33
+  },
+  "set_up": true,
+  "support_local": true
+}

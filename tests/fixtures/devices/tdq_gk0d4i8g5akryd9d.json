@@ -1,0 +1,22 @@
+{
+  "endpoint": "https://apigw.tuyaus.com",
+  "mqtt_connected": true,
+  "disabled_by": null,
+  "disabled_polling": false,
+  "name": "Motion Sensor",
+  "category": "tdq",
+  "product_id": "gk0d4i8g5akryd9d",
+  "product_name": "Motion Sensor",
+  "online": true,
+  "sub": false,
+  "time_zone": "-04:00",
+  "active_time": "2026-07-05T21:20:03+00:00",
+  "create_time": "2026-07-05T21:20:03+00:00",
+  "update_time": "2026-07-05T21:20:03+00:00",
+  "function": {},
+  "status_range": {},
+  "status": {},
+  "local_strategy": {},
+  "set_up": false,
+  "support_local": true
+}

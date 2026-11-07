@@ -53,7 +53,11 @@ from tuya_device_handlers.const import DPMode
         dpid=18,
         dpcode="cur_current",
         dpmode=DPMode.READ,
-        unit="mA", min=0, max=30000, scale=0, step=1,
+        unit="mA",
+        min=0,
+        max=30000,
+        scale=0,
+        step=1,
     )
     .remove_dpid(dpid=22, dpcode="phantom_dp")
     .register(TUYA_QUIRKS_REGISTRY)
@@ -61,6 +65,12 @@ from tuya_device_handlers.const import DPMode
 ```
 
 Each quirk file should contain exactly one `DeviceQuirk()...register(...)` chain at module top level — the file path is captured for reload tracking. Available builder methods include `add_dpid_boolean`, `add_dpid_bitmap`, `add_dpid_enum`, `add_dpid_integer`, and `remove_dpid`. For more complex needs (custom value scaling, platform-specific definitions), see the in-tree examples under [`src/tuya_device_handlers/devices/`][devices-dir].
+
+> **New to this and not a programmer?** For a fully worked, copy-paste walkthrough of one of the most common fixes — a device sending ENUM values (e.g. extra `mode` presets) that Home Assistant rejects as `Found invalid ENUM value ...` — see [Recipe: add missing ENUM values](docs/adding-missing-enum-values.md). It covers writing the quirk, testing it live, and opening a PR end to end.
+
+> **Entities missing — all of them, or just some?** A quirk can only rewrite a device's datapoints; turning them into entities is Home Assistant's job, and it can only do that for a category and a DPCode it knows. If a datapoint is _absent_ from the diagnostics, a quirk can add it; if it's _present_ but never becomes an entity, the fix belongs in core. See [Recipe: missing entities](docs/unsupported-category-or-dpcode.md).
+
+> **Cover position backwards?** A closed blind shows as open, or the open button closes it. See [Recipe: inverted covers](docs/inverted-covers.md).
 
 ### 3. Test it inside Home Assistant
 
@@ -72,7 +82,7 @@ Each quirk file should contain exactly one `DeviceQuirk()...register(...)` chain
 
 Once your quirk works, please open a pull request so other Home Assistant users benefit.
 
-1. Fork and clone this repository, then run `poetry install`.
+1. Fork and clone this repository, then run `uv sync`.
 2. Move your quirk file from `<config>/tuya_quirks/` to `src/tuya_device_handlers/devices/<category>/`. The filename should match `<category>_<product_id_lowercased>.py`.
 3. Add a device fixture JSON at `tests/fixtures/devices/<category>_<product_id>.json`. Build it from your Home Assistant diagnostics download: keep only the contents of the top-level `data` property (the captured device payload), then remove its `id`, `terminal_id`, and `home_assistant` keys. Name the file from the payload's own `category` and `product_id` fields. For example:
 
@@ -94,7 +104,7 @@ Once your quirk works, please open a pull request so other Home Assistant users 
 5. Run the test suite locally:
 
    ```console
-   poetry run pytest --cov tuya_device_handlers tests
+   uv run pytest --cov tuya_device_handlers tests
    ```
 
 6. Open a [pull request].

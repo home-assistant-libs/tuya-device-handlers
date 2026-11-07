@@ -17,11 +17,12 @@ from tuya_device_handlers.definition.fan import (
 # ``TUYA_SUPPORT_TYPE`` set in Home Assistant core.
 _FANS: frozenset[str] = frozenset(
     {
+        "cs",  # Dehumidifier
         "fs",  # Fan
         "fsd",  # Fan with light
         "fskg",  # Fan wall switch
         "kj",  # Air Purifier
-        "cs",  # Dehumidifier
+        "ks",  # Air Conditioner
     }
 )
 

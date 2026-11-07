@@ -1,0 +1,44 @@
+{
+  "endpoint": "https://apigw.tuyaeu.com",
+  "mqtt_connected": true,
+  "disabled_by": null,
+  "disabled_polling": false,
+  "name": "WiFi smart  online 5 in 1 tester",
+  "category": "dgnbj",
+  "product_id": "qajfz5x1lqej5xxw",
+  "product_name": "WiFi smart  online 5 in 1 tester",
+  "online": true,
+  "sub": false,
+  "time_zone": "+02:00",
+  "active_time": "2026-06-29T16:19:58+00:00",
+  "create_time": "2026-06-29T16:19:58+00:00",
+  "update_time": "2026-06-29T16:19:58+00:00",
+  "function": {},
+  "local_strategy": {
+    "8": {
+      "value_convert": "default",
+      "status_code": "temp_current",
+      "config_item": {
+        "statusFormat": "{\"temp_current\":\"$\"}",
+        "valueDesc": "{\"unit\":\"℃\",\"min\":-100,\"max\":1100,\"scale\":1,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "qajfz5x1lqej5xxw"
+      }
+    }
+  },
+  "status_range": {
+    "temp_current": {
+      "type": "Integer",
+      "value": "{\"unit\":\"℃\",\"min\":-100,\"max\":1100,\"scale\":1,\"step\":1}",
+      "report_type": "un_known"
+    }
+  },
+  "status": {
+    "temp_current": 296
+  },
+  "set_up": true,
+  "support_local": true,
+  "quirk": null,
+  "warnings": null
+}

@@ -1,6 +1,6 @@
-# CLAUDE.md
+# AGENTS.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to AI coding agents (Claude Code, GitHub Copilot, …) when working with code in this repository. `CLAUDE.md` is a symlink to it, and `.github/copilot-instructions.md` is generated from it by `script/gen_copilot_instructions.py` — edit this file, not those.
 
 ## Project
 
@@ -22,20 +22,20 @@ HA Core imports specific symbols from specific paths. Treat these as a stable co
 
 ## Tooling
 
-Poetry. Python 3.13 and 3.14 are both supported (CI runs both).
+uv. Python 3.13, 3.14 and 3.15 are supported (CI runs all three).
 
-- `poetry install` — set up dev environment.
-- `poetry run pytest --cov tuya_device_handlers tests` — full test suite with coverage.
-- `poetry run pytest tests/path/to/test_file.py::test_name` — single test.
-- `poetry run ty check src tests` — type-check with ty.
-- `poetry run ruff check .` — lint with ruff.
-- `poetry run ruff format --check .` — check formatting.
-- `poetry run pylint src/tuya_device_handlers` — lint with pylint.
-- `poetry run yamllint .` — lint YAML files.
-- `poetry run codespell` — check for common misspellings.
-- `poetry run prek install` — install pre-commit hooks.
-- `poetry run prek run --all-files` — run all pre-commit hooks on all files.
-- `poetry run prek run ruff-check --all-files` — run a single hook on all files.
+- `uv sync` — set up dev environment.
+- `uv run pytest --cov tuya_device_handlers tests` — full test suite with coverage.
+- `uv run pytest tests/path/to/test_file.py::test_name` — single test.
+- `uv run ty check src tests` — type-check with ty.
+- `uv run ruff check .` — lint with ruff.
+- `uv run ruff format --check .` — check formatting.
+- `uv run pylint src/tuya_device_handlers` — lint with pylint.
+- `uv run yamllint .` — lint YAML files.
+- `uv run codespell` — check for common misspellings.
+- `uv run prek install` — install pre-commit hooks.
+- `uv run prek run --all-files` — run all pre-commit hooks on all files.
+- `uv run prek run ruff-check --all-files` — run a single hook on all files.
 
 Ruff config lives in [pyproject.toml](pyproject.toml) (line-length 80, isort with `force-sort-within-sections`, mccabe max-complexity 10). Type checking uses ty.
 
@@ -88,7 +88,7 @@ Quirk discovery is therefore import-driven. A new quirk file under `src/tuya_dev
 These two layers exist because the cloud-side device shape (datapoints) doesn't map 1:1 to Home Assistant entities.
 
 - `definition/` — per-platform dataclasses (`TuyaClimateDefinition`, etc.) the host integration consumes to build HA entities. All inherit from `BaseEntityQuirk` ([base.py](src/tuya_device_handlers/definition/base.py)) with a single `key` field.
-- `device_wrapper/` — `DeviceWrapper[T]` + typed `DPCodeWrapper[T]` subclasses (`DPCodeBooleanWrapper`, `DPCodeIntegerWrapper`, …) that encapsulate the read/write conversion between a raw DPCode value and the HA-facing value. `read_device_status` and `_convert_value_to_raw_value` are the override points; `find_dpcode(device, code, prefer_function=...)` is the standard lookup. Override these in a quirk file when a device needs custom scaling/encoding (see the `CustomIntegerTypeDefinition` example in [devices/wk/wk_iayz2wk1th0cmlml.py](src/tuya_device_handlers/devices/wk/wk_iayz2wk1th0cmlml.py)).
+- `device_wrapper/` — `DeviceWrapper[T]` + typed `DPCodeWrapper[T]` subclasses (`DPCodeBooleanWrapper`, `DPCodeIntegerWrapper`, …) that encapsulate the read/write conversion between a raw DPCode value and the HA-facing value. `read_device_status` and `_convert_value_to_raw_value` are the override points; `find_dpcode(device, code, prefer_function=...)` is the standard lookup. Wrappers read the current value via `_read_dpcode_value`, not `device.status.get(self.dpcode)`. When a device needs custom scaling/encoding of a single datapoint, prefer `.override_dpid_type_information_cls(...)` with a class from [type_information_ex.py](src/tuya_device_handlers/type_information_ex.py) (see [devices/cl/cl_68nvbio9.py](src/tuya_device_handlers/devices/cl/cl_68nvbio9.py)).
 - `raw_data_model.py` — parsers for base64-encoded RAW DPs (e.g. `ElectricityData.from_bytes` handles legacy/v01/v02 layouts).
 
 ### Helpers
@@ -99,28 +99,12 @@ These two layers exist because the cloud-side device shape (datapoints) doesn't 
 
 `tests/` mirrors `src/tuya_device_handlers/`. Per-device JSON fixtures live under [tests/fixtures/devices/](tests/fixtures/devices/) named `<category>_<product_id>.json` — these capture real `CustomerDevice` payloads. Snapshot tests use `syrupy` (`__snapshots__/` directories). [tests/conftest.py](tests/conftest.py) provides `mock_device` (a `CustomerDevice` Mock pre-populated with `demo_*` DPs covering every `DPType`) and `filled_quirks_registry` (calls `register_tuya_quirks()` once per module).
 
-When adding a new device quirk: add a fixture JSON, add the quirk module under `devices/<category>/`, and add tests under `tests/devices/<category>/`.
+When adding or reviewing a device quirk (including turning a diagnostics file into a fixture), follow the `tuya-device-quirk` skill in [.claude/skills/tuya-device-quirk/SKILL.md](.claude/skills/tuya-device-quirk/SKILL.md).
 
-### Converting a diagnostic file into a fixture
+## AI policy
 
-Device support requests usually attach a Home Assistant diagnostics JSON (downloaded from the device's diagnostics, or from a `github.com/user-attachments/...` link on the issue). To turn one into a fixture:
-
-1. Take **only the contents of the top-level `data` property** — that object is the captured `CustomerDevice` payload. Discard everything else (`home_assistant`, `custom_components`, `integration_manifest`, `setup_times`, `issues`, …).
-2. From that object, **remove the `id`, `terminal_id`, and `home_assistant` keys** (`id`/`terminal_id` are per-account identifiers; `home_assistant` is a nested diagnostics block, not part of the device payload).
-3. Write the result to `tests/fixtures/devices/<category>_<product_id>.json`, using the device's own `category` and `product_id` fields for the filename (e.g. a `cl` device with product id `nfq1essvr99qsvvd` → `cl_nfq1essvr99qsvvd.json`). Pretty-print with 2-space indent and a trailing newline.
-
-One-liner (input `diag.json`):
-
-```bash
-python3 -c "
-import json
-d = json.load(open('diag.json'))['data']
-for k in ('id', 'terminal_id', 'home_assistant'):
-    d.pop(k, None)
-name = f\"tests/fixtures/devices/{d['category']}_{d['product_id']}.json\"
-with open(name, 'w') as f:
-    json.dump(d, f, indent=2, ensure_ascii=False)
-    f.write('\n')
-print(name)
-"
-```
+This project follows the [Open Home Foundation AI Policy](AI_POLICY.md).
+Autonomous contributions are not accepted: a human must review, understand,
+and be able to explain every change before it is submitted. Do not open
+issues or pull requests autonomously, and do not post comments on behalf of
+a user without their review.

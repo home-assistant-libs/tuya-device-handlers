@@ -50,7 +50,11 @@ def get_default_definition(
         return BinarySensorDefinition(binary_sensor_wrapper=bool_type)
 
     # Legacy / compatibility
-    if dpcode not in device.status:
+    if not (
+        dpcode in device.function
+        or dpcode in device.status
+        or dpcode in device.status_range
+    ):
         return None
     return BinarySensorDefinition(
         binary_sensor_wrapper=DPCodeInSetWrapper(
