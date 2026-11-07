@@ -10,6 +10,7 @@ from tuya_device_handlers.device_wrapper import DeviceWrapper
 from tuya_device_handlers.device_wrapper.climate import (
     DefaultHVACModeWrapper,
     DefaultPresetModeWrapper,
+    EcoPresetModeWrapper,
     SwingModeCompositeWrapper,
 )
 from tuya_device_handlers.device_wrapper.common import (
@@ -177,6 +178,25 @@ def _get_default_temperature_wrappers(
     )
 
 
+def _get_default_preset_wrapper(
+    device: CustomerDevice,
+) -> DeviceWrapper[str] | None:
+    """Get the preset wrapper.
+
+    Presets come from the `mode` Enum. Devices without presets there may
+    instead have a Boolean `eco` datapoint, exposed as eco/comfort presets.
+    """
+    preset_wrapper = DefaultPresetModeWrapper.find_dpcode(
+        device, "mode", prefer_function=True
+    )
+    if preset_wrapper is not None and preset_wrapper.options:
+        return preset_wrapper
+    return (
+        EcoPresetModeWrapper.find_dpcode(device, "eco", prefer_function=True)
+        or preset_wrapper
+    )
+
+
 def get_default_definition(
     device: CustomerDevice, system_temperature_unit: TuyaUnitOfTemperature
 ) -> ClimateDefinition:
@@ -197,9 +217,7 @@ def get_default_definition(
         hvac_mode_wrapper=DefaultHVACModeWrapper.find_dpcode(
             device, "mode", prefer_function=True
         ),
-        preset_wrapper=DefaultPresetModeWrapper.find_dpcode(
-            device, "mode", prefer_function=True
-        ),
+        preset_wrapper=_get_default_preset_wrapper(device),
         set_temperature_wrapper=set_temperature_wrapper,
         swing_wrapper=SwingModeCompositeWrapper.find_dpcode(device),
         switch_wrapper=DPCodeBooleanWrapper.find_dpcode(
