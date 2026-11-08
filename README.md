@@ -35,7 +35,7 @@ The library is shipped to end users via Home Assistant — you do not install it
 
 In Home Assistant: **Settings → Devices & services → Tuya → your device → Download diagnostics**. The JSON contains the `product_id`, the cloud-reported `function` / `status_range` maps, and the current `status` values. Use these to decide what needs patching.
 
-If `function`, `status_range` and `status` are all empty, the cloud told Home Assistant nothing about the device and it gets no entities. Read its datapoints from its thing model instead: see [Recipe: a device that reports no datapoints](docs/devices-without-datapoints.md).
+If `function`, `status_range` and `status` are all empty, the cloud told Home Assistant nothing about the device and it gets no entities. Read its datapoints from its thing model instead, for example with Tuya's [tuya-smart-control-cli] (`tuya device model <device_id> --json`): see [Recipe: a device that reports no datapoints](docs/devices-without-datapoints.md).
 
 ### 2. Create a quirk file
 
@@ -141,6 +141,7 @@ please [file an issue] along with a detailed description.
 
 [ha-tuya]: https://www.home-assistant.io/integrations/tuya/
 [tuya-categories]: https://developer.tuya.com/en/docs/iot/standarddescription?id=K9i5ql6waswzq
+[tuya-smart-control-cli]: https://github.com/tuya/tuya-smart-control-cli
 [devices-dir]: https://github.com/home-assistant-libs/tuya-device-handlers/tree/main/src/tuya_device_handlers/devices
 [file an issue]: https://github.com/home-assistant-libs/tuya-device-handlers/issues
 [pull request]: https://github.com/home-assistant-libs/tuya-device-handlers/pulls
