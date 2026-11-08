@@ -181,5 +181,8 @@ entities exist to correct.
 
 - [Recipe: add missing ENUM values](adding-missing-enum-values.md) — for the
   common case that _is_ fixable with a quirk.
+- [Recipe: a device that reports no datapoints](devices-without-datapoints.md)
+  — when the diagnostics are empty and the datapoints have to come from the
+  device's thing model.
 
 [core-const]: https://github.com/home-assistant/core/blob/dev/homeassistant/components/tuya/const.py
