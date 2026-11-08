@@ -35,6 +35,8 @@ The library is shipped to end users via Home Assistant — you do not install it
 
 In Home Assistant: **Settings → Devices & services → Tuya → your device → Download diagnostics**. The JSON contains the `product_id`, the cloud-reported `function` / `status_range` maps, and the current `status` values. Use these to decide what needs patching.
 
+If `function`, `status_range` and `status` are all empty, the cloud told Home Assistant nothing about the device and it gets no entities. Read its datapoints from its thing model instead: see [Recipe: a device that reports no datapoints](docs/devices-without-datapoints.md).
+
 ### 2. Create a quirk file
 
 Drop a Python file into your Home Assistant config folder at `<config>/tuya_quirks/<category>_<product_id_lowercased>.py`. The `<category>` prefix follows Tuya's [official category codes][tuya-categories] (e.g. `cz` for plug/socket, `wk` for thermostat, `cl` for curtain).
@@ -75,8 +77,9 @@ Each quirk file should contain exactly one `DeviceQuirk()...register(...)` chain
 ### 3. Test it inside Home Assistant
 
 1. Restart the Tuya integration (**Settings → Devices & services → Tuya → ⋮ → Reload**). Quirks under `<config>/tuya_quirks/` are reloaded each time, so you don't need to restart Home Assistant itself.
-2. Watch the logs — you should see `Loading custom quirk module …` followed by `Loaded custom quirks. Please contribute them to https://github.com/home-assistant-libs/tuya-device-handlers`. If the import fails, the traceback is logged.
-3. Verify the device's entities reflect your changes (download diagnostics again to confirm the patched function/status_range maps).
+2. Watch the logs — you should see the warning `Loaded custom quirks. Please contribute them to https://github.com/home-assistant-libs/tuya-device-handlers`. If the import fails, the traceback is logged. The per-file `Loading custom quirk module …` lines are only logged with debug logging on for `tuya_device_handlers`.
+3. Verify the device's entities reflect your changes. Download diagnostics again: `quirk` shows the quirk file that applied, and `function` / `status_range` show the patched maps.
+4. To see reports and commands as they happen, turn on debug logging for `tuya_device_handlers`, `tuya_sharing` and `homeassistant.components.tuya`. [Recipe: a device that reports no datapoints](docs/devices-without-datapoints.md#step-4--watch-reports-and-commands-in-the-debug-log) lists the log lines to look for, including commands the Tuya cloud rejects.
 
 ## Contributing your quirk
 
@@ -110,6 +113,21 @@ Once your quirk works, please open a pull request so other Home Assistant users 
 6. Open a [pull request].
 
 For broader contributor guidelines (issue reporting, dev setup, pre-commit hooks), see the [Contributor Guide].
+
+## Changing the library itself
+
+Changes outside `devices/` (the builder, definitions, device wrappers, helpers) affect every device, and Home Assistant Core imports parts of this library directly. Before starting one:
+
+1. [Open an issue][file an issue] describing the problem and the change you have in mind, so the approach can be agreed first.
+2. Read the architecture overview in [AGENTS.md](AGENTS.md). It explains how quirks are registered and applied, how definitions and wrappers turn datapoints into Home Assistant entities, and which modules Home Assistant Core imports (renaming or moving those needs a coordinated Home Assistant release).
+3. Keep it in its own pull request, separate from any device quirk.
+4. Add tests next to the code they cover (`tests/` mirrors `src/tuya_device_handlers/`), and update this README and `docs/` when behaviour that users or quirk authors rely on changes.
+5. Run all checks before opening the pull request:
+
+   ```console
+   uv run prek run --all-files
+   uv run pytest --cov tuya_device_handlers tests
+   ```
 
 ## License
 
