@@ -55,13 +55,101 @@ would come from.
   never told Home Assistant about it. That's exactly what a quirk fixes —
   see the [main README](../README.md) and the
   [ENUM recipe](adding-missing-enum-values.md), and open an issue here with
-  your diagnostics.
+  your diagnostics. If you don't know the datapoint's dpid, see
+  [Finding the datapoints](#finding-the-datapoints) below.
 
 - **The datapoint is there, with a sensible value in `status`, but no entity
   appeared.** Nothing for a quirk to rewrite. Continue below.
 
 The same applies when _nothing_ appeared: if `function`, `status_range` and
 `status` are all populated and correct, the datapoints aren't the problem.
+
+### Finding the datapoints
+
+A quirk adds a datapoint by its dpid. When the diagnostics don't list it, and
+especially when `function`, `status_range`, `local_strategy` and `status` are
+all empty, the device usually still sends its reports, keyed by dpid. With an
+empty `local_strategy`, the Tuya SDK logs each one it can't map.
+
+1. Turn on **Enable debug logging** on the Tuya integration page. It covers the
+   Tuya SDK (`tuya_sharing`).
+2. Use the device from its app or its buttons, so it sends reports.
+3. Look for lines like these:
+
+   ```text
+   mq _on_device_report-> [{'dpId': 101, 't': 1794096541000, 'value': True}]
+   mq _on_device_report unknown dpId: 101
+   ```
+
+   The first line lists the dpids and values in the report. `unknown dpId`
+   means `local_strategy` has no entry for that dpid, which is what a quirk
+   adds.
+
+Change one thing at a time on the device to tell the dpids apart: a door
+sensor's `True` / `False` flips as the door opens and closes, for example.
+Then add each datapoint with the builder method for its type, under the code
+core expects for your category (see Step 3 below). A read-only datapoint can
+take the standard code, as
+[`tdq_a9fn0xcsckjoqpnd.py`](../src/tuya_device_handlers/devices/tdq/tdq_a9fn0xcsckjoqpnd.py)
+does with `doorcontact_state`.
+
+To contribute the quirk, build its test fixture from your diagnostics as
+described in
+[Converting a diagnostics file into a fixture](../.claude/skills/tuya-device-quirk/SKILL.md#converting-a-diagnostics-file-into-a-fixture),
+and add a test that a report keyed by dpid updates the right code, like
+`test_mqtt` in
+[`tests/devices/tdq/test_a9fn0xcsckjoqpnd.py`](../tests/devices/tdq/test_a9fn0xcsckjoqpnd.py).
+
+#### Optional: read the full thing model
+
+The log only shows the datapoints the device reports while you watch. The
+device's thing model lists all of them, with their types, ranges and whether
+they can be written. Tuya's
+[tuya-smart-control-cli](https://github.com/tuya/tuya-smart-control-cli) can
+read it:
+
+```console
+tuya device model <device_id> --json
+```
+
+`<device_id>` is the `id` field in your diagnostics. Follow the CLI's README to
+install it and create an API key.
+
+> **The API key must belong to the app account that owns the device.** Tuya
+> Smart and Smart Life are separate apps with separate accounts, and a key only
+> sees devices in its own account's homes. If the command fails with
+> `40000905` ("The user does not have device permissions"), check which app the
+> device was added with, then use a key for that account.
+
+Each entry in `properties` is one datapoint, for example:
+
+```json
+{
+  "abilityId": 102,
+  "accessMode": "ro",
+  "code": "battery_state",
+  "typeSpec": {
+    "type": "enum",
+    "range": ["low", "middle", "high"]
+  }
+}
+```
+
+| Thing model field | Quirk argument                                                       |
+| ----------------- | -------------------------------------------------------------------- |
+| `abilityId`       | `dpid`                                                               |
+| `code`            | `dpcode`                                                             |
+| `accessMode`      | `dpmode`: `rw` → `DPMode.READ \| DPMode.WRITE`, `ro` → `DPMode.READ` |
+| `typeSpec`        | the builder method and its arguments, from the table below           |
+
+| `typeSpec.type` | Builder method     | Arguments from `typeSpec`             |
+| --------------- | ------------------ | ------------------------------------- |
+| `bool`          | `add_dpid_boolean` | none                                  |
+| `value`         | `add_dpid_integer` | `min`, `max`, `scale`, `step`, `unit` |
+| `enum`          | `add_dpid_enum`    | `range` → `enum_range`                |
+| `bitmap`        | `add_dpid_bitmap`  | `label` → `label_range`               |
+
+Include the output, or the relevant part of it, in your issue or pull request.
 
 ## Step 2 — Is the category known to core?
 
@@ -181,8 +269,5 @@ entities exist to correct.
 
 - [Recipe: add missing ENUM values](adding-missing-enum-values.md) — for the
   common case that _is_ fixable with a quirk.
-- [Recipe: a device that reports no datapoints](devices-without-datapoints.md)
-  — when the diagnostics are empty and the datapoints have to come from the
-  device's thing model.
 
 [core-const]: https://github.com/home-assistant/core/blob/dev/homeassistant/components/tuya/const.py
