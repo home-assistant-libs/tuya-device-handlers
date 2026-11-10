@@ -9,9 +9,10 @@ The device's thing model (from the Tuya end-user API) declares:
   DP 102 -> TamperedAlarm (bool)
   DP 103 -> Battery (integer 0-100 %, step 10)
 
-DP 101 keeps its cloud code `switch`, which Home Assistant already maps to a
-door binary sensor for this category. The tamper and battery codes are
-non-standard, so they are mapped to `temper_alarm` and `battery_percentage`.
+Home Assistant only maps `switch` for this category as a fallback for
+non-standard sensors, so the read-only DP 101 is mapped to the standard
+`doorcontact_state` instead. The tamper and battery codes are non-standard
+too, so they are mapped to `temper_alarm` and `battery_percentage`.
 
 Reported in home-assistant-libs/tuya-device-handlers#740.
 """
@@ -25,7 +26,7 @@ from tuya_device_handlers.const import DPMode
     .applies_to(product_id="KajlwMlIaQUARNpb")
     .add_dpid_boolean(
         dpid=101,
-        dpcode="switch",
+        dpcode="doorcontact_state",
         dpmode=DPMode.READ,
     )
     .add_dpid_boolean(

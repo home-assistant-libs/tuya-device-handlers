@@ -21,7 +21,7 @@ def test_quirk_adds_datapoints(
 
     assert device.category == "mcs"
     assert set(device.status_range) == {
-        "switch",
+        "doorcontact_state",
         "temper_alarm",
         "battery_percentage",
     }
@@ -38,7 +38,7 @@ def test_default_definitions(
 
     filled_quirks_registry.initialise_device_quirk(device)
 
-    assert {"switch", "temper_alarm"} <= set(
+    assert {"doorcontact_state", "temper_alarm"} <= set(
         get_binary_sensor_default_definitions(device)
     )
     assert "battery_percentage" in get_sensor_default_definitions(device)
@@ -60,7 +60,7 @@ def test_mqtt(
             {"dpId": 103, "t": 1794096541000, "value": 100},
         ],
     )
-    assert device.status["switch"] is True
+    assert device.status["doorcontact_state"] is True
     assert device.status["temper_alarm"] is False
     assert device.status["battery_percentage"] == 100
 
@@ -68,4 +68,4 @@ def test_mqtt(
         device.id,
         [{"dpId": 101, "t": 1794096550000, "value": False}],
     )
-    assert device.status["switch"] is False
+    assert device.status["doorcontact_state"] is False
