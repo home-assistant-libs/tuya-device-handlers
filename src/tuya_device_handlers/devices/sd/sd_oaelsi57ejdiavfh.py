@@ -4,6 +4,9 @@ The cloud function list omits `closed` for the `cistern` datapoint and
 `goto_charge` for the `mode` datapoint, but the device reports both. Redeclare
 the full enum ranges so Home Assistant accepts the values.
 
+Note: selecting `goto_charge` from Home Assistant is rejected by the cloud
+(error 2008), so it is only reported by the device and cannot be set.
+
 See https://github.com/home-assistant-libs/tuya-device-handlers/issues/642
 """
 
