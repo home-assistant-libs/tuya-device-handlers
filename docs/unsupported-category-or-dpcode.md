@@ -117,10 +117,17 @@ them, with their types, ranges and whether they can be written. There are two
 ways to read it, both from Tuya. In both, `<device_id>` is the `id` field in
 your diagnostics.
 
-- **Online, on the [Tuya IoT Platform](https://iot.tuya.com):** in your cloud
-  project, go to **Cloud → API Explorer → Device Control**, and run **Query
-  Things Data Model** with your device id. This needs a Tuya developer account,
-  with your Smart Life or Tuya Smart account linked to the project.
+- **Online, on the [Tuya Developer Platform](https://platform.tuya.com):** in
+  the [API Explorer](https://platform.tuya.com/cloud/explorer), go to **Device
+  Control** and run, with your device id:
+  - **Query Things Data Model**, for each datapoint's dpid, type, range and
+    whether it can be written;
+  - **Query Properties**, for each datapoint's dpid, code and current value.
+
+  This needs a Tuya developer account, with your Smart Life or Tuya Smart
+  account linked to a cloud project. When sharing the results, don't include
+  the request URL, as it contains sensitive parameters.
+
 - **From a terminal, with Tuya's
   [tuya-smart-control-cli](https://github.com/tuya/tuya-smart-control-cli):**
   follow its README to install it and create an API key, then run:
