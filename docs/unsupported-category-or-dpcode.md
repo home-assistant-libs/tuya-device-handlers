@@ -22,6 +22,7 @@ only do that for a **device category** and a **DPCode** it knows about.
 | A datapoint **is in the diagnostics** but never becomes an entity                                                    | [home-assistant/core](https://github.com/home-assistant/core)                              |
 | Device creates **no entities at all** and its category is unknown to core                                            | [home-assistant/core](https://github.com/home-assistant/core)                              |
 | Entities show the right state, but the **cloud rejects commands** with error `2008`                                  | Neither — see [Commands rejected by the cloud](#commands-rejected-by-the-cloud-error-2008) |
+| Entities exist but are **unavailable**, and the diagnostics show `"online": false`                                   | Neither — see [Offline devices](#offline-devices)                                          |
 
 The discriminator for a missing entity is simple:
 
@@ -167,6 +168,23 @@ Tuya support) can change what the Tuya cloud accepts.
 A quirk is still worth contributing for the readings. Declare the datapoints
 that are meant to be writable as `DPMode.READ | DPMode.WRITE` anyway, and
 mention the limitation in the quirk's docstring.
+
+## Offline devices
+
+A quirk can't change whether a device is online. Home Assistant currently
+marks a device's entities as unavailable while the Tuya cloud reports it as
+offline (`"online": false` in the diagnostics), even when its datapoints are
+correct.
+
+- **A Bluetooth device paired directly with your phone:** add it to the app
+  through a Tuya Bluetooth or multi-mode gateway instead, as described in
+  [Bluetooth device is unavailable](https://www.home-assistant.io/integrations/tuya/#bluetooth-device-is-unavailable)
+  in the Home Assistant documentation.
+- **Already connected through a gateway:** make sure the gateway and the device
+  show as online in the app.
+- **Still offline, or not a Bluetooth device:** open an issue on
+  [home-assistant/core](https://github.com/home-assistant/core/issues) and
+  include the device diagnostics.
 
 ## What to do with your issue here
 
