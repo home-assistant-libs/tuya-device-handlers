@@ -9,6 +9,14 @@ body:
       value: |
         Thanks for suggesting an improvement!
 
+        **Device quirks are not written on request.** As the owner of the
+        device, you are the one best placed to fix it: write a quirk, test
+        it live from your `<config>/tuya_quirks/` folder, and open a pull
+        request. See
+        [Writing a quirk](https://github.com/home-assistant-libs/tuya-device-handlers#writing-a-quirk)
+        and the [recipes](https://github.com/home-assistant-libs/tuya-device-handlers/tree/main/docs).
+        Issues without activity are closed automatically after 45 days.
+
         If you're requesting a quirk for a specific device, please include
         information about the device's data points. If you are using
         Home Assistant, the easiest way to provide this is by downloading

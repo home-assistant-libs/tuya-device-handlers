@@ -145,6 +145,12 @@ _Tuya quirks library_ is free and open source software.
 If you encounter any problems,
 please [file an issue] along with a detailed description.
 
+Device quirks are not written on request: if your device needs one, write it
+yourself following [Writing a quirk](#writing-a-quirk), then
+[contribute it](#contributing-your-quirk). Issues and pull requests without
+activity are marked as stale and closed automatically (issues after 30 + 15
+days, pull requests after 60 + 7 days); comment to keep them open.
+
 [ha-tuya]: https://www.home-assistant.io/integrations/tuya/
 [tuya-categories]: https://developer.tuya.com/en/docs/iot/standarddescription?id=K9i5ql6waswzq
 [devices-dir]: https://github.com/home-assistant-libs/tuya-device-handlers/tree/main/src/tuya_device_handlers/devices
