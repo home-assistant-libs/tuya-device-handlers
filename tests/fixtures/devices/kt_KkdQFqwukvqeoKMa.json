@@ -1,0 +1,127 @@
+{
+  "endpoint": "https://apigw.tuyaus.com",
+  "mqtt_connected": true,
+  "disabled_by": null,
+  "disabled_polling": false,
+  "name": "July AC",
+  "category": "kt",
+  "product_id": "KkdQFqwukvqeoKMa",
+  "product_name": "Window Type Air Conditioner",
+  "online": true,
+  "sub": false,
+  "time_zone": "-08:00",
+  "active_time": "2025-08-22T16:01:53+00:00",
+  "create_time": "2025-08-22T16:01:53+00:00",
+  "update_time": "2025-08-22T16:01:53+00:00",
+  "function": {
+    "windspeed": {
+      "type": "Enum",
+      "value": "{\"range\":[\"1\",\"2\",\"3\",\"4\"]}"
+    },
+    "mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"auto\",\"cold\",\"hot\",\"wet\",\"wind\"]}"
+    },
+    "temp_set": {
+      "type": "Integer",
+      "value": "{\"min\":0,\"unit\":\"℃\",\"scale\":0,\"max\":100,\"type\":\"value\",\"step\":1}"
+    },
+    "switch": {
+      "type": "Boolean",
+      "value": "{}"
+    }
+  },
+  "local_strategy": {
+    "1": {
+      "value_convert": "default",
+      "status_code": "switch",
+      "config_item": {
+        "statusFormat": "{\"switch\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "KkdQFqwukvqeoKMa"
+      }
+    },
+    "2": {
+      "value_convert": "default",
+      "status_code": "temp_set",
+      "config_item": {
+        "statusFormat": "{\"temp_set\":\"$\"}",
+        "valueDesc": "{\"min\":0,\"unit\":\"℃\",\"scale\":0,\"max\":100,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "KkdQFqwukvqeoKMa"
+      }
+    },
+    "3": {
+      "value_convert": "default",
+      "status_code": "temp_current",
+      "config_item": {
+        "statusFormat": "{\"temp_current\":\"$\"}",
+        "valueDesc": "{\"min\":-20,\"scale\":0,\"unit\":\"℃\",\"max\":100,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "KkdQFqwukvqeoKMa"
+      }
+    },
+    "4": {
+      "value_convert": "default",
+      "status_code": "mode",
+      "config_item": {
+        "statusFormat": "{\"mode\":\"$\"}",
+        "valueDesc": "{\"range\":[\"auto\",\"cold\",\"hot\",\"wet\",\"wind\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "KkdQFqwukvqeoKMa"
+      }
+    },
+    "5": {
+      "value_convert": "default",
+      "status_code": "windspeed",
+      "config_item": {
+        "statusFormat": "{\"windspeed\":\"$\"}",
+        "valueDesc": "{\"range\":[\"1\",\"2\",\"3\",\"4\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "KkdQFqwukvqeoKMa"
+      }
+    }
+  },
+  "status_range": {
+    "windspeed": {
+      "type": "Enum",
+      "value": "{\"range\":[\"1\",\"2\",\"3\",\"4\"]}",
+      "report_type": null
+    },
+    "mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"auto\",\"cold\",\"hot\",\"wet\",\"wind\"]}",
+      "report_type": null
+    },
+    "temp_current": {
+      "type": "Integer",
+      "value": "{\"min\":-20,\"scale\":0,\"unit\":\"℃\",\"max\":100,\"step\":1}",
+      "report_type": "sum"
+    },
+    "temp_set": {
+      "type": "Integer",
+      "value": "{\"min\":0,\"unit\":\"℃\",\"scale\":0,\"max\":100,\"step\":1}",
+      "report_type": null
+    },
+    "switch": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    }
+  },
+  "status": {
+    "switch": true,
+    "temp_set": 21,
+    "temp_current": 19,
+    "mode": "cold",
+    "windspeed": "3"
+  },
+  "set_up": true,
+  "support_local": true
+}
