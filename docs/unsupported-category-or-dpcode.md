@@ -69,7 +69,9 @@ The same applies when _nothing_ appeared: if `function`, `status_range` and
 A quirk adds a datapoint by its dpid. When the diagnostics don't list it, and
 especially when `function`, `status_range`, `local_strategy` and `status` are
 all empty, the device usually still sends its reports, keyed by dpid. With an
-empty `local_strategy`, the Tuya SDK logs each one it can't map.
+empty `local_strategy`, the Tuya SDK logs each one it can't map. This only
+works for devices with `"support_local": true` in their diagnostics: other
+devices report by code rather than dpid.
 
 1. Turn on **Enable debug logging** on the Tuya integration page. It covers the
    Tuya SDK (`tuya_sharing`).
