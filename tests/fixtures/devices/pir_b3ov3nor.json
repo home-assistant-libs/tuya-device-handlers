@@ -1,0 +1,110 @@
+{
+  "endpoint": "https://apigw.tuyaus.com",
+  "mqtt_connected": true,
+  "disabled_by": null,
+  "disabled_polling": false,
+  "name": "\u4eba\u4f53\u4f20\u611f\u5668\u26a1 @q2\u6d74\u5ba4",
+  "category": "pir",
+  "product_id": "b3ov3nor",
+  "product_name": "PIR",
+  "online": true,
+  "sub": true,
+  "time_zone": "+08:00",
+  "active_time": "2024-12-29T03:29:53+00:00",
+  "create_time": "2024-12-29T03:29:53+00:00",
+  "update_time": "2024-12-29T03:29:53+00:00",
+  "function": {},
+  "local_strategy": {
+    "103": {
+      "value_convert": "default",
+      "status_code": "battery_percentage",
+      "config_item": {
+        "statusFormat": "{\"battery_percentage\": \"$\"}",
+        "valueDesc": "{\"unit\": \"%\", \"min\": 0, \"max\": 100, \"scale\": 0, \"step\": 1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "b3ov3nor"
+      }
+    },
+    "101": {
+      "value_convert": "default",
+      "status_code": "pir",
+      "config_item": {
+        "statusFormat": "{\"pir\": \"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "b3ov3nor"
+      }
+    }
+  },
+  "status_range": {
+    "battery_percentage": {
+      "type": "Integer",
+      "value": "{\"unit\": \"%\", \"min\": 0, \"max\": 100, \"scale\": 0, \"step\": 1}",
+      "report_type": null
+    },
+    "pir": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    }
+  },
+  "status": {
+    "pir": false,
+    "battery_percentage": 100
+  },
+  "set_up": true,
+  "support_local": true,
+  "quirk": "/config/tuya_quirks/pir_b3ov3nor.py:6",
+  "warnings": [
+    "boolean_out_range|pir|none"
+  ],
+  "original_category": "pir",
+  "original_function": {},
+  "original_local_strategy": {
+    "103": {
+      "value_convert": "default",
+      "status_code": "battery_percentage",
+      "config_item": {
+        "statusFormat": "{\"battery_percentage\":\"$\"}",
+        "valueDesc": "{\"unit\":\"\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "b3ov3nor"
+      }
+    },
+    "101": {
+      "value_convert": "enum",
+      "status_code": "pir",
+      "config_item": {
+        "statusFormat": "{\"pir\":\"$\"}",
+        "valueDesc": "{\"range\":[\"pir\",\"none\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {
+          "false": {
+            "code": "pir",
+            "value": "none"
+          },
+          "true": {
+            "code": "pir",
+            "value": "pir"
+          }
+        },
+        "pid": "b3ov3nor"
+      }
+    }
+  },
+  "original_status_range": {
+    "battery_percentage": {
+      "type": "Integer",
+      "value": "{\"unit\":\"\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "pir": {
+      "type": "Enum",
+      "value": "{\"range\":[\"pir\",\"none\"]}",
+      "report_type": null
+    }
+  }
+}
