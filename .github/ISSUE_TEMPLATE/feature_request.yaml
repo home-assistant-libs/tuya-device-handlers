@@ -15,7 +15,7 @@ body:
         request. See
         [Writing a quirk](https://github.com/home-assistant-libs/tuya-device-handlers#writing-a-quirk)
         and the [recipes](https://github.com/home-assistant-libs/tuya-device-handlers/tree/main/docs).
-        Issues without activity are closed automatically after 45 days.
+        Issues are closed automatically after a period of inactivity.
 
         If you're requesting a quirk for a specific device, please include
         information about the device's data points. If you are using

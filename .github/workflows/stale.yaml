@@ -33,8 +33,9 @@ jobs:
             been marked as stale and will be closed if no further activity
             occurs within 15 days.
 
-            Device quirks are not written on request: as the owner of the
-            device, you are the one best placed to fix it. Write a quirk for
+            If this is about your device, note that device quirks are not
+            written on request: as the owner of the device, you are the one
+            best placed to fix it. Write a quirk for
             your device, test it live from your `<config>/tuya_quirks/`
             folder, and then open a pull request so everyone with the same
             device benefits. See
@@ -55,6 +56,6 @@ jobs:
             occurs within 7 days.
 
             If you are the author and still want to get it merged, please
-            address the open review comments, rebase onto the latest `main`,
-            and mark the pull request as ready for review. Thank you for your
-            contribution!
+            address any open review comments, update the branch with the
+            latest `main`, and mark the pull request as ready for review.
+            Thank you for your contribution!
