@@ -61,4 +61,5 @@ Check that:
 - the test file is named `test_<product_id>.py` and exercises what the quirk changes, rather than only asserting that it registers (or being a copy of the quirk);
 - the datapoints the quirk changes are actually used by this library or Home Assistant Core. If not, ask which entity is wrong and what the user sees;
 - a quirk PR does not also change shared code (`builder/`, `definition/`, `device_wrapper/`, …). If it does, ask for it to be split;
-- the change does not belong in Home Assistant Core instead (see Rules above).
+- the change does not belong in Home Assistant Core instead (see Rules above);
+- a device with `"online": false` in the diagnostics is not treated as a datapoint problem: a quirk won't make its entities available, but the datapoints can still be valid. For a Bluetooth device, ask how it's paired, as it can be offline even through a gateway (see [Offline devices](../../../docs/unsupported-category-or-dpcode.md#offline-devices)).
