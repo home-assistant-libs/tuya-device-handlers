@@ -89,7 +89,7 @@ Each quirk file should contain exactly one `DeviceQuirk()...register(...)` chain
      homeassistant.components.tuya: debug
    ```
 
-   Then use the device from its app or its buttons, and try each entity from Home Assistant. Useful lines to look for (the device ID is the `id` field in your diagnostics):
+   Reload the Tuya integration again, so that the quirk loading is logged too. Then use the device from its app or its buttons, and try each entity from Home Assistant. Useful lines to look for (the device ID is the `id` field in your diagnostics):
 
    | Log line                                                             | Meaning                                                                                                                                                                               |
    | -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
