@@ -66,12 +66,19 @@ The same applies when _nothing_ appeared: if `function`, `status_range` and
 
 ### Finding the datapoints
 
-A quirk adds a datapoint by its dpid. When the diagnostics don't list it, and
-especially when `function`, `status_range`, `local_strategy` and `status` are
-all empty, the device usually still sends its reports, keyed by dpid. With an
-empty `local_strategy`, the Tuya SDK logs each one it can't map. This only
-works for devices with `"support_local": true` in their diagnostics: other
-devices report by code rather than dpid.
+A quirk adds a datapoint by its dpid. When the diagnostics don't list it, the
+device may still send it in its reports, keyed by dpid, and the Tuya SDK logs
+each one it can't map. This only works when both are true:
+
+- the device has `"support_local": true` in its diagnostics: other devices
+  report by code rather than dpid;
+- the device already has at least one entity in Home Assistant: the SDK only
+  listens for reports from devices that have one.
+
+So the debug log helps when _some_ datapoints are missing. For a device with no
+entities at all, typically when `function`, `status_range`, `local_strategy`
+and `status` are all empty, read the device's thing model instead: see
+[Reading the thing model](#reading-the-thing-model) below.
 
 1. Turn on **Enable debug logging** on the Tuya integration page. It covers the
    Tuya SDK (`tuya_sharing`).
@@ -102,26 +109,31 @@ and add a test that a report keyed by dpid updates the right code, like
 `test_mqtt` in
 [`tests/devices/tdq/test_a9fn0xcsckjoqpnd.py`](../tests/devices/tdq/test_a9fn0xcsckjoqpnd.py).
 
-#### Optional: read the full thing model
+#### Reading the thing model
 
-The log only shows the datapoints the device reports while you watch. The
-device's thing model lists all of them, with their types, ranges and whether
-they can be written. Tuya's
-[tuya-smart-control-cli](https://github.com/tuya/tuya-smart-control-cli) can
-read it:
+The log only shows the datapoints the device reports while you watch, and
+nothing for a device with no entities. The device's thing model lists all of
+them, with their types, ranges and whether they can be written. There are two
+ways to read it, both from Tuya. In both, `<device_id>` is the `id` field in
+your diagnostics.
 
-```console
-tuya device model <device_id> --json
-```
+- **Online, on the [Tuya IoT Platform](https://iot.tuya.com):** in your cloud
+  project, go to **Cloud → API Explorer → Device Control**, and run **Query
+  Things Data Model** with your device id. This needs a Tuya developer account,
+  with your Smart Life or Tuya Smart account linked to the project.
+- **From a terminal, with Tuya's
+  [tuya-smart-control-cli](https://github.com/tuya/tuya-smart-control-cli):**
+  follow its README to install it and create an API key, then run:
 
-`<device_id>` is the `id` field in your diagnostics. Follow the CLI's README to
-install it and create an API key.
+  ```console
+  tuya device model <device_id> --json
+  ```
 
-> **The API key must belong to the app account that owns the device.** Tuya
-> Smart and Smart Life are separate apps with separate accounts, and a key only
-> sees devices in its own account's homes. If the command fails with
-> `40000905` ("The user does not have device permissions"), check which app the
-> device was added with, then use a key for that account.
+> **With the CLI, the API key must belong to the app account that owns the
+> device.** Tuya Smart and Smart Life are separate apps with separate accounts,
+> and a key only sees devices in its own account's homes. If the command fails
+> with `40000905` ("The user does not have device permissions"), check which
+> app the device was added with, then use a key for that account.
 
 Each entry in `properties` is one datapoint, for example:
 

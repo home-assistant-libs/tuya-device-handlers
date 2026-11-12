@@ -35,7 +35,7 @@ The library is shipped to end users via Home Assistant — you do not install it
 
 In Home Assistant: **Settings → Devices & services → Tuya → your device → Download diagnostics**. The JSON contains the `product_id`, the cloud-reported `function` / `status_range` maps, and the current `status` values. Use these to decide what needs patching.
 
-If `function`, `status_range` and `status` are all empty, the cloud told Home Assistant nothing about the device and it gets no entities. See [Finding the datapoints](docs/unsupported-category-or-dpcode.md#finding-the-datapoints) to get them from the debug log instead.
+If `function`, `status_range` and `status` are all empty, the cloud told Home Assistant nothing about the device and it gets no entities. See [Finding the datapoints](docs/unsupported-category-or-dpcode.md#finding-the-datapoints) to get them from the device's thing model instead.
 
 ### 2. Create a quirk file
 
