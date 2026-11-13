@@ -1,0 +1,163 @@
+{
+  "endpoint": "https://apigw.tuyaeu.com",
+  "mqtt_connected": true,
+  "disabled_by": null,
+  "disabled_polling": false,
+  "name": "Roleta-J",
+  "category": "cl",
+  "product_id": "crfwyri5jzt5cxec",
+  "product_name": "ZM25RW01",
+  "online": true,
+  "sub": false,
+  "time_zone": "+02:00",
+  "active_time": "2026-07-21T16:25:46+00:00",
+  "create_time": "2026-07-21T16:25:46+00:00",
+  "update_time": "2026-07-21T16:25:46+00:00",
+  "function": {
+    "control": {
+      "type": "Enum",
+      "value": "{\"range\":[\"open\",\"stop\",\"close\"]}"
+    },
+    "percent_control": {
+      "type": "Integer",
+      "value": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}"
+    },
+    "mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"morning\",\"night\"]}"
+    },
+    "control_back_mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"forward\",\"back\"]}"
+    }
+  },
+  "local_strategy": {
+    "1": {
+      "value_convert": "default",
+      "status_code": "control",
+      "config_item": {
+        "statusFormat": "{\"control\":\"$\"}",
+        "valueDesc": "{\"range\":[\"open\",\"stop\",\"close\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "crfwyri5jzt5cxec"
+      }
+    },
+    "2": {
+      "value_convert": "default",
+      "status_code": "percent_control",
+      "config_item": {
+        "statusFormat": "{\"percent_control\":\"$\"}",
+        "valueDesc": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "crfwyri5jzt5cxec"
+      }
+    },
+    "3": {
+      "value_convert": "default",
+      "status_code": "percent_state",
+      "config_item": {
+        "statusFormat": "{\"percent_state\":\"$\"}",
+        "valueDesc": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "crfwyri5jzt5cxec"
+      }
+    },
+    "4": {
+      "value_convert": "default",
+      "status_code": "mode",
+      "config_item": {
+        "statusFormat": "{\"mode\":\"$\"}",
+        "valueDesc": "{\"range\":[\"morning\",\"night\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "crfwyri5jzt5cxec"
+      }
+    },
+    "5": {
+      "value_convert": "default",
+      "status_code": "control_back_mode",
+      "config_item": {
+        "statusFormat": "{\"control_back_mode\":\"$\"}",
+        "valueDesc": "{\"range\":[\"forward\",\"back\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "crfwyri5jzt5cxec"
+      }
+    },
+    "7": {
+      "value_convert": "default",
+      "status_code": "work_state",
+      "config_item": {
+        "statusFormat": "{\"work_state\":\"$\"}",
+        "valueDesc": "{\"range\":[\"opening\",\"closing\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "crfwyri5jzt5cxec"
+      }
+    },
+    "12": {
+      "value_convert": "default",
+      "status_code": "fault",
+      "config_item": {
+        "statusFormat": "{\"fault\":\"$\"}",
+        "valueDesc": "{\"label\":[\"motor_fault\"]}",
+        "valueType": "Bitmap",
+        "enumMappingMap": {},
+        "pid": "crfwyri5jzt5cxec"
+      }
+    }
+  },
+  "status_range": {
+    "control": {
+      "type": "Enum",
+      "value": "{\"range\":[\"open\",\"stop\",\"close\"]}",
+      "report_type": null
+    },
+    "percent_control": {
+      "type": "Integer",
+      "value": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "percent_state": {
+      "type": "Integer",
+      "value": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"morning\",\"night\"]}",
+      "report_type": null
+    },
+    "control_back_mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"forward\",\"back\"]}",
+      "report_type": null
+    },
+    "work_state": {
+      "type": "Enum",
+      "value": "{\"range\":[\"opening\",\"closing\"]}",
+      "report_type": null
+    },
+    "fault": {
+      "type": "Bitmap",
+      "value": "{\"label\":[\"motor_fault\"]}",
+      "report_type": null
+    }
+  },
+  "status": {
+    "control": "stop",
+    "percent_control": 0,
+    "percent_state": 0,
+    "mode": "morning",
+    "control_back_mode": "back",
+    "work_state": "closing",
+    "fault": 0
+  },
+  "set_up": true,
+  "support_local": true,
+  "quirk": null,
+  "warnings": null
+}
