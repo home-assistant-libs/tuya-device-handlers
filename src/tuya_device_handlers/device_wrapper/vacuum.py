@@ -17,12 +17,20 @@ class VacuumActivityWrapper(DeviceWrapper[TuyaVacuumActivity]):
     """Wrapper for the state of a vacuum."""
 
     _TUYA_STATUS_TO_HA = {
+        "adapter_charging": TuyaVacuumActivity.DOCKED,
+        "adapter_sleeping": TuyaVacuumActivity.DOCKED,
+        "base_charging": TuyaVacuumActivity.DOCKED,
+        "base_sleeping": TuyaVacuumActivity.DOCKED,
         "charge_done": TuyaVacuumActivity.DOCKED,
         "chargecompleted": TuyaVacuumActivity.DOCKED,
         "chargego": TuyaVacuumActivity.DOCKED,
         "charging": TuyaVacuumActivity.DOCKED,
         "cleaning": TuyaVacuumActivity.CLEANING,
+        "continuation_charging": TuyaVacuumActivity.DOCKED,
         "docking": TuyaVacuumActivity.RETURNING,
+        "edge": TuyaVacuumActivity.CLEANING,
+        "explore": TuyaVacuumActivity.CLEANING,
+        "explore_clean": TuyaVacuumActivity.CLEANING,
         "goto_charge": TuyaVacuumActivity.RETURNING,
         "goto_pos": TuyaVacuumActivity.CLEANING,
         "mop_clean": TuyaVacuumActivity.CLEANING,
