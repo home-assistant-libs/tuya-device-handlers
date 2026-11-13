@@ -8,7 +8,7 @@ never reported or have no effect.
 import json
 
 import pytest
-from tuya_sharing import CustomerDevice
+from tuya_sharing import CustomerDevice, Manager
 
 from tests import create_device
 from tuya_device_handlers.registry import QuirksRegistry
@@ -42,13 +42,12 @@ _REMOVED_DPIDS = {
 }
 
 _WORK_STATES = [
-    "no_connet",
-    "connect",
-    "charing",
-    "wait_rfid",
-    "finish",
-    "wait_charing",
-    "error",
+    "charger_free",
+    "charger_insert",
+    "charger_wait",
+    "charger_charging",
+    "charger_end",
+    "charger_fault",
 ]
 
 
@@ -102,22 +101,51 @@ def test_quirk_removes_unused_datapoints(
     assert device.function == {}
 
 
-def test_work_state_uses_vendor_values(
+def test_work_state_uses_dp_101(
     filled_quirks_registry: QuirksRegistry,
 ) -> None:
-    """DP 101 replaces DP 3, with the device's own (misspelled) values."""
+    """DP 101 replaces DP 3 with the standard values that can occur."""
     device = create_device(_FIXTURE)
-    type_information = EnumTypeInformation.find_dpcode(device, "work_state")
-    assert type_information is not None
-    assert "charger_free" in type_information.range
+    assert device.local_strategy[3]["status_code"] == "work_state"
 
     filled_quirks_registry.initialise_device_quirk(device)
-    device.status["work_state"] = "wait_charing"
 
     type_information = EnumTypeInformation.find_dpcode(device, "work_state")
     assert type_information is not None
     assert type_information.range == _WORK_STATES
-    assert type_information.read_device_value(device) == "wait_charing"
+
+
+@pytest.mark.parametrize(
+    ("raw_value", "expected"),
+    [
+        pytest.param("no_connet", "charger_free", id="no_connet"),
+        pytest.param("connect", "charger_insert", id="connect"),
+        pytest.param("charing", "charger_charging", id="charing"),
+        pytest.param("wait_rfid", "charger_wait", id="wait_rfid"),
+        pytest.param("wait_charing", "charger_wait", id="wait_charing"),
+        pytest.param("finish", "charger_end", id="finish"),
+        pytest.param("error", "charger_fault", id="error"),
+    ],
+)
+def test_work_state_mqtt_mapping(
+    filled_quirks_registry: QuirksRegistry,
+    mock_manager: Manager,
+    raw_value: str,
+    expected: str,
+) -> None:
+    """The device's own DP 101 values are mapped to standard values."""
+    device = _create_quirked_device(filled_quirks_registry)
+    mock_manager.device_map[device.id] = device
+
+    mock_manager._on_device_report(
+        device.id,
+        [{"dpId": 101, "t": 1794427732251, "value": raw_value}],
+    )
+
+    assert device.status["work_state"] == expected
+    type_information = EnumTypeInformation.find_dpcode(device, "work_state")
+    assert type_information is not None
+    assert type_information.read_device_value(device) == expected
 
 
 @pytest.mark.parametrize(

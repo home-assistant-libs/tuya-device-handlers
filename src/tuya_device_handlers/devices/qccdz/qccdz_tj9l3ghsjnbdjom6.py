@@ -6,11 +6,12 @@ https://www.absina.com/products/mobile-wallbox-cee-11kw
 The charger reports its status and live measurements on
 vendor-specific DPs that are missing from the cloud spec, while the standard
 work_state DP is never reported. This quirk maps the vendor DPs to standard
-DP codes. Writable vendor DPs (e.g. 114 "Set16A", 118 "SetDelayTime",
-119 "SetDefineTime") are not mapped: Home Assistant sends commands through
-the Tuya cloud's standard instruction set, which rejects vendor-specific
-codes. Comments name the vendor code (Tuya developer portal) and the label
-shown in the Tuya device logs where known.
+DP codes, and the vendor status values to the standard work_state values.
+Writable vendor DPs (e.g. 114 "Set16A", 118 "SetDelayTime", 119
+"SetDefineTime") are not mapped: Home Assistant sends commands through the
+Tuya cloud's standard instruction set, which rejects vendor-specific codes.
+Comments name the vendor code (Tuya developer portal) and the label shown in
+the Tuya device logs where known.
 """
 
 from tuya_device_handlers import TUYA_QUIRKS_REGISTRY
@@ -40,17 +41,29 @@ from tuya_device_handlers.const import DPMode
         dpid=101,
         dpcode="work_state",
         dpmode=DPMode.READ,
-        # Raw values exactly as sent by the device (from the Tuya developer
-        # portal). The misspellings are the device's own; do not correct them.
         enum_range=[
-            "no_connet",  # unplugged, idle ("Ready" in the app)
-            "connect",  # plugged in, not charging (also after the car stops)
-            "charing",  # charging
-            "wait_rfid",  # plugged in, waiting for the RFID card
-            "finish",  # charging ended with the RFID card
-            "wait_charing",  # delayed start active (DP 118 "SetDelayTime")
-            "error",  # device error
+            "charger_free",
+            "charger_insert",
+            "charger_wait",
+            "charger_charging",
+            "charger_end",
+            "charger_fault",
         ],
+    )
+    # DP 101 sends the device's own values (misspellings included); map them
+    # to the standard work_state values.
+    .set_dpid_strategy_to_enum(
+        dpid=101,
+        dpcode="work_state",
+        enum_mapping_map={
+            "no_connet": "charger_free",  # unplugged, "Ready" in the app
+            "connect": "charger_insert",  # plugged in, not charging
+            "charing": "charger_charging",
+            "wait_rfid": "charger_wait",  # waiting for the RFID card
+            "wait_charing": "charger_wait",  # delayed start (DP 118)
+            "finish": "charger_end",  # charging ended with the RFID card
+            "error": "charger_fault",
+        },
     )
     # DP 102: voltage, 1 V resolution (raw 415 -> 415 V)
     # Vendor code "A_Voltage", shown as "Voltage" in Tuya logs. The data
