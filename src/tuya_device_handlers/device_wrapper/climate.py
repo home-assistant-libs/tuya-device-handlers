@@ -229,13 +229,9 @@ class DefaultClimateActionWrapper(DPCodeEnumWrapper[TuyaClimateAction]):
     def read_device_status(
         self, device: CustomerDevice
     ) -> TuyaClimateAction | None:
-        """Read the device status.
-
-        The raw status value is read rather than the enum-validated value:
-        some devices report work states outside their declared range.
-        """
+        """Read the device status."""
         return _DEFAULT_DEVICE_WORK_STATE_TO_ACTION.get(
-            device.status.get(self.dpcode)
+            self._read_dpcode_value(device)
         )
 
     def get_update_commands(

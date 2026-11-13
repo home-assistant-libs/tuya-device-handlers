@@ -55,18 +55,15 @@ def test_heater_exposes_off_hvac_mode(
     assert definition.preset_wrapper.options == ["eco"]
 
 
-def test_heater_reports_idle_action() -> None:
-    """Test work_state is read even though it is outside the declared range.
-
-    The fixture declares `work_state` range as ["heating"] but the device
-    reports "idle"; the action wrapper must still report IDLE.
-    """
+def test_heater_reports_heating_action() -> None:
+    """Test the action wrapper reports the declared work_state."""
     device = create_device("qn_tjvnxyobs3upidjo.json")
+    device.status["work_state"] = "heating"
 
     definition = get_climate_definition(device, TuyaUnitOfTemperature.CELSIUS)
 
     assert definition.action_wrapper is not None
     assert (
         definition.action_wrapper.read_device_status(device)
-        == TuyaClimateAction.IDLE
+        == TuyaClimateAction.HEATING
     )

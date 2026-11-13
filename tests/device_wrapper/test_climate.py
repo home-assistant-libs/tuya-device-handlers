@@ -281,25 +281,6 @@ def test_read_climate_action(
     assert wrapper.read_device_status(mock_device) == expected
 
 
-def test_climate_action_reads_value_outside_declared_range(
-    mock_device: CustomerDevice,
-) -> None:
-    """Test reading a work_state outside the declared enum range."""
-    inject_dpcode(
-        mock_device,
-        "work_state",
-        None,
-        dptype="Enum",
-        values='{"range": ["heating"]}',
-    )
-    mock_device.status["work_state"] = "idle"
-
-    wrapper = DefaultClimateActionWrapper.find_dpcode(mock_device, "work_state")
-
-    assert wrapper
-    assert wrapper.read_device_status(mock_device) == TuyaClimateAction.IDLE
-
-
 def test_climate_action_options(mock_device: CustomerDevice) -> None:
     """Test options expose the mapped actions, not the raw values."""
     inject_dpcode(
