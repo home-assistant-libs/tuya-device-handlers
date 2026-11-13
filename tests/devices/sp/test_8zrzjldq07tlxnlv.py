@@ -37,7 +37,8 @@ def test_quirk_overrides(
     assert device.status_range["food_storage_status"].values == (
         '{"range": ["full", "less", "lack"]}'
     )
-    assert device.status_range["feed_report"].report_type == "sum"
+    # Each report is the amount of one feed, not a delta to accumulate
+    assert device.status_range["feed_report"].report_type is None
     # Camera datapoints are left untouched
     assert "basic_nightvision" in device.function
     assert device.local_strategy[101]["status_code"] == "basic_indicator"

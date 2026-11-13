@@ -13,7 +13,7 @@ thing model):
   DP 241 -> feed_stuck_status (bool)
   DP 243 -> manual_feed_report (portions dispensed by a manual feed)
   DP 244 -> auto_feed_report (portions dispensed by a scheduled feed)
-  DP 246 -> feed_report (portions dispensed)
+  DP 246 -> feed_report (portions dispensed by the latest feed)
 
 The thing model declares scale 1 for DP 243 and DP 244, but the device reports
 plain portions on them (1 after a 1-portion feed), matching DP 246, so they are
@@ -81,7 +81,6 @@ from tuya_device_handlers.const import DPMode
         max=99,
         scale=0,
         step=1,
-        report_type="sum",
     )
     .register(TUYA_QUIRKS_REGISTRY)
 )
