@@ -278,6 +278,17 @@ A quirk is still worth contributing for the readings. Declare the datapoints
 that are meant to be writable as `DPMode.READ | DPMode.WRITE` anyway, and
 mention the limitation in the quirk's docstring.
 
+### Where to report it
+
+- **As a user:** report it in the Smart Life or Tuya Smart app, in the help and
+  feedback section of the **Me** tab. Mention the product id and the error code
+  (`2008`). Contacting the brand or seller of the device is often more
+  effective, as only they can change its cloud definition.
+- **As the product's owner (brand or seller):** open a technical ticket at
+  [service.console.tuya.com](https://service.console.tuya.com/), from the
+  account that owns the product's cloud definition. Include the product id,
+  the device id, what you were doing, and the error code.
+
 ## Offline devices
 
 A quirk can't change whether a device is online. Home Assistant currently
