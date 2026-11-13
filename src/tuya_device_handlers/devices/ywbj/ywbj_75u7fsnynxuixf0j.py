@@ -1,0 +1,33 @@
+"""Quirk for product ID 75u7fsnynxuixf0j to correctly define and scale temperature (DP 23) and humidity (DP 24) sensors[cite: 1]."""
+
+from tuya_device_handlers import TUYA_QUIRKS_REGISTRY
+from tuya_device_handlers.builder import DeviceQuirk
+from tuya_device_handlers.const import DPMode
+
+(
+    DeviceQuirk()
+    .applies_to(product_id="75u7fsnynxuixf0j")
+    # Temperature - DP 23
+    .add_dpid_integer(
+        dpid=23,
+        dpcode="temp_current",
+        dpmode=DPMode.READ,
+        unit="°C",
+        min=-200,
+        max=600,
+        scale=1,
+        step=1,
+    )
+    # Humidity - DP 24
+    .add_dpid_integer(
+        dpid=24,
+        dpcode="humidity_value",
+        dpmode=DPMode.READ,
+        unit="%",
+        min=0,
+        max=1000,
+        scale=0,
+        step=1,
+    )
+    .register(TUYA_QUIRKS_REGISTRY)
+)
