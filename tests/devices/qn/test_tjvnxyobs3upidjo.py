@@ -7,6 +7,7 @@ from tuya_device_handlers.definition.climate import (
     get_default_definition as get_climate_definition,
 )
 from tuya_device_handlers.helpers.homeassistant import (
+    TuyaClimateAction,
     TuyaClimateHVACMode,
     TuyaUnitOfTemperature,
 )
@@ -52,3 +53,17 @@ def test_heater_exposes_off_hvac_mode(
     assert definition.hvac_mode_wrapper.options == [TuyaClimateHVACMode.OFF]
     assert definition.preset_wrapper is not None
     assert definition.preset_wrapper.options == ["eco"]
+
+
+def test_heater_reports_heating_action() -> None:
+    """Test the action wrapper reports the declared work_state."""
+    device = create_device("qn_tjvnxyobs3upidjo.json")
+    device.status["work_state"] = "heating"
+
+    definition = get_climate_definition(device, TuyaUnitOfTemperature.CELSIUS)
+
+    assert definition.action_wrapper is not None
+    assert (
+        definition.action_wrapper.read_device_status(device)
+        == TuyaClimateAction.HEATING
+    )
