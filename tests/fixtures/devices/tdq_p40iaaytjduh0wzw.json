@@ -1,0 +1,592 @@
+{
+  "home_assistant": {
+    "arch": "x86_64",
+    "dev": false,
+    "docker": true,
+    "hassio": false,
+    "installation_type": "Home Assistant Container",
+    "os_name": "Linux",
+    "os_version": "6.18.33.2-microsoft-standard-WSL2",
+    "python_version": "3.14.10",
+    "timezone": "Pacific/Auckland",
+    "version": "2026.11.0",
+    "virtualenv": false,
+    "container_arch": "amd64",
+    "run_as_root": true
+  },
+  "custom_components": {
+    "nz_contact_energy": {
+      "documentation": "https://github.com/Leftaf/hacs-contact-energy/",
+      "version": "1.1.0",
+      "requirements": []
+    },
+    "tuya_local": {
+      "documentation": "https://github.com/make-all/tuya-local",
+      "version": "2026.10.0",
+      "requirements": [
+        "tinytuya==1.20.0",
+        "tuya-device-sharing-sdk~=0.2.4"
+      ]
+    }
+  },
+  "integration_manifest": {
+    "domain": "tuya",
+    "name": "Tuya",
+    "categories": [
+      "hubs_protocols.smart_home_hubs"
+    ],
+    "codeowners": [
+      "Tuya",
+      "zlinoliver"
+    ],
+    "config_flow": true,
+    "connectivity": [
+      "cloud"
+    ],
+    "dependencies": [
+      "ffmpeg"
+    ],
+    "dhcp": [
+      {
+        "macaddress": "105A17*"
+      },
+      {
+        "macaddress": "10D561*"
+      },
+      {
+        "macaddress": "1869D8*"
+      },
+      {
+        "macaddress": "381F8D*"
+      },
+      {
+        "macaddress": "508A06*"
+      },
+      {
+        "macaddress": "68572D*"
+      },
+      {
+        "macaddress": "708976*"
+      },
+      {
+        "macaddress": "7CF666*"
+      },
+      {
+        "macaddress": "84E342*"
+      },
+      {
+        "macaddress": "D4A651*"
+      },
+      {
+        "macaddress": "D81F12*"
+      }
+    ],
+    "documentation": "https://www.home-assistant.io/integrations/tuya",
+    "integration_type": "hub",
+    "iot_class": "cloud_push",
+    "loggers": [
+      "tuya_sharing"
+    ],
+    "requirements": [
+      "tuya-device-handlers==0.0.34",
+      "tuya-device-sharing-sdk==0.2.15"
+    ],
+    "is_built_in": true,
+    "overwrites_built_in": false
+  },
+  "setup_times": {
+    "null": {
+      "setup": 0.00025352200100314803
+    },
+    "01M6SPY9E1HSRF35EZGXE2PWHE": {
+      "wait_import_platforms": -0.10096132499893429,
+      "config_entry_setup": 14.027704387000995
+    }
+  },
+  "data": {
+    "endpoint": "https://apigw.tuyaus.com",
+    "terminal_id": "1794011766443PHdYv9",
+    "mqtt_connected": true,
+    "disabled_by": null,
+    "disabled_polling": false,
+    "id": "ebb135c4584e7e50e2gfwv",
+    "name": "59 Ajax Unit I",
+    "category": "tdq",
+    "product_id": "p40iaaytjduh0wzw",
+    "product_name": "2CH Wi-Fi Smart Energy Monitor",
+    "online": true,
+    "sub": false,
+    "time_zone": "+12:00",
+    "active_time": "2026-07-13T01:04:02+00:00",
+    "create_time": "2026-07-13T01:04:02+00:00",
+    "update_time": "2026-07-13T01:04:02+00:00",
+    "function": {},
+    "local_strategy": {
+      "17": {
+        "value_convert": "default",
+        "status_code": "add_ele2",
+        "config_item": {
+          "statusFormat": "{\"add_ele2\": \"$\"}",
+          "valueDesc": "{\"unit\": \"kwh\", \"min\": 0, \"max\": 50000, \"scale\": 3, \"step\": 100}",
+          "valueType": "Integer",
+          "enumMappingMap": {},
+          "pid": "p40iaaytjduh0wzw"
+        }
+      },
+      "18": {
+        "value_convert": "default",
+        "status_code": "cur_current2",
+        "config_item": {
+          "statusFormat": "{\"cur_current2\": \"$\"}",
+          "valueDesc": "{\"unit\": \"mA\", \"min\": 0, \"max\": 200000, \"scale\": 0, \"step\": 1}",
+          "valueType": "Integer",
+          "enumMappingMap": {},
+          "pid": "p40iaaytjduh0wzw"
+        }
+      },
+      "19": {
+        "value_convert": "default",
+        "status_code": "cur_power2",
+        "config_item": {
+          "statusFormat": "{\"cur_power2\": \"$\"}",
+          "valueDesc": "{\"unit\": \"W\", \"min\": 0, \"max\": 500000, \"scale\": 1, \"step\": 1}",
+          "valueType": "Integer",
+          "enumMappingMap": {},
+          "pid": "p40iaaytjduh0wzw"
+        }
+      },
+      "20": {
+        "value_convert": "default",
+        "status_code": "cur_voltage2",
+        "config_item": {
+          "statusFormat": "{\"cur_voltage2\": \"$\"}",
+          "valueDesc": "{\"unit\": \"V\", \"min\": 0, \"max\": 5000, \"scale\": 1, \"step\": 1}",
+          "valueType": "Integer",
+          "enumMappingMap": {},
+          "pid": "p40iaaytjduh0wzw"
+        }
+      },
+      "21": {
+        "value_convert": "default",
+        "status_code": "test_bit",
+        "config_item": {
+          "statusFormat": "{\"test_bit\":\"$\"}",
+          "valueDesc": "{\"min\":0,\"max\":5,\"scale\":0,\"step\":1}",
+          "valueType": "Integer",
+          "enumMappingMap": {},
+          "pid": "p40iaaytjduh0wzw"
+        }
+      },
+      "22": {
+        "value_convert": "default",
+        "status_code": "voltage_coe",
+        "config_item": {
+          "statusFormat": "{\"voltage_coe\":\"$\"}",
+          "valueDesc": "{\"min\":0,\"max\":1000000,\"scale\":0,\"step\":1}",
+          "valueType": "Integer",
+          "enumMappingMap": {},
+          "pid": "p40iaaytjduh0wzw"
+        }
+      },
+      "23": {
+        "value_convert": "default",
+        "status_code": "electric_coe",
+        "config_item": {
+          "statusFormat": "{\"electric_coe\":\"$\"}",
+          "valueDesc": "{\"min\":0,\"max\":1000000,\"scale\":0,\"step\":1}",
+          "valueType": "Integer",
+          "enumMappingMap": {},
+          "pid": "p40iaaytjduh0wzw"
+        }
+      },
+      "24": {
+        "value_convert": "default",
+        "status_code": "power_coe",
+        "config_item": {
+          "statusFormat": "{\"power_coe\":\"$\"}",
+          "valueDesc": "{\"min\":0,\"max\":1000000,\"scale\":0,\"step\":1}",
+          "valueType": "Integer",
+          "enumMappingMap": {},
+          "pid": "p40iaaytjduh0wzw"
+        }
+      },
+      "25": {
+        "value_convert": "default",
+        "status_code": "electricity_coe",
+        "config_item": {
+          "statusFormat": "{\"electricity_coe\":\"$\"}",
+          "valueDesc": "{\"min\":0,\"max\":1000000,\"scale\":0,\"step\":1}",
+          "valueType": "Integer",
+          "enumMappingMap": {},
+          "pid": "p40iaaytjduh0wzw"
+        }
+      },
+      "26": {
+        "value_convert": "default",
+        "status_code": "fault",
+        "config_item": {
+          "statusFormat": "{\"fault\":\"$\"}",
+          "valueDesc": "{\"label\":[\"ov_cr\",\"ov_vol\",\"ov_pwr\",\"ls_cr\",\"ls_vol\",\"ls_pow\"]}",
+          "valueType": "Bitmap",
+          "enumMappingMap": {},
+          "pid": "p40iaaytjduh0wzw"
+        }
+      }
+    },
+    "status_range": {
+      "add_ele": {
+        "type": "Integer",
+        "value": "{\"unit\":\"kwh\",\"min\":0,\"max\":50000,\"scale\":3,\"step\":100}",
+        "report_type": "sum"
+      },
+      "cur_current": {
+        "type": "Integer",
+        "value": "{\"unit\":\"mA\",\"min\":0,\"max\":200000,\"scale\":0,\"step\":1}",
+        "report_type": null
+      },
+      "cur_power": {
+        "type": "Integer",
+        "value": "{\"unit\":\"W\",\"min\":0,\"max\":500000,\"scale\":1,\"step\":1}",
+        "report_type": null
+      },
+      "cur_voltage": {
+        "type": "Integer",
+        "value": "{\"unit\":\"V\",\"min\":0,\"max\":5000,\"scale\":1,\"step\":1}",
+        "report_type": null
+      },
+      "test_bit": {
+        "type": "Integer",
+        "value": "{\"min\":0,\"max\":5,\"scale\":0,\"step\":1}",
+        "report_type": null
+      },
+      "voltage_coe": {
+        "type": "Integer",
+        "value": "{\"min\":0,\"max\":1000000,\"scale\":0,\"step\":1}",
+        "report_type": null
+      },
+      "electric_coe": {
+        "type": "Integer",
+        "value": "{\"min\":0,\"max\":1000000,\"scale\":0,\"step\":1}",
+        "report_type": null
+      },
+      "power_coe": {
+        "type": "Integer",
+        "value": "{\"min\":0,\"max\":1000000,\"scale\":0,\"step\":1}",
+        "report_type": null
+      },
+      "electricity_coe": {
+        "type": "Integer",
+        "value": "{\"min\":0,\"max\":1000000,\"scale\":0,\"step\":1}",
+        "report_type": null
+      },
+      "fault": {
+        "type": "Bitmap",
+        "value": "{\"label\":[\"ov_cr\",\"ov_vol\",\"ov_pwr\",\"ls_cr\",\"ls_vol\",\"ls_pow\"]}",
+        "report_type": null
+      },
+      "cur_current2": {
+        "type": "Integer",
+        "value": "{\"unit\": \"mA\", \"min\": 0, \"max\": 200000, \"scale\": 0, \"step\": 1}",
+        "report_type": null
+      },
+      "cur_power2": {
+        "type": "Integer",
+        "value": "{\"unit\": \"W\", \"min\": 0, \"max\": 500000, \"scale\": 1, \"step\": 1}",
+        "report_type": null
+      },
+      "cur_voltage2": {
+        "type": "Integer",
+        "value": "{\"unit\": \"V\", \"min\": 0, \"max\": 5000, \"scale\": 1, \"step\": 1}",
+        "report_type": null
+      },
+      "add_ele2": {
+        "type": "Integer",
+        "value": "{\"unit\": \"kwh\", \"min\": 0, \"max\": 50000, \"scale\": 3, \"step\": 100}",
+        "report_type": null
+      }
+    },
+    "status": {
+      "add_ele": 1,
+      "cur_current": 0,
+      "cur_power": 0,
+      "cur_voltage": 2339,
+      "test_bit": 2,
+      "voltage_coe": 0,
+      "electric_coe": 0,
+      "power_coe": 0,
+      "electricity_coe": 0,
+      "fault": 0
+    },
+    "set_up": true,
+    "support_local": true,
+    "quirk": "/config/tuya_quirks/tdq_p40iaaytjduh0wzw.py:6",
+    "warnings": null,
+    "original_category": "tdq",
+    "original_function": {},
+    "original_local_strategy": {
+      "17": {
+        "value_convert": "default",
+        "status_code": "add_ele",
+        "config_item": {
+          "statusFormat": "{\"add_ele\":\"$\"}",
+          "valueDesc": "{\"unit\":\"kwh\",\"min\":0,\"max\":50000,\"scale\":3,\"step\":100}",
+          "valueType": "Integer",
+          "enumMappingMap": {},
+          "pid": "p40iaaytjduh0wzw"
+        }
+      },
+      "18": {
+        "value_convert": "default",
+        "status_code": "cur_current",
+        "config_item": {
+          "statusFormat": "{\"cur_current\":\"$\"}",
+          "valueDesc": "{\"unit\":\"mA\",\"min\":0,\"max\":200000,\"scale\":0,\"step\":1}",
+          "valueType": "Integer",
+          "enumMappingMap": {},
+          "pid": "p40iaaytjduh0wzw"
+        }
+      },
+      "19": {
+        "value_convert": "default",
+        "status_code": "cur_power",
+        "config_item": {
+          "statusFormat": "{\"cur_power\":\"$\"}",
+          "valueDesc": "{\"unit\":\"W\",\"min\":0,\"max\":500000,\"scale\":1,\"step\":1}",
+          "valueType": "Integer",
+          "enumMappingMap": {},
+          "pid": "p40iaaytjduh0wzw"
+        }
+      },
+      "20": {
+        "value_convert": "default",
+        "status_code": "cur_voltage",
+        "config_item": {
+          "statusFormat": "{\"cur_voltage\":\"$\"}",
+          "valueDesc": "{\"unit\":\"V\",\"min\":0,\"max\":5000,\"scale\":1,\"step\":1}",
+          "valueType": "Integer",
+          "enumMappingMap": {},
+          "pid": "p40iaaytjduh0wzw"
+        }
+      },
+      "21": {
+        "value_convert": "default",
+        "status_code": "test_bit",
+        "config_item": {
+          "statusFormat": "{\"test_bit\":\"$\"}",
+          "valueDesc": "{\"min\":0,\"max\":5,\"scale\":0,\"step\":1}",
+          "valueType": "Integer",
+          "enumMappingMap": {},
+          "pid": "p40iaaytjduh0wzw"
+        }
+      },
+      "22": {
+        "value_convert": "default",
+        "status_code": "voltage_coe",
+        "config_item": {
+          "statusFormat": "{\"voltage_coe\":\"$\"}",
+          "valueDesc": "{\"min\":0,\"max\":1000000,\"scale\":0,\"step\":1}",
+          "valueType": "Integer",
+          "enumMappingMap": {},
+          "pid": "p40iaaytjduh0wzw"
+        }
+      },
+      "23": {
+        "value_convert": "default",
+        "status_code": "electric_coe",
+        "config_item": {
+          "statusFormat": "{\"electric_coe\":\"$\"}",
+          "valueDesc": "{\"min\":0,\"max\":1000000,\"scale\":0,\"step\":1}",
+          "valueType": "Integer",
+          "enumMappingMap": {},
+          "pid": "p40iaaytjduh0wzw"
+        }
+      },
+      "24": {
+        "value_convert": "default",
+        "status_code": "power_coe",
+        "config_item": {
+          "statusFormat": "{\"power_coe\":\"$\"}",
+          "valueDesc": "{\"min\":0,\"max\":1000000,\"scale\":0,\"step\":1}",
+          "valueType": "Integer",
+          "enumMappingMap": {},
+          "pid": "p40iaaytjduh0wzw"
+        }
+      },
+      "25": {
+        "value_convert": "default",
+        "status_code": "electricity_coe",
+        "config_item": {
+          "statusFormat": "{\"electricity_coe\":\"$\"}",
+          "valueDesc": "{\"min\":0,\"max\":1000000,\"scale\":0,\"step\":1}",
+          "valueType": "Integer",
+          "enumMappingMap": {},
+          "pid": "p40iaaytjduh0wzw"
+        }
+      },
+      "26": {
+        "value_convert": "default",
+        "status_code": "fault",
+        "config_item": {
+          "statusFormat": "{\"fault\":\"$\"}",
+          "valueDesc": "{\"label\":[\"ov_cr\",\"ov_vol\",\"ov_pwr\",\"ls_cr\",\"ls_vol\",\"ls_pow\"]}",
+          "valueType": "Bitmap",
+          "enumMappingMap": {},
+          "pid": "p40iaaytjduh0wzw"
+        }
+      }
+    },
+    "original_status_range": {
+      "add_ele": {
+        "type": "Integer",
+        "value": "{\"unit\":\"kwh\",\"min\":0,\"max\":50000,\"scale\":3,\"step\":100}",
+        "report_type": "sum"
+      },
+      "cur_current": {
+        "type": "Integer",
+        "value": "{\"unit\":\"mA\",\"min\":0,\"max\":200000,\"scale\":0,\"step\":1}",
+        "report_type": null
+      },
+      "cur_power": {
+        "type": "Integer",
+        "value": "{\"unit\":\"W\",\"min\":0,\"max\":500000,\"scale\":1,\"step\":1}",
+        "report_type": null
+      },
+      "cur_voltage": {
+        "type": "Integer",
+        "value": "{\"unit\":\"V\",\"min\":0,\"max\":5000,\"scale\":1,\"step\":1}",
+        "report_type": null
+      },
+      "test_bit": {
+        "type": "Integer",
+        "value": "{\"min\":0,\"max\":5,\"scale\":0,\"step\":1}",
+        "report_type": null
+      },
+      "voltage_coe": {
+        "type": "Integer",
+        "value": "{\"min\":0,\"max\":1000000,\"scale\":0,\"step\":1}",
+        "report_type": null
+      },
+      "electric_coe": {
+        "type": "Integer",
+        "value": "{\"min\":0,\"max\":1000000,\"scale\":0,\"step\":1}",
+        "report_type": null
+      },
+      "power_coe": {
+        "type": "Integer",
+        "value": "{\"min\":0,\"max\":1000000,\"scale\":0,\"step\":1}",
+        "report_type": null
+      },
+      "electricity_coe": {
+        "type": "Integer",
+        "value": "{\"min\":0,\"max\":1000000,\"scale\":0,\"step\":1}",
+        "report_type": null
+      },
+      "fault": {
+        "type": "Bitmap",
+        "value": "{\"label\":[\"ov_cr\",\"ov_vol\",\"ov_pwr\",\"ls_cr\",\"ls_vol\",\"ls_pow\"]}",
+        "report_type": null
+      }
+    },
+    "home_assistant": {
+      "name": "59 Ajax Unit I",
+      "name_by_user": null,
+      "disabled": false,
+      "disabled_by": null,
+      "entities": [
+        {
+          "disabled": false,
+          "disabled_by": null,
+          "entity_category": null,
+          "device_class": null,
+          "original_device_class": "current",
+          "icon": null,
+          "original_icon": null,
+          "unit_of_measurement": "A",
+          "state": {
+            "entity_id": "sensor.unit_59_ajax_unit_i_current",
+            "state": "0.0",
+            "attributes": {
+              "state_class": "measurement",
+              "unit_of_measurement": "A",
+              "device_class": "current",
+              "friendly_name": "59 Ajax Unit I Current"
+            },
+            "last_changed": "2026-11-13T21:25:58.045827+00:00",
+            "last_reported": "2026-11-13T21:25:58.045827+00:00",
+            "last_updated": "2026-11-13T21:25:58.045827+00:00"
+          }
+        },
+        {
+          "disabled": false,
+          "disabled_by": null,
+          "entity_category": null,
+          "device_class": null,
+          "original_device_class": "power",
+          "icon": null,
+          "original_icon": null,
+          "unit_of_measurement": "W",
+          "state": {
+            "entity_id": "sensor.unit_59_ajax_unit_i_power",
+            "state": "0.0",
+            "attributes": {
+              "state_class": "measurement",
+              "unit_of_measurement": "W",
+              "device_class": "power",
+              "friendly_name": "59 Ajax Unit I Power"
+            },
+            "last_changed": "2026-11-13T21:25:58.046017+00:00",
+            "last_reported": "2026-11-13T21:25:58.046017+00:00",
+            "last_updated": "2026-11-13T21:25:58.046017+00:00"
+          }
+        },
+        {
+          "disabled": false,
+          "disabled_by": null,
+          "entity_category": null,
+          "device_class": null,
+          "original_device_class": "voltage",
+          "icon": null,
+          "original_icon": null,
+          "unit_of_measurement": "V",
+          "state": {
+            "entity_id": "sensor.unit_59_ajax_unit_i_voltage_2",
+            "state": "233.9",
+            "attributes": {
+              "state_class": "measurement",
+              "unit_of_measurement": "V",
+              "device_class": "voltage",
+              "friendly_name": "59 Ajax Unit I Voltage"
+            },
+            "last_changed": "2026-11-13T21:25:58.046175+00:00",
+            "last_reported": "2026-11-13T21:25:58.046175+00:00",
+            "last_updated": "2026-11-13T21:25:58.046175+00:00"
+          }
+        },
+        {
+          "disabled": false,
+          "disabled_by": null,
+          "entity_category": null,
+          "device_class": null,
+          "original_device_class": "energy",
+          "icon": null,
+          "original_icon": null,
+          "unit_of_measurement": "kWh",
+          "state": {
+            "entity_id": "sensor.unit_59_ajax_unit_i_total_energy",
+            "state": "0",
+            "attributes": {
+              "state_class": "total_increasing",
+              "unit_of_measurement": "kWh",
+              "device_class": "energy",
+              "friendly_name": "59 Ajax Unit I Total energy"
+            },
+            "last_changed": "2026-11-13T21:25:58.046319+00:00",
+            "last_reported": "2026-11-13T21:25:58.046319+00:00",
+            "last_updated": "2026-11-13T21:25:58.046319+00:00"
+          }
+        }
+      ]
+    }
+  },
+  "issues": []
+}
