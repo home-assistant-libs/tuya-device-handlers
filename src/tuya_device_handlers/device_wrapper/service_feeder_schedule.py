@@ -28,6 +28,9 @@ class FeederSchedule(TypedDict):
 class DefaultFeederScheduleWrapper(DPCodeRawWrapper[list[FeederSchedule]]):
     """Wrapper for a schedule received in a base64 DPCode."""
 
+    # (internal bit, device bit): Monday is bit 0 on the device.
+    _DAY_MAPPING: list[tuple[int, int]] = [(i, i) for i in range(7)]
+
     def __init__(
         self, dpcode: str, type_information: RawTypeInformation
     ) -> None:
@@ -40,10 +43,9 @@ class DefaultFeederScheduleWrapper(DPCodeRawWrapper[list[FeederSchedule]]):
             ("portion", 2),
             ("enabled", 2),
         ]
-        day_mapping = [(i, i) for i in range(7)]
 
         self._template_encoder = _TemplateEncoder(
-            template, _DayTransformer(day_mapping)
+            template, _DayTransformer(self._DAY_MAPPING)
         )
 
     def read_device_status(
@@ -67,6 +69,12 @@ class DefaultFeederScheduleWrapper(DPCodeRawWrapper[list[FeederSchedule]]):
             int(hex_str[i : i + 2], 16) for i in range(0, len(hex_str), 2)
         )
         return base64.b64encode(payload_bytes).decode("utf-8")
+
+
+class ReversedDaysFeederScheduleWrapper(DefaultFeederScheduleWrapper):
+    """Feeder schedule whose day bitmask starts on Sunday (bit 0)."""
+
+    _DAY_MAPPING = [(i, 6 - i) for i in range(7)]
 
 
 def get_feeder_schedule_wrapper(
