@@ -1,0 +1,293 @@
+{
+  "endpoint": "https://apigw.tuyaus.com",
+  "mqtt_connected": true,
+  "disabled_by": null,
+  "disabled_polling": false,
+  "name": "Double Digital Meter",
+  "category": "cz",
+  "product_id": "79a7z01v3n35kytb",
+  "product_name": "Double Digital Meter",
+  "online": true,
+  "sub": false,
+  "time_zone": "-05:00",
+  "active_time": "2023-12-30T22:42:59+00:00",
+  "create_time": "2023-12-30T22:42:59+00:00",
+  "update_time": "2023-12-30T22:42:59+00:00",
+  "function": {
+    "warn_power1": {
+      "type": "Integer",
+      "value": "{\"unit\": \"W\", \"min\": 200, \"max\": 50000, \"scale\": 0, \"step\": 100}"
+    },
+    "warn_power2": {
+      "type": "Integer",
+      "value": "{\"unit\": \"W\", \"min\": 200, \"max\": 50000, \"scale\": 0, \"step\": 100}"
+    }
+  },
+  "local_strategy": {
+    "103": {
+      "value_convert": "default",
+      "status_code": "device_state1",
+      "config_item": {
+        "statusFormat": "{\"device_state1\": \"$\"}",
+        "valueDesc": "{\"range\": [\"close\", \"monitor\", \"working\", \"warning\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "79a7z01v3n35kytb"
+      }
+    },
+    "113": {
+      "value_convert": "default",
+      "status_code": "device_state2",
+      "config_item": {
+        "statusFormat": "{\"device_state2\": \"$\"}",
+        "valueDesc": "{\"range\": [\"idle\", \"monitor\", \"working\", \"warning\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "79a7z01v3n35kytb"
+      }
+    },
+    "105": {
+      "value_convert": "default",
+      "status_code": "cur_power1",
+      "config_item": {
+        "statusFormat": "{\"cur_power1\": \"$\"}",
+        "valueDesc": "{\"unit\": \"W\", \"min\": 0, \"max\": 2000000, \"scale\": 1, \"step\": 1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "79a7z01v3n35kytb"
+      }
+    },
+    "106": {
+      "value_convert": "default",
+      "status_code": "cur_current1",
+      "config_item": {
+        "statusFormat": "{\"cur_current1\": \"$\"}",
+        "valueDesc": "{\"unit\": \"A\", \"min\": 0, \"max\": 800000, \"scale\": 3, \"step\": 1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "79a7z01v3n35kytb"
+      }
+    },
+    "107": {
+      "value_convert": "default",
+      "status_code": "cur_voltage1",
+      "config_item": {
+        "statusFormat": "{\"cur_voltage1\": \"$\"}",
+        "valueDesc": "{\"unit\": \"V\", \"min\": 0, \"max\": 5000, \"scale\": 1, \"step\": 1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "79a7z01v3n35kytb"
+      }
+    },
+    "108": {
+      "value_convert": "default",
+      "status_code": "total_energy1",
+      "config_item": {
+        "statusFormat": "{\"total_energy1\": \"$\"}",
+        "valueDesc": "{\"unit\": \"kWh\", \"min\": 0, \"max\": 2147483647, \"scale\": 3, \"step\": 1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "79a7z01v3n35kytb"
+      }
+    },
+    "109": {
+      "value_convert": "default",
+      "status_code": "today_acc_energy1",
+      "config_item": {
+        "statusFormat": "{\"today_acc_energy1\": \"$\"}",
+        "valueDesc": "{\"unit\": \"kWh\", \"min\": 0, \"max\": 2147483647, \"scale\": 3, \"step\": 1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "79a7z01v3n35kytb"
+      }
+    },
+    "111": {
+      "value_convert": "default",
+      "status_code": "warn_power1",
+      "config_item": {
+        "statusFormat": "{\"warn_power1\": \"$\"}",
+        "valueDesc": "{\"unit\": \"W\", \"min\": 200, \"max\": 50000, \"scale\": 0, \"step\": 100}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "79a7z01v3n35kytb"
+      }
+    },
+    "115": {
+      "value_convert": "default",
+      "status_code": "cur_power2",
+      "config_item": {
+        "statusFormat": "{\"cur_power2\": \"$\"}",
+        "valueDesc": "{\"unit\": \"W\", \"min\": 0, \"max\": 2000000, \"scale\": 1, \"step\": 1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "79a7z01v3n35kytb"
+      }
+    },
+    "116": {
+      "value_convert": "default",
+      "status_code": "cur_current2",
+      "config_item": {
+        "statusFormat": "{\"cur_current2\": \"$\"}",
+        "valueDesc": "{\"unit\": \"A\", \"min\": 0, \"max\": 800000, \"scale\": 3, \"step\": 1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "79a7z01v3n35kytb"
+      }
+    },
+    "117": {
+      "value_convert": "default",
+      "status_code": "cur_voltage2",
+      "config_item": {
+        "statusFormat": "{\"cur_voltage2\": \"$\"}",
+        "valueDesc": "{\"unit\": \"V\", \"min\": 0, \"max\": 5000, \"scale\": 1, \"step\": 1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "79a7z01v3n35kytb"
+      }
+    },
+    "118": {
+      "value_convert": "default",
+      "status_code": "total_energy2",
+      "config_item": {
+        "statusFormat": "{\"total_energy2\": \"$\"}",
+        "valueDesc": "{\"unit\": \"kWh\", \"min\": 0, \"max\": 2147483647, \"scale\": 3, \"step\": 1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "79a7z01v3n35kytb"
+      }
+    },
+    "119": {
+      "value_convert": "default",
+      "status_code": "today_acc_energy2",
+      "config_item": {
+        "statusFormat": "{\"today_acc_energy2\": \"$\"}",
+        "valueDesc": "{\"unit\": \"kWh\", \"min\": 0, \"max\": 2147483647, \"scale\": 3, \"step\": 1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "79a7z01v3n35kytb"
+      }
+    },
+    "121": {
+      "value_convert": "default",
+      "status_code": "warn_power2",
+      "config_item": {
+        "statusFormat": "{\"warn_power2\": \"$\"}",
+        "valueDesc": "{\"unit\": \"W\", \"min\": 200, \"max\": 50000, \"scale\": 0, \"step\": 100}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "79a7z01v3n35kytb"
+      }
+    },
+    "123": {
+      "value_convert": "default",
+      "status_code": "all_energy",
+      "config_item": {
+        "statusFormat": "{\"all_energy\": \"$\"}",
+        "valueDesc": "{\"unit\": \"kWh\", \"min\": 0, \"max\": 2147483647, \"scale\": 3, \"step\": 1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "79a7z01v3n35kytb"
+      }
+    }
+  },
+  "status_range": {
+    "device_state1": {
+      "type": "Enum",
+      "value": "{\"range\": [\"close\", \"monitor\", \"working\", \"warning\"]}",
+      "report_type": null
+    },
+    "device_state2": {
+      "type": "Enum",
+      "value": "{\"range\": [\"idle\", \"monitor\", \"working\", \"warning\"]}",
+      "report_type": null
+    },
+    "cur_power1": {
+      "type": "Integer",
+      "value": "{\"unit\": \"W\", \"min\": 0, \"max\": 2000000, \"scale\": 1, \"step\": 1}",
+      "report_type": null
+    },
+    "cur_current1": {
+      "type": "Integer",
+      "value": "{\"unit\": \"A\", \"min\": 0, \"max\": 800000, \"scale\": 3, \"step\": 1}",
+      "report_type": null
+    },
+    "cur_voltage1": {
+      "type": "Integer",
+      "value": "{\"unit\": \"V\", \"min\": 0, \"max\": 5000, \"scale\": 1, \"step\": 1}",
+      "report_type": null
+    },
+    "total_energy1": {
+      "type": "Integer",
+      "value": "{\"unit\": \"kWh\", \"min\": 0, \"max\": 2147483647, \"scale\": 3, \"step\": 1}",
+      "report_type": null
+    },
+    "today_acc_energy1": {
+      "type": "Integer",
+      "value": "{\"unit\": \"kWh\", \"min\": 0, \"max\": 2147483647, \"scale\": 3, \"step\": 1}",
+      "report_type": null
+    },
+    "warn_power1": {
+      "type": "Integer",
+      "value": "{\"unit\": \"W\", \"min\": 200, \"max\": 50000, \"scale\": 0, \"step\": 100}",
+      "report_type": null
+    },
+    "cur_power2": {
+      "type": "Integer",
+      "value": "{\"unit\": \"W\", \"min\": 0, \"max\": 2000000, \"scale\": 1, \"step\": 1}",
+      "report_type": null
+    },
+    "cur_current2": {
+      "type": "Integer",
+      "value": "{\"unit\": \"A\", \"min\": 0, \"max\": 800000, \"scale\": 3, \"step\": 1}",
+      "report_type": null
+    },
+    "cur_voltage2": {
+      "type": "Integer",
+      "value": "{\"unit\": \"V\", \"min\": 0, \"max\": 5000, \"scale\": 1, \"step\": 1}",
+      "report_type": null
+    },
+    "total_energy2": {
+      "type": "Integer",
+      "value": "{\"unit\": \"kWh\", \"min\": 0, \"max\": 2147483647, \"scale\": 3, \"step\": 1}",
+      "report_type": null
+    },
+    "today_acc_energy2": {
+      "type": "Integer",
+      "value": "{\"unit\": \"kWh\", \"min\": 0, \"max\": 2147483647, \"scale\": 3, \"step\": 1}",
+      "report_type": null
+    },
+    "warn_power2": {
+      "type": "Integer",
+      "value": "{\"unit\": \"W\", \"min\": 200, \"max\": 50000, \"scale\": 0, \"step\": 100}",
+      "report_type": null
+    },
+    "all_energy": {
+      "type": "Integer",
+      "value": "{\"unit\": \"kWh\", \"min\": 0, \"max\": 2147483647, \"scale\": 3, \"step\": 1}",
+      "report_type": null
+    }
+  },
+  "status": {
+    "device_state2": "working",
+    "cur_power2": 2137,
+    "cur_current2": 1775,
+    "cur_voltage2": 1220,
+    "total_energy2": 14567,
+    "today_acc_energy2": 1570,
+    "all_energy": 27473,
+    "device_state1": "working",
+    "cur_power1": 2138,
+    "cur_current1": 1779,
+    "cur_voltage1": 1220,
+    "total_energy1": 12906,
+    "today_acc_energy1": 1382
+  },
+  "set_up": true,
+  "support_local": true,
+  "quirk": "/config/tuya_quirks/cz_79a7z01v3n35kytb.py:10",
+  "warnings": null,
+  "original_category": "cz",
+  "original_function": {},
+  "original_local_strategy": {},
+  "original_status_range": {}
+}
