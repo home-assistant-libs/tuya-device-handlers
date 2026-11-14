@@ -35,6 +35,8 @@ The library is shipped to end users via Home Assistant — you do not install it
 
 In Home Assistant: **Settings → Devices & services → Tuya → your device → Download diagnostics**. The JSON contains the `product_id`, the cloud-reported `function` / `status_range` maps, and the current `status` values. Use these to decide what needs patching.
 
+If `function`, `status_range` and `status` are all empty, the cloud told Home Assistant nothing about the device and it gets no entities. See [Finding the datapoints](docs/unsupported-category-or-dpcode.md#finding-the-datapoints) to get them from the device's thing model instead.
+
 ### 2. Create a quirk file
 
 Drop a Python file into your Home Assistant config folder at `<config>/tuya_quirks/<category>_<product_id_lowercased>.py`. The `<category>` prefix follows Tuya's [official category codes][tuya-categories] (e.g. `cz` for plug/socket, `wk` for thermostat, `cl` for curtain).
@@ -75,8 +77,30 @@ Each quirk file should contain exactly one `DeviceQuirk()...register(...)` chain
 ### 3. Test it inside Home Assistant
 
 1. Restart the Tuya integration (**Settings → Devices & services → Tuya → ⋮ → Reload**). Quirks under `<config>/tuya_quirks/` are reloaded each time, so you don't need to restart Home Assistant itself.
-2. Watch the logs — you should see `Loading custom quirk module …` followed by `Loaded custom quirks. Please contribute them to https://github.com/home-assistant-libs/tuya-device-handlers`. If the import fails, the traceback is logged.
-3. Verify the device's entities reflect your changes (download diagnostics again to confirm the patched function/status_range maps).
+2. Watch the logs — you should see the warning `Loaded custom quirks. Please contribute them to https://github.com/home-assistant-libs/tuya-device-handlers`. If the import fails, the traceback is logged. The per-file `Loading custom quirk module …` lines are only logged with debug logging on for `tuya_device_handlers`.
+3. Verify the device's entities reflect your changes. Download diagnostics again: `quirk` shows the quirk file that applied, and `function` / `status_range` show the patched maps.
+4. To see reports and commands as they happen, turn on debug logging by calling the `logger.set_level` action from **Developer tools → Actions**. (**Enable debug logging** on the Tuya integration page covers the integration and `tuya_sharing`, but not this library, so it won't show quirk loading.)
+
+   ```yaml
+   action: logger.set_level
+   data:
+     tuya_device_handlers: debug
+     tuya_sharing: debug
+     homeassistant.components.tuya: debug
+   ```
+
+   Reload the Tuya integration again, so that the quirk loading is logged too. Then use the device from its app or its buttons, and try each entity from Home Assistant. Useful lines to look for (the device ID is the `id` field in your diagnostics):
+
+   | Log line                                                             | Meaning                                                                                                                                                                               |
+   | -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+   | `Loading custom quirk module …`                                      | Your quirk file was imported (an import error is logged here).                                                                                                                        |
+   | `mq _on_device_report unknown dpId: …`                               | A report arrived for a dpid with no mapping: see [Finding the datapoints](docs/unsupported-category-or-dpcode.md#finding-the-datapoints).                                             |
+   | `mq _on_device_report after strategy convert code=…,value=…`         | A report arrived and your quirk mapped its dpid to a code.                                                                                                                            |
+   | `Received update for device <id> … {'<code>': <value>}`              | Home Assistant applied the report to the device.                                                                                                                                      |
+   | `Sending commands for device <id>: [{'code': …, 'value': …}]`        | Home Assistant sent a command.                                                                                                                                                        |
+   | `response before decrypt ret = {'code': '2008', … 'success': False}` | The Tuya cloud rejected that command: a quirk can't fix that, see [Commands rejected by the cloud](docs/unsupported-category-or-dpcode.md#commands-rejected-by-the-cloud-error-2008). |
+
+   Set the log levels back afterwards (`warning`, or whatever your `configuration.yaml` sets), or restart Home Assistant.
 
 ## Contributing your quirk
 
@@ -120,6 +144,12 @@ _Tuya quirks library_ is free and open source software.
 
 If you encounter any problems,
 please [file an issue] along with a detailed description.
+
+Device quirks are not written on request: if your device needs one, write it
+yourself following [Writing a quirk](#writing-a-quirk), then
+[contribute it](#contributing-your-quirk). Issues and pull requests without
+activity are marked as stale and then closed automatically; comment to keep
+them open.
 
 [ha-tuya]: https://www.home-assistant.io/integrations/tuya/
 [tuya-categories]: https://developer.tuya.com/en/docs/iot/standarddescription?id=K9i5ql6waswzq

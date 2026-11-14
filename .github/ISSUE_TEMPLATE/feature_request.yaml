@@ -1,15 +1,23 @@
 ---
 name: Feature request
 description: >-
-  Request a new device quirk or suggest an improvement to an
-  existing one.
+  Suggest an improvement to the library or to an existing device
+  quirk.
 body:
   - type: markdown
     attributes:
       value: |
         Thanks for suggesting an improvement!
 
-        If you're requesting a quirk for a specific device, please include
+        **Device quirks are not written on request.** As the owner of the
+        device, you are the one best placed to fix it: write a quirk, test
+        it live from your `<config>/tuya_quirks/` folder, and open a pull
+        request. See
+        [Writing a quirk](https://github.com/home-assistant-libs/tuya-device-handlers#writing-a-quirk)
+        and the [recipes](https://github.com/home-assistant-libs/tuya-device-handlers/tree/main/docs).
+        Issues are closed automatically after a period of inactivity.
+
+        If your suggestion concerns a specific device, please include
         information about the device's data points. If you are using
         Home Assistant, the easiest way to provide this is by downloading
         the **diagnostics data** for the device.

@@ -29,18 +29,18 @@ Changelog = "https://github.com/home-assistant-libs/tuya-device-handlers/release
 dev = [
     "codespell==2.4.3",
     "covdefaults==2.3.0",
-    "coverage[toml]==7.17.2",
+    "coverage[toml]==7.17.3",
     # Imported by tuya-device-sharing-sdk but not declared as a dependency
     "cryptography==50.0.2",
     "pre-commit-hooks==6.0.0",
     "prek==0.5.10",
     "pylint==4.1.3",
     "pytest==9.2.0",
-    "pytest-asyncio==1.4.1.post1",
+    "pytest-asyncio==1.5.0",
     "pytest-cov==7.1.0",
-    "ruff==0.17.4",
-    "syrupy==6.1.1",
-    "ty==0.0.99",
+    "ruff==0.17.5",
+    "syrupy==7.0.0",
+    "ty==0.0.104",
     "yamllint==1.38.0",
     "zizmor==1.32.0",
 ]
