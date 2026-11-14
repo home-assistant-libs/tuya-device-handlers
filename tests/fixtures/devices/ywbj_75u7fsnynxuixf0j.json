@@ -1,0 +1,437 @@
+{
+  "home_assistant": {
+    "arch": "x86_64",
+    "dev": false,
+    "docker": true,
+    "hassio": false,
+    "installation_type": "Home Assistant Container",
+    "os_name": "Linux",
+    "os_version": "6.18.33.2-microsoft-standard-WSL2",
+    "python_version": "3.14.10",
+    "timezone": "Pacific/Auckland",
+    "version": "2026.11.0",
+    "virtualenv": false,
+    "container_arch": "amd64",
+    "run_as_root": true
+  },
+  "custom_components": {
+    "nz_contact_energy": {
+      "documentation": "https://github.com/Leftaf/hacs-contact-energy/",
+      "version": "1.1.0",
+      "requirements": []
+    },
+    "tuya_local": {
+      "documentation": "https://github.com/make-all/tuya-local",
+      "version": "2026.10.0",
+      "requirements": [
+        "tinytuya==1.20.0",
+        "tuya-device-sharing-sdk~=0.2.4"
+      ]
+    }
+  },
+  "integration_manifest": {
+    "domain": "tuya",
+    "name": "Tuya",
+    "categories": [
+      "hubs_protocols.smart_home_hubs"
+    ],
+    "codeowners": [
+      "Tuya",
+      "zlinoliver"
+    ],
+    "config_flow": true,
+    "connectivity": [
+      "cloud"
+    ],
+    "dependencies": [
+      "ffmpeg"
+    ],
+    "dhcp": [
+      {
+        "macaddress": "105A17*"
+      },
+      {
+        "macaddress": "10D561*"
+      },
+      {
+        "macaddress": "1869D8*"
+      },
+      {
+        "macaddress": "381F8D*"
+      },
+      {
+        "macaddress": "508A06*"
+      },
+      {
+        "macaddress": "68572D*"
+      },
+      {
+        "macaddress": "708976*"
+      },
+      {
+        "macaddress": "7CF666*"
+      },
+      {
+        "macaddress": "84E342*"
+      },
+      {
+        "macaddress": "D4A651*"
+      },
+      {
+        "macaddress": "D81F12*"
+      }
+    ],
+    "documentation": "https://www.home-assistant.io/integrations/tuya",
+    "integration_type": "hub",
+    "iot_class": "cloud_push",
+    "loggers": [
+      "tuya_sharing"
+    ],
+    "requirements": [
+      "tuya-device-handlers==0.0.34",
+      "tuya-device-sharing-sdk==0.2.15"
+    ],
+    "is_built_in": true,
+    "overwrites_built_in": false
+  },
+  "setup_times": {
+    "null": {
+      "setup": 0.0002426210012345109
+    },
+    "01M6SPY9E1HSRF35EZGXE2PWHE": {
+      "wait_import_platforms": -0.11247128800096107,
+      "config_entry_setup": 13.763342594998903
+    }
+  },
+  "data": {
+    "endpoint": "https://apigw.tuyaus.com",
+    "terminal_id": "1794011766443PHdYv9",
+    "mqtt_connected": true,
+    "disabled_by": null,
+    "disabled_polling": false,
+    "id": "eb8f69b827750c908eo3ap",
+    "name": "MHR2 Main house room 2 Smoke Detector",
+    "category": "ywbj",
+    "product_id": "75u7fsnynxuixf0j",
+    "product_name": "Wi-Fi Smoke Detector with Temperature & Humidity",
+    "online": true,
+    "sub": false,
+    "time_zone": "+12:00",
+    "active_time": "2026-05-14T04:06:59+00:00",
+    "create_time": "2026-05-14T04:06:59+00:00",
+    "update_time": "2026-05-14T04:06:59+00:00",
+    "function": {
+      "muffling": {
+        "type": "Boolean",
+        "value": "{}"
+      }
+    },
+    "local_strategy": {
+      "1": {
+        "value_convert": "enum",
+        "status_code": "smoke_sensor_status",
+        "config_item": {
+          "statusFormat": "{\"smoke_sensor_status\":\"$\"}",
+          "valueDesc": "{\"range\":[\"alarm\",\"normal\"]}",
+          "valueType": "Enum",
+          "enumMappingMap": {
+            "1": {
+              "code": "smoke_sensor_status",
+              "value": "alarm"
+            },
+            "2": {
+              "code": "smoke_sensor_status",
+              "value": "normal"
+            },
+            "alarm": {
+              "code": "smoke_sensor_status",
+              "value": "alarm"
+            },
+            "normal": {
+              "code": "smoke_sensor_status",
+              "value": "normal"
+            }
+          },
+          "pid": "75u7fsnynxuixf0j"
+        }
+      },
+      "15": {
+        "value_convert": "default",
+        "status_code": "battery_percentage",
+        "config_item": {
+          "statusFormat": "{\"battery_percentage\":\"$\"}",
+          "valueDesc": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+          "valueType": "Integer",
+          "enumMappingMap": {},
+          "pid": "75u7fsnynxuixf0j"
+        }
+      },
+      "16": {
+        "value_convert": "default",
+        "status_code": "muffling",
+        "config_item": {
+          "statusFormat": "{\"muffling\":\"$\"}",
+          "valueDesc": "{}",
+          "valueType": "Boolean",
+          "enumMappingMap": {},
+          "pid": "75u7fsnynxuixf0j"
+        }
+      },
+      "23": {
+        "value_convert": "default",
+        "status_code": "temp_current",
+        "config_item": {
+          "statusFormat": "{\"temp_current\": \"$\"}",
+          "valueDesc": "{\"unit\": \"\\u00b0C\", \"min\": -200, \"max\": 600, \"scale\": 1, \"step\": 1}",
+          "valueType": "Integer",
+          "enumMappingMap": {},
+          "pid": "75u7fsnynxuixf0j"
+        }
+      },
+      "24": {
+        "value_convert": "default",
+        "status_code": "humidity_value",
+        "config_item": {
+          "statusFormat": "{\"humidity_value\": \"$\"}",
+          "valueDesc": "{\"unit\": \"%\", \"min\": 0, \"max\": 1000, \"scale\": 0, \"step\": 1}",
+          "valueType": "Integer",
+          "enumMappingMap": {},
+          "pid": "75u7fsnynxuixf0j"
+        }
+      }
+    },
+    "status_range": {
+      "smoke_sensor_status": {
+        "type": "Enum",
+        "value": "{\"range\":[\"alarm\",\"normal\"]}",
+        "report_type": null
+      },
+      "battery_percentage": {
+        "type": "Integer",
+        "value": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+        "report_type": null
+      },
+      "muffling": {
+        "type": "Boolean",
+        "value": "{}",
+        "report_type": null
+      },
+      "temp_current": {
+        "type": "Integer",
+        "value": "{\"unit\": \"\\u00b0C\", \"min\": -200, \"max\": 600, \"scale\": 1, \"step\": 1}",
+        "report_type": null
+      },
+      "humidity_value": {
+        "type": "Integer",
+        "value": "{\"unit\": \"%\", \"min\": 0, \"max\": 1000, \"scale\": 0, \"step\": 1}",
+        "report_type": null
+      }
+    },
+    "status": {
+      "smoke_sensor_status": "normal",
+      "battery_percentage": 80,
+      "muffling": false,
+      "temp_current": 189,
+      "humidity_value": 64
+    },
+    "set_up": true,
+    "support_local": true,
+    "quirk": "/config/tuya_quirks/ywbj_75u7fsnynxuixf0j.py:6",
+    "warnings": null,
+    "original_category": "ywbj",
+    "original_function": {
+      "muffling": {
+        "type": "Boolean",
+        "value": "{}"
+      }
+    },
+    "original_local_strategy": {
+      "1": {
+        "value_convert": "enum",
+        "status_code": "smoke_sensor_status",
+        "config_item": {
+          "statusFormat": "{\"smoke_sensor_status\":\"$\"}",
+          "valueDesc": "{\"range\":[\"alarm\",\"normal\"]}",
+          "valueType": "Enum",
+          "enumMappingMap": {
+            "1": {
+              "code": "smoke_sensor_status",
+              "value": "alarm"
+            },
+            "2": {
+              "code": "smoke_sensor_status",
+              "value": "normal"
+            },
+            "alarm": {
+              "code": "smoke_sensor_status",
+              "value": "alarm"
+            },
+            "normal": {
+              "code": "smoke_sensor_status",
+              "value": "normal"
+            }
+          },
+          "pid": "75u7fsnynxuixf0j"
+        }
+      },
+      "15": {
+        "value_convert": "default",
+        "status_code": "battery_percentage",
+        "config_item": {
+          "statusFormat": "{\"battery_percentage\":\"$\"}",
+          "valueDesc": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+          "valueType": "Integer",
+          "enumMappingMap": {},
+          "pid": "75u7fsnynxuixf0j"
+        }
+      },
+      "16": {
+        "value_convert": "default",
+        "status_code": "muffling",
+        "config_item": {
+          "statusFormat": "{\"muffling\":\"$\"}",
+          "valueDesc": "{}",
+          "valueType": "Boolean",
+          "enumMappingMap": {},
+          "pid": "75u7fsnynxuixf0j"
+        }
+      }
+    },
+    "original_status_range": {
+      "smoke_sensor_status": {
+        "type": "Enum",
+        "value": "{\"range\":[\"alarm\",\"normal\"]}",
+        "report_type": null
+      },
+      "battery_percentage": {
+        "type": "Integer",
+        "value": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+        "report_type": null
+      },
+      "muffling": {
+        "type": "Boolean",
+        "value": "{}",
+        "report_type": null
+      }
+    },
+    "home_assistant": {
+      "name": "MHR2 Main house room 2 Smoke Detector",
+      "name_by_user": null,
+      "disabled": false,
+      "disabled_by": null,
+      "entities": [
+        {
+          "disabled": false,
+          "disabled_by": null,
+          "entity_category": null,
+          "device_class": null,
+          "original_device_class": "smoke",
+          "icon": null,
+          "original_icon": null,
+          "unit_of_measurement": null,
+          "state": {
+            "entity_id": "binary_sensor.rental_room_2_mhr2_main_house_room_2_smoke_detector_smoke",
+            "state": "off",
+            "attributes": {
+              "device_class": "smoke",
+              "friendly_name": "MHR2 Main house room 2 Smoke Detector Smoke"
+            },
+            "last_changed": "2026-11-13T21:32:48.241878+00:00",
+            "last_reported": "2026-11-14T01:34:01.586638+00:00",
+            "last_updated": "2026-11-13T21:32:48.241878+00:00"
+          }
+        },
+        {
+          "disabled": false,
+          "disabled_by": null,
+          "entity_category": "diagnostic",
+          "device_class": null,
+          "original_device_class": "battery",
+          "icon": null,
+          "original_icon": null,
+          "unit_of_measurement": "%",
+          "state": {
+            "entity_id": "sensor.rental_room_2_mhr2_main_house_room_2_smoke_detector_battery",
+            "state": "80.0",
+            "attributes": {
+              "state_class": "measurement",
+              "unit_of_measurement": "%",
+              "device_class": "battery",
+              "friendly_name": "MHR2 Main house room 2 Smoke Detector Battery"
+            },
+            "last_changed": "2026-11-13T23:29:55.775511+00:00",
+            "last_reported": "2026-11-14T01:34:01.586792+00:00",
+            "last_updated": "2026-11-13T23:29:55.775511+00:00"
+          }
+        },
+        {
+          "disabled": false,
+          "disabled_by": null,
+          "entity_category": "config",
+          "device_class": null,
+          "original_device_class": null,
+          "icon": null,
+          "original_icon": null,
+          "unit_of_measurement": null,
+          "state": {
+            "entity_id": "switch.rental_room_2_mhr2_main_house_room_2_smoke_detector_mute",
+            "state": "off",
+            "attributes": {
+              "friendly_name": "MHR2 Main house room 2 Smoke Detector Mute"
+            },
+            "last_changed": "2026-11-13T21:32:48.260432+00:00",
+            "last_reported": "2026-11-14T01:34:01.586819+00:00",
+            "last_updated": "2026-11-13T21:32:48.260432+00:00"
+          }
+        },
+        {
+          "disabled": false,
+          "disabled_by": null,
+          "entity_category": null,
+          "device_class": null,
+          "original_device_class": "temperature",
+          "icon": null,
+          "original_icon": null,
+          "unit_of_measurement": "\u00b0C",
+          "state": {
+            "entity_id": "sensor.rental_room_2_mhr2_main_house_room_2_smoke_detector_temperature",
+            "state": "18.9",
+            "attributes": {
+              "state_class": "measurement",
+              "unit_of_measurement": "\u00b0C",
+              "device_class": "temperature",
+              "friendly_name": "MHR2 Main house room 2 Smoke Detector Temperature"
+            },
+            "last_changed": "2026-11-14T01:34:04.768284+00:00",
+            "last_reported": "2026-11-14T01:34:04.768284+00:00",
+            "last_updated": "2026-11-14T01:34:04.768284+00:00"
+          }
+        },
+        {
+          "disabled": false,
+          "disabled_by": null,
+          "entity_category": null,
+          "device_class": null,
+          "original_device_class": "humidity",
+          "icon": null,
+          "original_icon": null,
+          "unit_of_measurement": "%",
+          "state": {
+            "entity_id": "sensor.rental_room_2_mhr2_main_house_room_2_smoke_detector_humidity",
+            "state": "64.0",
+            "attributes": {
+              "state_class": "measurement",
+              "unit_of_measurement": "%",
+              "device_class": "humidity",
+              "friendly_name": "MHR2 Main house room 2 Smoke Detector Humidity"
+            },
+            "last_changed": "2026-11-14T01:34:04.768446+00:00",
+            "last_reported": "2026-11-14T01:34:04.768446+00:00",
+            "last_updated": "2026-11-14T01:34:04.768446+00:00"
+          }
+        }
+      ]
+    }
+  },
+  "issues": []
+}
