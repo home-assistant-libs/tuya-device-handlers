@@ -1,3 +1,11 @@
+"""Quirk for 2CH Wi-Fi Smart Energy Monitor (p40iaaytjduh0wzw).
+
+Tuya only exposes Channel 1 (cur_current, cur_power, cur_voltage, add_ele)
+in the standard profile for category tdq. Channel 2 datapoints
+(cur_current2, cur_power2, cur_voltage2, add_ele2) exist on the device
+but are not mapped by default. This quirk forces the correct mapping
+so both channels become available in Home Assistant.
+"""
 from tuya_device_handlers import TUYA_QUIRKS_REGISTRY
 from tuya_device_handlers.builder import DeviceQuirk
 from tuya_device_handlers.const import DPMode
