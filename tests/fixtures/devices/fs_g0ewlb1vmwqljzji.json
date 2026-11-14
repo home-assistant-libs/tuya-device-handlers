@@ -1,0 +1,196 @@
+{
+  "endpoint": "https://apigw.tuyaeu.com",
+  "mqtt_connected": true,
+  "disabled_by": null,
+  "disabled_polling": false,
+  "name": "Ceiling Fan With Light",
+  "category": "fs",
+  "product_id": "g0ewlb1vmwqljzji",
+  "product_name": "Ceiling Fan With Light",
+  "online": true,
+  "sub": false,
+  "time_zone": "+08:00",
+  "active_time": "2026-09-10T08:09:18+00:00",
+  "create_time": "2026-09-10T08:09:18+00:00",
+  "update_time": "2026-09-10T08:09:18+00:00",
+  "function": {
+    "switch": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"normal\",\"sleep\",\"nature\"]}"
+    },
+    "fan_speed": {
+      "type": "Enum",
+      "value": "{\"range\":[\"1\",\"2\",\"3\",\"4\",\"5\",\"6\"]}"
+    },
+    "fan_direction": {
+      "type": "Enum",
+      "value": "{\"range\":[\"forward\",\"reverse\"]}"
+    },
+    "light": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "bright_value": {
+      "type": "Integer",
+      "value": "{\"min\":0,\"max\":100,\"scale\":0,\"step\":1}"
+    },
+    "temp_value": {
+      "type": "Integer",
+      "value": "{\"min\":0,\"max\":100,\"scale\":0,\"step\":1}"
+    },
+    "countdown_set": {
+      "type": "Enum",
+      "value": "{\"range\":[\"cancel\",\"1h\",\"2h\",\"4h\",\"8h\"]}"
+    }
+  },
+  "local_strategy": {
+    "1": {
+      "value_convert": "default",
+      "status_code": "switch",
+      "config_item": {
+        "statusFormat": "{\"switch\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "g0ewlb1vmwqljzji"
+      }
+    },
+    "2": {
+      "value_convert": "default",
+      "status_code": "mode",
+      "config_item": {
+        "statusFormat": "{\"mode\":\"$\"}",
+        "valueDesc": "{\"range\":[\"normal\",\"sleep\",\"nature\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "g0ewlb1vmwqljzji"
+      }
+    },
+    "3": {
+      "value_convert": "default",
+      "status_code": "fan_speed",
+      "config_item": {
+        "statusFormat": "{\"fan_speed\":\"$\"}",
+        "valueDesc": "{\"range\":[\"1\",\"2\",\"3\",\"4\",\"5\",\"6\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "g0ewlb1vmwqljzji"
+      }
+    },
+    "8": {
+      "value_convert": "default",
+      "status_code": "fan_direction",
+      "config_item": {
+        "statusFormat": "{\"fan_direction\":\"$\"}",
+        "valueDesc": "{\"range\":[\"forward\",\"reverse\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "g0ewlb1vmwqljzji"
+      }
+    },
+    "15": {
+      "value_convert": "default",
+      "status_code": "light",
+      "config_item": {
+        "statusFormat": "{\"light\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "g0ewlb1vmwqljzji"
+      }
+    },
+    "16": {
+      "value_convert": "default",
+      "status_code": "bright_value",
+      "config_item": {
+        "statusFormat": "{\"bright_value\":\"$\"}",
+        "valueDesc": "{\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "g0ewlb1vmwqljzji"
+      }
+    },
+    "17": {
+      "value_convert": "default",
+      "status_code": "temp_value",
+      "config_item": {
+        "statusFormat": "{\"temp_value\":\"$\"}",
+        "valueDesc": "{\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "g0ewlb1vmwqljzji"
+      }
+    },
+    "22": {
+      "value_convert": "default",
+      "status_code": "countdown_set",
+      "config_item": {
+        "statusFormat": "{\"countdown_set\":\"$\"}",
+        "valueDesc": "{\"range\":[\"cancel\",\"1h\",\"2h\",\"4h\",\"8h\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "g0ewlb1vmwqljzji"
+      }
+    }
+  },
+  "status_range": {
+    "switch": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"normal\",\"sleep\",\"nature\"]}",
+      "report_type": null
+    },
+    "fan_speed": {
+      "type": "Enum",
+      "value": "{\"range\":[\"1\",\"2\",\"3\",\"4\",\"5\",\"6\"]}",
+      "report_type": null
+    },
+    "fan_direction": {
+      "type": "Enum",
+      "value": "{\"range\":[\"forward\",\"reverse\"]}",
+      "report_type": null
+    },
+    "light": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "bright_value": {
+      "type": "Integer",
+      "value": "{\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "temp_value": {
+      "type": "Integer",
+      "value": "{\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "countdown_set": {
+      "type": "Enum",
+      "value": "{\"range\":[\"cancel\",\"1h\",\"2h\",\"4h\",\"8h\"]}",
+      "report_type": null
+    }
+  },
+  "status": {
+    "switch": true,
+    "mode": "normal",
+    "fan_speed": 2,
+    "fan_direction": "forward",
+    "light": false,
+    "bright_value": 92,
+    "temp_value": 100,
+    "countdown_set": "off"
+  },
+  "set_up": true,
+  "support_local": true,
+  "quirk": null,
+  "warnings": ["enum_out_range|countdown_set|off", "enum_out_range|fan_speed|2"]
+}
