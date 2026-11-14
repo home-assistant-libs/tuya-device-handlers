@@ -10,6 +10,7 @@ from tuya_device_handlers.builder.device_quirk import DeviceQuirk
 from tuya_device_handlers.device_wrapper.service_feeder_schedule import (
     DefaultFeederScheduleWrapper,
     FeederSchedule,
+    ReversedDaysFeederScheduleWrapper,
     get_feeder_schedule_wrapper,
 )
 
@@ -215,3 +216,22 @@ def test_get_quirk_feeder_schedule_wrapper_not_set(
 
     wrapper = get_feeder_schedule_wrapper(mock_device)
     assert wrapper is None
+
+
+def test_reversed_days_wrapper() -> None:
+    """Test the reversed wrapper maps Sunday to bit 0 and Monday to bit 6."""
+    device = create_device("cwwsq_wfkzyy0evslzsmoi.json")
+    wrapper = ReversedDaysFeederScheduleWrapper.find_dpcode(
+        device, "meal_plan", prefer_function=True
+    )
+    assert wrapper is not None
+
+    # Entries: (days mask, hour, minute, portion, enabled)
+    device.status["meal_plan"] = "AQwAAQFADAABAQ=="  # 0x01 and 0x40, 12:00
+    meal_plan = wrapper.read_device_status(device)
+    assert meal_plan is not None
+    assert [entry["days"] for entry in meal_plan] == [["sunday"], ["monday"]]
+
+    assert wrapper.get_update_commands(device, meal_plan) == [
+        {"code": "meal_plan", "value": "AQwAAQFADAABAQ=="}
+    ]
