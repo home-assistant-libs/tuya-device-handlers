@@ -108,7 +108,7 @@ def test_integer_unit(
 ) -> None:
     """Test an empty integer unit is normalised to None."""
     mock_device.status_range["demo_unit"] = DeviceStatusRange(
-        {"code": "demo_unit", "type": "Integer", "values": values}
+        code="demo_unit", type="Integer", values=values
     )
 
     type_information = IntegerTypeInformation.find_dpcode(
