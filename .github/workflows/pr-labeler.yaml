@@ -1,11 +1,18 @@
 name: PR Labeler
 
 # pull_request_target is needed to label PRs from forks. It is safe here as
-# the PR code is never checked out or run: the action only lists the changed
-# files and reads its configuration from the base branch.
+# the PR code is never checked out or run: the labeler only lists the changed
+# files and reads its configuration from the base branch, and the label check
+# only reads the PR's labels.
 # yamllint disable-line rule:truthy
 on:
   pull_request_target: # zizmor: ignore[dangerous-triggers]
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - labeled
+      - unlabeled
 
 permissions:
   contents: read
@@ -20,3 +27,34 @@ jobs:
     steps:
       - name: 🚀 Run Labeler
         uses: actions/labeler@bf12e9b00b37c5c0ca2b87b79b2daf7891dbda13 # v7.0.0
+
+  # Runs after the labeler, and reads the current labels rather than the event
+  # payload: labels added with GITHUB_TOKEN don't trigger another run.
+  # It also runs when the labeler fails, as a skipped job would pass as a
+  # required check.
+  label_check:
+    name: PR label
+    needs: pr_labeler
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
+    steps:
+      - name: 🔍 Require a release-drafter category label
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          REPO: ${{ github.repository }}
+        run: |
+          # Keep in sync with the categories in .github/release-drafter.yml
+          allowed='["breaking", "enhancement", "removal", "bug",
+            "performance", "device-quirk", "testing", "ci",
+            "documentation", "refactoring", "style", "dependencies",
+            "build"]'
+          if ! gh pr view "$PR_NUMBER" --repo "$REPO" --json labels \
+            | jq -e --argjson allowed "$allowed" \
+              'any(.labels[].name; . as $l | $allowed | index($l))' \
+            > /dev/null; then
+            echo "::error::Add a label from .github/release-drafter.yml"
+            exit 1
+          fi
