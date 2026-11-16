@@ -618,7 +618,7 @@ wheels = [
 
 [[package]]
 name = "pylint"
-version = "4.1.3"
+version = "4.1.4"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "astroid" },
@@ -629,9 +629,9 @@ dependencies = [
     { name = "platformdirs" },
     { name = "tomlkit" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/38/c9/0bde4152a05a7686b431ce216fe3f3698b0c0d94c20bfa256dd935b608f6/pylint-4.1.3.tar.gz", hash = "sha256:9928603068edfa0d1a3c167f174b099d4b97c3db75d32d0fcdd029770b4713a9", size = 1756180, upload-time = "2026-10-11T07:49:10.69Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/8f/d7/bfea980ba1ea5666c7f774627f3a7159b98a21426a081dd2f05db8eb93b3/pylint-4.1.4.tar.gz", hash = "sha256:4c9176dc6c9f1b98b742195f01899b290369d5a27b4b41d1014c17f2f96b26f1", size = 1768302, upload-time = "2026-11-14T21:41:51.625Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/3f/ba/62b18e2e157d05f976bd490b349b55d8850c2a454a5c313c91af9d2e0baf/pylint-4.1.3-py3-none-any.whl", hash = "sha256:a85357cae24f33ad8d86c8f3daaa92c600ae4012b54a57299cee76000e9364cf", size = 588959, upload-time = "2026-10-11T07:49:08.272Z" },
+    { url = "https://files.pythonhosted.org/packages/b4/89/5235509abac00f5c470d5d8edae908bcec79d1c09803485ce57c25ccbed1/pylint-4.1.4-py3-none-any.whl", hash = "sha256:b39fcc762ec4a7fe385d01b8e170fd996847297cdc0e3850bdda1435c74cfd95", size = 591735, upload-time = "2026-11-14T21:41:49.56Z" },
 ]
 
 [[package]]
@@ -774,14 +774,14 @@ wheels = [
 
 [[package]]
 name = "syrupy"
-version = "7.0.0"
+version = "7.0.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pytest" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/34/75/c3312dabf8356c74580cf0f0f0c7fbf228107479f4d10ad7e9412652b9b9/syrupy-7.0.0.tar.gz", hash = "sha256:2e8733d9b3b42b665143be49f38b7543d77f4243e8fb29545ec410ef467c7b0a", size = 117384, upload-time = "2026-11-11T01:16:57.716Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/84/a5/8c7a369e4476f6d311d2a46b2e11d3a3f62b7c435e8904c71014c0678d52/syrupy-7.0.1.tar.gz", hash = "sha256:90450e89d06a09b40ae028c6a3a7c51a6d0fc97bb275dcfd7e6eddddcb469d69", size = 122297, upload-time = "2026-11-14T21:11:09.421Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/b7/41/5915a9643bf77661e6f14a57d1edd810d0a9961dddc74a7dd7f93d98205f/syrupy-7.0.0-py3-none-any.whl", hash = "sha256:c2f00abec70c444771c999295a166bb0b957da0853a015dff0d0f95930a121f7", size = 66867, upload-time = "2026-11-11T01:16:56.232Z" },
+    { url = "https://files.pythonhosted.org/packages/a4/b9/2e2e6696f095881ade3136001a89fed8bbb97fa556ff8d454ae9c0f7c83f/syrupy-7.0.1-py3-none-any.whl", hash = "sha256:a34b0486259d666d5341df324754b3b438b2b12603620e1e8db607af6506d079", size = 68915, upload-time = "2026-11-14T21:11:08.141Z" },
 ]
 
 [[package]]
@@ -831,12 +831,12 @@ dev = [
     { name = "cryptography", specifier = "==50.0.2" },
     { name = "pre-commit-hooks", specifier = "==6.0.0" },
     { name = "prek", specifier = "==0.5.10" },
-    { name = "pylint", specifier = "==4.1.3" },
+    { name = "pylint", specifier = "==4.1.4" },
     { name = "pytest", specifier = "==9.2.0" },
     { name = "pytest-asyncio", specifier = "==1.5.0" },
     { name = "pytest-cov", specifier = "==7.1.0" },
     { name = "ruff", specifier = "==0.17.5" },
-    { name = "syrupy", specifier = "==7.0.0" },
+    { name = "syrupy", specifier = "==7.0.1" },
     { name = "ty", specifier = "==0.0.104" },
     { name = "yamllint", specifier = "==1.38.0" },
     { name = "zizmor", specifier = "==1.32.0" },
