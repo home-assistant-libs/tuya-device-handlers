@@ -6,7 +6,7 @@ from unittest.mock import patch
 
 import pytest
 from syrupy.assertion import SnapshotAssertion
-from tuya_sharing import CustomerDevice
+from tuya_sharing import CustomerDevice, DeviceStatusRange
 
 from tuya_device_handlers import TUYA_QUIRKS_REGISTRY
 from tuya_device_handlers.builder.device_quirk import DeviceQuirk
@@ -93,6 +93,30 @@ def test_integer_scaling(mock_device: CustomerDevice) -> None:
     assert type_information.scale == 1
     assert type_information.scale_value(150) == 15
     assert type_information.scale_value_back(15) == 150
+
+
+@pytest.mark.parametrize(
+    ("values", "expected_unit"),
+    [
+        ('{"unit": "%", "min": 0, "max": 100, "scale": 0, "step": 1}', "%"),
+        ('{"unit": "", "min": 0, "max": 100, "scale": 0, "step": 1}', None),
+        ('{"min": 0, "max": 100, "scale": 0, "step": 1}', None),
+    ],
+)
+def test_integer_unit(
+    mock_device: CustomerDevice, values: str, expected_unit: str | None
+) -> None:
+    """Test an empty integer unit is normalised to None."""
+    mock_device.status_range["demo_unit"] = DeviceStatusRange(
+        {"code": "demo_unit", "type": "Integer", "values": values}
+    )
+
+    type_information = IntegerTypeInformation.find_dpcode(
+        mock_device, "demo_unit"
+    )
+
+    assert type_information
+    assert type_information.unit == expected_unit
 
 
 @pytest.mark.parametrize(

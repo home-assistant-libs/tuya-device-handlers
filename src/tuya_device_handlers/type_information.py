@@ -332,7 +332,8 @@ class IntegerTypeInformation(TypeInformation[float]):
             max=int(parsed["max"]),
             scale=int(parsed["scale"]),
             step=int(parsed["step"]),
-            unit=parsed.get("unit"),
+            # Unitless datapoints often declare an empty unit
+            unit=parsed.get("unit") or None,
             report_type=report_type,
         )
 
