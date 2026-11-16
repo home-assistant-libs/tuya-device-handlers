@@ -239,3 +239,36 @@ def test_get_quirk_feeder_schedule_wrapper_not_set(
 
     wrapper = get_feeder_schedule_wrapper(mock_device)
     assert wrapper is None
+
+
+class _SundayFirstFeederScheduleWrapper(DefaultFeederScheduleWrapper):
+    """Wrapper for a device using Sunday as bit 0 and Monday as bit 6."""
+
+    _DAYS_OF_WEEK = (
+        "sunday",
+        "saturday",
+        "friday",
+        "thursday",
+        "wednesday",
+        "tuesday",
+        "monday",
+    )
+
+
+def test_days_of_week_override() -> None:
+    """Test a subclass can change the order of the days bitmask."""
+    device = create_device("cwwsq_wfkzyy0evslzsmoi.json")
+    wrapper = _SundayFirstFeederScheduleWrapper.find_dpcode(
+        device, "meal_plan", prefer_function=True
+    )
+    assert wrapper is not None
+
+    # Entries: (days bitmask, hour, minute, portion, enabled)
+    device.status["meal_plan"] = "AQwAAQFADAABAQ=="  # 0x01 and 0x40, 12:00
+    meal_plan = wrapper.read_device_status(device)
+    assert meal_plan is not None
+    assert [entry["days"] for entry in meal_plan] == [["sunday"], ["monday"]]
+
+    assert wrapper.get_update_commands(device, meal_plan) == [
+        {"code": "meal_plan", "value": "AQwAAQFADAABAQ=="}
+    ]

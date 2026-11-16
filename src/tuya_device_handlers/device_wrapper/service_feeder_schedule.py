@@ -1,7 +1,7 @@
 """Device quirks for Tuya devices."""
 
 import base64
-from typing import Any, TypedDict
+from typing import Any, ClassVar, TypedDict
 
 from tuya_sharing import CustomerDevice
 
@@ -27,19 +27,21 @@ class FeederSchedule(TypedDict):
     """True or False."""
 
 
-_DAYS_OF_WEEK: list[str] = [
-    "monday",
-    "tuesday",
-    "wednesday",
-    "thursday",
-    "friday",
-    "saturday",
-    "sunday",
-]
-
-
 class DefaultFeederScheduleWrapper(DPCodeRawWrapper[list[FeederSchedule]]):
     """Wrapper for a schedule received in a base64 DPCode."""
+
+    # Day of each bit in the days bitmask: bit 0 is Monday, bit 6 is Sunday
+    # and bit 7 is unused.
+    # Override in a quirk for a device that uses another order.
+    _DAYS_OF_WEEK: ClassVar[tuple[str, ...]] = (
+        "monday",
+        "tuesday",
+        "wednesday",
+        "thursday",
+        "friday",
+        "saturday",
+        "sunday",
+    )
 
     def read_device_status(
         self, device: CustomerDevice
@@ -51,17 +53,15 @@ class DefaultFeederScheduleWrapper(DPCodeRawWrapper[list[FeederSchedule]]):
             return None
         return [self._decode_entry(entry) for entry in entries]
 
-    @staticmethod
     def _decode_entry(
-        entry: _RawFeederScheduleDataEntry,
+        self, entry: _RawFeederScheduleDataEntry
     ) -> FeederSchedule:
         """Convert a raw entry to a HA FeederSchedule dict."""
         bitmask = entry.days & 0x7F
         return FeederSchedule(
-            # Bit 0 = Monday … bit 6 = Sunday; bit 7 unused.
             days=[
                 name
-                for i, name in enumerate(_DAYS_OF_WEEK)
+                for i, name in enumerate(self._DAYS_OF_WEEK)
                 if bitmask & (1 << i)
             ],
             time=f"{entry.hour:02d}:{entry.minute:02d}",
@@ -78,14 +78,12 @@ class DefaultFeederScheduleWrapper(DPCodeRawWrapper[list[FeederSchedule]]):
         )
         return base64.b64encode(payload).decode("utf-8")
 
-    @staticmethod
     def _encode_entry(
-        item: FeederSchedule,
+        self, item: FeederSchedule
     ) -> _RawFeederScheduleDataEntry:
         """Convert a HA FeederSchedule dict to a raw entry."""
-        # Bit 0 = Monday … bit 6 = Sunday; bit 7 unused.
         bitmask = 0
-        for i, name in enumerate(_DAYS_OF_WEEK):
+        for i, name in enumerate(self._DAYS_OF_WEEK):
             if name in item["days"]:
                 bitmask |= 1 << i
         hour, minute = map(int, item["time"].split(":"))
