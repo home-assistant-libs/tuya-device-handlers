@@ -1,0 +1,38 @@
+name: PR Label Check
+
+# pull_request_target lets this run on fork PRs without approval, and on
+# label changes. It is safe here as the PR code is never checked out or run:
+# only the labels from the event payload are read.
+# yamllint disable-line rule:truthy
+on:
+  pull_request_target: # zizmor: ignore[dangerous-triggers]
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - labeled
+      - unlabeled
+
+permissions:
+  contents: read
+
+jobs:
+  label_check:
+    name: PR label
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🔍 Require a release-drafter category label
+        env:
+          LABELS: ${{ toJSON(github.event.pull_request.labels.*.name) }}
+        run: |
+          # Keep in sync with the categories in .github/release-drafter.yml
+          allowed='["breaking", "enhancement", "removal", "bug",
+            "performance", "device-quirk", "testing", "ci",
+            "documentation", "refactoring", "style", "dependencies",
+            "build"]'
+          if ! jq -e --argjson allowed "$allowed" \
+            'any(.[]; . as $l | $allowed | index($l))' <<< "$LABELS" \
+            > /dev/null; then
+            echo "::error::Add a label from .github/release-drafter.yml"
+            exit 1
+          fi
