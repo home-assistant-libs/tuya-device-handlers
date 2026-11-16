@@ -39,28 +39,24 @@
   dict({
     'native_unit': 'VA',
     'state': 2350,
-    'suggested_unit': 'kVA',
   })
 # ---
 # name: test_sensor_wrapper[ElectricityApparentPowerJsonWrapper]
   dict({
     'native_unit': 'kVA',
     'state': 0.9,
-    'suggested_unit': None,
   })
 # ---
 # name: test_sensor_wrapper[ElectricityApparentPowerRawWrapper]
   dict({
     'native_unit': 'VA',
     'state': 8,
-    'suggested_unit': 'kVA',
   })
 # ---
 # name: test_sensor_wrapper[ElectricityCurrentHexStringWrapper]
   dict({
     'native_unit': 'mA',
     'state': 10000,
-    'suggested_unit': 'A',
   })
 # ---
 # name: test_sensor_wrapper[ElectricityCurrentJsonWrapper]
@@ -79,28 +75,24 @@
   dict({
     'native_unit': None,
     'state': 0.98,
-    'suggested_unit': None,
   })
 # ---
 # name: test_sensor_wrapper[ElectricityPowerFactorJsonWrapper]
   dict({
     'native_unit': None,
     'state': 0.9,
-    'suggested_unit': None,
   })
 # ---
 # name: test_sensor_wrapper[ElectricityPowerFactorRawWrapper]
   dict({
     'native_unit': None,
     'state': 0.99,
-    'suggested_unit': None,
   })
 # ---
 # name: test_sensor_wrapper[ElectricityPowerHexStringWrapper]
   dict({
     'native_unit': 'W',
     'state': 2300,
-    'suggested_unit': 'kW',
   })
 # ---
 # name: test_sensor_wrapper[ElectricityPowerJsonWrapper]
@@ -119,28 +111,24 @@
   dict({
     'native_unit': 'var',
     'state': 500,
-    'suggested_unit': 'kvar',
   })
 # ---
 # name: test_sensor_wrapper[ElectricityReactivePowerJsonWrapper]
   dict({
     'native_unit': 'kvar',
     'state': 0.5,
-    'suggested_unit': None,
   })
 # ---
 # name: test_sensor_wrapper[ElectricityReactivePowerRawWrapper]
   dict({
     'native_unit': 'var',
     'state': 0,
-    'suggested_unit': 'kvar',
   })
 # ---
 # name: test_sensor_wrapper[ElectricityVoltageHexStringWrapper]
   dict({
     'native_unit': 'V',
     'state': 230.5,
-    'suggested_unit': None,
   })
 # ---
 # name: test_sensor_wrapper[ElectricityVoltageJsonWrapper]
