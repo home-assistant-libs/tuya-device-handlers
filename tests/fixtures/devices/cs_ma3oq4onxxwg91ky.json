@@ -1,0 +1,347 @@
+{
+  "endpoint": "https://apigw.tuyaeu.com",
+  "mqtt_connected": true,
+  "disabled_by": null,
+  "disabled_polling": false,
+  "name": "Otto Dehumidifier",
+  "category": "cs",
+  "product_id": "ma3oq4onxxwg91ky",
+  "product_name": "",
+  "online": true,
+  "sub": false,
+  "time_zone": "+02:00",
+  "active_time": "2026-08-27T05:05:12+00:00",
+  "create_time": "2026-08-27T05:05:12+00:00",
+  "update_time": "2026-08-27T05:05:12+00:00",
+  "function": {
+    "switch": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "dehumidify_set_value": {
+      "type": "Integer",
+      "value": "{\"unit\":\"%\",\"min\":25,\"max\":80,\"scale\":0,\"step\":5}"
+    },
+    "swing": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "anion": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "child_lock": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "countdown_set": {
+      "type": "Enum",
+      "value": "{\"range\":[\"cancel\",\"1h\",\"2h\",\"3h\"]}"
+    }
+  },
+  "local_strategy": {
+    "1": {
+      "value_convert": "default",
+      "status_code": "switch",
+      "config_item": {
+        "statusFormat": "{\"switch\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "ma3oq4onxxwg91ky"
+      }
+    },
+    "2": {
+      "value_convert": "default",
+      "status_code": "dehumidify_set_value",
+      "config_item": {
+        "statusFormat": "{\"dehumidify_set_value\":\"$\"}",
+        "valueDesc": "{\"unit\":\"%\",\"min\":25,\"max\":80,\"scale\":0,\"step\":5}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "ma3oq4onxxwg91ky"
+      }
+    },
+    "6": {
+      "value_convert": "default",
+      "status_code": "humidity_indoor",
+      "config_item": {
+        "statusFormat": "{\"humidity_indoor\":\"$\"}",
+        "valueDesc": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "ma3oq4onxxwg91ky"
+      }
+    },
+    "8": {
+      "value_convert": "default",
+      "status_code": "swing",
+      "config_item": {
+        "statusFormat": "{\"swing\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "ma3oq4onxxwg91ky"
+      }
+    },
+    "10": {
+      "value_convert": "default",
+      "status_code": "anion",
+      "config_item": {
+        "statusFormat": "{\"anion\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "ma3oq4onxxwg91ky"
+      }
+    },
+    "16": {
+      "value_convert": "default",
+      "status_code": "child_lock",
+      "config_item": {
+        "statusFormat": "{\"child_lock\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "ma3oq4onxxwg91ky"
+      }
+    },
+    "17": {
+      "value_convert": "default",
+      "status_code": "countdown_set",
+      "config_item": {
+        "statusFormat": "{\"countdown_set\":\"$\"}",
+        "valueDesc": "{\"range\":[\"cancel\",\"1h\",\"2h\",\"3h\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "ma3oq4onxxwg91ky"
+      }
+    },
+    "19": {
+      "value_convert": "default",
+      "status_code": "fault",
+      "config_item": {
+        "statusFormat": "{\"fault\": \"$\"}",
+        "valueDesc": "{\"label\": [\"E1\", \"E2\", \"tankfull\"]}",
+        "valueType": "Bitmap",
+        "enumMappingMap": {},
+        "pid": "ma3oq4onxxwg91ky"
+      }
+    }
+  },
+  "status_range": {
+    "switch": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "dehumidify_set_value": {
+      "type": "Integer",
+      "value": "{\"unit\":\"%\",\"min\":25,\"max\":80,\"scale\":0,\"step\":5}",
+      "report_type": null
+    },
+    "humidity_indoor": {
+      "type": "Integer",
+      "value": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "swing": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "anion": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "child_lock": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "countdown_set": {
+      "type": "Enum",
+      "value": "{\"range\":[\"cancel\",\"1h\",\"2h\",\"3h\"]}",
+      "report_type": null
+    },
+    "fault": {
+      "type": "Bitmap",
+      "value": "{\"label\": [\"E1\", \"E2\", \"tankfull\"]}",
+      "report_type": null
+    }
+  },
+  "status": {
+    "switch": true,
+    "dehumidify_set_value": 45,
+    "humidity_indoor": 46,
+    "swing": false,
+    "anion": false,
+    "child_lock": false,
+    "countdown_set": "cancel",
+    "fault": 0
+  },
+  "set_up": true,
+  "support_local": true,
+  "quirk": "/config/tuya_quirks/cs_ma3oq4onxxwg91ky.py:8",
+  "warnings": null,
+  "original_category": "cs",
+  "original_function": {
+    "switch": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "dehumidify_set_value": {
+      "type": "Integer",
+      "value": "{\"unit\":\"%\",\"min\":25,\"max\":80,\"scale\":0,\"step\":5}"
+    },
+    "swing": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "anion": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "child_lock": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "countdown_set": {
+      "type": "Enum",
+      "value": "{\"range\":[\"cancel\",\"1h\",\"2h\",\"3h\"]}"
+    }
+  },
+  "original_local_strategy": {
+    "1": {
+      "value_convert": "default",
+      "status_code": "switch",
+      "config_item": {
+        "statusFormat": "{\"switch\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "ma3oq4onxxwg91ky"
+      }
+    },
+    "2": {
+      "value_convert": "default",
+      "status_code": "dehumidify_set_value",
+      "config_item": {
+        "statusFormat": "{\"dehumidify_set_value\":\"$\"}",
+        "valueDesc": "{\"unit\":\"%\",\"min\":25,\"max\":80,\"scale\":0,\"step\":5}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "ma3oq4onxxwg91ky"
+      }
+    },
+    "6": {
+      "value_convert": "default",
+      "status_code": "humidity_indoor",
+      "config_item": {
+        "statusFormat": "{\"humidity_indoor\":\"$\"}",
+        "valueDesc": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "ma3oq4onxxwg91ky"
+      }
+    },
+    "8": {
+      "value_convert": "default",
+      "status_code": "swing",
+      "config_item": {
+        "statusFormat": "{\"swing\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "ma3oq4onxxwg91ky"
+      }
+    },
+    "10": {
+      "value_convert": "default",
+      "status_code": "anion",
+      "config_item": {
+        "statusFormat": "{\"anion\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "ma3oq4onxxwg91ky"
+      }
+    },
+    "16": {
+      "value_convert": "default",
+      "status_code": "child_lock",
+      "config_item": {
+        "statusFormat": "{\"child_lock\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "ma3oq4onxxwg91ky"
+      }
+    },
+    "17": {
+      "value_convert": "default",
+      "status_code": "countdown_set",
+      "config_item": {
+        "statusFormat": "{\"countdown_set\":\"$\"}",
+        "valueDesc": "{\"range\":[\"cancel\",\"1h\",\"2h\",\"3h\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "ma3oq4onxxwg91ky"
+      }
+    },
+    "19": {
+      "value_convert": "default",
+      "status_code": "fault",
+      "config_item": {
+        "statusFormat": "{\"fault\":\"$\"}",
+        "valueDesc": "{\"label\":[\"E1\",\"E2\"]}",
+        "valueType": "Bitmap",
+        "enumMappingMap": {},
+        "pid": "ma3oq4onxxwg91ky"
+      }
+    }
+  },
+  "original_status_range": {
+    "switch": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "dehumidify_set_value": {
+      "type": "Integer",
+      "value": "{\"unit\":\"%\",\"min\":25,\"max\":80,\"scale\":0,\"step\":5}",
+      "report_type": null
+    },
+    "humidity_indoor": {
+      "type": "Integer",
+      "value": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "swing": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "anion": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "child_lock": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "countdown_set": {
+      "type": "Enum",
+      "value": "{\"range\":[\"cancel\",\"1h\",\"2h\",\"3h\"]}",
+      "report_type": null
+    },
+    "fault": {
+      "type": "Bitmap",
+      "value": "{\"label\":[\"E1\",\"E2\"]}",
+      "report_type": null
+    }
+  }
+}

@@ -1,0 +1,205 @@
+{
+  "endpoint": "https://apigw.tuyaeu.com",
+  "mqtt_connected": true,
+  "disabled_by": null,
+  "disabled_polling": false,
+  "name": "Whisper Flex",
+  "category": "fs",
+  "product_id": "dune79w7bsu6dg3e",
+  "product_name": "Whisper Flex",
+  "online": true,
+  "sub": false,
+  "time_zone": "+01:00",
+  "active_time": "2026-07-31T08:12:53+00:00",
+  "create_time": "2026-07-31T08:12:53+00:00",
+  "update_time": "2026-07-31T08:12:53+00:00",
+  "function": {
+    "switch": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "fan_speed": {
+      "type": "Enum",
+      "value": "{\"range\":[\"1\",\"2\",\"3\",\"4\",\"5\",\"6\",\"7\",\"8\",\"9\",\"10\",\"11\",\"12\",\"13\",\"14\",\"15\",\"16\",\"17\",\"18\",\"19\",\"20\",\"21\",\"22\",\"23\",\"24\",\"25\",\"26\"]}"
+    },
+    "mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"nature\",\"sleep\",\"smart\"]}"
+    },
+    "switch_horizontal": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "switch_vertical": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "countdown": {
+      "type": "Enum",
+      "value": "{\"range\":[\"0\",\"1\",\"2\",\"3\",\"4\",\"5\",\"6\",\"7\",\"8\",\"9\",\"10\",\"11\",\"12\"]}"
+    }
+  },
+  "local_strategy": {
+    "1": {
+      "value_convert": "default",
+      "status_code": "switch",
+      "config_item": {
+        "statusFormat": "{\"switch\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "dune79w7bsu6dg3e"
+      }
+    },
+    "3": {
+      "value_convert": "default",
+      "status_code": "fan_speed",
+      "config_item": {
+        "statusFormat": "{\"fan_speed\":\"$\"}",
+        "valueDesc": "{\"range\":[\"1\",\"2\",\"3\",\"4\",\"5\",\"6\",\"7\",\"8\",\"9\",\"10\",\"11\",\"12\",\"13\",\"14\",\"15\",\"16\",\"17\",\"18\",\"19\",\"20\",\"21\",\"22\",\"23\",\"24\",\"25\",\"26\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "dune79w7bsu6dg3e"
+      }
+    },
+    "2": {
+      "value_convert": "enum",
+      "status_code": "mode",
+      "config_item": {
+        "statusFormat": "{\"mode\":\"$\"}",
+        "valueDesc": "{\"range\":[\"nature\",\"sleep\",\"smart\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {
+          "0": {
+            "code": "mode",
+            "value": "smart"
+          },
+          "1": {
+            "code": "mode",
+            "value": "nature"
+          },
+          "2": {
+            "code": "mode",
+            "value": "sleep"
+          }
+        },
+        "pid": "dune79w7bsu6dg3e"
+      }
+    },
+    "4": {
+      "value_convert": "enum",
+      "status_code": "switch_horizontal",
+      "config_item": {
+        "statusFormat": "{\"switch_horizontal\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {
+          "0": {
+            "code": "switch_horizontal",
+            "value": "false"
+          },
+          "1": {
+            "code": "switch_horizontal",
+            "value": "true"
+          }
+        },
+        "pid": "dune79w7bsu6dg3e"
+      }
+    },
+    "5": {
+      "value_convert": "enum",
+      "status_code": "switch_vertical",
+      "config_item": {
+        "statusFormat": "{\"switch_vertical\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {
+          "0": {
+            "code": "switch_vertical",
+            "value": "false"
+          },
+          "1": {
+            "code": "switch_vertical",
+            "value": "true"
+          }
+        },
+        "pid": "dune79w7bsu6dg3e"
+      }
+    },
+    "6": {
+      "value_convert": "default",
+      "status_code": "countdown",
+      "config_item": {
+        "statusFormat": "{\"countdown\":\"$\"}",
+        "valueDesc": "{\"range\":[\"0\",\"1\",\"2\",\"3\",\"4\",\"5\",\"6\",\"7\",\"8\",\"9\",\"10\",\"11\",\"12\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "dune79w7bsu6dg3e"
+      }
+    },
+    "7": {
+      "value_convert": "default",
+      "status_code": "countdown_left",
+      "config_item": {
+        "statusFormat": "{\"countdown_left\":\"$\"}",
+        "valueDesc": "{\"unit\":\"h\",\"min\":0,\"max\":12,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "dune79w7bsu6dg3e"
+      }
+    }
+  },
+  "status_range": {
+    "switch": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "fan_speed": {
+      "type": "Enum",
+      "value": "{\"range\":[\"1\",\"2\",\"3\",\"4\",\"5\",\"6\",\"7\",\"8\",\"9\",\"10\",\"11\",\"12\",\"13\",\"14\",\"15\",\"16\",\"17\",\"18\",\"19\",\"20\",\"21\",\"22\",\"23\",\"24\",\"25\",\"26\"]}",
+      "report_type": null
+    },
+    "mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"nature\",\"sleep\",\"smart\"]}",
+      "report_type": null
+    },
+    "switch_horizontal": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "switch_vertical": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "countdown": {
+      "type": "Enum",
+      "value": "{\"range\":[\"0\",\"1\",\"2\",\"3\",\"4\",\"5\",\"6\",\"7\",\"8\",\"9\",\"10\",\"11\",\"12\"]}",
+      "report_type": null
+    },
+    "countdown_left": {
+      "type": "Integer",
+      "value": "{\"unit\":\"h\",\"min\":0,\"max\":12,\"scale\":0,\"step\":1}",
+      "report_type": null
+    }
+  },
+  "status": {
+    "switch": true,
+    "mode": "smart",
+    "fan_speed": "6",
+    "switch_horizontal": "true",
+    "switch_vertical": "false",
+    "countdown": "0",
+    "countdown_left": 0
+  },
+  "set_up": true,
+  "support_local": true,
+  "quirk": null,
+  "warnings": [
+    "boolean_out_range|switch_horizontal|true",
+    "boolean_out_range|switch_horizontal|false"
+  ]
+}

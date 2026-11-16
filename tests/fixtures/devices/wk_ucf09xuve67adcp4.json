@@ -1,0 +1,372 @@
+{
+  "endpoint": "https://apigw.tuyaeu.com",
+  "mqtt_connected": true,
+  "disabled_by": null,
+  "disabled_polling": false,
+  "name": "Pod\u0142og\u00f3wka \u0142azienka mokra",
+  "category": "wk",
+  "product_id": "ucf09xuve67adcp4",
+  "product_name": "Smart Thermostat\uff08N\uff09",
+  "online": true,
+  "sub": false,
+  "time_zone": "+01:00",
+  "active_time": "2026-02-04T23:10:56+00:00",
+  "create_time": "2026-02-04T23:10:56+00:00",
+  "update_time": "2026-02-04T23:10:56+00:00",
+  "function": {
+    "switch": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"auto\",\"eco\"]}"
+    },
+    "window_check": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "frost": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "valve_check": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "temp_set": {
+      "type": "Integer",
+      "value": "{\"unit\":\"\u2103\",\"min\":50,\"max\":400,\"scale\":1,\"step\":1}"
+    },
+    "temp_set_f": {
+      "type": "Integer",
+      "value": "{\"unit\":\"\u2109\",\"min\":41,\"max\":104,\"scale\":0,\"step\":1}"
+    },
+    "upper_temp_f": {
+      "type": "Integer",
+      "value": "{\"unit\":\"\u2109\",\"min\":41,\"max\":140,\"scale\":0,\"step\":1}"
+    },
+    "upper_temp": {
+      "type": "Integer",
+      "value": "{\"unit\":\"\u2103\",\"min\":50,\"max\":600,\"scale\":1,\"step\":5}"
+    },
+    "temp_unit_convert": {
+      "type": "Enum",
+      "value": "{\"range\":[\"c\",\"f\"]}"
+    },
+    "work_days": {
+      "type": "Enum",
+      "value": "{\"range\":[\"7\"]}"
+    },
+    "holiday_days_set": {
+      "type": "Integer",
+      "value": "{\"unit\":\"day\",\"min\":0,\"max\":60,\"scale\":0,\"step\":1}"
+    },
+    "factory_reset": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "child_lock": {
+      "type": "Boolean",
+      "value": "{}"
+    }
+  },
+  "status_range": {
+    "switch": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"auto\",\"eco\"]}",
+      "report_type": null
+    },
+    "window_check": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "frost": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "valve_check": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "temp_set": {
+      "type": "Integer",
+      "value": "{\"unit\":\"\u2103\",\"min\":50,\"max\":400,\"scale\":1,\"step\":1}",
+      "report_type": null
+    },
+    "temp_set_f": {
+      "type": "Integer",
+      "value": "{\"unit\":\"\u2109\",\"min\":41,\"max\":104,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "upper_temp_f": {
+      "type": "Integer",
+      "value": "{\"unit\":\"\u2109\",\"min\":41,\"max\":140,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "upper_temp": {
+      "type": "Integer",
+      "value": "{\"unit\":\"\u2103\",\"min\":50,\"max\":600,\"scale\":1,\"step\":5}",
+      "report_type": null
+    },
+    "temp_unit_convert": {
+      "type": "Enum",
+      "value": "{\"range\":[\"c\",\"f\"]}",
+      "report_type": null
+    },
+    "temp_current": {
+      "type": "Integer",
+      "value": "{\"unit\":\"\u2103\",\"min\":0,\"max\":500,\"scale\":1,\"step\":1}",
+      "report_type": null
+    },
+    "temp_current_f": {
+      "type": "Integer",
+      "value": "{\"unit\":\"\u2109\",\"min\":0,\"max\":1220,\"scale\":1,\"step\":1}",
+      "report_type": null
+    },
+    "work_days": {
+      "type": "Enum",
+      "value": "{\"range\":[\"7\"]}",
+      "report_type": null
+    },
+    "holiday_days_set": {
+      "type": "Integer",
+      "value": "{\"unit\":\"day\",\"min\":0,\"max\":60,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "factory_reset": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "child_lock": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "fault": {
+      "type": "Bitmap",
+      "value": "{\"label\":[\"e1\",\"e2\",\"e3\"]}",
+      "report_type": null
+    }
+  },
+  "status": {
+    "switch": true,
+    "mode": "auto",
+    "window_check": false,
+    "frost": true,
+    "valve_check": false,
+    "temp_set": 270,
+    "temp_set_f": 80,
+    "upper_temp_f": 95,
+    "upper_temp": 350,
+    "temp_unit_convert": "c",
+    "temp_current": 255,
+    "temp_current_f": 779,
+    "work_days": "7",
+    "holiday_days_set": 1,
+    "factory_reset": false,
+    "child_lock": false,
+    "fault": 0
+  },
+  "set_up": true,
+  "support_local": true,
+  "local_strategy": {
+    "1": {
+      "value_convert": "default",
+      "status_code": "switch",
+      "config_item": {
+        "statusFormat": "{\"switch\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "ucf09xuve67adcp4"
+      }
+    },
+    "2": {
+      "value_convert": "default",
+      "status_code": "mode",
+      "config_item": {
+        "statusFormat": "{\"mode\":\"$\"}",
+        "valueDesc": "{\"range\":[\"auto\",\"eco\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "ucf09xuve67adcp4"
+      }
+    },
+    "8": {
+      "value_convert": "default",
+      "status_code": "window_check",
+      "config_item": {
+        "statusFormat": "{\"window_check\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "ucf09xuve67adcp4"
+      }
+    },
+    "10": {
+      "value_convert": "default",
+      "status_code": "frost",
+      "config_item": {
+        "statusFormat": "{\"frost\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "ucf09xuve67adcp4"
+      }
+    },
+    "11": {
+      "value_convert": "default",
+      "status_code": "valve_check",
+      "config_item": {
+        "statusFormat": "{\"valve_check\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "ucf09xuve67adcp4"
+      }
+    },
+    "16": {
+      "value_convert": "default",
+      "status_code": "temp_set",
+      "config_item": {
+        "statusFormat": "{\"temp_set\":\"$\"}",
+        "valueDesc": "{\"unit\":\"\u2103\",\"min\":50,\"max\":400,\"scale\":1,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "ucf09xuve67adcp4"
+      }
+    },
+    "17": {
+      "value_convert": "default",
+      "status_code": "temp_set_f",
+      "config_item": {
+        "statusFormat": "{\"temp_set_f\":\"$\"}",
+        "valueDesc": "{\"unit\":\"\u2109\",\"min\":41,\"max\":104,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "ucf09xuve67adcp4"
+      }
+    },
+    "18": {
+      "value_convert": "default",
+      "status_code": "upper_temp_f",
+      "config_item": {
+        "statusFormat": "{\"upper_temp_f\":\"$\"}",
+        "valueDesc": "{\"unit\":\"\u2109\",\"min\":41,\"max\":140,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "ucf09xuve67adcp4"
+      }
+    },
+    "19": {
+      "value_convert": "default",
+      "status_code": "upper_temp",
+      "config_item": {
+        "statusFormat": "{\"upper_temp\":\"$\"}",
+        "valueDesc": "{\"unit\":\"\u2103\",\"min\":50,\"max\":600,\"scale\":1,\"step\":5}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "ucf09xuve67adcp4"
+      }
+    },
+    "23": {
+      "value_convert": "default",
+      "status_code": "temp_unit_convert",
+      "config_item": {
+        "statusFormat": "{\"temp_unit_convert\":\"$\"}",
+        "valueDesc": "{\"range\":[\"c\",\"f\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "ucf09xuve67adcp4"
+      }
+    },
+    "24": {
+      "value_convert": "default",
+      "status_code": "temp_current",
+      "config_item": {
+        "statusFormat": "{\"temp_current\":\"$\"}",
+        "valueDesc": "{\"unit\":\"\u2103\",\"min\":0,\"max\":500,\"scale\":1,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "ucf09xuve67adcp4"
+      }
+    },
+    "29": {
+      "value_convert": "default",
+      "status_code": "temp_current_f",
+      "config_item": {
+        "statusFormat": "{\"temp_current_f\":\"$\"}",
+        "valueDesc": "{\"unit\":\"\u2109\",\"min\":0,\"max\":1220,\"scale\":1,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "ucf09xuve67adcp4"
+      }
+    },
+    "31": {
+      "value_convert": "default",
+      "status_code": "work_days",
+      "config_item": {
+        "statusFormat": "{\"work_days\":\"$\"}",
+        "valueDesc": "{\"range\":[\"7\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "ucf09xuve67adcp4"
+      }
+    },
+    "33": {
+      "value_convert": "default",
+      "status_code": "holiday_days_set",
+      "config_item": {
+        "statusFormat": "{\"holiday_days_set\":\"$\"}",
+        "valueDesc": "{\"unit\":\"day\",\"min\":0,\"max\":60,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "ucf09xuve67adcp4"
+      }
+    },
+    "39": {
+      "value_convert": "default",
+      "status_code": "factory_reset",
+      "config_item": {
+        "statusFormat": "{\"factory_reset\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "ucf09xuve67adcp4"
+      }
+    },
+    "40": {
+      "value_convert": "default",
+      "status_code": "child_lock",
+      "config_item": {
+        "statusFormat": "{\"child_lock\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "ucf09xuve67adcp4"
+      }
+    },
+    "45": {
+      "value_convert": "default",
+      "status_code": "fault",
+      "config_item": {
+        "statusFormat": "{\"fault\":\"$\"}",
+        "valueDesc": "{\"label\":[\"e1\",\"e2\",\"e3\"]}",
+        "valueType": "Bitmap",
+        "enumMappingMap": {},
+        "pid": "ucf09xuve67adcp4"
+      }
+    }
+  },
+  "warnings": ["enum_out_range|mode|comfort"]
+}

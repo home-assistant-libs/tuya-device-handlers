@@ -73,9 +73,8 @@ def get_feeder_schedule_wrapper(
     device: CustomerDevice,
 ) -> DeviceWrapper[list[FeederSchedule]] | None:
     """Get the feeder schedules wrapper for a device."""
-    from tuya_device_handlers import (  # noqa: PLC0415  # pylint: disable=import-outside-toplevel
-        TUYA_QUIRKS_REGISTRY,
-    )
+    # pylint: disable-next=import-outside-toplevel
+    from tuya_device_handlers import TUYA_QUIRKS_REGISTRY  # noqa: PLC0415
 
     if (quirk := TUYA_QUIRKS_REGISTRY.get_quirk_for_device(device)) is not None:
         return quirk.get_feeder_schedules_wrapper(device)

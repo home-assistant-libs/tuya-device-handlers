@@ -96,6 +96,7 @@ class VacuumActionWrapper(DeviceWrapper[TuyaVacuumAction]):
         """Init _VacuumActionWrapper."""
         self._charge_wrapper = charge_wrapper
         self._locate_wrapper = locate_wrapper
+        self._pause_wrapper = pause_wrapper
         self._mode_wrapper = mode_wrapper
         self._switch_wrapper = switch_wrapper
 
@@ -137,8 +138,8 @@ class VacuumActionWrapper(DeviceWrapper[TuyaVacuumAction]):
         """Get the commands for the action wrapper."""
         if value == TuyaVacuumAction.LOCATE and self._locate_wrapper:
             return self._locate_wrapper.get_update_commands(device, True)
-        if value == TuyaVacuumAction.PAUSE and self._switch_wrapper:
-            return self._switch_wrapper.get_update_commands(device, False)
+        if value == TuyaVacuumAction.PAUSE and self._pause_wrapper:
+            return self._pause_wrapper.get_update_commands(device, True)
         if value == TuyaVacuumAction.RETURN_TO_BASE:
             if self._charge_wrapper:
                 return self._charge_wrapper.get_update_commands(device, True)

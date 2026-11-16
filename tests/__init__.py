@@ -69,11 +69,18 @@ def create_device(fixture_filename: str) -> CustomerDevice:
     """Create a Tuya CustomerDevice."""
     with open(f"tests/fixtures/devices/{fixture_filename}") as fixture_file:
         details: dict[str, Any] = json.load(fixture_file)
+
+    # A real local device always exposes a local_strategy dict; a diagnostics
+    # fixture may capture it as null, so mirror the real-world invariant here.
+    local_strategy = _get_local_strategy(details)
+    if local_strategy is None and details.get("support_local"):
+        local_strategy = {}
+
     device = CustomerDevice(
         # Use reverse of the product_id for testing
         id=details["product_id"].replace("_", "")[::-1],
         name=details["name"],
-        category=details["category"],
+        category=details.get("original_category", details["category"]),
         product_id=details["product_id"],
         product_name=details["product_name"],
         online=details["online"],
@@ -86,7 +93,7 @@ def create_device(fixture_filename: str) -> CustomerDevice:
         support_local=details.get("support_local"),
         mqtt_connected=details.get("mqtt_connected"),
         function=_get_functions(details),
-        local_strategy=_get_local_strategy(details),
+        local_strategy=local_strategy,
         status_range=_get_status_range(details),
         status=details["status"],
     )

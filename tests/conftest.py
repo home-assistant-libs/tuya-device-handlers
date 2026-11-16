@@ -18,9 +18,17 @@ from tuya_device_handlers.registry import QuirksRegistry
 
 @pytest.fixture(autouse=True)
 def auto_reset_quirks() -> Generator[None]:
-    """Ensure that quirks are reset before each test."""
-    with patch.dict(TUYA_QUIRKS_REGISTRY._quirks):
+    """Ensure that quirks are reset before each test.
+
+    The registry is copy-on-write, so `_quirks` is rebound rather than
+    mutated -- restoring the attribute is what isolates tests, not restoring
+    the contents of whichever dict it happened to point at.
+    """
+    original = TUYA_QUIRKS_REGISTRY._quirks
+    try:
         yield
+    finally:
+        TUYA_QUIRKS_REGISTRY._quirks = original
 
 
 @pytest.fixture(scope="module")
@@ -46,6 +54,7 @@ def manager_fixture() -> Generator[Manager]:
 def device_fixture() -> CustomerDevice:
     """Fixture for a customer device."""
     mock_device = Mock(spec=CustomerDevice)
+    mock_device.category = "category"
     mock_device.id = "device_id"
     mock_device.product_id = "product_id"
 
@@ -111,7 +120,7 @@ def device_fixture() -> CustomerDevice:
             values="{}",
         ),
         "demo_string": DeviceFunction(
-            code="demo_json",
+            code="demo_string",
             type="String",
             values="{}",
         ),
@@ -159,7 +168,7 @@ def device_fixture() -> CustomerDevice:
             values="{}",
         ),
         "demo_string": DeviceStatusRange(
-            code="demo_json",
+            code="demo_string",
             type="String",
             values="{}",
         ),

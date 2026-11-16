@@ -1,0 +1,204 @@
+{
+  "endpoint": "https://apigw.tuyaeu.com",
+  "mqtt_connected": true,
+  "disabled_by": null,
+  "disabled_polling": false,
+  "name": "Kettle",
+  "category": "bh",
+  "product_id": "xo5wnj56ip8haw1s",
+  "product_name": "ALDI: KT2217AC",
+  "online": true,
+  "sub": false,
+  "time_zone": "+01:00",
+  "active_time": "2025-07-17T21:06:35+00:00",
+  "create_time": "2025-07-17T21:06:35+00:00",
+  "update_time": "2025-07-17T21:06:35+00:00",
+  "set_up": null,
+  "support_local": true,
+  "warnings": [],
+  "function": {
+    "start": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "temp_set": {
+      "type": "Integer",
+      "value": "{\"unit\":\"\u2103\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}"
+    },
+    "warm_time": {
+      "type": "Integer",
+      "value": "{\"unit\":\"min\",\"min\":0,\"max\":720,\"scale\":0,\"step\":1}"
+    },
+    "work_type": {
+      "type": "Enum",
+      "value": "{\"range\":[\"boiling_quick\"]}"
+    },
+    "countdown": {
+      "type": "Integer",
+      "value": "{\"unit\":\"min\",\"min\":0,\"max\":720,\"scale\":0,\"step\":1}"
+    },
+    "warm": {
+      "type": "Boolean",
+      "value": "{}"
+    }
+  },
+  "status_range": {
+    "start": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "temp_current": {
+      "type": "Integer",
+      "value": "{\"unit\":\"\u2103\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "temp_set": {
+      "type": "Integer",
+      "value": "{\"unit\":\"\u2103\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "warm_time": {
+      "type": "Integer",
+      "value": "{\"unit\":\"min\",\"min\":0,\"max\":720,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "status": {
+      "type": "Enum",
+      "value": "{\"range\":[\"standby\",\"heating\",\"cooling\",\"warm\"]}",
+      "report_type": null
+    },
+    "work_type": {
+      "type": "Enum",
+      "value": "{\"range\":[\"boiling_quick\"]}",
+      "report_type": null
+    },
+    "countdown": {
+      "type": "Integer",
+      "value": "{\"unit\":\"min\",\"min\":0,\"max\":720,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "countdown_left": {
+      "type": "Integer",
+      "value": "{\"unit\":\"min\",\"min\":0,\"max\":720,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "warm": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    }
+  },
+  "local_strategy": {
+    "1": {
+      "value_convert": "default",
+      "status_code": "start",
+      "config_item": {
+        "statusFormat": "{\"start\": \"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "xo5wnj56ip8haw1s"
+      }
+    },
+    "2": {
+      "value_convert": "default",
+      "status_code": "temp_current",
+      "config_item": {
+        "statusFormat": "{\"temp_current\": \"$\"}",
+        "valueDesc": "{\"unit\":\"\u2103\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "xo5wnj56ip8haw1s"
+      }
+    },
+    "4": {
+      "value_convert": "default",
+      "status_code": "temp_set",
+      "config_item": {
+        "statusFormat": "{\"temp_set\": \"$\"}",
+        "valueDesc": "{\"unit\":\"\u2103\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "xo5wnj56ip8haw1s"
+      }
+    },
+    "7": {
+      "value_convert": "default",
+      "status_code": "warm_time",
+      "config_item": {
+        "statusFormat": "{\"warm_time\": \"$\"}",
+        "valueDesc": "{\"unit\":\"min\",\"min\":0,\"max\":720,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "xo5wnj56ip8haw1s"
+      }
+    },
+    "8": {
+      "value_convert": "default",
+      "status_code": "status",
+      "config_item": {
+        "statusFormat": "{\"status\": \"$\"}",
+        "valueDesc": "{\"range\":[\"standby\",\"heating\",\"cooling\",\"warm\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "xo5wnj56ip8haw1s"
+      }
+    },
+    "9": {
+      "value_convert": "default",
+      "status_code": "work_type",
+      "config_item": {
+        "statusFormat": "{\"work_type\": \"$\"}",
+        "valueDesc": "{\"range\":[\"boiling_quick\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "xo5wnj56ip8haw1s"
+      }
+    },
+    "12": {
+      "value_convert": "default",
+      "status_code": "countdown",
+      "config_item": {
+        "statusFormat": "{\"countdown\": \"$\"}",
+        "valueDesc": "{\"unit\":\"min\",\"min\":0,\"max\":720,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "xo5wnj56ip8haw1s"
+      }
+    },
+    "13": {
+      "value_convert": "default",
+      "status_code": "countdown_left",
+      "config_item": {
+        "statusFormat": "{\"countdown_left\": \"$\"}",
+        "valueDesc": "{\"unit\":\"min\",\"min\":0,\"max\":720,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "xo5wnj56ip8haw1s"
+      }
+    },
+    "14": {
+      "value_convert": "default",
+      "status_code": "warm",
+      "config_item": {
+        "statusFormat": "{\"warm\": \"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "xo5wnj56ip8haw1s"
+      }
+    }
+  },
+  "status": {
+    "start": false,
+    "temp_current": 41,
+    "temp_set": 100,
+    "warm_time": 0,
+    "status": "standby",
+    "work_type": "heating_quick",
+    "countdown": 0,
+    "countdown_left": 0,
+    "warm": false
+  }
+}

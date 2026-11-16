@@ -13,6 +13,16 @@ CELSIUS_ALIASES = {"°c", "c", "celsius", "℃"}
 FAHRENHEIT_ALIASES = {"°f", "f", "fahrenheit", "℉"}
 
 
+class ColorTempScale(StrEnum):
+    """Scale used by a device for its color temperature datapoint."""
+
+    MIRED = "mired"
+    """The raw range maps linearly onto mireds (Tuya default)."""
+
+    KELVIN = "kelvin"
+    """The raw range maps linearly onto Kelvin."""
+
+
 class DPMode(IntFlag):
     """Data point modes."""
 

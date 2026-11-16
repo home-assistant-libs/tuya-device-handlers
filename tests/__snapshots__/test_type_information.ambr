@@ -5,12 +5,14 @@
     'label': list([
       'motor_fault',
     ]),
+    'report_type': None,
     'type_data': '{"label": ["motor_fault"]}',
   })
 # ---
 # name: test_valid_type_information[BooleanTypeInformation-demo_boolean]
   dict({
     'dpcode': 'demo_boolean',
+    'report_type': None,
     'type_data': '{}',
   })
 # ---
@@ -22,6 +24,7 @@
       'customize_scene',
       'colour',
     ]),
+    'report_type': None,
     'type_data': '{"range": ["scene", "customize_scene", "colour"]}',
   })
 # ---
@@ -40,18 +43,21 @@
 # name: test_valid_type_information[JsonTypeInformation-demo_json]
   dict({
     'dpcode': 'demo_json',
+    'report_type': None,
     'type_data': '{}',
   })
 # ---
 # name: test_valid_type_information[RawTypeInformation-demo_raw]
   dict({
     'dpcode': 'demo_raw',
+    'report_type': None,
     'type_data': '{}',
   })
 # ---
 # name: test_valid_type_information[StringTypeInformation-demo_string]
   dict({
     'dpcode': 'demo_string',
+    'report_type': None,
     'type_data': '{}',
   })
 # ---

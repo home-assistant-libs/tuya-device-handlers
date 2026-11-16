@@ -1,0 +1,154 @@
+{
+  "endpoint": "https://apigw.tuyaus.com",
+  "mqtt_connected": true,
+  "disabled_by": null,
+  "disabled_polling": false,
+  "name": "Tallboy",
+  "category": "fs",
+  "product_id": "xwv3jifdbhbolgh3",
+  "product_name": "TOWER FAN（CZTF423S）",
+  "online": true,
+  "sub": false,
+  "time_zone": "-04:00",
+  "active_time": "2026-06-01T23:25:46+00:00",
+  "create_time": "2026-06-01T23:25:46+00:00",
+  "update_time": "2026-06-01T23:25:46+00:00",
+  "function": {
+    "switch": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"nature\",\"sleep\"]}"
+    },
+    "fan_speed_percent": {
+      "type": "Integer",
+      "value": "{\"unit\":\"\",\"min\":1,\"max\":5,\"scale\":0,\"step\":1}"
+    },
+    "switch_horizontal": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "fan_beep": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "countdown_set": {
+      "type": "Enum",
+      "value": "{\"range\":[\"cancel\",\"1h\",\"2h\",\"3h\",\"4h\",\"5h\",\"6h\"]}"
+    }
+  },
+  "local_strategy": {
+    "1": {
+      "value_convert": "default",
+      "status_code": "switch",
+      "config_item": {
+        "statusFormat": "{\"switch\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "xwv3jifdbhbolgh3"
+      }
+    },
+    "2": {
+      "value_convert": "default",
+      "status_code": "mode",
+      "config_item": {
+        "statusFormat": "{\"mode\":\"$\"}",
+        "valueDesc": "{\"range\":[\"nature\",\"sleep\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "xwv3jifdbhbolgh3"
+      }
+    },
+    "3": {
+      "value_convert": "default",
+      "status_code": "fan_speed_percent",
+      "config_item": {
+        "statusFormat": "{\"fan_speed_percent\":\"$\"}",
+        "valueDesc": "{\"unit\":\"\",\"min\":1,\"max\":5,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "xwv3jifdbhbolgh3"
+      }
+    },
+    "5": {
+      "value_convert": "default",
+      "status_code": "switch_horizontal",
+      "config_item": {
+        "statusFormat": "{\"switch_horizontal\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "xwv3jifdbhbolgh3"
+      }
+    },
+    "13": {
+      "value_convert": "default",
+      "status_code": "fan_beep",
+      "config_item": {
+        "statusFormat": "{\"fan_beep\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "xwv3jifdbhbolgh3"
+      }
+    },
+    "22": {
+      "value_convert": "default",
+      "status_code": "countdown_set",
+      "config_item": {
+        "statusFormat": "{\"countdown_set\":\"$\"}",
+        "valueDesc": "{\"range\":[\"cancel\",\"1h\",\"2h\",\"3h\",\"4h\",\"5h\",\"6h\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "xwv3jifdbhbolgh3"
+      }
+    }
+  },
+  "status_range": {
+    "switch": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"nature\",\"sleep\"]}",
+      "report_type": null
+    },
+    "fan_speed_percent": {
+      "type": "Integer",
+      "value": "{\"unit\":\"\",\"min\":1,\"max\":5,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "switch_horizontal": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "fan_beep": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "countdown_set": {
+      "type": "Enum",
+      "value": "{\"range\":[\"cancel\",\"1h\",\"2h\",\"3h\",\"4h\",\"5h\",\"6h\"]}",
+      "report_type": null
+    }
+  },
+  "status": {
+    "switch": true,
+    "mode": "sleep",
+    "fan_speed_percent": 1,
+    "switch_horizontal": false,
+    "fan_beep": true,
+    "countdown_set": "cancel"
+  },
+  "set_up": true,
+  "support_local": true,
+  "quirk": null,
+  "warnings": ["enum_out_range|mode|normal"]
+}

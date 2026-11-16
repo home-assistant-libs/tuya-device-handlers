@@ -1,0 +1,232 @@
+{
+  "endpoint": "https://apigw.tuyaeu.com",
+  "mqtt_connected": true,
+  "disabled_by": null,
+  "disabled_polling": false,
+  "name": "sovevarmdur",
+  "category": "qn",
+  "product_id": "apnfmkj7hm0e3hfo",
+  "product_name": "Panel Heater",
+  "online": true,
+  "sub": false,
+  "time_zone": "+02:00",
+  "active_time": "2025-10-23T10:33:47+00:00",
+  "create_time": "2025-10-23T10:33:47+00:00",
+  "update_time": "2025-10-23T10:33:47+00:00",
+  "function": {
+    "switch": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "temp_set": {
+      "type": "Integer",
+      "value": "{\"unit\":\"°C\",\"min\":50,\"max\":350,\"scale\":1,\"step\":10}"
+    },
+    "mode": {
+      "type": "Enum",
+      "value": "{\"range\": [\"comfor\", \"eco\"]}"
+    },
+    "lock": {
+      "type": "Boolean",
+      "value": "{}"
+    }
+  },
+  "local_strategy": {
+    "1": {
+      "value_convert": "default",
+      "status_code": "switch",
+      "config_item": {
+        "statusFormat": "{\"switch\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "apnfmkj7hm0e3hfo"
+      }
+    },
+    "2": {
+      "value_convert": "default",
+      "status_code": "temp_set",
+      "config_item": {
+        "statusFormat": "{\"temp_set\":\"$\"}",
+        "valueDesc": "{\"unit\":\"°C\",\"min\":50,\"max\":350,\"scale\":1,\"step\":10}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "apnfmkj7hm0e3hfo"
+      }
+    },
+    "3": {
+      "value_convert": "default",
+      "status_code": "temp_current",
+      "config_item": {
+        "statusFormat": "{\"temp_current\":\"$\"}",
+        "valueDesc": "{\"unit\":\"℃\",\"min\":-20,\"max\":50,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "apnfmkj7hm0e3hfo"
+      }
+    },
+    "4": {
+      "value_convert": "default",
+      "status_code": "mode",
+      "config_item": {
+        "statusFormat": "{\"mode\": \"$\"}",
+        "valueDesc": "{\"range\": [\"comfor\", \"eco\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "apnfmkj7hm0e3hfo"
+      }
+    },
+    "7": {
+      "value_convert": "default",
+      "status_code": "lock",
+      "config_item": {
+        "statusFormat": "{\"lock\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "apnfmkj7hm0e3hfo"
+      }
+    }
+  },
+  "status_range": {
+    "switch": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "temp_set": {
+      "type": "Integer",
+      "value": "{\"unit\":\"°C\",\"min\":50,\"max\":350,\"scale\":1,\"step\":10}",
+      "report_type": null
+    },
+    "temp_current": {
+      "type": "Integer",
+      "value": "{\"unit\":\"℃\",\"min\":-20,\"max\":50,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "mode": {
+      "type": "Enum",
+      "value": "{\"range\": [\"comfor\", \"eco\"]}",
+      "report_type": null
+    },
+    "lock": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    }
+  },
+  "status": {
+    "switch": true,
+    "temp_set": 235,
+    "temp_current": 24,
+    "mode": "comfor",
+    "lock": true
+  },
+  "set_up": true,
+  "support_local": true,
+  "quirk": "/config/tuya_quirks/qn_apnfmkj7hm0e3hfo.py:35",
+  "warnings": null,
+  "original_category": "qn",
+  "original_function": {
+    "switch": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "temp_set": {
+      "type": "Integer",
+      "value": "{\"unit\":\"°C\",\"min\":50,\"max\":350,\"scale\":1,\"step\":10}"
+    },
+    "mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"eco\"]}"
+    },
+    "lock": {
+      "type": "Boolean",
+      "value": "{}"
+    }
+  },
+  "original_local_strategy": {
+    "1": {
+      "value_convert": "default",
+      "status_code": "switch",
+      "config_item": {
+        "statusFormat": "{\"switch\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "apnfmkj7hm0e3hfo"
+      }
+    },
+    "2": {
+      "value_convert": "default",
+      "status_code": "temp_set",
+      "config_item": {
+        "statusFormat": "{\"temp_set\":\"$\"}",
+        "valueDesc": "{\"unit\":\"°C\",\"min\":50,\"max\":350,\"scale\":1,\"step\":10}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "apnfmkj7hm0e3hfo"
+      }
+    },
+    "3": {
+      "value_convert": "default",
+      "status_code": "temp_current",
+      "config_item": {
+        "statusFormat": "{\"temp_current\":\"$\"}",
+        "valueDesc": "{\"unit\":\"℃\",\"min\":-20,\"max\":50,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "apnfmkj7hm0e3hfo"
+      }
+    },
+    "4": {
+      "value_convert": "default",
+      "status_code": "mode",
+      "config_item": {
+        "statusFormat": "{\"mode\":\"$\"}",
+        "valueDesc": "{\"range\":[\"eco\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "apnfmkj7hm0e3hfo"
+      }
+    },
+    "7": {
+      "value_convert": "default",
+      "status_code": "lock",
+      "config_item": {
+        "statusFormat": "{\"lock\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "apnfmkj7hm0e3hfo"
+      }
+    }
+  },
+  "original_status_range": {
+    "switch": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "temp_set": {
+      "type": "Integer",
+      "value": "{\"unit\":\"°C\",\"min\":50,\"max\":350,\"scale\":1,\"step\":10}",
+      "report_type": null
+    },
+    "temp_current": {
+      "type": "Integer",
+      "value": "{\"unit\":\"℃\",\"min\":-20,\"max\":50,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"eco\"]}",
+      "report_type": null
+    },
+    "lock": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    }
+  }
+}

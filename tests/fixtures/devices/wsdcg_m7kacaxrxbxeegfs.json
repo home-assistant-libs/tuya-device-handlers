@@ -1,0 +1,281 @@
+{
+  "endpoint": "https://apigw.tuyaeu.com",
+  "mqtt_connected": true,
+  "disabled_by": null,
+  "disabled_polling": false,
+  "name": "Tem&Hum Sensor with Probe",
+  "category": "wsdcg",
+  "product_id": "m7kacaxrxbxeegfs",
+  "product_name": "Tem&Hum Sensor with Probe",
+  "online": true,
+  "sub": false,
+  "time_zone": "+02:00",
+  "active_time": "2026-05-14T15:40:34+00:00",
+  "create_time": "2026-05-14T15:40:34+00:00",
+  "update_time": "2026-05-14T15:40:34+00:00",
+  "function": {
+    "temp_sampling": {
+      "type": "Integer",
+      "value": "{\"unit\":\"Minte\",\"min\":1,\"max\":120,\"scale\":0,\"step\":1}"
+    },
+    "temp_unit_convert": {
+      "type": "Enum",
+      "value": "{\"range\":[\"c\",\"f\"]}"
+    },
+    "maxtemp_set": {
+      "type": "Integer",
+      "value": "{\"unit\":\"\u2103\",\"min\":-200,\"max\":600,\"scale\":1,\"step\":1}"
+    },
+    "minitemp_set": {
+      "type": "Integer",
+      "value": "{\"unit\":\"\u2103\",\"min\":-200,\"max\":600,\"scale\":1,\"step\":1}"
+    },
+    "maxhum_set": {
+      "type": "Integer",
+      "value": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}"
+    },
+    "minihum_set": {
+      "type": "Integer",
+      "value": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}"
+    },
+    "temp_sensitivity": {
+      "type": "Integer",
+      "value": "{\"unit\":\"\u2103\",\"min\":6,\"max\":20,\"scale\":1,\"step\":1}"
+    },
+    "hum_sensitivity": {
+      "type": "Integer",
+      "value": "{\"unit\":\"%\",\"min\":6,\"max\":20,\"scale\":0,\"step\":1}"
+    }
+  },
+  "local_strategy": {
+    "1": {
+      "value_convert": "default",
+      "status_code": "va_temperature",
+      "config_item": {
+        "statusFormat": "{\"va_temperature\":\"$\"}",
+        "valueDesc": "{\"unit\":\"\u2103\",\"min\":-200,\"max\":1000,\"scale\":1,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "m7kacaxrxbxeegfs"
+      }
+    },
+    "2": {
+      "value_convert": "default",
+      "status_code": "humidity_value",
+      "config_item": {
+        "statusFormat": "{\"va_humidity\":\"$\"}",
+        "valueDesc": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "m7kacaxrxbxeegfs"
+      }
+    },
+    "3": {
+      "value_convert": "default",
+      "status_code": "battery_state",
+      "config_item": {
+        "statusFormat": "{\"battery_state\":\"$\"}",
+        "valueDesc": "{\"range\":[\"low\",\"middle\",\"high\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "m7kacaxrxbxeegfs"
+      }
+    },
+    "6": {
+      "value_convert": "default",
+      "status_code": "temp_sampling",
+      "config_item": {
+        "statusFormat": "{\"temp_sampling\":\"$\"}",
+        "valueDesc": "{\"unit\":\"Minte\",\"min\":1,\"max\":120,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "m7kacaxrxbxeegfs"
+      }
+    },
+    "9": {
+      "value_convert": "default",
+      "status_code": "temp_unit_convert",
+      "config_item": {
+        "statusFormat": "{\"temp_unit_convert\":\"$\"}",
+        "valueDesc": "{\"range\":[\"c\",\"f\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "m7kacaxrxbxeegfs"
+      }
+    },
+    "10": {
+      "value_convert": "default",
+      "status_code": "maxtemp_set",
+      "config_item": {
+        "statusFormat": "{\"maxtemp_set\":\"$\"}",
+        "valueDesc": "{\"unit\":\"\u2103\",\"min\":-200,\"max\":600,\"scale\":1,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "m7kacaxrxbxeegfs"
+      }
+    },
+    "11": {
+      "value_convert": "default",
+      "status_code": "minitemp_set",
+      "config_item": {
+        "statusFormat": "{\"minitemp_set\":\"$\"}",
+        "valueDesc": "{\"unit\":\"\u2103\",\"min\":-200,\"max\":600,\"scale\":1,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "m7kacaxrxbxeegfs"
+      }
+    },
+    "12": {
+      "value_convert": "default",
+      "status_code": "maxhum_set",
+      "config_item": {
+        "statusFormat": "{\"maxhum_set\":\"$\"}",
+        "valueDesc": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "m7kacaxrxbxeegfs"
+      }
+    },
+    "13": {
+      "value_convert": "default",
+      "status_code": "minihum_set",
+      "config_item": {
+        "statusFormat": "{\"minihum_set\":\"$\"}",
+        "valueDesc": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "m7kacaxrxbxeegfs"
+      }
+    },
+    "14": {
+      "value_convert": "default",
+      "status_code": "temp_alarm",
+      "config_item": {
+        "statusFormat": "{\"temp_alarm\":\"$\"}",
+        "valueDesc": "{\"range\":[\"loweralarm\",\"upperalarm\",\"cancel\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "m7kacaxrxbxeegfs"
+      }
+    },
+    "15": {
+      "value_convert": "default",
+      "status_code": "hum_alarm",
+      "config_item": {
+        "statusFormat": "{\"hum_alarm\":\"$\"}",
+        "valueDesc": "{\"range\":[\"loweralarm\",\"upperalarm\",\"cancel\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "m7kacaxrxbxeegfs"
+      }
+    },
+    "19": {
+      "value_convert": "default",
+      "status_code": "temp_sensitivity",
+      "config_item": {
+        "statusFormat": "{\"temp_sensitivity\":\"$\"}",
+        "valueDesc": "{\"unit\":\"\u2103\",\"min\":6,\"max\":20,\"scale\":1,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "m7kacaxrxbxeegfs"
+      }
+    },
+    "20": {
+      "value_convert": "default",
+      "status_code": "hum_sensitivity",
+      "config_item": {
+        "statusFormat": "{\"hum_sensitivity\":\"$\"}",
+        "valueDesc": "{\"unit\":\"%\",\"min\":6,\"max\":20,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "m7kacaxrxbxeegfs"
+      }
+    }
+  },
+  "status_range": {
+    "va_temperature": {
+      "type": "Integer",
+      "value": "{\"unit\":\"\u2103\",\"min\":-200,\"max\":1000,\"scale\":1,\"step\":1}",
+      "report_type": null
+    },
+    "va_humidity": {
+      "type": "Integer",
+      "value": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "battery_state": {
+      "type": "Enum",
+      "value": "{\"range\":[\"low\",\"middle\",\"high\"]}",
+      "report_type": null
+    },
+    "temp_sampling": {
+      "type": "Integer",
+      "value": "{\"unit\":\"Minte\",\"min\":1,\"max\":120,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "temp_unit_convert": {
+      "type": "Enum",
+      "value": "{\"range\":[\"c\",\"f\"]}",
+      "report_type": null
+    },
+    "maxtemp_set": {
+      "type": "Integer",
+      "value": "{\"unit\":\"\u2103\",\"min\":-200,\"max\":600,\"scale\":1,\"step\":1}",
+      "report_type": null
+    },
+    "minitemp_set": {
+      "type": "Integer",
+      "value": "{\"unit\":\"\u2103\",\"min\":-200,\"max\":600,\"scale\":1,\"step\":1}",
+      "report_type": null
+    },
+    "maxhum_set": {
+      "type": "Integer",
+      "value": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "minihum_set": {
+      "type": "Integer",
+      "value": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "temp_alarm": {
+      "type": "Enum",
+      "value": "{\"range\":[\"loweralarm\",\"upperalarm\",\"cancel\"]}",
+      "report_type": null
+    },
+    "hum_alarm": {
+      "type": "Enum",
+      "value": "{\"range\":[\"loweralarm\",\"upperalarm\",\"cancel\"]}",
+      "report_type": null
+    },
+    "temp_sensitivity": {
+      "type": "Integer",
+      "value": "{\"unit\":\"\u2103\",\"min\":6,\"max\":20,\"scale\":1,\"step\":1}",
+      "report_type": null
+    },
+    "hum_sensitivity": {
+      "type": "Integer",
+      "value": "{\"unit\":\"%\",\"min\":6,\"max\":20,\"scale\":0,\"step\":1}",
+      "report_type": null
+    }
+  },
+  "status": {
+    "va_temperature": 240,
+    "va_humidity": 43,
+    "battery_state": "high",
+    "temp_sampling": 120,
+    "temp_unit_convert": "c",
+    "maxtemp_set": 390,
+    "minitemp_set": 0,
+    "maxhum_set": 60,
+    "minihum_set": 20,
+    "temp_alarm": "cancel",
+    "hum_alarm": "cancel",
+    "temp_sensitivity": 10,
+    "hum_sensitivity": 10
+  },
+  "set_up": true,
+  "support_local": true,
+  "quirk": null,
+  "warnings": null
+}

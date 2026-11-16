@@ -6,22 +6,15 @@ from tuya_device_handlers.helpers.homeassistant import TuyaCoverAction
 from tuya_device_handlers.type_information import EnumTypeInformation
 
 from .common import DPCodeBooleanWrapper, DPCodeEnumWrapper
-from .extended import DPCodePercentageWrapper
+from .extended import DPCodeInvertedPercentageWrapper
 
 
-class ControlBackModePercentageMappingWrapper(DPCodePercentageWrapper):
-    """Wrapper for a cover with control_back_mode support.
+class ControlBackModePercentageMappingWrapper(DPCodeInvertedPercentageWrapper):
+    """Wrapper kept until Home Assistant Core no longer references it.
 
-    For historical reason, the default is for inversion to be active if
-    `control_back_mode` is not set to "back":
-    - "back" => not inverted
-    - "forward" => inverted
-    - None => inverted
+    The `control_back_mode` handling is now in the type information, see
+    `BackModeInvertedIntegerTypeInformationEx`.
     """
-
-    def _remap_inverted(self, device: CustomerDevice) -> bool:
-        """Check if the remap helper should be inverted."""
-        return bool(device.status.get("control_back_mode") != "back")
 
 
 class CoverInstructionBooleanWrapper(DPCodeBooleanWrapper[TuyaCoverAction]):

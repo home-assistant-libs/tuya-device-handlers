@@ -1,0 +1,121 @@
+{
+  "endpoint": "https://apigw.tuyaeu.com",
+  "mqtt_connected": true,
+  "disabled_by": null,
+  "disabled_polling": false,
+  "name": "HiFi",
+  "category": "cz",
+  "product_id": "eyEYwtdx9VhexxLW",
+  "product_name": "Smart Socket",
+  "online": true,
+  "sub": false,
+  "time_zone": "+01:00",
+  "active_time": "2019-10-16T12:45:31+00:00",
+  "create_time": "2019-10-16T12:45:31+00:00",
+  "update_time": "2019-10-16T12:45:31+00:00",
+  "function": {
+    "switch": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "countdown_1": {
+      "type": "Integer",
+      "value": "{\"unit\":\"\u79d2\",\"min\":0,\"max\":86400,\"scale\":0,\"step\":1}"
+    }
+  },
+  "local_strategy": {
+    "1": {
+      "value_convert": "default",
+      "status_code": "switch",
+      "config_item": {
+        "statusFormat": "{\"switch\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "eyEYwtdx9VhexxLW"
+      }
+    },
+    "2": {
+      "value_convert": "default",
+      "status_code": "countdown_1",
+      "config_item": {
+        "statusFormat": "{\"countdown_1\":\"$\"}",
+        "valueDesc": "{\"unit\":\"\u79d2\",\"min\":0,\"max\":86400,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "eyEYwtdx9VhexxLW"
+      }
+    },
+    "4": {
+      "value_convert": "default",
+      "status_code": "cur_current",
+      "config_item": {
+        "statusFormat": "{\"cur_current\":\"$\"}",
+        "valueDesc": "{\"unit\":\"mA\",\"min\":0,\"max\":30000,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "eyEYwtdx9VhexxLW"
+      }
+    },
+    "5": {
+      "value_convert": "default",
+      "status_code": "cur_power",
+      "config_item": {
+        "statusFormat": "{\"cur_power\":\"$\"}",
+        "valueDesc": "{\"unit\":\"W\",\"min\":0,\"max\":50000,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "eyEYwtdx9VhexxLW"
+      }
+    },
+    "6": {
+      "value_convert": "default",
+      "status_code": "cur_voltage",
+      "config_item": {
+        "statusFormat": "{\"cur_voltage\":\"$\"}",
+        "valueDesc": "{\"unit\":\"V\",\"min\":0,\"max\":2500,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "eyEYwtdx9VhexxLW"
+      }
+    }
+  },
+  "status_range": {
+    "switch": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "countdown_1": {
+      "type": "Integer",
+      "value": "{\"unit\":\"\u79d2\",\"min\":0,\"max\":86400,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "cur_current": {
+      "type": "Integer",
+      "value": "{\"unit\":\"mA\",\"min\":0,\"max\":30000,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "cur_power": {
+      "type": "Integer",
+      "value": "{\"unit\":\"W\",\"min\":0,\"max\":50000,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "cur_voltage": {
+      "type": "Integer",
+      "value": "{\"unit\":\"V\",\"min\":0,\"max\":2500,\"scale\":0,\"step\":1}",
+      "report_type": null
+    }
+  },
+  "status": {
+    "switch": true,
+    "countdown_1": 0,
+    "cur_current": 375,
+    "cur_power": 882,
+    "cur_voltage": 2351
+  },
+  "set_up": true,
+  "support_local": true,
+  "quirk": null,
+  "warnings": null
+}

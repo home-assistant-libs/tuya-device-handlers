@@ -1,0 +1,487 @@
+{
+  "endpoint": "**REDACTED**",
+  "mqtt_connected": true,
+  "disabled_by": null,
+  "disabled_polling": false,
+  "name": "Living Room Left Curtains",
+  "category": "cl",
+  "product_id": "cf1sl3tj",
+  "product_name": "",
+  "online": false,
+  "sub": true,
+  "time_zone": "+00:00",
+  "active_time": "2026-03-02T18:14:11+00:00",
+  "create_time": "2026-03-02T18:14:11+00:00",
+  "update_time": "2026-03-02T18:14:11+00:00",
+  "function": {
+    "control": {
+      "type": "Enum",
+      "value": "{\"range\":[\"open\",\"stop\",\"close\"]}"
+    },
+    "percent_control": {
+      "type": "Integer",
+      "value": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}"
+    },
+    "mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"morning\",\"night\"]}"
+    },
+    "control_back_mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"forward\",\"back\"]}"
+    },
+    "border": {
+      "type": "Enum",
+      "value": "{\"range\":[\"up\",\"down\",\"up_delete\",\"down_delete\",\"remove_top_bottom\"]}"
+    },
+    "position_best": {
+      "type": "Integer",
+      "value": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}"
+    },
+    "click_control": {
+      "type": "Enum",
+      "value": "{\"range\":[\"up\",\"down\"]}"
+    }
+  },
+  "local_strategy": {
+    "1": {
+      "value_convert": "default",
+      "status_code": "control",
+      "config_item": {
+        "statusFormat": "{\"control\":\"$\"}",
+        "valueDesc": "{\"range\":[\"open\",\"stop\",\"close\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "cf1sl3tj"
+      }
+    },
+    "2": {
+      "value_convert": "default",
+      "status_code": "percent_control",
+      "config_item": {
+        "statusFormat": "{\"percent_control\":\"$\"}",
+        "valueDesc": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "cf1sl3tj"
+      }
+    },
+    "3": {
+      "value_convert": "default",
+      "status_code": "percent_state",
+      "config_item": {
+        "statusFormat": "{\"percent_state\":\"$\"}",
+        "valueDesc": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "cf1sl3tj"
+      }
+    },
+    "4": {
+      "value_convert": "default",
+      "status_code": "mode",
+      "config_item": {
+        "statusFormat": "{\"mode\":\"$\"}",
+        "valueDesc": "{\"range\":[\"morning\",\"night\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "cf1sl3tj"
+      }
+    },
+    "5": {
+      "value_convert": "default",
+      "status_code": "control_back_mode",
+      "config_item": {
+        "statusFormat": "{\"control_back_mode\":\"$\"}",
+        "valueDesc": "{\"range\":[\"forward\",\"back\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "cf1sl3tj"
+      }
+    },
+    "7": {
+      "value_convert": "default",
+      "status_code": "work_state",
+      "config_item": {
+        "statusFormat": "{\"work_state\":\"$\"}",
+        "valueDesc": "{\"range\":[\"opening\",\"closing\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "cf1sl3tj"
+      }
+    },
+    "11": {
+      "value_convert": "default",
+      "status_code": "situation_set",
+      "config_item": {
+        "statusFormat": "{\"situation_set\":\"$\"}",
+        "valueDesc": "{\"range\":[\"fully_open\",\"fully_close\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "cf1sl3tj"
+      }
+    },
+    "12": {
+      "value_convert": "default",
+      "status_code": "fault",
+      "config_item": {
+        "statusFormat": "{\"fault\":\"$\"}",
+        "valueDesc": "{\"label\":[\"motor_fault\"]}",
+        "valueType": "Bitmap",
+        "enumMappingMap": {},
+        "pid": "cf1sl3tj"
+      }
+    },
+    "13": {
+      "value_convert": "default",
+      "status_code": "battery_percentage",
+      "config_item": {
+        "statusFormat": "{\"battery_percentage\":\"$\"}",
+        "valueDesc": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "cf1sl3tj"
+      }
+    },
+    "16": {
+      "value_convert": "default",
+      "status_code": "border",
+      "config_item": {
+        "statusFormat": "{\"border\":\"$\"}",
+        "valueDesc": "{\"range\":[\"up\",\"down\",\"up_delete\",\"down_delete\",\"remove_top_bottom\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "cf1sl3tj"
+      }
+    },
+    "19": {
+      "value_convert": "default",
+      "status_code": "position_best",
+      "config_item": {
+        "statusFormat": "{\"position_best\":\"$\"}",
+        "valueDesc": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "cf1sl3tj"
+      }
+    },
+    "20": {
+      "value_convert": "default",
+      "status_code": "click_control",
+      "config_item": {
+        "statusFormat": "{\"click_control\":\"$\"}",
+        "valueDesc": "{\"range\":[\"up\",\"down\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "cf1sl3tj"
+      }
+    }
+  },
+  "status_range": {
+    "control": {
+      "type": "Enum",
+      "value": "{\"range\":[\"open\",\"stop\",\"close\"]}",
+      "report_type": null
+    },
+    "percent_control": {
+      "type": "Integer",
+      "value": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "percent_state": {
+      "type": "Integer",
+      "value": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"morning\",\"night\"]}",
+      "report_type": null
+    },
+    "control_back_mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"forward\",\"back\"]}",
+      "report_type": null
+    },
+    "work_state": {
+      "type": "Enum",
+      "value": "{\"range\":[\"opening\",\"closing\"]}",
+      "report_type": null
+    },
+    "situation_set": {
+      "type": "Enum",
+      "value": "{\"range\":[\"fully_open\",\"fully_close\"]}",
+      "report_type": null
+    },
+    "fault": {
+      "type": "Bitmap",
+      "value": "{\"label\":[\"motor_fault\"]}",
+      "report_type": null
+    },
+    "battery_percentage": {
+      "type": "Integer",
+      "value": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "border": {
+      "type": "Enum",
+      "value": "{\"range\":[\"up\",\"down\",\"up_delete\",\"down_delete\",\"remove_top_bottom\"]}",
+      "report_type": null
+    },
+    "position_best": {
+      "type": "Integer",
+      "value": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "click_control": {
+      "type": "Enum",
+      "value": "{\"range\":[\"up\",\"down\"]}",
+      "report_type": null
+    }
+  },
+  "status": {
+    "control": "stop",
+    "percent_control": 10,
+    "percent_state": 10,
+    "mode": "morning",
+    "control_back_mode": "forward",
+    "work_state": "opening",
+    "situation_set": "fully_open",
+    "fault": 0,
+    "battery_percentage": 55,
+    "border": "down",
+    "position_best": 0,
+    "click_control": "up"
+  },
+  "set_up": true,
+  "support_local": true,
+  "quirk": "/config/tuya_quirks/cl_cf1sl3tj.py:59",
+  "warnings": null,
+  "original_category": "cl",
+  "original_function": {
+    "control": {
+      "type": "Enum",
+      "value": "{\"range\":[\"open\",\"stop\",\"close\"]}"
+    },
+    "percent_control": {
+      "type": "Integer",
+      "value": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}"
+    },
+    "mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"morning\",\"night\"]}"
+    },
+    "control_back_mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"forward\",\"back\"]}"
+    },
+    "border": {
+      "type": "Enum",
+      "value": "{\"range\":[\"up\",\"down\",\"up_delete\",\"down_delete\",\"remove_top_bottom\"]}"
+    },
+    "position_best": {
+      "type": "Integer",
+      "value": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}"
+    },
+    "click_control": {
+      "type": "Enum",
+      "value": "{\"range\":[\"up\",\"down\"]}"
+    }
+  },
+  "original_local_strategy": {
+    "1": {
+      "value_convert": "default",
+      "status_code": "control",
+      "config_item": {
+        "statusFormat": "{\"control\":\"$\"}",
+        "valueDesc": "{\"range\":[\"open\",\"stop\",\"close\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "cf1sl3tj"
+      }
+    },
+    "2": {
+      "value_convert": "default",
+      "status_code": "percent_control",
+      "config_item": {
+        "statusFormat": "{\"percent_control\":\"$\"}",
+        "valueDesc": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "cf1sl3tj"
+      }
+    },
+    "3": {
+      "value_convert": "default",
+      "status_code": "percent_state",
+      "config_item": {
+        "statusFormat": "{\"percent_state\":\"$\"}",
+        "valueDesc": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "cf1sl3tj"
+      }
+    },
+    "4": {
+      "value_convert": "default",
+      "status_code": "mode",
+      "config_item": {
+        "statusFormat": "{\"mode\":\"$\"}",
+        "valueDesc": "{\"range\":[\"morning\",\"night\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "cf1sl3tj"
+      }
+    },
+    "5": {
+      "value_convert": "default",
+      "status_code": "control_back_mode",
+      "config_item": {
+        "statusFormat": "{\"control_back_mode\":\"$\"}",
+        "valueDesc": "{\"range\":[\"forward\",\"back\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "cf1sl3tj"
+      }
+    },
+    "7": {
+      "value_convert": "default",
+      "status_code": "work_state",
+      "config_item": {
+        "statusFormat": "{\"work_state\":\"$\"}",
+        "valueDesc": "{\"range\":[\"opening\",\"closing\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "cf1sl3tj"
+      }
+    },
+    "11": {
+      "value_convert": "default",
+      "status_code": "situation_set",
+      "config_item": {
+        "statusFormat": "{\"situation_set\":\"$\"}",
+        "valueDesc": "{\"range\":[\"fully_open\",\"fully_close\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "cf1sl3tj"
+      }
+    },
+    "12": {
+      "value_convert": "default",
+      "status_code": "fault",
+      "config_item": {
+        "statusFormat": "{\"fault\":\"$\"}",
+        "valueDesc": "{\"label\":[\"motor_fault\"]}",
+        "valueType": "Bitmap",
+        "enumMappingMap": {},
+        "pid": "cf1sl3tj"
+      }
+    },
+    "13": {
+      "value_convert": "default",
+      "status_code": "battery_percentage",
+      "config_item": {
+        "statusFormat": "{\"battery_percentage\":\"$\"}",
+        "valueDesc": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "cf1sl3tj"
+      }
+    },
+    "16": {
+      "value_convert": "default",
+      "status_code": "border",
+      "config_item": {
+        "statusFormat": "{\"border\":\"$\"}",
+        "valueDesc": "{\"range\":[\"up\",\"down\",\"up_delete\",\"down_delete\",\"remove_top_bottom\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "cf1sl3tj"
+      }
+    },
+    "19": {
+      "value_convert": "default",
+      "status_code": "position_best",
+      "config_item": {
+        "statusFormat": "{\"position_best\":\"$\"}",
+        "valueDesc": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "cf1sl3tj"
+      }
+    },
+    "20": {
+      "value_convert": "default",
+      "status_code": "click_control",
+      "config_item": {
+        "statusFormat": "{\"click_control\":\"$\"}",
+        "valueDesc": "{\"range\":[\"up\",\"down\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "cf1sl3tj"
+      }
+    }
+  },
+  "original_status_range": {
+    "control": {
+      "type": "Enum",
+      "value": "{\"range\":[\"open\",\"stop\",\"close\"]}",
+      "report_type": null
+    },
+    "percent_control": {
+      "type": "Integer",
+      "value": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "percent_state": {
+      "type": "Integer",
+      "value": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"morning\",\"night\"]}",
+      "report_type": null
+    },
+    "control_back_mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"forward\",\"back\"]}",
+      "report_type": null
+    },
+    "work_state": {
+      "type": "Enum",
+      "value": "{\"range\":[\"opening\",\"closing\"]}",
+      "report_type": null
+    },
+    "situation_set": {
+      "type": "Enum",
+      "value": "{\"range\":[\"fully_open\",\"fully_close\"]}",
+      "report_type": null
+    },
+    "fault": {
+      "type": "Bitmap",
+      "value": "{\"label\":[\"motor_fault\"]}",
+      "report_type": null
+    },
+    "battery_percentage": {
+      "type": "Integer",
+      "value": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "border": {
+      "type": "Enum",
+      "value": "{\"range\":[\"up\",\"down\",\"up_delete\",\"down_delete\",\"remove_top_bottom\"]}",
+      "report_type": null
+    },
+    "position_best": {
+      "type": "Integer",
+      "value": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "click_control": {
+      "type": "Enum",
+      "value": "{\"range\":[\"up\",\"down\"]}",
+      "report_type": null
+    }
+  }
+}

@@ -8,16 +8,23 @@ import pytest
 from syrupy.assertion import SnapshotAssertion
 from tuya_sharing import CustomerDevice
 
-from tuya_device_handlers.const import DEVICE_WARNINGS
+from tuya_device_handlers import TUYA_QUIRKS_REGISTRY
+from tuya_device_handlers.builder.device_quirk import DeviceQuirk
+from tuya_device_handlers.const import DEVICE_WARNINGS, DPMode
 from tuya_device_handlers.type_information import (
     BitmapTypeInformation,
     BooleanTypeInformation,
     EnumTypeInformation,
     IntegerTypeInformation,
     JsonTypeInformation,
+    PrepareSetValueError,
     RawTypeInformation,
     StringTypeInformation,
     TypeInformation,
+)
+from tuya_device_handlers.type_information_ex import (
+    BackModeInvertedIntegerTypeInformationEx,
+    InvertedIntegerTypeInformationEx,
 )
 
 
@@ -171,3 +178,240 @@ def test_log_invalid_value(
     caplog.clear()
     assert type_information.read_device_value(mock_device) is None
     assert warning_diplayed not in caplog.text
+
+
+def test_find_dpcode_quirk_inverted_percentage_integer(
+    mock_device: CustomerDevice,
+) -> None:
+    """A custom IntegerTypeInformation subclass inverts 0-100 on read/write.
+
+    The quirk wires demo_integer to InvertedPercentageIntegerTypeInformation
+    which flips the value around max on both directions: a raw device value
+    of 30 reads as 70, and a HA-side value of 70 writes back as 30.
+    """
+    mock_device.support_local = False
+    mock_device.status["demo_integer"] = 30
+
+    class InvertedPercentageIntegerTypeInformation(IntegerTypeInformation):
+        """Inverts a 0-100 percentage on read and write."""
+
+        def read_device_value(self, device: CustomerDevice) -> float | None:
+            value = super().read_device_value(device)
+            if value is None:
+                return None
+            return self.max - value
+
+        def prepare_set_value(self, device: CustomerDevice, value: Any) -> int:
+            if not isinstance(value, (int, float)):
+                return super().prepare_set_value(device, value)
+            return super().prepare_set_value(device, self.max - value)
+
+    quirk = (
+        DeviceQuirk()
+        .applies_to(product_id=mock_device.product_id)
+        .add_dpid_integer(
+            dpid=1,
+            dpcode="demo_integer",
+            dpmode=DPMode.READ | DPMode.WRITE,
+            unit="%",
+            min=0,
+            max=100,
+            scale=0,
+            step=1,
+        )
+        .override_dpid_type_information_cls(
+            dpid=1,
+            dpcode="demo_integer",
+            type_information_cls=InvertedPercentageIntegerTypeInformation,
+        )
+    )
+    quirk.initialise_device(mock_device)
+    TUYA_QUIRKS_REGISTRY.register(mock_device.product_id, quirk)
+
+    result = IntegerTypeInformation.find_dpcode(mock_device, "demo_integer")
+    assert isinstance(result, InvertedPercentageIntegerTypeInformation)
+
+    # Read: raw status 30 → HA value 70
+    assert result.read_device_value(mock_device) == 70
+    # Write: HA value 70 → raw 30
+    assert result.prepare_set_value(mock_device, 70) == 30
+    # Endpoints invert cleanly
+    assert result.prepare_set_value(mock_device, 0) == 100
+    assert result.prepare_set_value(mock_device, 100) == 0
+
+
+def test_find_dpcode_no_quirk_override_uses_default_class(
+    mock_device: CustomerDevice,
+) -> None:
+    """find_dpcode uses the calling class when no quirk override is set."""
+    # No quirk registered for this device — default behaviour unchanged.
+    result = IntegerTypeInformation.find_dpcode(mock_device, "demo_integer")
+    assert isinstance(result, IntegerTypeInformation)
+    assert result.dpcode == "demo_integer"
+
+
+@pytest.mark.parametrize(
+    ("type_information_type", "dpcode", "value", "expected"),
+    [
+        (BooleanTypeInformation, "demo_boolean", True, True),
+        (BooleanTypeInformation, "demo_boolean", False, False),
+        (EnumTypeInformation, "demo_enum", "scene", "scene"),
+        (EnumTypeInformation, "demo_enum", "colour", "colour"),
+        # Integer scale is 1, so the raw value is the input scaled by 10
+        (IntegerTypeInformation, "demo_integer", 0, 0),
+        (IntegerTypeInformation, "demo_integer", 50, 500),
+        (IntegerTypeInformation, "demo_integer", 100, 1000),
+        (IntegerTypeInformation, "demo_integer", 12.3, 123),
+    ],
+)
+def test_prepare_set_value(
+    type_information_type: type[TypeInformation[Any]],
+    dpcode: str,
+    value: Any,
+    expected: Any,
+    mock_device: CustomerDevice,
+) -> None:
+    """Test prepare_set_value converts a value to its raw form."""
+    type_information = type_information_type.find_dpcode(mock_device, dpcode)
+
+    assert type_information
+    assert type_information.prepare_set_value(mock_device, value) == expected
+
+
+@pytest.mark.parametrize(
+    ("type_information_type", "dpcode", "value", "match"),
+    [
+        (
+            BooleanTypeInformation,
+            "demo_boolean",
+            "yes",
+            r"Invalid boolean value `yes` \(str\)",
+        ),
+        (
+            EnumTypeInformation,
+            "demo_enum",
+            True,
+            r"Invalid string value `True` \(bool\)",
+        ),
+        (
+            EnumTypeInformation,
+            "demo_enum",
+            "unknown",
+            "Enum value `unknown` out of range",
+        ),
+        (
+            IntegerTypeInformation,
+            "demo_integer",
+            "145.2",
+            r"Invalid numeric value `145.2` \(str\)",
+        ),
+        # Scaled raw value above max (1000)
+        (
+            IntegerTypeInformation,
+            "demo_integer",
+            200,
+            "out of range",
+        ),
+        # Scaled raw value below min (0)
+        (
+            IntegerTypeInformation,
+            "demo_integer",
+            -1,
+            "out of range",
+        ),
+    ],
+)
+def test_prepare_set_value_out_of_range(
+    type_information_type: type[TypeInformation[Any]],
+    dpcode: str,
+    value: Any,
+    match: str,
+    mock_device: CustomerDevice,
+) -> None:
+    """Test prepare_set_value rejects invalid values."""
+    type_information = type_information_type.find_dpcode(mock_device, dpcode)
+
+    assert type_information
+    with pytest.raises(PrepareSetValueError, match=match):
+        type_information.prepare_set_value(mock_device, value)
+
+
+@pytest.mark.parametrize(
+    "dpcode",
+    [
+        "angle_horizontal",
+        "angle_vertical",
+        "percent_control",
+        "percent_control_2",
+    ],
+)
+def test_find_dpcode_category_default(
+    mock_device: CustomerDevice, dpcode: str
+) -> None:
+    """On clkg, the position follows control_back_mode by default."""
+    mock_device.category = "clkg"
+    mock_device.status_range[dpcode] = mock_device.status_range["demo_integer"]
+
+    type_information = IntegerTypeInformation.find_dpcode(mock_device, dpcode)
+
+    assert isinstance(
+        type_information, BackModeInvertedIntegerTypeInformationEx
+    )
+
+
+@pytest.mark.parametrize(
+    ("category", "dpcode"),
+    [("cl", "percent_control"), ("clkg", "demo_integer")],
+)
+def test_find_dpcode_category_default_not_applicable(
+    mock_device: CustomerDevice, category: str, dpcode: str
+) -> None:
+    """Other categories and datapoints keep the requested class."""
+    mock_device.category = category
+    mock_device.status_range[dpcode] = mock_device.status_range["demo_integer"]
+
+    type_information = IntegerTypeInformation.find_dpcode(mock_device, dpcode)
+
+    assert type(type_information) is IntegerTypeInformation
+
+
+def test_find_dpcode_category_default_requires_plain_class(
+    mock_device: CustomerDevice,
+) -> None:
+    """A caller asking for a specific class gets that class."""
+    mock_device.category = "clkg"
+    mock_device.status_range["percent_control"] = mock_device.status_range[
+        "demo_integer"
+    ]
+
+    type_information = InvertedIntegerTypeInformationEx.find_dpcode(
+        mock_device, "percent_control"
+    )
+
+    assert type(type_information) is InvertedIntegerTypeInformationEx
+
+
+def test_find_dpcode_quirk_overrides_category_default(
+    mock_device: CustomerDevice,
+) -> None:
+    """A quirk's class wins over the category default."""
+    mock_device.category = "clkg"
+    mock_device.status_range["percent_control"] = mock_device.status_range[
+        "demo_integer"
+    ]
+    with patch.dict(TUYA_QUIRKS_REGISTRY._quirks, clear=True):
+        (
+            DeviceQuirk()
+            .applies_to(product_id=mock_device.product_id)
+            .override_dpid_type_information_cls(
+                dpid=2,
+                dpcode="percent_control",
+                type_information_cls=IntegerTypeInformation,
+            )
+            .register(TUYA_QUIRKS_REGISTRY)
+        )
+        type_information = IntegerTypeInformation.find_dpcode(
+            mock_device, "percent_control"
+        )
+
+    assert type(type_information) is IntegerTypeInformation

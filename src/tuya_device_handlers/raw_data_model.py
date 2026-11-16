@@ -13,6 +13,13 @@ class ElectricityData:
     power: float
     voltage: float
 
+    # `None` means the payload layout does not carry the attribute
+    # (the legacy layout only carries voltage, current and power),
+    # not that the device reported an unknown value.
+    reactive_power: float | None = None
+    apparent_power: float | None = None
+    power_factor: float | None = None
+
     @classmethod
     def from_bytes(cls, raw: bytes) -> Self | None:
         """Parse bytes and return an ElectricityValue object."""
@@ -32,6 +39,8 @@ class ElectricityData:
         # - bit1 active power
         # - bit2 reactive
         # - bit3 power factor
+        # Apparent power has no sign bit: it is a magnitude (V_rms * I_rms)
+        # and is never negative.
 
         is_v1 = len(raw) == 17 and raw[0:2] == b"\x01\x0f"
         is_v2 = len(raw) == 18 and raw[0:2] == b"\x02\x0f"
@@ -41,6 +50,9 @@ class ElectricityData:
             voltage = struct.unpack(">H", data[0:2])[0] / 10.0
             current = struct.unpack(">L", b"\x00" + data[2:5])[0]
             power = struct.unpack(">L", b"\x00" + data[5:8])[0]
+            reactive_power = struct.unpack(">L", b"\x00" + data[8:11])[0]
+            apparent_power = struct.unpack(">L", b"\x00" + data[11:14])[0]
+            power_factor = data[14] / 100.0
 
             if is_v2:
                 sign_bitmap = raw[17]
@@ -48,8 +60,19 @@ class ElectricityData:
                     current = -current
                 if sign_bitmap & 0x02:
                     power = -power
+                if sign_bitmap & 0x04:
+                    reactive_power = -reactive_power
+                if sign_bitmap & 0x08:
+                    power_factor = -power_factor
 
-            return cls(current=current, power=power, voltage=voltage)
+            return cls(
+                current=current,
+                power=power,
+                voltage=voltage,
+                reactive_power=reactive_power,
+                apparent_power=apparent_power,
+                power_factor=power_factor,
+            )
 
         if len(raw) >= 8:
             voltage = struct.unpack(">H", raw[0:2])[0] / 10.0
@@ -58,3 +81,12 @@ class ElectricityData:
             return cls(current=current, power=power, voltage=voltage)
 
         return None
+
+    @classmethod
+    def from_hex(cls, raw: str) -> Self | None:
+        """Parse a hex-encoded frame string (e.g. `phase_s` string DPs)."""
+        try:
+            data = bytes.fromhex(raw)
+        except ValueError:
+            return None
+        return cls.from_bytes(data)

@@ -1,0 +1,149 @@
+{
+  "endpoint": "https://apigw.tuyaeu.com",
+  "mqtt_connected": true,
+  "disabled_by": null,
+  "disabled_polling": false,
+  "name": "DH-24 Nexi ION UV Wifi",
+  "category": "cs",
+  "product_id": "uhtamgih7kkdcqtx",
+  "product_name": "DH-24 Nexi ION UV Wifi",
+  "online": true,
+  "sub": false,
+  "time_zone": "+01:00",
+  "active_time": "2026-02-03T20:02:17+00:00",
+  "create_time": "2026-02-03T20:02:17+00:00",
+  "update_time": "2026-02-03T20:02:17+00:00",
+  "function": {
+    "switch": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "dehumidify_set_value": {
+      "type": "Integer",
+      "value": "{\"unit\":\"%\",\"min\":35,\"max\":80,\"scale\":0,\"step\":5}"
+    },
+    "anion": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "uv": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "child_lock": {
+      "type": "Boolean",
+      "value": "{}"
+    }
+  },
+  "status_range": {
+    "switch": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "dehumidify_set_value": {
+      "type": "Integer",
+      "value": "{\"unit\":\"%\",\"min\":35,\"max\":80,\"scale\":0,\"step\":5}",
+      "report_type": null
+    },
+    "anion": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "uv": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "child_lock": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "fault": {
+      "type": "Bitmap",
+      "value": "{\"label\":[\"bit0\"]}",
+      "report_type": null
+    }
+  },
+  "status": {
+    "switch": false,
+    "dehumidify_set_value": 35,
+    "anion": true,
+    "uv": true,
+    "child_lock": false,
+    "fault": 0
+  },
+  "set_up": true,
+  "support_local": true,
+  "local_strategy": {
+    "1": {
+      "value_convert": "default",
+      "status_code": "switch",
+      "config_item": {
+        "statusFormat": "{\"switch\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "uhtamgih7kkdcqtx"
+      }
+    },
+    "2": {
+      "value_convert": "default",
+      "status_code": "dehumidify_set_value",
+      "config_item": {
+        "statusFormat": "{\"dehumidify_set_value\":\"$\"}",
+        "valueDesc": "{\"unit\":\"%\",\"min\":35,\"max\":80,\"scale\":0,\"step\":5}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "uhtamgih7kkdcqtx"
+      }
+    },
+    "10": {
+      "value_convert": "default",
+      "status_code": "anion",
+      "config_item": {
+        "statusFormat": "{\"anion\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "uhtamgih7kkdcqtx"
+      }
+    },
+    "13": {
+      "value_convert": "default",
+      "status_code": "uv",
+      "config_item": {
+        "statusFormat": "{\"uv\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "uhtamgih7kkdcqtx"
+      }
+    },
+    "16": {
+      "value_convert": "default",
+      "status_code": "child_lock",
+      "config_item": {
+        "statusFormat": "{\"child_lock\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "uhtamgih7kkdcqtx"
+      }
+    },
+    "19": {
+      "value_convert": "default",
+      "status_code": "fault",
+      "config_item": {
+        "statusFormat": "{\"fault\":\"$\"}",
+        "valueDesc": "{\"label\":[\"bit0\"]}",
+        "valueType": "Bitmap",
+        "enumMappingMap": {},
+        "pid": "uhtamgih7kkdcqtx"
+      }
+    }
+  },
+  "warnings": null
+}
