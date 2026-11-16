@@ -9,6 +9,8 @@ categories:
     label: "bug"
   - title: ":racehorse: Performance"
     label: "performance"
+  - title: ":computer: Device Quirks"
+    label: "device-quirk"
   - title: ":rotating_light: Testing"
     label: "testing"
   - title: ":construction_worker: Continuous Integration"

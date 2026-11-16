@@ -4,7 +4,12 @@ from collections.abc import Generator
 from unittest.mock import Mock, patch
 
 import pytest
-from tuya_sharing import CustomerDevice, DeviceFunction, DeviceStatusRange
+from tuya_sharing import (
+    CustomerDevice,
+    DeviceFunction,
+    DeviceStatusRange,
+    Manager,
+)
 
 from tuya_device_handlers import TUYA_QUIRKS_REGISTRY
 from tuya_device_handlers.devices import register_tuya_quirks
@@ -13,9 +18,17 @@ from tuya_device_handlers.registry import QuirksRegistry
 
 @pytest.fixture(autouse=True)
 def auto_reset_quirks() -> Generator[None]:
-    """Ensure that quirks are reset before each test."""
-    with patch.dict(TUYA_QUIRKS_REGISTRY._quirks):
+    """Ensure that quirks are reset before each test.
+
+    The registry is copy-on-write, so `_quirks` is rebound rather than
+    mutated -- restoring the attribute is what isolates tests, not restoring
+    the contents of whichever dict it happened to point at.
+    """
+    original = TUYA_QUIRKS_REGISTRY._quirks
+    try:
         yield
+    finally:
+        TUYA_QUIRKS_REGISTRY._quirks = original
 
 
 @pytest.fixture(scope="module")
@@ -25,10 +38,23 @@ def filled_quirks_registry() -> QuirksRegistry:
     return TUYA_QUIRKS_REGISTRY
 
 
+@pytest.fixture(name="mock_manager")
+def manager_fixture() -> Generator[Manager]:
+    """Mock manager."""
+    with (
+        patch(
+            "tuya_sharing.customerapi.CustomerTokenInfo.__init__",
+            return_value=None,
+        ),
+    ):
+        yield Manager("", "", "", "")
+
+
 @pytest.fixture(name="mock_device")
 def device_fixture() -> CustomerDevice:
     """Fixture for a customer device."""
     mock_device = Mock(spec=CustomerDevice)
+    mock_device.category = "category"
     mock_device.id = "device_id"
     mock_device.product_id = "product_id"
 
@@ -94,7 +120,7 @@ def device_fixture() -> CustomerDevice:
             values="{}",
         ),
         "demo_string": DeviceFunction(
-            code="demo_json",
+            code="demo_string",
             type="String",
             values="{}",
         ),
@@ -142,7 +168,7 @@ def device_fixture() -> CustomerDevice:
             values="{}",
         ),
         "demo_string": DeviceStatusRange(
-            code="demo_json",
+            code="demo_string",
             type="String",
             values="{}",
         ),

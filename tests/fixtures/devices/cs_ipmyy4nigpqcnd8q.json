@@ -1,0 +1,83 @@
+{
+  "endpoint": "https://apigw.tuyaeu.com",
+  "mqtt_connected": true,
+  "disabled_by": null,
+  "disabled_polling": false,
+  "name": "Pro Breeze 30L Compressor Dehumidifier",
+  "category": "cs",
+  "product_id": "ipmyy4nigpqcnd8q",
+  "product_name": "Pro Breeze 30L Compressor Dehumidifier",
+  "online": true,
+  "sub": false,
+  "time_zone": "+01:00",
+  "active_time": "2024-11-30T14:05:16+00:00",
+  "create_time": "2024-11-30T14:05:16+00:00",
+  "update_time": "2024-11-30T14:05:16+00:00",
+  "function": {
+    "anion": {
+      "type": "Boolean",
+      "value": "{}"
+    }
+  },
+  "local_strategy": {
+    "5": {
+      "value_convert": "default",
+      "status_code": "anion",
+      "config_item": {
+        "statusFormat": "{\"anion\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "ipmyy4nigpqcnd8q"
+      }
+    },
+    "11": {
+      "value_convert": "default",
+      "status_code": "fault",
+      "config_item": {
+        "statusFormat": "{\"fault\":\"$\"}",
+        "valueDesc": "{\"label\":[\"0\",\"1\",\"2\",\"3\",\"4\",\"5\"]}",
+        "valueType": "Bitmap",
+        "enumMappingMap": {},
+        "pid": "ipmyy4nigpqcnd8q"
+      }
+    },
+    "13": {
+      "value_convert": "default",
+      "status_code": "countdown_left",
+      "config_item": {
+        "statusFormat": "{\"countdown_left\":\"$\"}",
+        "valueDesc": "{\"unit\":\"min\",\"min\":0,\"max\":1440,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "ipmyy4nigpqcnd8q"
+      }
+    }
+  },
+  "status_range": {
+    "anion": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "fault": {
+      "type": "Bitmap",
+      "value": "{\"label\":[\"0\",\"1\",\"2\",\"3\",\"4\",\"5\"]}",
+      "report_type": null
+    },
+    "countdown_left": {
+      "type": "Integer",
+      "value": "{\"unit\":\"min\",\"min\":0,\"max\":1440,\"scale\":0,\"step\":1}",
+      "report_type": null
+    }
+  },
+  "status": {
+    "anion": false,
+    "fault": 8,
+    "countdown_left": 0
+  },
+  "set_up": true,
+  "support_local": true,
+  "quirk": null,
+  "warnings": null
+}

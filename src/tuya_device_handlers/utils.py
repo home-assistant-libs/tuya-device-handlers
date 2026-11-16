@@ -10,8 +10,8 @@ from .type_information import IntegerTypeInformation
 class RemapHelper:
     """Helper class for remapping values."""
 
-    source_min: int
-    source_max: int
+    source_min: float
+    source_max: float
     target_min: float
     target_max: float
 
@@ -22,10 +22,15 @@ class RemapHelper:
         target_min: float,
         target_max: float,
     ) -> Self:
-        """Create RemapHelper from IntegerTypeInformation."""
+        """Create RemapHelper from IntegerTypeInformation.
+
+        The source range uses the scaled min/max so that callers can feed
+        values straight from `TypeInformation.read_device_value` /
+        `_read_dpcode_value` (both of which return scaled values).
+        """
         return cls(
-            source_min=type_information.min,
-            source_max=type_information.max,
+            source_min=type_information.scale_value(type_information.min),
+            source_max=type_information.scale_value(type_information.max),
             target_min=target_min,
             target_max=target_max,
         )

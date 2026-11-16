@@ -35,29 +35,42 @@ Request features on the [Issue Tracker].
 
 ## How to set up your development environment
 
-You need Python 3.13+ and [Poetry].
+The easiest way to get started is to use the [Dev Container][devcontainer]:
 
-Install the package with development requirements:
+[![Open in Dev Containers][devcontainer-shield]][devcontainer]
+
+This gives you a fully configured environment with Python, uv,
+Node.js, and all development tools pre-installed.
+
+[devcontainer]: https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/home-assistant-libs/tuya-device-handlers
+[devcontainer-shield]: https://img.shields.io/static/v1?label=Dev%20Containers&message=Open&color=blue&logo=visualstudiocode
+
+### Manual setup
+
+You need [uv] (which also installs Python) and [Node.js] (for Prettier).
 
 ```console
-$ poetry install
+$ npm install
+$ uv sync
+$ uv run prek install
 ```
 
-[poetry]: https://python-poetry.org/
+[uv]: https://docs.astral.sh/uv/
+[node.js]: https://nodejs.org/
 
 ## How to test the project
 
 Run the test suite:
 
 ```console
-$ poetry run pytest --cov tuya_device_handlers tests
+$ uv run pytest --cov tuya_device_handlers tests
 ```
 
 Run linting and type checking:
 
 ```console
-$ poetry run ruff check .
-$ poetry run ty check src tests
+$ uv run ruff check .
+$ uv run ty check src tests
 ```
 
 Unit tests are located in the _tests_ directory,
@@ -79,7 +92,7 @@ Feel free to submit early, though—we can always iterate on this.
 To install pre-commit hooks for local development:
 
 ```console
-$ poetry run prek install
+$ uv run prek install
 ```
 
 It is recommended to open an issue before starting work on anything.
@@ -90,3 +103,10 @@ This will allow a chance to talk it over with the owners and validate your appro
 <!-- github-only -->
 
 [code of conduct]: CODE_OF_CONDUCT.md
+
+## AI policy
+
+This project follows the [Open Home Foundation AI Policy](../AI_POLICY.md). In
+short: AI tools are welcome as an aid, but you must fully understand and be
+able to explain every change you submit. Contributions made by autonomous
+agents are not accepted.

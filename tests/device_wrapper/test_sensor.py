@@ -1,27 +1,43 @@
 """Test DeviceWrapper classes."""
 
+from datetime import UTC, datetime, timedelta
 from typing import Any
+from unittest.mock import patch
 
 import pytest
 from syrupy.assertion import SnapshotAssertion
 from tuya_sharing import CustomerDevice
 
+from tests import create_device
 from tuya_device_handlers.device_wrapper import DeviceWrapper
 from tuya_device_handlers.device_wrapper.common import (
     DPCodeTypeInformationWrapper,
 )
 from tuya_device_handlers.device_wrapper.sensor import (
     DeltaIntegerWrapper,
+    ElectricityApparentPowerHexStringWrapper,
+    ElectricityApparentPowerJsonWrapper,
+    ElectricityApparentPowerRawWrapper,
+    ElectricityCurrentHexStringWrapper,
     ElectricityCurrentJsonWrapper,
     ElectricityCurrentRawWrapper,
+    ElectricityPowerFactorHexStringWrapper,
+    ElectricityPowerFactorJsonWrapper,
+    ElectricityPowerFactorRawWrapper,
+    ElectricityPowerHexStringWrapper,
     ElectricityPowerJsonWrapper,
     ElectricityPowerRawWrapper,
+    ElectricityReactivePowerHexStringWrapper,
+    ElectricityReactivePowerJsonWrapper,
+    ElectricityReactivePowerRawWrapper,
+    ElectricityVoltageHexStringWrapper,
     ElectricityVoltageJsonWrapper,
     ElectricityVoltageRawWrapper,
+    RemainingTimeTimestampWrapper,
     WindDirectionEnumWrapper,
 )
 
-from . import send_wrapper_update
+from . import inject_dpcode, send_wrapper_update
 
 
 def _snapshot_sensor(
@@ -44,7 +60,7 @@ def _snapshot_sensor(
 @pytest.mark.parametrize(
     ("wrapper_type", "dpcode", "status_range", "status"),
     [
-        (
+        pytest.param(
             WindDirectionEnumWrapper,
             "demo_enum",
             (
@@ -55,48 +71,140 @@ def _snapshot_sensor(
                 '"north_north_west"]}'
             ),
             "north_north_east",
+            id="WindDirectionEnumWrapper",
         ),
-        (
+        pytest.param(
             DeltaIntegerWrapper,
             "demo_integer_sum",
             '{"unit": "%","min": 0,"max": 1000,"scale": 1,"step": 1}',
             123,
+            id="DeltaIntegerWrapper",
         ),
-        (
+        pytest.param(
             ElectricityCurrentJsonWrapper,
             "demo_json",
             "{}",
             '{"electricCurrent": 599.552, "power": 6.912, "voltage": 52.7}',
+            id="ElectricityCurrentJsonWrapper",
         ),
-        (
+        pytest.param(
             ElectricityPowerJsonWrapper,
             "demo_json",
             "{}",
             '{"electricCurrent": 599.552, "power": 6.912, "voltage": 52.7}',
+            id="ElectricityPowerJsonWrapper",
         ),
-        (
+        pytest.param(
             ElectricityVoltageJsonWrapper,
             "demo_json",
             "{}",
             '{"electricCurrent": 599.552, "power": 6.912, "voltage": 52.7}',
+            id="ElectricityVoltageJsonWrapper",
         ),
-        (
+        pytest.param(
+            ElectricityReactivePowerJsonWrapper,
+            "demo_json",
+            "{}",
+            '{"reactivePower": 0.5, "apparentPower": 0.9, "powerFactor": 0.9}',
+            id="ElectricityReactivePowerJsonWrapper",
+        ),
+        pytest.param(
+            ElectricityApparentPowerJsonWrapper,
+            "demo_json",
+            "{}",
+            '{"reactivePower": 0.5, "apparentPower": 0.9, "powerFactor": 0.9}',
+            id="ElectricityApparentPowerJsonWrapper",
+        ),
+        pytest.param(
+            ElectricityPowerFactorJsonWrapper,
+            "demo_json",
+            "{}",
+            '{"reactivePower": 0.5, "apparentPower": 0.9, "powerFactor": 0.9}',
+            id="ElectricityPowerFactorJsonWrapper",
+        ),
+        pytest.param(
             ElectricityCurrentRawWrapper,
             "demo_raw",
             "{}",
             "Ag8JJQAASAAACAAAAAAACGME",
+            id="ElectricityCurrentRawWrapper",
         ),
-        (
+        pytest.param(
             ElectricityPowerRawWrapper,
             "demo_raw",
             "{}",
             "Ag8JJQAASAAACAAAAAAACGME",
+            id="ElectricityPowerRawWrapper",
         ),
-        (
+        pytest.param(
             ElectricityVoltageRawWrapper,
             "demo_raw",
             "{}",
             "Ag8JJQAASAAACAAAAAAACGME",
+            id="ElectricityVoltageRawWrapper",
+        ),
+        pytest.param(
+            ElectricityReactivePowerRawWrapper,
+            "demo_raw",
+            "{}",
+            "Ag8JJQAASAAACAAAAAAACGME",
+            id="ElectricityReactivePowerRawWrapper",
+        ),
+        pytest.param(
+            ElectricityApparentPowerRawWrapper,
+            "demo_raw",
+            "{}",
+            "Ag8JJQAASAAACAAAAAAACGME",
+            id="ElectricityApparentPowerRawWrapper",
+        ),
+        pytest.param(
+            ElectricityPowerFactorRawWrapper,
+            "demo_raw",
+            "{}",
+            "Ag8JJQAASAAACAAAAAAACGME",
+            id="ElectricityPowerFactorRawWrapper",
+        ),
+        pytest.param(
+            ElectricityCurrentHexStringWrapper,
+            "demo_string",
+            "{}",
+            "020F09010027100008FC0001F400092E6200",
+            id="ElectricityCurrentHexStringWrapper",
+        ),
+        pytest.param(
+            ElectricityPowerHexStringWrapper,
+            "demo_string",
+            "{}",
+            "020F09010027100008FC0001F400092E6200",
+            id="ElectricityPowerHexStringWrapper",
+        ),
+        pytest.param(
+            ElectricityVoltageHexStringWrapper,
+            "demo_string",
+            "{}",
+            "020F09010027100008FC0001F400092E6200",
+            id="ElectricityVoltageHexStringWrapper",
+        ),
+        pytest.param(
+            ElectricityReactivePowerHexStringWrapper,
+            "demo_string",
+            "{}",
+            "020F09010027100008FC0001F400092E6200",
+            id="ElectricityReactivePowerHexStringWrapper",
+        ),
+        pytest.param(
+            ElectricityApparentPowerHexStringWrapper,
+            "demo_string",
+            "{}",
+            "020F09010027100008FC0001F400092E6200",
+            id="ElectricityApparentPowerHexStringWrapper",
+        ),
+        pytest.param(
+            ElectricityPowerFactorHexStringWrapper,
+            "demo_string",
+            "{}",
+            "020F09010027100008FC0001F400092E6200",
+            id="ElectricityPowerFactorHexStringWrapper",
         ),
     ],
 )
@@ -120,7 +228,7 @@ def test_sensor_wrapper(
 @pytest.mark.parametrize(
     ("wrapper_type", "dpcode", "status_range", "status"),
     [
-        (
+        pytest.param(
             WindDirectionEnumWrapper,
             "demo_enum",
             (
@@ -131,42 +239,49 @@ def test_sensor_wrapper(
                 '"north_north_west"]}'
             ),
             "north_northh_east",
+            id="WindDirectionEnumWrapper",
         ),
-        (
-            ElectricityCurrentJsonWrapper,
-            "demo_json",
-            "{}",
-            "{}",
-        ),
-        (
-            ElectricityPowerJsonWrapper,
-            "demo_json",
-            "{}",
-            "{}",
-        ),
-        (
-            ElectricityVoltageJsonWrapper,
-            "demo_json",
-            "{}",
-            "{}",
-        ),
-        (
+        pytest.param(
             ElectricityCurrentRawWrapper,
             "demo_raw",
             "{}",
             "",
+            id="ElectricityCurrentRawWrapper",
         ),
-        (
+        pytest.param(
             ElectricityPowerRawWrapper,
             "demo_raw",
             "{}",
             "",
+            id="ElectricityPowerRawWrapper",
         ),
-        (
+        pytest.param(
             ElectricityVoltageRawWrapper,
             "demo_raw",
             "{}",
             "",
+            id="ElectricityVoltageRawWrapper",
+        ),
+        pytest.param(
+            ElectricityReactivePowerRawWrapper,
+            "demo_raw",
+            "{}",
+            "",
+            id="ElectricityReactivePowerRawWrapper",
+        ),
+        pytest.param(
+            ElectricityApparentPowerRawWrapper,
+            "demo_raw",
+            "{}",
+            "",
+            id="ElectricityApparentPowerRawWrapper",
+        ),
+        pytest.param(
+            ElectricityPowerFactorRawWrapper,
+            "demo_raw",
+            "{}",
+            "",
+            id="ElectricityPowerFactorRawWrapper",
         ),
     ],
 )
@@ -187,6 +302,98 @@ def test_sensor_invalid_value(
 
     # All wrappers return None if status is None
     mock_device.status[dpcode] = None
+    assert wrapper.read_device_status(mock_device) is None
+
+
+@pytest.mark.parametrize(
+    "wrapper_type",
+    [
+        ElectricityCurrentRawWrapper,
+        ElectricityPowerRawWrapper,
+        ElectricityVoltageRawWrapper,
+        ElectricityReactivePowerRawWrapper,
+        ElectricityApparentPowerRawWrapper,
+        ElectricityPowerFactorRawWrapper,
+    ],
+)
+def test_raw_sensor_not_found(
+    wrapper_type: type[DPCodeTypeInformationWrapper[Any, Any, Any]],
+    mock_device: CustomerDevice,
+) -> None:
+    """Test raw wrappers are not found if the payload is truncated."""
+    dpcode = "demo_raw"
+    mock_device.status_range[dpcode].values = "{}"
+
+    # The wrapper is not found if the dpcode is not available
+    assert wrapper_type.find_dpcode(mock_device, "bad") is None
+
+    mock_device.status[dpcode] = "AAA="
+    assert wrapper_type.find_dpcode(mock_device, dpcode) is None
+
+    # The wrapper is found if the device has not reported a status yet
+    mock_device.status[dpcode] = ""
+    assert wrapper_type.find_dpcode(mock_device, dpcode)
+
+
+@pytest.mark.parametrize(
+    "wrapper_type",
+    [
+        ElectricityCurrentHexStringWrapper,
+        ElectricityPowerHexStringWrapper,
+        ElectricityVoltageHexStringWrapper,
+        ElectricityReactivePowerHexStringWrapper,
+        ElectricityApparentPowerHexStringWrapper,
+        ElectricityPowerFactorHexStringWrapper,
+    ],
+)
+def test_hex_string_sensor_not_found(
+    wrapper_type: type[DPCodeTypeInformationWrapper[Any, Any, Any]],
+    mock_device: CustomerDevice,
+) -> None:
+    """Test hex string wrappers are not found if the payload is invalid."""
+    dpcode = "demo_string"
+    mock_device.status_range[dpcode].values = "{}"
+
+    # The wrapper is not found if the dpcode is not available
+    assert wrapper_type.find_dpcode(mock_device, "bad") is None
+
+    mock_device.status[dpcode] = "not-hex"
+    assert wrapper_type.find_dpcode(mock_device, dpcode) is None
+
+    # The wrapper is found if the device has not reported a status yet
+    mock_device.status[dpcode] = ""
+    assert wrapper_type.find_dpcode(mock_device, dpcode)
+
+
+@pytest.mark.parametrize(
+    "wrapper_type",
+    [
+        ElectricityCurrentJsonWrapper,
+        ElectricityPowerJsonWrapper,
+        ElectricityVoltageJsonWrapper,
+        ElectricityReactivePowerJsonWrapper,
+        ElectricityApparentPowerJsonWrapper,
+        ElectricityPowerFactorJsonWrapper,
+    ],
+)
+def test_json_attribute_sensor_not_found(
+    wrapper_type: type[DPCodeTypeInformationWrapper[Any, Any, Any]],
+    mock_device: CustomerDevice,
+) -> None:
+    """Test JSON attribute wrappers are not found if the value is missing."""
+    dpcode = "demo_json"
+    mock_device.status_range[dpcode].values = "{}"
+
+    # The wrapper is not found if the dpcode is not available
+    assert wrapper_type.find_dpcode(mock_device, "bad") is None
+
+    # The wrapper is not found if the device does not report the attribute
+    mock_device.status[dpcode] = "{}"
+    assert wrapper_type.find_dpcode(mock_device, dpcode) is None
+
+    # The wrapper is found if the device has not reported a status yet
+    mock_device.status[dpcode] = None
+    assert (wrapper := wrapper_type.find_dpcode(mock_device, dpcode))
     assert wrapper.read_device_status(mock_device) is None
 
 
@@ -277,3 +484,213 @@ def test_delta_sensor(
         None,
     )
     assert wrapper.read_device_status(mock_device) == 35  # unchanged
+
+
+def test_electricity_raw_wrappers_real_device(
+    snapshot: SnapshotAssertion,
+) -> None:
+    """Test the electricity raw wrappers against a real v02 phase frame.
+
+    `dlq_cnpkf4xdmd9v49iq` is the only device fixture carrying an 18-byte
+    v02 frame, so it is the only real-world check that the six-parameter
+    layout is decoded the way the device reports it.
+    """
+    device = create_device("dlq_cnpkf4xdmd9v49iq.json")
+    dpcode = "phase_a"
+
+    states = {}
+    for wrapper_type in (
+        ElectricityCurrentRawWrapper,
+        ElectricityPowerRawWrapper,
+        ElectricityVoltageRawWrapper,
+        ElectricityReactivePowerRawWrapper,
+        ElectricityApparentPowerRawWrapper,
+        ElectricityPowerFactorRawWrapper,
+    ):
+        wrapper = wrapper_type.find_dpcode(device, dpcode)
+        assert wrapper
+        states[wrapper_type.__name__] = wrapper.read_device_status(device)
+
+    assert states == snapshot
+
+
+def test_electricity_json_wrappers_real_device(
+    snapshot: SnapshotAssertion,
+) -> None:
+    """Test the electricity JSON wrappers against a real zndb meter.
+
+    `zndb_iow5ux77dxy3yrpj` reports the phase datapoints as JSON, so it is
+    the real-world check that the six JSON keys (including reactive/apparent
+    power and power factor) are read the way the meter reports them.
+    """
+    device = create_device("zndb_iow5ux77dxy3yrpj.json")
+    dpcode = "phase_a"
+
+    states = {}
+    for wrapper_type in (
+        ElectricityCurrentJsonWrapper,
+        ElectricityPowerJsonWrapper,
+        ElectricityVoltageJsonWrapper,
+        ElectricityReactivePowerJsonWrapper,
+        ElectricityApparentPowerJsonWrapper,
+        ElectricityPowerFactorJsonWrapper,
+    ):
+        wrapper = wrapper_type.find_dpcode(device, dpcode)
+        assert wrapper
+        states[wrapper_type.__name__] = wrapper.read_device_status(device)
+
+    assert states == snapshot
+
+
+def test_electricity_hex_string_wrappers_real_device(
+    snapshot: SnapshotAssertion,
+) -> None:
+    """Test the electricity hex-string wrappers against a real zndb meter.
+
+    `zndb_uqzhc4bx5zqwpg2m` is a multi-metering meter that reports its phase
+    datapoints as hex-encoded frame strings (`phase_s*`), so it is the
+    real-world check that the hex-string wrappers decode the frame the way
+    the meter reports it.
+    """
+    device = create_device("zndb_uqzhc4bx5zqwpg2m.json")
+    dpcode = "phase_s1"
+
+    states = {}
+    for wrapper_type in (
+        ElectricityCurrentHexStringWrapper,
+        ElectricityPowerHexStringWrapper,
+        ElectricityVoltageHexStringWrapper,
+        ElectricityReactivePowerHexStringWrapper,
+        ElectricityApparentPowerHexStringWrapper,
+        ElectricityPowerFactorHexStringWrapper,
+    ):
+        wrapper = wrapper_type.find_dpcode(device, dpcode)
+        assert wrapper
+        states[wrapper_type.__name__] = wrapper.read_device_status(device)
+
+    assert states == snapshot
+
+
+@pytest.mark.parametrize(
+    ("unit", "remaining", "expected"),
+    [
+        ("min", 90, datetime(2024, 1, 1, 13, 30, tzinfo=UTC)),
+        ("s", 90, datetime(2024, 1, 1, 12, 1, 30, tzinfo=UTC)),
+        ("h", 2, datetime(2024, 1, 1, 14, 0, tzinfo=UTC)),
+        ("min", 0, None),
+        ("%", 90, None),
+        ("", 90, None),
+    ],
+)
+def test_remaining_time_timestamp_units(
+    mock_device: CustomerDevice,
+    unit: str,
+    remaining: int,
+    expected: datetime | None,
+) -> None:
+    """Test RemainingTimeTimestampWrapper converts the time units."""
+    dpcode = "demo_countdown_left"
+    inject_dpcode(
+        mock_device,
+        dpcode,
+        remaining,
+        dptype="Integer",
+        values=(
+            f'{{"unit": "{unit}", "min": 0, "max": 1440, '
+            '"scale": 0, "step": 1}'
+        ),
+    )
+    wrapper = RemainingTimeTimestampWrapper.find_dpcode(mock_device, dpcode)
+    assert wrapper
+    assert wrapper.native_unit is None
+
+    now = datetime(2024, 1, 1, 12, 0, tzinfo=UTC)
+    with patch(
+        "tuya_device_handlers.device_wrapper.sensor._utcnow", return_value=now
+    ):
+        assert wrapper.read_device_status(mock_device) == expected
+
+
+def test_remaining_time_timestamp_now(
+    mock_device: CustomerDevice,
+) -> None:
+    """Test RemainingTimeTimestampWrapper uses the current time."""
+    dpcode = "demo_countdown_left"
+    inject_dpcode(
+        mock_device,
+        dpcode,
+        90,
+        dptype="Integer",
+        values='{"unit": "min", "min": 0, "max": 1440, "scale": 0, "step": 1}',
+    )
+    wrapper = RemainingTimeTimestampWrapper.find_dpcode(mock_device, dpcode)
+    assert wrapper
+
+    before = datetime.now(UTC)
+    end_time = wrapper.read_device_status(mock_device)
+    after = datetime.now(UTC)
+    assert end_time is not None
+    assert (
+        before + timedelta(minutes=90)
+        <= end_time
+        <= after + timedelta(minutes=90)
+    )
+
+
+def test_remaining_time_timestamp_sensor(
+    mock_device: CustomerDevice,
+) -> None:
+    """Test RemainingTimeTimestampWrapper keeps a stable end time."""
+    dpcode = "demo_countdown_left"
+    inject_dpcode(
+        mock_device,
+        dpcode,
+        90,
+        dptype="Integer",
+        values='{"unit": "min", "min": 0, "max": 1440, "scale": 0, "step": 1}',
+    )
+    wrapper = RemainingTimeTimestampWrapper.find_dpcode(mock_device, dpcode)
+    assert wrapper
+
+    now = datetime(2024, 1, 1, 12, 0, tzinfo=UTC)
+    with patch(
+        "tuya_device_handlers.device_wrapper.sensor._utcnow"
+    ) as mock_utcnow:
+        mock_utcnow.return_value = now
+        assert wrapper.read_device_status(mock_device) == datetime(
+            2024, 1, 1, 13, 30, tzinfo=UTC
+        )
+
+        # Unrelated update: skipped
+        assert wrapper.skip_update(mock_device, ["demo_integer"])
+
+        # The device counts down, reported with some delay: the end time
+        # stays stable, and the update is skipped
+        mock_utcnow.return_value = now + timedelta(seconds=80)
+        mock_device.status[dpcode] = 89
+        assert wrapper.skip_update(mock_device, [dpcode])
+        assert wrapper.read_device_status(mock_device) == datetime(
+            2024, 1, 1, 13, 30, tzinfo=UTC
+        )
+
+        # A new countdown is set: the end time moves
+        mock_utcnow.return_value = now + timedelta(minutes=2)
+        mock_device.status[dpcode] = 240
+        assert not wrapper.skip_update(mock_device, [dpcode])
+        assert wrapper.read_device_status(mock_device) == datetime(
+            2024, 1, 1, 16, 2, tzinfo=UTC
+        )
+
+        # The countdown is cancelled
+        mock_device.status[dpcode] = 0
+        assert not wrapper.skip_update(mock_device, [dpcode])
+        assert wrapper.read_device_status(mock_device) is None
+
+        # A new countdown started shortly after does not reuse the
+        # previous end time
+        mock_utcnow.return_value = now + timedelta(minutes=2, seconds=30)
+        mock_device.status[dpcode] = 240
+        assert not wrapper.skip_update(mock_device, [dpcode])
+        assert wrapper.read_device_status(mock_device) == datetime(
+            2024, 1, 1, 16, 2, 30, tzinfo=UTC
+        )

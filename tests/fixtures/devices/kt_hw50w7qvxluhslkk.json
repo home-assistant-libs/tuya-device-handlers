@@ -1,0 +1,145 @@
+{
+  "endpoint": "https://apigw.tuyaus.com",
+  "mqtt_connected": true,
+  "disabled_by": null,
+  "disabled_polling": false,
+  "name": "HVAC",
+  "category": "kt",
+  "product_id": "hw50w7qvxluhslkk",
+  "product_name": "Air conditioner",
+  "online": true,
+  "sub": false,
+  "time_zone": "-08:00",
+  "active_time": "2025-08-31T18:47:41+00:00",
+  "create_time": "2025-08-31T18:47:41+00:00",
+  "update_time": "2025-08-31T18:47:41+00:00",
+  "function": {
+    "switch": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "temp_set": {
+      "type": "Integer",
+      "value": "{\"unit\":\"\u2103\",\"min\":160,\"max\":880,\"scale\":1,\"step\":5}"
+    },
+    "mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"cold\",\"hot\",\"wet\",\"wind\",\"auto\"]}"
+    },
+    "temp_set_f": {
+      "type": "Integer",
+      "value": "{\"unit\":\"\u2109\",\"min\":61,\"max\":88,\"scale\":0,\"step\":1}"
+    }
+  },
+  "status_range": {
+    "switch": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "temp_set": {
+      "type": "Integer",
+      "value": "{\"unit\":\"\u2103\",\"min\":160,\"max\":880,\"scale\":1,\"step\":5}",
+      "report_type": null
+    },
+    "temp_current": {
+      "type": "Integer",
+      "value": "{\"unit\":\"\u2103\",\"min\":-20,\"max\":100,\"scale\":0,\"step\":1}",
+      "report_type": "un_known"
+    },
+    "mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"cold\",\"hot\",\"wet\",\"wind\",\"auto\"]}",
+      "report_type": null
+    },
+    "humidity_current": {
+      "type": "Integer",
+      "value": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "temp_set_f": {
+      "type": "Integer",
+      "value": "{\"unit\":\"\u2109\",\"min\":61,\"max\":88,\"scale\":0,\"step\":1}",
+      "report_type": null
+    }
+  },
+  "status": {
+    "switch": true,
+    "temp_set": 650,
+    "temp_current": 24,
+    "mode": "hot",
+    "humidity_current": 0,
+    "temp_set_f": 61
+  },
+  "set_up": true,
+  "support_local": true,
+  "local_strategy": {
+    "1": {
+      "value_convert": "default",
+      "status_code": "switch",
+      "config_item": {
+        "statusFormat": "{\"switch\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "hw50w7qvxluhslkk"
+      }
+    },
+    "2": {
+      "value_convert": "default",
+      "status_code": "temp_set",
+      "config_item": {
+        "statusFormat": "{\"temp_set\":\"$\"}",
+        "valueDesc": "{\"unit\":\"\u2103\",\"min\":160,\"max\":880,\"scale\":1,\"step\":5}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "hw50w7qvxluhslkk"
+      }
+    },
+    "3": {
+      "value_convert": "default",
+      "status_code": "temp_current",
+      "config_item": {
+        "statusFormat": "{\"temp_current\":\"$\"}",
+        "valueDesc": "{\"unit\":\"\u2103\",\"min\":-20,\"max\":100,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "hw50w7qvxluhslkk"
+      }
+    },
+    "4": {
+      "value_convert": "default",
+      "status_code": "mode",
+      "config_item": {
+        "statusFormat": "{\"mode\":\"$\"}",
+        "valueDesc": "{\"range\":[\"cold\",\"hot\",\"wet\",\"wind\",\"auto\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "hw50w7qvxluhslkk"
+      }
+    },
+    "18": {
+      "value_convert": "default",
+      "status_code": "humidity_current",
+      "config_item": {
+        "statusFormat": "{\"humidity_current\":\"$\"}",
+        "valueDesc": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "hw50w7qvxluhslkk"
+      }
+    },
+    "136": {
+      "value_convert": "default",
+      "status_code": "temp_set_f",
+      "config_item": {
+        "statusFormat": "{\"temp_set_f\":\"$\"}",
+        "valueDesc": "{\"unit\":\"\u2109\",\"min\":61,\"max\":88,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "hw50w7qvxluhslkk"
+      }
+    }
+  },
+  "warnings": null
+}

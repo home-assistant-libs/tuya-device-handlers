@@ -1,0 +1,64 @@
+{
+  "endpoint": "https://apigw.tuyaeu.com",
+  "mqtt_connected": true,
+  "disabled_by": null,
+  "disabled_polling": false,
+  "name": "cpmgn2cf",
+  "category": "wk",
+  "product_id": "cpmgn2cf",
+  "product_name": "Thermostatic Radiator Valve",
+  "online": true,
+  "sub": false,
+  "time_zone": "+00:00",
+  "active_time": "2026-05-07T00:36:45+00:00",
+  "create_time": "2026-05-07T00:36:45+00:00",
+  "update_time": "2026-05-07T00:36:45+00:00",
+  "function": {
+    "temp_set": {
+      "type": "Integer",
+      "value": "{\"unit\":\"°C\",\"min\":10,\"max\":700,\"scale\":1,\"step\":5}"
+    },
+    "mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"holiday\",\"auto\",\"manual\",\"eco\"]}"
+    },
+    "child_lock": {
+      "type": "Boolean",
+      "value": "{}"
+    }
+  },
+  "status_range": {
+    "temp_set": {
+      "type": "Integer",
+      "value": "{\"unit\":\"°C\",\"min\":10,\"max\":700,\"scale\":1,\"step\":5}"
+    },
+    "temp_current": {
+      "type": "Integer",
+      "value": "{\"unit\":\"°C\",\"min\":0,\"max\":700,\"scale\":1,\"step\":5}",
+      "report_type": "un_known"
+    },
+    "mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"holiday\",\"auto\",\"manual\",\"eco\"]}"
+    },
+    "child_lock": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "fault": {
+      "type": "Bitmap",
+      "value": "{\"label\":[\"1\",\"2\",\"3\",\"4\",\"5\"]}"
+    }
+  },
+  "status": {
+    "temp_set": 120,
+    "temp_current": 200,
+    "mode": "comfort",
+    "child_lock": true,
+    "fault": 0
+  },
+  "local_strategy": {},
+  "set_up": true,
+  "support_local": true,
+  "warnings": null
+}

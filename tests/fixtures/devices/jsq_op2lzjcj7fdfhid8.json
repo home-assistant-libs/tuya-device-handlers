@@ -1,0 +1,131 @@
+{
+  "endpoint": "https://apigw.tuyaeu.com",
+  "mqtt_connected": true,
+  "disabled_by": null,
+  "disabled_polling": false,
+  "name": "BelleLife Diffuser",
+  "category": "jsq",
+  "product_id": "op2lzjcj7fdfhid8",
+  "product_name": "BelleLife Diffuser",
+  "online": true,
+  "sub": false,
+  "time_zone": "+03:00",
+  "active_time": "2021-11-18T16:37:29+00:00",
+  "create_time": "2021-11-18T16:37:29+00:00",
+  "update_time": "2021-11-18T16:37:29+00:00",
+  "function": {
+    "work_mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"white\",\"colour\",\"colourful1\"]}"
+    },
+    "switch_led": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"large\",\"small\",\"interval\"]}"
+    },
+    "switch_spray": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "colour_data_hsv": {
+      "type": "Json",
+      "value": "{\"maxlen\":255}"
+    }
+  },
+  "local_strategy": {
+    "6": {
+      "value_convert": "default",
+      "status_code": "work_mode",
+      "config_item": {
+        "statusFormat": "{\"work_mode\":\"$\"}",
+        "valueDesc": "{\"range\":[\"white\",\"colour\",\"colourful1\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "op2lzjcj7fdfhid8"
+      }
+    },
+    "5": {
+      "value_convert": "default",
+      "status_code": "switch_led",
+      "config_item": {
+        "statusFormat": "{\"switch_led\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "op2lzjcj7fdfhid8"
+      }
+    },
+    "2": {
+      "value_convert": "default",
+      "status_code": "mode",
+      "config_item": {
+        "statusFormat": "{\"mode\":\"$\"}",
+        "valueDesc": "{\"range\":[\"large\",\"small\",\"interval\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "op2lzjcj7fdfhid8"
+      }
+    },
+    "1": {
+      "value_convert": "default",
+      "status_code": "switch_spray",
+      "config_item": {
+        "statusFormat": "{\"switch_spray\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "op2lzjcj7fdfhid8"
+      }
+    },
+    "8": {
+      "value_convert": "dj_v1_hsv_alg",
+      "status_code": "colour_data_hsv",
+      "config_item": {
+        "statusFormat": "{\"colour_data_hsv\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Json",
+        "enumMappingMap": {},
+        "pid": "op2lzjcj7fdfhid8"
+      }
+    }
+  },
+  "status_range": {
+    "work_mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"white\",\"colour\",\"colourful1\"]}",
+      "report_type": null
+    },
+    "switch_led": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"large\",\"small\",\"interval\"]}",
+      "report_type": null
+    },
+    "switch_spray": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "colour_data_hsv": {
+      "type": "Json",
+      "value": "{}",
+      "report_type": null
+    }
+  },
+  "status": {
+    "switch_spray": false,
+    "mode": "small",
+    "switch_led": false,
+    "work_mode": "colourful1",
+    "colour_data_hsv": "{\"h\":255.0,\"s\":255.0,\"v\":0.0}"
+  },
+  "set_up": true,
+  "support_local": true
+}

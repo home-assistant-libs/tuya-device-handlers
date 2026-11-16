@@ -203,7 +203,7 @@ def get_default_definition(
         set_temperature_wrapper=set_temperature_wrapper,
         swing_wrapper=SwingModeCompositeWrapper.find_dpcode(device),
         switch_wrapper=DPCodeBooleanWrapper.find_dpcode(
-            device, "switch", prefer_function=True
+            device, ("switch", "power_switch"), prefer_function=True
         ),
         target_humidity_wrapper=DPCodeRoundedIntegerWrapper.find_dpcode(
             device, "humidity_set", prefer_function=True

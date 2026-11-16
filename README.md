@@ -7,6 +7,7 @@
 [![Tests](https://github.com/home-assistant-libs/tuya-device-handlers/workflows/Testing/badge.svg)][tests]
 [![Codecov](https://codecov.io/gh/home-assistant-libs/tuya-device-handlers/branch/main/graph/badge.svg)][codecov]
 [![OpenSSF Scorecard][scorecard-shield]][scorecard]
+[![Open in Dev Containers][devcontainer-shield]][devcontainer]
 
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)][pre-commit]
 [![ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)][ruff]
@@ -17,6 +18,8 @@
 [codecov]: https://app.codecov.io/gh/home-assistant-libs/tuya-device-handlers
 [scorecard]: https://scorecard.dev/viewer/?uri=github.com/home-assistant-libs/tuya-device-handlers
 [scorecard-shield]: https://api.scorecard.dev/projects/github.com/home-assistant-libs/tuya-device-handlers/badge
+[devcontainer]: https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/home-assistant-libs/tuya-device-handlers
+[devcontainer-shield]: https://img.shields.io/static/v1?label=Dev%20Containers&message=Open&color=blue&logo=visualstudiocode
 [pre-commit]: https://github.com/pre-commit/pre-commit
 [ruff]: https://github.com/astral-sh/ruff
 
@@ -31,6 +34,8 @@ The library is shipped to end users via Home Assistant — you do not install it
 ### 1. Find your device's `product_id` and datapoints
 
 In Home Assistant: **Settings → Devices & services → Tuya → your device → Download diagnostics**. The JSON contains the `product_id`, the cloud-reported `function` / `status_range` maps, and the current `status` values. Use these to decide what needs patching.
+
+If `function`, `status_range` and `status` are all empty, the cloud told Home Assistant nothing about the device and it gets no entities. See [Finding the datapoints](docs/unsupported-category-or-dpcode.md#finding-the-datapoints) to get them from the device's thing model instead.
 
 ### 2. Create a quirk file
 
@@ -50,7 +55,11 @@ from tuya_device_handlers.const import DPMode
         dpid=18,
         dpcode="cur_current",
         dpmode=DPMode.READ,
-        unit="mA", min=0, max=30000, scale=0, step=1,
+        unit="mA",
+        min=0,
+        max=30000,
+        scale=0,
+        step=1,
     )
     .remove_dpid(dpid=22, dpcode="phantom_dp")
     .register(TUYA_QUIRKS_REGISTRY)
@@ -59,24 +68,67 @@ from tuya_device_handlers.const import DPMode
 
 Each quirk file should contain exactly one `DeviceQuirk()...register(...)` chain at module top level — the file path is captured for reload tracking. Available builder methods include `add_dpid_boolean`, `add_dpid_bitmap`, `add_dpid_enum`, `add_dpid_integer`, and `remove_dpid`. For more complex needs (custom value scaling, platform-specific definitions), see the in-tree examples under [`src/tuya_device_handlers/devices/`][devices-dir].
 
+> **New to this and not a programmer?** For a fully worked, copy-paste walkthrough of one of the most common fixes — a device sending ENUM values (e.g. extra `mode` presets) that Home Assistant rejects as `Found invalid ENUM value ...` — see [Recipe: add missing ENUM values](docs/adding-missing-enum-values.md). It covers writing the quirk, testing it live, and opening a PR end to end.
+
+> **Entities missing — all of them, or just some?** A quirk can only rewrite a device's datapoints; turning them into entities is Home Assistant's job, and it can only do that for a category and a DPCode it knows. If a datapoint is _absent_ from the diagnostics, a quirk can add it; if it's _present_ but never becomes an entity, the fix belongs in core. See [Recipe: missing entities](docs/unsupported-category-or-dpcode.md).
+
+> **Cover position backwards?** A closed blind shows as open, or the open button closes it. See [Recipe: inverted covers](docs/inverted-covers.md).
+
 ### 3. Test it inside Home Assistant
 
 1. Restart the Tuya integration (**Settings → Devices & services → Tuya → ⋮ → Reload**). Quirks under `<config>/tuya_quirks/` are reloaded each time, so you don't need to restart Home Assistant itself.
-2. Watch the logs — you should see `Loading custom quirk module …` followed by `Loaded custom quirks. Please contribute them to https://github.com/home-assistant-libs/tuya-device-handlers`. If the import fails, the traceback is logged.
-3. Verify the device's entities reflect your changes (download diagnostics again to confirm the patched function/status_range maps).
+2. Watch the logs — you should see the warning `Loaded custom quirks. Please contribute them to https://github.com/home-assistant-libs/tuya-device-handlers`. If the import fails, the traceback is logged. The per-file `Loading custom quirk module …` lines are only logged with debug logging on for `tuya_device_handlers`.
+3. Verify the device's entities reflect your changes. Download diagnostics again: `quirk` shows the quirk file that applied, and `function` / `status_range` show the patched maps.
+4. To see reports and commands as they happen, turn on debug logging by calling the `logger.set_level` action from **Developer tools → Actions**. (**Enable debug logging** on the Tuya integration page covers the integration and `tuya_sharing`, but not this library, so it won't show quirk loading.)
+
+   ```yaml
+   action: logger.set_level
+   data:
+     tuya_device_handlers: debug
+     tuya_sharing: debug
+     homeassistant.components.tuya: debug
+   ```
+
+   Reload the Tuya integration again, so that the quirk loading is logged too. Then use the device from its app or its buttons, and try each entity from Home Assistant. Useful lines to look for (the device ID is the `id` field in your diagnostics):
+
+   | Log line                                                             | Meaning                                                                                                                                                                               |
+   | -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+   | `Loading custom quirk module …`                                      | Your quirk file was imported (an import error is logged here).                                                                                                                        |
+   | `mq _on_device_report unknown dpId: …`                               | A report arrived for a dpid with no mapping: see [Finding the datapoints](docs/unsupported-category-or-dpcode.md#finding-the-datapoints).                                             |
+   | `mq _on_device_report after strategy convert code=…,value=…`         | A report arrived and your quirk mapped its dpid to a code.                                                                                                                            |
+   | `Received update for device <id> … {'<code>': <value>}`              | Home Assistant applied the report to the device.                                                                                                                                      |
+   | `Sending commands for device <id>: [{'code': …, 'value': …}]`        | Home Assistant sent a command.                                                                                                                                                        |
+   | `response before decrypt ret = {'code': '2008', … 'success': False}` | The Tuya cloud rejected that command: a quirk can't fix that, see [Commands rejected by the cloud](docs/unsupported-category-or-dpcode.md#commands-rejected-by-the-cloud-error-2008). |
+
+   Set the log levels back afterwards (`warning`, or whatever your `configuration.yaml` sets), or restart Home Assistant.
 
 ## Contributing your quirk
 
 Once your quirk works, please open a pull request so other Home Assistant users benefit.
 
-1. Fork and clone this repository, then run `poetry install`.
+1. Fork and clone this repository, then run `uv sync`.
 2. Move your quirk file from `<config>/tuya_quirks/` to `src/tuya_device_handlers/devices/<category>/`. The filename should match `<category>_<product_id_lowercased>.py`.
-3. Add a device fixture JSON at `tests/fixtures/devices/<category>_<product_id>.json`. The easiest source is the `function`/`status_range`/`status` blocks from your Home Assistant diagnostics download.
+3. Add a device fixture JSON at `tests/fixtures/devices/<category>_<product_id>.json`. Build it from your Home Assistant diagnostics download: keep only the contents of the top-level `data` property (the captured device payload), then remove its `id`, `terminal_id`, and `home_assistant` keys. Name the file from the payload's own `category` and `product_id` fields. For example:
+
+   ```console
+   python3 -c "
+   import json
+   d = json.load(open('diagnostics.json'))['data']
+   for k in ('id', 'terminal_id', 'home_assistant'):
+       d.pop(k, None)
+   name = f\"tests/fixtures/devices/{d['category']}_{d['product_id']}.json\"
+   with open(name, 'w') as f:
+       json.dump(d, f, indent=2, ensure_ascii=False)
+       f.write('\n')
+   print(name)
+   "
+   ```
+
 4. Add a test under `tests/devices/<category>/` covering the patched behaviour.
 5. Run the test suite locally:
 
    ```console
-   poetry run pytest --cov tuya_device_handlers tests
+   uv run pytest --cov tuya_device_handlers tests
    ```
 
 6. Open a [pull request].
@@ -92,6 +144,12 @@ _Tuya quirks library_ is free and open source software.
 
 If you encounter any problems,
 please [file an issue] along with a detailed description.
+
+Device quirks are not written on request: if your device needs one, write it
+yourself following [Writing a quirk](#writing-a-quirk), then
+[contribute it](#contributing-your-quirk). Issues and pull requests without
+activity are marked as stale and then closed automatically; comment to keep
+them open.
 
 [ha-tuya]: https://www.home-assistant.io/integrations/tuya/
 [tuya-categories]: https://developer.tuya.com/en/docs/iot/standarddescription?id=K9i5ql6waswzq

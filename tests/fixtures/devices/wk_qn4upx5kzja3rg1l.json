@@ -1,0 +1,449 @@
+{
+  "endpoint": "https://apigw.tuyaus.com",
+  "mqtt_connected": true,
+  "disabled_by": null,
+  "disabled_polling": false,
+  "name": "Thermostat-ST300",
+  "category": "wk",
+  "product_id": "qn4upx5kzja3rg1l",
+  "product_name": "Thermostat-ST300",
+  "online": true,
+  "sub": false,
+  "time_zone": "-04:00",
+  "active_time": "2026-09-28T21:44:36+00:00",
+  "create_time": "2026-09-28T21:44:36+00:00",
+  "update_time": "2026-09-28T21:44:36+00:00",
+  "function": {
+    "switch": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"auto\"]}"
+    },
+    "light": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "sound": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "frost": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "valve_check": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "temp_set": {
+      "type": "Integer",
+      "value": "{\"unit\":\"℃\",\"min\":50,\"max\":370,\"scale\":1,\"step\":5}"
+    },
+    "temp_set_f": {
+      "type": "Integer",
+      "value": "{\"unit\":\"℉\",\"min\":420,\"max\":1000,\"scale\":1,\"step\":5}"
+    },
+    "upper_temp_f": {
+      "type": "Integer",
+      "value": "{\"unit\":\"℉\",\"min\":50,\"max\":99,\"scale\":0,\"step\":1}"
+    },
+    "upper_temp": {
+      "type": "Integer",
+      "value": "{\"unit\":\"℃\",\"min\":10,\"max\":40,\"scale\":0,\"step\":1}"
+    },
+    "lower_temp_f": {
+      "type": "Integer",
+      "value": "{\"unit\":\"℉\",\"min\":40,\"max\":90,\"scale\":0,\"step\":1}"
+    },
+    "temp_unit_convert": {
+      "type": "Enum",
+      "value": "{\"range\":[\"c\",\"f\"]}"
+    },
+    "lower_temp": {
+      "type": "Integer",
+      "value": "{\"unit\":\"℃\",\"min\":0,\"max\":30,\"scale\":0,\"step\":1}"
+    },
+    "level": {
+      "type": "Enum",
+      "value": "{\"range\":[\"low\",\"middle\",\"high\"]}"
+    },
+    "child_lock": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "backlight": {
+      "type": "Integer",
+      "value": "{\"unit\":\"\",\"min\":0,\"max\":255,\"scale\":0,\"step\":1}"
+    }
+  },
+  "local_strategy": {
+    "1": {
+      "value_convert": "default",
+      "status_code": "switch",
+      "config_item": {
+        "statusFormat": "{\"switch\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "qn4upx5kzja3rg1l"
+      }
+    },
+    "2": {
+      "value_convert": "default",
+      "status_code": "mode",
+      "config_item": {
+        "statusFormat": "{\"mode\":\"$\"}",
+        "valueDesc": "{\"range\":[\"auto\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "qn4upx5kzja3rg1l"
+      }
+    },
+    "6": {
+      "value_convert": "default",
+      "status_code": "light",
+      "config_item": {
+        "statusFormat": "{\"light\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "qn4upx5kzja3rg1l"
+      }
+    },
+    "7": {
+      "value_convert": "default",
+      "status_code": "sound",
+      "config_item": {
+        "statusFormat": "{\"sound\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "qn4upx5kzja3rg1l"
+      }
+    },
+    "10": {
+      "value_convert": "default",
+      "status_code": "frost",
+      "config_item": {
+        "statusFormat": "{\"frost\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "qn4upx5kzja3rg1l"
+      }
+    },
+    "11": {
+      "value_convert": "default",
+      "status_code": "valve_check",
+      "config_item": {
+        "statusFormat": "{\"valve_check\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "qn4upx5kzja3rg1l"
+      }
+    },
+    "16": {
+      "value_convert": "default",
+      "status_code": "temp_set",
+      "config_item": {
+        "statusFormat": "{\"temp_set\":\"$\"}",
+        "valueDesc": "{\"unit\":\"℃\",\"min\":50,\"max\":370,\"scale\":1,\"step\":5}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "qn4upx5kzja3rg1l"
+      }
+    },
+    "17": {
+      "value_convert": "default",
+      "status_code": "temp_set_f",
+      "config_item": {
+        "statusFormat": "{\"temp_set_f\":\"$\"}",
+        "valueDesc": "{\"unit\":\"℉\",\"min\":420,\"max\":1000,\"scale\":1,\"step\":5}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "qn4upx5kzja3rg1l"
+      }
+    },
+    "18": {
+      "value_convert": "default",
+      "status_code": "upper_temp_f",
+      "config_item": {
+        "statusFormat": "{\"upper_temp_f\":\"$\"}",
+        "valueDesc": "{\"unit\":\"℉\",\"min\":50,\"max\":99,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "qn4upx5kzja3rg1l"
+      }
+    },
+    "19": {
+      "value_convert": "default",
+      "status_code": "upper_temp",
+      "config_item": {
+        "statusFormat": "{\"upper_temp\":\"$\"}",
+        "valueDesc": "{\"unit\":\"℃\",\"min\":10,\"max\":40,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "qn4upx5kzja3rg1l"
+      }
+    },
+    "20": {
+      "value_convert": "default",
+      "status_code": "lower_temp_f",
+      "config_item": {
+        "statusFormat": "{\"lower_temp_f\":\"$\"}",
+        "valueDesc": "{\"unit\":\"℉\",\"min\":40,\"max\":90,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "qn4upx5kzja3rg1l"
+      }
+    },
+    "23": {
+      "value_convert": "default",
+      "status_code": "temp_unit_convert",
+      "config_item": {
+        "statusFormat": "{\"temp_unit_convert\":\"$\"}",
+        "valueDesc": "{\"range\":[\"c\",\"f\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "qn4upx5kzja3rg1l"
+      }
+    },
+    "24": {
+      "value_convert": "default",
+      "status_code": "temp_current",
+      "config_item": {
+        "statusFormat": "{\"temp_current\":\"$\"}",
+        "valueDesc": "{\"unit\":\"℃\",\"min\":0,\"max\":50,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "qn4upx5kzja3rg1l"
+      }
+    },
+    "26": {
+      "value_convert": "default",
+      "status_code": "lower_temp",
+      "config_item": {
+        "statusFormat": "{\"lower_temp\":\"$\"}",
+        "valueDesc": "{\"unit\":\"℃\",\"min\":0,\"max\":30,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "qn4upx5kzja3rg1l"
+      }
+    },
+    "28": {
+      "value_convert": "default",
+      "status_code": "level",
+      "config_item": {
+        "statusFormat": "{\"level\":\"$\"}",
+        "valueDesc": "{\"range\":[\"low\",\"middle\",\"high\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "qn4upx5kzja3rg1l"
+      }
+    },
+    "29": {
+      "value_convert": "default",
+      "status_code": "temp_current_f",
+      "config_item": {
+        "statusFormat": "{\"temp_current_f\":\"$\"}",
+        "valueDesc": "{\"unit\":\"℉\",\"min\":-4,\"max\":122,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "qn4upx5kzja3rg1l"
+      }
+    },
+    "34": {
+      "value_convert": "default",
+      "status_code": "humidity",
+      "config_item": {
+        "statusFormat": "{\"humidity\":\"$\"}",
+        "valueDesc": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "qn4upx5kzja3rg1l"
+      }
+    },
+    "40": {
+      "value_convert": "default",
+      "status_code": "child_lock",
+      "config_item": {
+        "statusFormat": "{\"child_lock\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "qn4upx5kzja3rg1l"
+      }
+    },
+    "42": {
+      "value_convert": "default",
+      "status_code": "countdown_left",
+      "config_item": {
+        "statusFormat": "{\"countdown_left\":\"$\"}",
+        "valueDesc": "{\"unit\":\"min\",\"min\":0,\"max\":1440,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "qn4upx5kzja3rg1l"
+      }
+    },
+    "44": {
+      "value_convert": "default",
+      "status_code": "backlight",
+      "config_item": {
+        "statusFormat": "{\"backlight\":\"$\"}",
+        "valueDesc": "{\"unit\":\"\",\"min\":0,\"max\":255,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "qn4upx5kzja3rg1l"
+      }
+    },
+    "45": {
+      "value_convert": "default",
+      "status_code": "fault",
+      "config_item": {
+        "statusFormat": "{\"fault\":\"$\"}",
+        "valueDesc": "{\"label\":[\"e1\",\"filter\",\"low_alert\",\"high_alert\",\"humidity_filter\"]}",
+        "valueType": "Bitmap",
+        "enumMappingMap": {},
+        "pid": "qn4upx5kzja3rg1l"
+      }
+    }
+  },
+  "status_range": {
+    "switch": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"auto\"]}",
+      "report_type": null
+    },
+    "light": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "sound": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "frost": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "valve_check": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "temp_set": {
+      "type": "Integer",
+      "value": "{\"unit\":\"℃\",\"min\":50,\"max\":370,\"scale\":1,\"step\":5}",
+      "report_type": null
+    },
+    "temp_set_f": {
+      "type": "Integer",
+      "value": "{\"unit\":\"℉\",\"min\":420,\"max\":1000,\"scale\":1,\"step\":5}",
+      "report_type": null
+    },
+    "upper_temp_f": {
+      "type": "Integer",
+      "value": "{\"unit\":\"℉\",\"min\":50,\"max\":99,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "upper_temp": {
+      "type": "Integer",
+      "value": "{\"unit\":\"℃\",\"min\":10,\"max\":40,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "lower_temp_f": {
+      "type": "Integer",
+      "value": "{\"unit\":\"℉\",\"min\":40,\"max\":90,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "temp_unit_convert": {
+      "type": "Enum",
+      "value": "{\"range\":[\"c\",\"f\"]}",
+      "report_type": null
+    },
+    "temp_current": {
+      "type": "Integer",
+      "value": "{\"unit\":\"℃\",\"min\":0,\"max\":50,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "lower_temp": {
+      "type": "Integer",
+      "value": "{\"unit\":\"℃\",\"min\":0,\"max\":30,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "level": {
+      "type": "Enum",
+      "value": "{\"range\":[\"low\",\"middle\",\"high\"]}",
+      "report_type": null
+    },
+    "temp_current_f": {
+      "type": "Integer",
+      "value": "{\"unit\":\"℉\",\"min\":-4,\"max\":122,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "humidity": {
+      "type": "Integer",
+      "value": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "child_lock": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "countdown_left": {
+      "type": "Integer",
+      "value": "{\"unit\":\"min\",\"min\":0,\"max\":1440,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "backlight": {
+      "type": "Integer",
+      "value": "{\"unit\":\"\",\"min\":0,\"max\":255,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "fault": {
+      "type": "Bitmap",
+      "value": "{\"label\":[\"e1\",\"filter\",\"low_alert\",\"high_alert\",\"humidity_filter\"]}",
+      "report_type": null
+    }
+  },
+  "status": {
+    "switch": true,
+    "mode": "heat",
+    "light": false,
+    "sound": true,
+    "frost": false,
+    "valve_check": false,
+    "temp_set": 50,
+    "temp_set_f": 620,
+    "upper_temp_f": 96,
+    "upper_temp": 10,
+    "lower_temp_f": 50,
+    "temp_unit_convert": "f",
+    "temp_current": 0,
+    "lower_temp": 0,
+    "level": "high",
+    "temp_current_f": 62,
+    "humidity": 70,
+    "child_lock": false,
+    "countdown_left": 480,
+    "backlight": 0,
+    "fault": 0
+  },
+  "set_up": true,
+  "support_local": true,
+  "quirk": null,
+  "warnings": ["enum_out_range|mode|heat"]
+}
