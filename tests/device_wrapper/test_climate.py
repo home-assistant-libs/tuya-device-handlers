@@ -5,9 +5,11 @@ from typing import Any
 import pytest
 from tuya_sharing import CustomerDevice
 
+from tuya_device_handlers.device_wrapper import SetValueOutOfRangeError
 from tuya_device_handlers.device_wrapper.climate import (
     DefaultHVACModeWrapper,
     DefaultPresetModeWrapper,
+    EcoPresetModeWrapper,
     SwingModeCompositeWrapper,
 )
 from tuya_device_handlers.helpers.homeassistant import (
@@ -237,3 +239,51 @@ def test_hvac_action_command(
 
     assert wrapper
     assert wrapper.get_update_commands(mock_device, action) == expected
+
+
+@pytest.mark.parametrize(
+    ("state", "expected"),
+    [(True, "eco"), (False, "comfort"), (None, None)],
+)
+def test_read_eco_preset(
+    state: bool | None,
+    expected: str | None,
+    mock_device: CustomerDevice,
+) -> None:
+    """Test reading a Boolean eco datapoint as a preset."""
+    inject_dpcode(mock_device, "eco", state, dptype="Boolean")
+    wrapper = EcoPresetModeWrapper.find_dpcode(mock_device, "eco")
+
+    assert wrapper
+    assert wrapper.options == ["eco", "comfort"]
+    assert wrapper.read_device_status(mock_device) == expected
+
+
+@pytest.mark.parametrize(
+    ("preset", "expected"),
+    [
+        ("eco", [{"code": "eco", "value": True}]),
+        ("comfort", [{"code": "eco", "value": False}]),
+    ],
+)
+def test_eco_preset_command(
+    preset: str,
+    expected: list[dict[str, Any]],
+    mock_device: CustomerDevice,
+) -> None:
+    """Test get_update_commands for a Boolean eco datapoint."""
+    inject_dpcode(mock_device, "eco", False, dptype="Boolean")
+    wrapper = EcoPresetModeWrapper.find_dpcode(mock_device, "eco")
+
+    assert wrapper
+    assert wrapper.get_update_commands(mock_device, preset) == expected
+
+
+def test_eco_preset_invalid_command(mock_device: CustomerDevice) -> None:
+    """Test get_update_commands rejects unknown presets."""
+    inject_dpcode(mock_device, "eco", False, dptype="Boolean")
+    wrapper = EcoPresetModeWrapper.find_dpcode(mock_device, "eco")
+
+    assert wrapper
+    with pytest.raises(SetValueOutOfRangeError):
+        wrapper.get_update_commands(mock_device, "boost")

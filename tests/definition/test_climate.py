@@ -4,6 +4,7 @@ import pytest
 
 from tests import create_device
 from tuya_device_handlers.definition.climate import get_default_definition
+from tuya_device_handlers.device_wrapper.climate import EcoPresetModeWrapper
 from tuya_device_handlers.device_wrapper.common import (
     DPCodeBooleanWrapper,
     DPCodeEnumWrapper,
@@ -52,3 +53,18 @@ def test_get_default_definition_with_convert(
     assert not definition.switch_wrapper
     assert not definition.swing_wrapper
     assert not definition.target_humidity_wrapper
+
+
+def test_get_default_definition_with_eco_preset() -> None:
+    """Test a Boolean eco datapoint is exposed as presets without `mode`."""
+    device = create_device("wk_IAYz2WK1th0cMLmL.json")
+    assert "mode" not in device.function
+    definition = get_default_definition(device, TuyaUnitOfTemperature.CELSIUS)
+    assert not definition.hvac_mode_wrapper
+    assert isinstance(definition.preset_wrapper, EcoPresetModeWrapper)
+    assert definition.preset_wrapper.options == ["eco", "comfort"]
+
+    device.status["eco"] = True
+    assert definition.preset_wrapper.read_device_status(device) == "eco"
+    device.status["eco"] = False
+    assert definition.preset_wrapper.read_device_status(device) == "comfort"

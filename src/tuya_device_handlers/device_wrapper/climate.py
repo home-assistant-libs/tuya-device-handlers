@@ -10,10 +10,17 @@ from tuya_device_handlers.helpers.homeassistant import (
     TuyaClimateHVACMode,
     TuyaClimateSwingMode,
 )
-from tuya_device_handlers.type_information import EnumTypeInformation
+from tuya_device_handlers.type_information import (
+    BooleanTypeInformation,
+    EnumTypeInformation,
+)
 
 from .base import DeviceWrapper
 from .common import DPCodeBooleanWrapper, DPCodeEnumWrapper
+from .exception import SetValueOutOfRangeError
+
+PRESET_COMFORT = "comfort"
+PRESET_ECO = "eco"
 
 _DEFAULT_DEVICE_MODE_TO_HVACMODE = {
     "auto": TuyaClimateHVACMode.HEAT_COOL,
@@ -215,3 +222,33 @@ class DefaultPresetModeWrapper(DPCodeEnumWrapper):
         if (raw := self._read_dpcode_value(device)) in self.options:
             return raw
         return None
+
+
+class EcoPresetModeWrapper(DPCodeBooleanWrapper[str]):
+    """Wrapper exposing a Boolean eco datapoint as climate presets.
+
+    Some thermostats have no ``mode`` Enum, only a Boolean ``eco``
+    datapoint: ``True`` is the eco preset, ``False`` the comfort preset.
+    """
+
+    def __init__(
+        self, dpcode: str, type_information: BooleanTypeInformation
+    ) -> None:
+        """Init EcoPresetModeWrapper."""
+        super().__init__(dpcode, type_information)
+        self.options = [PRESET_ECO, PRESET_COMFORT]
+
+    def read_device_status(self, device: CustomerDevice) -> str | None:
+        """Read the device status."""
+        if (raw := self._read_dpcode_value(device)) is None:
+            return None
+        return PRESET_ECO if raw else PRESET_COMFORT
+
+    def _convert_value_to_raw_value(
+        self, device: CustomerDevice, value: Any
+    ) -> Any:
+        """Convert a preset back to the raw Boolean value."""
+        if value not in self.options:
+            msg = f"Invalid preset `{value}`, expected one of {self.options}"
+            raise SetValueOutOfRangeError(msg)
+        return super()._convert_value_to_raw_value(device, value == PRESET_ECO)
