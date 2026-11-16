@@ -30,9 +30,12 @@ jobs:
 
   # Runs after the labeler, and reads the current labels rather than the event
   # payload: labels added with GITHUB_TOKEN don't trigger another run.
+  # It also runs when the labeler fails, as a skipped job would pass as a
+  # required check.
   label_check:
     name: PR label
     needs: pr_labeler
+    if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     permissions:
       pull-requests: read
