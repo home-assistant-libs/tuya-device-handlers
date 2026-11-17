@@ -186,10 +186,11 @@ from tuya_device_handlers.const import DPMode
 
 Notes for the mapping variant:
 
-- The mapping is applied to values the device pushes locally (over MQTT), so
-  the device must be a local one — you'll see `"support_local": true` in the
-  diagnostics. If in doubt, capture the raw values from the warning logs and
-  ask in the issue; a maintainer can confirm which variant fits.
+- The mapping is applied to the initial status and to values the device
+  pushes locally (over MQTT), so the device must be a local one — you'll see
+  `"support_local": true` in the diagnostics. If in doubt, capture the raw
+  values from the warning logs and ask in the issue; a maintainer can confirm
+  which variant fits.
 - Only map the raw values that differ; values that already match a range entry
   don't need an entry.
 - Keep the file to a **single** `DeviceQuirk()...register(...)` block (the two

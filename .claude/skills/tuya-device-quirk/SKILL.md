@@ -14,6 +14,7 @@ description: How to add, test and review a Tuya device quirk in this repository,
 ## Rules
 
 - A quirk can rewrite datapoints (`function`, `status_range`, `local_strategy`) and override the device category (`.override_category(...)`, e.g. `devices/tdq/tdq_a9fn0xcsckjoqpnd.py`). If the category and datapoints are already correct in the diagnostics but an entity is never created, the fix belongs in Home Assistant Core, not here (see [docs/unsupported-category-or-dpcode.md](../../../docs/unsupported-category-or-dpcode.md)).
+- Commands are sent through the Tuya cloud by DPCode, and a quirk controls what is sent but not whether the cloud accepts it. Commands for datapoints or values missing from the cloud's definition (`original_function` in diagnostics taken with a quirk active) are typically rejected with error `2008`, and the cloud may reject others too. A quirk can make such datapoints and values readable, but can't guarantee that writes work. Still declare datapoints that are meant to be writable as `DPMode.READ | DPMode.WRITE`.
 - `applies_to(product_id=...)` must use the product id exactly as it appears in the diagnostics, including case: the registry lookup is case-sensitive. Only the quirk filename is lowercased.
 - Each quirk file contains exactly one `DeviceQuirk()...register(TUYA_QUIRKS_REGISTRY)` chain at module top level. Provenance (`quirk_file`/`quirk_file_line`) and custom-quirk reload depend on it.
 - Quirk modules have a module docstring that explains what is wrong with the device and links the upstream issue when there is one.
@@ -21,7 +22,7 @@ description: How to add, test and review a Tuya device quirk in this repository,
 - For custom scaling/encoding of a single datapoint, use `.override_dpid_type_information_cls(...)` with a class from `type_information_ex.py` instead of a custom wrapper.
 - Every new quirk needs a fixture built from a real diagnostics file **and** tests that load it via `create_device("<fixture>.json")`. Where the quirk changes behaviour, tests should ideally show it both without the quirk (`patch.dict(TUYA_QUIRKS_REGISTRY._quirks, clear=True)`) and with it (`filled_quirks_registry.initialise_device_quirk(device)`). See `tests/devices/cl/test_68nvbio9.py`.
 
-For a worked example of the most common fix (missing ENUM values), see [docs/adding-missing-enum-values.md](../../../docs/adding-missing-enum-values.md).
+For a worked example of the most common fix (missing ENUM values), see [docs/adding-missing-enum-values.md](../../../docs/adding-missing-enum-values.md). For a device whose diagnostics show no datapoints at all, see [Finding the datapoints](../../../docs/unsupported-category-or-dpcode.md#finding-the-datapoints). For a cover whose position is backwards, see [docs/inverted-covers.md](../../../docs/inverted-covers.md).
 
 ## Converting a diagnostics file into a fixture
 
@@ -60,4 +61,5 @@ Check that:
 - the test file is named `test_<product_id>.py` and exercises what the quirk changes, rather than only asserting that it registers (or being a copy of the quirk);
 - the datapoints the quirk changes are actually used by this library or Home Assistant Core. If not, ask which entity is wrong and what the user sees;
 - a quirk PR does not also change shared code (`builder/`, `definition/`, `device_wrapper/`, …). If it does, ask for it to be split;
-- the change does not belong in Home Assistant Core instead (see Rules above).
+- the change does not belong in Home Assistant Core instead (see Rules above);
+- a device with `"online": false` in the diagnostics is not treated as a datapoint problem: a quirk won't make its entities available, but the datapoints can still be valid. For a Bluetooth device, ask how it's paired, as it can be offline even through a gateway (see [Offline devices](../../../docs/unsupported-category-or-dpcode.md#offline-devices)).
