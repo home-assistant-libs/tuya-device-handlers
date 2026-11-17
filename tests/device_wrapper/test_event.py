@@ -53,7 +53,7 @@ from tuya_device_handlers.device_wrapper.event import (
         (
             IntegerUserIdEventWrapper,
             "demo_integer",
-            3,
+            30,  # demo_integer has scale 1
             ("triggered", {"user_id": 3}),
         ),
     ],

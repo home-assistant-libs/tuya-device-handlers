@@ -114,6 +114,6 @@ class IntegerUserIdEventWrapper(
         self, device: CustomerDevice
     ) -> tuple[str, dict[str, Any]] | None:
         """Return the event with the user id attribute."""
-        if (raw_value := device.status.get(self.dpcode)) is None:
+        if (value := self._read_dpcode_value(device)) is None:
             return None
-        return ("triggered", {"user_id": int(raw_value)})
+        return ("triggered", {"user_id": int(value)})
