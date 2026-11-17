@@ -16,6 +16,8 @@ from tuya_device_handlers.device_wrapper.event import (
     SimpleEventEnumWrapper,
 )
 
+from . import inject_dpcode
+
 
 @pytest.mark.parametrize(
     ("wrapper_type", "dpcode", "status", "expected_device_status"),
@@ -105,3 +107,27 @@ def test_integer_user_id_event_options(
 
     assert wrapper
     assert wrapper.options == ["triggered"]
+
+
+def test_integer_user_id_event_range(mock_device: CustomerDevice) -> None:
+    """Test integer user id wrapper with a lock unlock datapoint."""
+    inject_dpcode(
+        mock_device,
+        "unlock_fingerprint",
+        3,
+        dptype="Integer",
+        values='{"min": 0, "max": 999, "scale": 0, "step": 1}',
+    )
+    wrapper = IntegerUserIdEventWrapper.find_dpcode(
+        mock_device, "unlock_fingerprint"
+    )
+
+    assert wrapper
+    assert wrapper.read_device_status(mock_device) == (
+        "triggered",
+        {"user_id": 3},
+    )
+
+    # A value outside the datapoint range is not an event
+    mock_device.status["unlock_fingerprint"] = 1000
+    assert wrapper.read_device_status(mock_device) is None
