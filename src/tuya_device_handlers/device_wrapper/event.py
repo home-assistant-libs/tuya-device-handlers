@@ -77,7 +77,7 @@ class Base64Utf8RawEventWrapper(DPCodeRawWrapper[tuple[str, dict[str, Any]]]):
 class BooleanTriggerEventWrapper(DPCodeBooleanWrapper[tuple[str, None]]):
     """Wrapper for Boolean DP codes pushed as true when something happens.
 
-    Locks report e.g. `doorbell: true` or `hijack: true` and never reset the
+    Locks report e.g. `hijack: true` or `open_inside: true` and never reset the
     value, so a binary sensor would stay on forever. Raises a 'triggered'
     event whenever the DP code is reported as true; false is ignored.
     """
