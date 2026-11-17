@@ -36,6 +36,46 @@ from . import inject_dpcode
             TuyaVacuumActivity.RETURNING,
         ),
         (
+            "status_wrapper",
+            {"status": "base_charging"},
+            TuyaVacuumActivity.DOCKED,
+        ),
+        (
+            "status_wrapper",
+            {"status": "adapter_charging"},
+            TuyaVacuumActivity.DOCKED,
+        ),
+        (
+            "status_wrapper",
+            {"status": "continuation_charging"},
+            TuyaVacuumActivity.DOCKED,
+        ),
+        (
+            "status_wrapper",
+            {"status": "base_sleeping"},
+            TuyaVacuumActivity.DOCKED,
+        ),
+        (
+            "status_wrapper",
+            {"status": "adapter_sleeping"},
+            TuyaVacuumActivity.DOCKED,
+        ),
+        (
+            "status_wrapper",
+            {"status": "edge"},
+            TuyaVacuumActivity.CLEANING,
+        ),
+        (
+            "status_wrapper",
+            {"status": "explore"},
+            TuyaVacuumActivity.CLEANING,
+        ),
+        (
+            "status_wrapper",
+            {"status": "explore_clean"},
+            TuyaVacuumActivity.CLEANING,
+        ),
+        (
             "pause_wrapper",
             {"pause": True},
             TuyaVacuumActivity.PAUSED,
@@ -61,7 +101,7 @@ def test_read_device_status(
             "status",
             "charge_done",
             dptype="Enum",
-            values='{"range": ["standby","zone_clean","part_clean","cleaning","paused","goto_pos","pos_arrived","pos_unarrive","goto_charge","charging","charge_done","sleep"]}',  # noqa: E501
+            values='{"range": ["standby","zone_clean","part_clean","cleaning","paused","goto_pos","pos_arrived","pos_unarrive","goto_charge","charging","charge_done","sleep","adapter_charging","adapter_sleeping","base_charging","base_sleeping","continuation_charging","edge","explore","explore_clean"]}',  # noqa: E501
         )
 
     mock_device.status.update(status_updates)
