@@ -113,12 +113,10 @@ class IntegerUserIdEventWrapper(
     door. Raises a 'triggered' event with the user id in the attributes.
     """
 
-    _EVENT_TYPE = "triggered"
-
     def __init__(self, dpcode: str, type_information: Any) -> None:
         """Init IntegerUserIdEventWrapper."""
         super().__init__(dpcode, type_information)
-        self.options = [self._EVENT_TYPE]
+        self.options = ["triggered"]
 
     def read_device_status(
         self, device: CustomerDevice
@@ -126,10 +124,4 @@ class IntegerUserIdEventWrapper(
         """Return the event with the user id attribute."""
         if (raw_value := device.status.get(self.dpcode)) is None:
             return None
-        return (self._EVENT_TYPE, {"user_id": int(raw_value)})
-
-
-class UnlockUserIdEventWrapper(IntegerUserIdEventWrapper):
-    """Integer user id wrapper raising an 'unlocked' event (lock unlock DPs)."""
-
-    _EVENT_TYPE = "unlocked"
+        return ("triggered", {"user_id": int(raw_value)})
