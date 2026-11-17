@@ -246,7 +246,6 @@ class ElectricityCurrentRawWrapper(_ElectricityRawWrapper):
 
     _ATTRIBUTE_NAME = "current"
     native_unit = "mA"
-    suggested_unit = "A"
 
 
 class ElectricityPowerRawWrapper(_ElectricityRawWrapper):
@@ -254,7 +253,6 @@ class ElectricityPowerRawWrapper(_ElectricityRawWrapper):
 
     _ATTRIBUTE_NAME = "power"
     native_unit = "W"
-    suggested_unit = "kW"
 
 
 class ElectricityVoltageRawWrapper(_ElectricityRawWrapper):
@@ -269,7 +267,6 @@ class ElectricityReactivePowerRawWrapper(_ElectricityRawWrapper):
 
     _ATTRIBUTE_NAME = "reactive_power"
     native_unit = "var"
-    suggested_unit = "kvar"
 
 
 class ElectricityApparentPowerRawWrapper(_ElectricityRawWrapper):
@@ -277,7 +274,6 @@ class ElectricityApparentPowerRawWrapper(_ElectricityRawWrapper):
 
     _ATTRIBUTE_NAME = "apparent_power"
     native_unit = "VA"
-    suggested_unit = "kVA"
 
 
 class ElectricityPowerFactorRawWrapper(_ElectricityRawWrapper):
@@ -291,7 +287,6 @@ class ElectricityCurrentHexStringWrapper(_ElectricityHexStringWrapper):
 
     _ATTRIBUTE_NAME = "current"
     native_unit = "mA"
-    suggested_unit = "A"
 
 
 class ElectricityPowerHexStringWrapper(_ElectricityHexStringWrapper):
@@ -299,7 +294,6 @@ class ElectricityPowerHexStringWrapper(_ElectricityHexStringWrapper):
 
     _ATTRIBUTE_NAME = "power"
     native_unit = "W"
-    suggested_unit = "kW"
 
 
 class ElectricityVoltageHexStringWrapper(_ElectricityHexStringWrapper):
@@ -314,7 +308,6 @@ class ElectricityReactivePowerHexStringWrapper(_ElectricityHexStringWrapper):
 
     _ATTRIBUTE_NAME = "reactive_power"
     native_unit = "var"
-    suggested_unit = "kvar"
 
 
 class ElectricityApparentPowerHexStringWrapper(_ElectricityHexStringWrapper):
@@ -322,7 +315,6 @@ class ElectricityApparentPowerHexStringWrapper(_ElectricityHexStringWrapper):
 
     _ATTRIBUTE_NAME = "apparent_power"
     native_unit = "VA"
-    suggested_unit = "kVA"
 
 
 class ElectricityPowerFactorHexStringWrapper(_ElectricityHexStringWrapper):

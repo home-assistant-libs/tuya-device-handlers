@@ -85,6 +85,14 @@ _SAMPLE_MEAL_PLAN = [
         enabled=True,
     ),
 ]
+_PARTIAL_DAYS_MEAL_PLAN = [
+    FeederSchedule(
+        days=["monday", "thursday"],
+        time="12:00",
+        portion=1,
+        enabled=True,
+    ),
+]
 
 
 @pytest.mark.parametrize(
@@ -106,6 +114,11 @@ _SAMPLE_MEAL_PLAN = [
             "cwwsq_wfkzyy0evslzsmoi.json",
             None,
         ),
+        # Invalid: byte length not a multiple of 5
+        (
+            "cwwsq_wfkzyy0evslzsmoi.json",
+            "AQceAg==",
+        ),
     ],
 )
 def test_read_device_status(
@@ -123,17 +136,28 @@ def test_read_device_status(
 
 
 @pytest.mark.parametrize(
-    ("fixture_filename", "dpcode", "expected_value"),
+    ("fixture_filename", "dpcode", "meal_plan", "expected_value"),
     [
         (
             "cwwsq_wfkzyy0evslzsmoi.json",
             "meal_plan",
+            _SAMPLE_MEAL_PLAN,
             "fwkAAQF/CR4BAX8MAAEBfw8AAgF/FQACAQ==",
+        ),
+        # Partial days: Mon+Thu only, exercises the "day not in list" branch
+        (
+            "cwwsq_wfkzyy0evslzsmoi.json",
+            "meal_plan",
+            _PARTIAL_DAYS_MEAL_PLAN,
+            "CQwAAQE=",
         ),
     ],
 )
 def test_get_update_commands(
-    fixture_filename: str, dpcode: str, expected_value: str
+    fixture_filename: str,
+    dpcode: str,
+    meal_plan: list[FeederSchedule],
+    expected_value: str,
 ) -> None:
     """Test get_update_commands encodes data correctly."""
     device = create_device(fixture_filename)
@@ -143,7 +167,7 @@ def test_get_update_commands(
     )
     assert wrapper is not None
 
-    commands = wrapper.get_update_commands(device, _SAMPLE_MEAL_PLAN)
+    commands = wrapper.get_update_commands(device, meal_plan)
     assert commands == [{"code": dpcode, "value": expected_value}]
 
 
@@ -215,3 +239,36 @@ def test_get_quirk_feeder_schedule_wrapper_not_set(
 
     wrapper = get_feeder_schedule_wrapper(mock_device)
     assert wrapper is None
+
+
+class _SundayFirstFeederScheduleWrapper(DefaultFeederScheduleWrapper):
+    """Wrapper for a device using Sunday as bit 0 and Monday as bit 6."""
+
+    _DAYS_OF_WEEK = (
+        "sunday",
+        "saturday",
+        "friday",
+        "thursday",
+        "wednesday",
+        "tuesday",
+        "monday",
+    )
+
+
+def test_days_of_week_override() -> None:
+    """Test a subclass can change the order of the days bitmask."""
+    device = create_device("cwwsq_wfkzyy0evslzsmoi.json")
+    wrapper = _SundayFirstFeederScheduleWrapper.find_dpcode(
+        device, "meal_plan", prefer_function=True
+    )
+    assert wrapper is not None
+
+    # Entries: (days bitmask, hour, minute, portion, enabled)
+    device.status["meal_plan"] = "AQwAAQFADAABAQ=="  # 0x01 and 0x40, 12:00
+    meal_plan = wrapper.read_device_status(device)
+    assert meal_plan is not None
+    assert [entry["days"] for entry in meal_plan] == [["sunday"], ["monday"]]
+
+    assert wrapper.get_update_commands(device, meal_plan) == [
+        {"code": "meal_plan", "value": "AQwAAQFADAABAQ=="}
+    ]

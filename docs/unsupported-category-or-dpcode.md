@@ -22,6 +22,7 @@ only do that for a **device category** and a **DPCode** it knows about.
 | A datapoint **is in the diagnostics** but never becomes an entity                                                    | [home-assistant/core](https://github.com/home-assistant/core)                              |
 | Device creates **no entities at all** and its category is unknown to core                                            | [home-assistant/core](https://github.com/home-assistant/core)                              |
 | Entities show the right state, but the **cloud rejects commands** with error `2008`                                  | Neither — see [Commands rejected by the cloud](#commands-rejected-by-the-cloud-error-2008) |
+| Entities exist but are **unavailable**, and the diagnostics show `"online": false`                                   | Neither — see [Offline devices](#offline-devices)                                          |
 
 The discriminator for a missing entity is simple:
 
@@ -55,13 +56,122 @@ would come from.
   never told Home Assistant about it. That's exactly what a quirk fixes —
   see the [main README](../README.md) and the
   [ENUM recipe](adding-missing-enum-values.md), and open an issue here with
-  your diagnostics.
+  your diagnostics. If you don't know the datapoint's dpid, see
+  [Finding the datapoints](#finding-the-datapoints) below.
 
 - **The datapoint is there, with a sensible value in `status`, but no entity
   appeared.** Nothing for a quirk to rewrite. Continue below.
 
 The same applies when _nothing_ appeared: if `function`, `status_range` and
 `status` are all populated and correct, the datapoints aren't the problem.
+
+### Finding the datapoints
+
+A quirk adds a datapoint by its dpid. When the diagnostics don't list it, the
+device may still send it in its reports, keyed by dpid, and the Tuya SDK logs
+each one it can't map. This only works when both are true:
+
+- the device has `"support_local": true` in its diagnostics: other devices
+  report by code rather than dpid;
+- the device already has at least one entity in Home Assistant: the SDK only
+  listens for reports from devices that have one.
+
+So the debug log helps when _some_ datapoints are missing. For a device with no
+entities at all, typically when `function`, `status_range`, `local_strategy`
+and `status` are all empty, read the device's thing model instead: see
+[Reading the thing model](#reading-the-thing-model) below.
+
+1. Turn on **Enable debug logging** on the Tuya integration page. It covers the
+   Tuya SDK (`tuya_sharing`).
+2. Use the device from its app or its buttons, so it sends reports.
+3. Look for lines like these:
+
+   ```text
+   mq _on_device_report-> [{'dpId': 101, 't': 1794096541000, 'value': True}]
+   mq _on_device_report unknown dpId: 101
+   ```
+
+   The first line lists the dpids and values in the report. `unknown dpId`
+   means `local_strategy` has no entry for that dpid, which is what a quirk
+   adds.
+
+Change one thing at a time on the device to tell the dpids apart: a door
+sensor's `True` / `False` flips as the door opens and closes, for example.
+Then add each datapoint with the builder method for its type, under the code
+core expects for your category (see Step 3 below). A read-only datapoint can
+take the standard code, as
+[`tdq_a9fn0xcsckjoqpnd.py`](../src/tuya_device_handlers/devices/tdq/tdq_a9fn0xcsckjoqpnd.py)
+does with `doorcontact_state`.
+
+To contribute the quirk, build its test fixture from your diagnostics as
+described in
+[Converting a diagnostics file into a fixture](../.claude/skills/tuya-device-quirk/SKILL.md#converting-a-diagnostics-file-into-a-fixture),
+and add a test that a report keyed by dpid updates the right code, like
+`test_mqtt` in
+[`tests/devices/tdq/test_a9fn0xcsckjoqpnd.py`](../tests/devices/tdq/test_a9fn0xcsckjoqpnd.py).
+
+#### Reading the thing model
+
+The log only shows the datapoints the device reports while you watch, and
+nothing for a device with no entities. The device's thing model lists all of
+them, with their types, ranges and whether they can be written. There are two
+ways to read it, both from Tuya. In both, `<device_id>` is the `id` field in
+your diagnostics.
+
+- **Online, on the [Tuya Developer Platform](https://platform.tuya.com):** in
+  the [API Explorer](https://platform.tuya.com/cloud/explorer), go to **Device
+  Control** and run, with your device id:
+  - **Query Things Data Model**, for each datapoint's dpid, type, range and
+    whether it can be written;
+  - **Query Properties**, for each datapoint's dpid, code and current value.
+
+  This needs a Tuya developer account, with your Smart Life or Tuya Smart
+  account linked to a cloud project. When sharing the results, don't include
+  the request URL, as it contains sensitive parameters.
+
+- **From a terminal, with Tuya's
+  [tuya-smart-control-cli](https://github.com/tuya/tuya-smart-control-cli):**
+  follow its README to install it and create an API key, then run:
+
+  ```console
+  tuya device model <device_id> --json
+  ```
+
+> **With the CLI, the API key must belong to the app account that owns the
+> device.** Tuya Smart and Smart Life are separate apps with separate accounts,
+> and a key only sees devices in its own account's homes. If the command fails
+> with `40000905` ("The user does not have device permissions"), check which
+> app the device was added with, then use a key for that account.
+
+Each entry in `properties` is one datapoint, for example:
+
+```json
+{
+  "abilityId": 102,
+  "accessMode": "ro",
+  "code": "battery_state",
+  "typeSpec": {
+    "type": "enum",
+    "range": ["low", "middle", "high"]
+  }
+}
+```
+
+| Thing model field | Quirk argument                                                       |
+| ----------------- | -------------------------------------------------------------------- |
+| `abilityId`       | `dpid`                                                               |
+| `code`            | `dpcode`                                                             |
+| `accessMode`      | `dpmode`: `rw` → `DPMode.READ \| DPMode.WRITE`, `ro` → `DPMode.READ` |
+| `typeSpec`        | the builder method and its arguments, from the table below           |
+
+| `typeSpec.type` | Builder method     | Arguments from `typeSpec`             |
+| --------------- | ------------------ | ------------------------------------- |
+| `bool`          | `add_dpid_boolean` | none                                  |
+| `value`         | `add_dpid_integer` | `min`, `max`, `scale`, `step`, `unit` |
+| `enum`          | `add_dpid_enum`    | `range` → `enum_range`                |
+| `bitmap`        | `add_dpid_bitmap`  | `label` → `label_range`               |
+
+Include the output, or the relevant part of it, in your issue or pull request.
 
 ## Step 2 — Is the category known to core?
 
@@ -167,6 +277,34 @@ Tuya support) can change what the Tuya cloud accepts.
 A quirk is still worth contributing for the readings. Declare the datapoints
 that are meant to be writable as `DPMode.READ | DPMode.WRITE` anyway, and
 mention the limitation in the quirk's docstring.
+
+### Where to report it
+
+- **As a user:** report it in the Smart Life or Tuya Smart app, in the help and
+  feedback section of the **Me** tab. Mention the product id and the error code
+  (`2008`). Contacting the brand or seller of the device is often more
+  effective, as only they can change its cloud definition.
+- **As the product's owner (brand or seller):** open a technical ticket at
+  [service.console.tuya.com](https://service.console.tuya.com/), from the
+  account that owns the product's cloud definition. Include the product id,
+  the device id, what you were doing, and the error code.
+
+## Offline devices
+
+A quirk can't change whether a device is online. Home Assistant currently
+marks a device's entities as unavailable while the Tuya cloud reports it as
+offline (`"online": false` in the diagnostics), even when its datapoints are
+correct.
+
+- **A Bluetooth device paired directly with your phone:** add it to the app
+  through a Tuya Bluetooth or multi-mode gateway instead, as described in
+  [Bluetooth device is unavailable](https://www.home-assistant.io/integrations/tuya/#bluetooth-device-is-unavailable)
+  in the Home Assistant documentation.
+- **Already connected through a gateway:** make sure the gateway and the device
+  show as online in the app.
+- **Still offline, or not a Bluetooth device:** open an issue on
+  [home-assistant/core](https://github.com/home-assistant/core/issues) and
+  include the device diagnostics.
 
 ## What to do with your issue here
 
