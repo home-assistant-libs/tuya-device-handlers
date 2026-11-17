@@ -142,3 +142,39 @@
 # name: test_electricity_data[]
   None
 # ---
+# name: test_feeder_schedule_data[AQceAg==]
+  None
+# ---
+# name: test_feeder_schedule_data[AQceAgE=]
+  list([
+    FeederScheduleDataEntry(
+      days=1,
+      enabled=1,
+      hour=7,
+      minute=30,
+      portion=2,
+    ),
+  ])
+# ---
+# name: test_feeder_schedule_data[BQgAAQFgEg8DAA==]
+  list([
+    FeederScheduleDataEntry(
+      days=5,
+      enabled=1,
+      hour=8,
+      minute=0,
+      portion=1,
+    ),
+    FeederScheduleDataEntry(
+      days=96,
+      enabled=0,
+      hour=18,
+      minute=15,
+      portion=3,
+    ),
+  ])
+# ---
+# name: test_feeder_schedule_data[]
+  list([
+  ])
+# ---
