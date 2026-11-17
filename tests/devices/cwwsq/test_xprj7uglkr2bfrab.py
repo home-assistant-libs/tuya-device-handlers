@@ -11,7 +11,8 @@ from tuya_device_handlers.registry import QuirksRegistry
 
 _FIXTURE = "cwwsq_xprj7uglkr2bfrab.json"
 
-_WEEKDAYS = ["monday", "tuesday", "wednesday", "thursday", "friday"]
+# Days are returned in bit order, so Friday first.
+_WEEKDAYS = ["friday", "thursday", "wednesday", "tuesday", "monday"]
 
 # Sunday is bit 0, Saturday bit 1, ..., Monday bit 6 (checked on a real device
 # by moving single entries in the Tuya app).

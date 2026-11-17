@@ -10,15 +10,30 @@ Saturday bit 1, ..., Monday bit 6.
 from tuya_device_handlers import TUYA_QUIRKS_REGISTRY
 from tuya_device_handlers.builder import DeviceQuirk
 from tuya_device_handlers.device_wrapper.service_feeder_schedule import (
-    ReversedDaysFeederScheduleWrapper,
+    DefaultFeederScheduleWrapper,
 )
+
+
+class _SundayFirstFeederScheduleWrapper(DefaultFeederScheduleWrapper):
+    """Feeder schedule wrapper with Sunday as bit 0 of the days bitmask."""
+
+    _DAYS_OF_WEEK = (
+        "sunday",
+        "saturday",
+        "friday",
+        "thursday",
+        "wednesday",
+        "tuesday",
+        "monday",
+    )
+
 
 (
     DeviceQuirk()
     .applies_to(product_id="xprj7uglkr2bfrab")
     .map_feeder_schedules_wrapper(
         wrapper_function=lambda device: (
-            ReversedDaysFeederScheduleWrapper.find_dpcode(
+            _SundayFirstFeederScheduleWrapper.find_dpcode(
                 device, "meal_plan", prefer_function=True
             )
         )

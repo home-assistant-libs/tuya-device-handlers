@@ -100,6 +100,17 @@ This will allow a chance to talk it over with the owners and validate your appro
 
 [pull request]: https://github.com/home-assistant-libs/tuya-device-handlers/pulls
 
+## Versioning
+
+Releases are named after the Home Assistant release they target, as
+`YEAR.MONTH.PATCH`: for example `2026.12.0` for the first release going into
+Home Assistant 2026.12, then `2026.12.1`, `2026.12.2`, and so on. Once the
+Home Assistant beta has been cut, new releases target the next Home Assistant
+release. A fix for a Home Assistant release that has already shipped keeps
+that release's prefix (for example `2026.11.1` for Home Assistant 2026.11).
+
+Breaking changes are listed under "Breaking Changes" in the release notes.
+
 <!-- github-only -->
 
 [code of conduct]: CODE_OF_CONDUCT.md
