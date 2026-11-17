@@ -14,8 +14,8 @@ from tuya_device_handlers.device_wrapper.service_feeder_schedule import (
 )
 
 
-class _SundayFirstFeederScheduleWrapper(DefaultFeederScheduleWrapper):
-    """Feeder schedule wrapper with Sunday as bit 0 of the days bitmask."""
+class _ReversedDaysFeederScheduleWrapper(DefaultFeederScheduleWrapper):
+    """Feeder schedule wrapper with a reversed days bitmask (Sunday bit 0)."""
 
     _DAYS_OF_WEEK = (
         "sunday",
@@ -33,7 +33,7 @@ class _SundayFirstFeederScheduleWrapper(DefaultFeederScheduleWrapper):
     .applies_to(product_id="xprj7uglkr2bfrab")
     .map_feeder_schedules_wrapper(
         wrapper_function=lambda device: (
-            _SundayFirstFeederScheduleWrapper.find_dpcode(
+            _ReversedDaysFeederScheduleWrapper.find_dpcode(
                 device, "meal_plan", prefer_function=True
             )
         )
