@@ -22,7 +22,7 @@ description: How to add, test and review a Tuya device quirk in this repository,
 - For custom scaling/encoding of a single datapoint, use `.override_dpid_type_information_cls(...)` with a class from `type_information_ex.py` instead of a custom wrapper.
 - Every new quirk needs a fixture built from a real diagnostics file **and** tests that load it via `create_device("<fixture>.json")`. Where the quirk changes behaviour, tests should ideally show it both without the quirk (`patch.dict(TUYA_QUIRKS_REGISTRY._quirks, clear=True)`) and with it (`filled_quirks_registry.initialise_device_quirk(device)`). See `tests/devices/cl/test_68nvbio9.py`.
 
-For a worked example of the most common fix (missing ENUM values), see [docs/adding-missing-enum-values.md](../../../docs/adding-missing-enum-values.md). For a cover whose position is backwards, see [docs/inverted-covers.md](../../../docs/inverted-covers.md).
+For a worked example of the most common fix (missing ENUM values), see [docs/adding-missing-enum-values.md](../../../docs/adding-missing-enum-values.md). For a device whose diagnostics show no datapoints at all, see [Finding the datapoints](../../../docs/unsupported-category-or-dpcode.md#finding-the-datapoints). For a cover whose position is backwards, see [docs/inverted-covers.md](../../../docs/inverted-covers.md).
 
 ## Converting a diagnostics file into a fixture
 
@@ -61,4 +61,5 @@ Check that:
 - the test file is named `test_<product_id>.py` and exercises what the quirk changes, rather than only asserting that it registers (or being a copy of the quirk);
 - the datapoints the quirk changes are actually used by this library or Home Assistant Core. If not, ask which entity is wrong and what the user sees;
 - a quirk PR does not also change shared code (`builder/`, `definition/`, `device_wrapper/`, …). If it does, ask for it to be split;
-- the change does not belong in Home Assistant Core instead (see Rules above).
+- the change does not belong in Home Assistant Core instead (see Rules above);
+- a device with `"online": false` in the diagnostics is not treated as a datapoint problem: a quirk won't make its entities available, but the datapoints can still be valid. For a Bluetooth device, ask how it's paired, as it can be offline even through a gateway (see [Offline devices](../../../docs/unsupported-category-or-dpcode.md#offline-devices)).
