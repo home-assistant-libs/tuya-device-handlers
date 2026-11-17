@@ -7,6 +7,14 @@ body:
       value: |
         Thanks for taking the time to report an issue!
 
+        If the problem is specific to your device (wrong values, invalid
+        ENUM values, inverted covers, missing entities, …), it is usually
+        fixed by a device quirk, which you write yourself. See
+        [Writing a quirk](https://github.com/home-assistant-libs/tuya-device-handlers#writing-a-quirk)
+        and the [recipes](https://github.com/home-assistant-libs/tuya-device-handlers/tree/main/docs):
+        they also explain when the fix belongs in Home Assistant instead.
+        Issues are closed automatically after a period of inactivity.
+
         To help us investigate, we need information about your device's
         data points, functions, and status ranges. If you are using
         Home Assistant, the easiest way to provide this is by downloading
