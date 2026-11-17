@@ -84,7 +84,6 @@ def test_energy_meter_datapoints_added(
 
     filled_quirks_registry.initialise_device_quirk(device)
 
-    # AFTER the quirk: the datapoint is present and correctly defined.
     assert json.loads(device.status_range[dpcode].values) == expected
 
 
