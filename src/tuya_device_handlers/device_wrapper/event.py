@@ -82,12 +82,10 @@ class BooleanTriggerEventWrapper(DPCodeBooleanWrapper[tuple[str, None]]):
     event whenever the DP code is reported as true; false is ignored.
     """
 
-    _EVENT_TYPE = "triggered"
-
     def __init__(self, dpcode: str, type_information: Any) -> None:
         """Init BooleanTriggerEventWrapper."""
         super().__init__(dpcode, type_information)
-        self.options = [self._EVENT_TYPE]
+        self.options = ["triggered"]
 
     def read_device_status(
         self, device: CustomerDevice
@@ -95,13 +93,7 @@ class BooleanTriggerEventWrapper(DPCodeBooleanWrapper[tuple[str, None]]):
         """Return the event when the DP code is true."""
         if not self._read_dpcode_value(device):
             return None
-        return (self._EVENT_TYPE, None)
-
-
-class DoorbellRingEventWrapper(BooleanTriggerEventWrapper):
-    """Boolean trigger raising the 'ring' event of the doorbell device class."""
-
-    _EVENT_TYPE = "ring"
+        return ("triggered", None)
 
 
 class IntegerUserIdEventWrapper(

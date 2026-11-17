@@ -12,7 +12,6 @@ from tuya_device_handlers.device_wrapper.event import (
     Base64Utf8RawEventWrapper,
     Base64Utf8StringEventWrapper,
     BooleanTriggerEventWrapper,
-    DoorbellRingEventWrapper,
     IntegerUserIdEventWrapper,
     SimpleEventEnumWrapper,
 )
@@ -52,12 +51,6 @@ from tuya_device_handlers.device_wrapper.event import (
             ("triggered", None),
         ),
         (
-            DoorbellRingEventWrapper,
-            "demo_boolean",
-            True,
-            ("ring", None),
-        ),
-        (
             IntegerUserIdEventWrapper,
             "demo_integer",
             3,
@@ -88,23 +81,16 @@ def test_read_device_status(
     assert wrapper.read_device_status(mock_device) is None
 
 
-@pytest.mark.parametrize(
-    ("wrapper_type", "expected_options"),
-    [
-        (BooleanTriggerEventWrapper, ["triggered"]),
-        (DoorbellRingEventWrapper, ["ring"]),
-    ],
-)
 def test_boolean_trigger_event(
-    wrapper_type: type[BooleanTriggerEventWrapper],
-    expected_options: list[str],
     mock_device: CustomerDevice,
 ) -> None:
-    """Test boolean trigger wrappers ignore false and expose their options."""
-    wrapper = wrapper_type.find_dpcode(mock_device, "demo_boolean")
+    """Test boolean trigger wrapper ignores false and exposes its options."""
+    wrapper = BooleanTriggerEventWrapper.find_dpcode(
+        mock_device, "demo_boolean"
+    )
 
     assert wrapper
-    assert wrapper.options == expected_options
+    assert wrapper.options == ["triggered"]
 
     # A false report is not an event
     mock_device.status["demo_boolean"] = False
