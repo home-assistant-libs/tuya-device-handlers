@@ -269,25 +269,19 @@ We don't know the exact rules the cloud applies. Commands for datapoints or
 ENUM values missing from the cloud's definition (`original_function` in
 diagnostics taken with a quirk active) are typically rejected with error
 `2008`, but the cloud may also reject commands for datapoints it does list.
+Some products have no cloud definition at all (`function` and `status_range`
+are both empty), because their category has no standard instruction set, so
+every command is rejected (for example `cdsxj` cameras and `ksdjml` doorbells,
+see home-assistant/core#189888).
 
 Neither this library nor core can work around it: commands can't be sent by
-dpId, and the integration has no local control. Only the manufacturer (or
-Tuya support) can change what the Tuya cloud accepts.
+dpId, and the integration has no local control. Only the manufacturer or Tuya
+can change what the Tuya cloud accepts, and in practice each tends to point at
+the other, so don't count on a fix.
 
 A quirk is still worth contributing for the readings. Declare the datapoints
 that are meant to be writable as `DPMode.READ | DPMode.WRITE` anyway, and
 mention the limitation in the quirk's docstring.
-
-### Devices whose cloud definition is empty
-
-If `function` and `status_range` are both empty and every command is rejected
-with `2008`, the product's category may have no standard instruction set in
-the Tuya cloud (for example `cdsxj` cameras and `ksdjml` doorbells, see
-home-assistant/core#189888). Only Tuya or the manufacturer can change that,
-and in practice each tends to point at the other, so don't count on a fix.
-
-What you can do is write a quirk that adds the datapoints, so their states are
-read. Commands will keep failing until the cloud definition changes.
 
 ### Where to report it
 
