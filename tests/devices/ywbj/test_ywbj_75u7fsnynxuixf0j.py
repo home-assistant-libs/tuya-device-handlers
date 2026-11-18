@@ -1,4 +1,6 @@
-"""Test device-level quirk for Wi-Fi Smoke Detector with Temp & Humidity (75u7fsnynxuixf0j)."""
+"""Test device-level quirk for Wi-Fi Smoke Detector 
+with Temp & Humidity (75u7fsnynxuixf0j).
+"""
 
 from tuya_sharing import Manager
 
