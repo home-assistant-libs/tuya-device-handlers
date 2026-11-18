@@ -1,0 +1,125 @@
+{
+  "endpoint": "https://apigw.tuyaeu.com",
+  "mqtt_connected": true,
+  "disabled_by": null,
+  "disabled_polling": false,
+  "name": "WiFi Feeder",
+  "category": "cwwsq",
+  "product_id": "xprj7uglkr2bfrab",
+  "product_name": "WiFi Feeder",
+  "online": true,
+  "sub": false,
+  "time_zone": "+01:00",
+  "active_time": "2023-01-16T19:31:10+00:00",
+  "create_time": "2023-01-16T19:31:10+00:00",
+  "update_time": "2023-01-16T19:31:10+00:00",
+  "function": {
+    "meal_plan": {
+      "type": "Raw",
+      "value": "{}"
+    },
+    "manual_feed": {
+      "type": "Integer",
+      "value": "{\"min\":1,\"max\":12,\"scale\":0,\"step\":1}"
+    },
+    "factory_reset": {
+      "type": "Boolean",
+      "value": "{}"
+    }
+  },
+  "local_strategy": {
+    "1": {
+      "value_convert": "default",
+      "status_code": "meal_plan",
+      "config_item": {
+        "statusFormat": "{\"meal_plan\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Raw",
+        "enumMappingMap": {},
+        "pid": "xprj7uglkr2bfrab"
+      }
+    },
+    "3": {
+      "value_convert": "default",
+      "status_code": "manual_feed",
+      "config_item": {
+        "statusFormat": "{\"manual_feed\":\"$\"}",
+        "valueDesc": "{\"min\":1,\"max\":12,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "xprj7uglkr2bfrab"
+      }
+    },
+    "4": {
+      "value_convert": "default",
+      "status_code": "feed_state",
+      "config_item": {
+        "statusFormat": "{\"feed_state\":\"$\"}",
+        "valueDesc": "{\"range\":[\"standby\",\"feeding\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "xprj7uglkr2bfrab"
+      }
+    },
+    "9": {
+      "value_convert": "default",
+      "status_code": "factory_reset",
+      "config_item": {
+        "statusFormat": "{\"factory_reset\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "xprj7uglkr2bfrab"
+      }
+    },
+    "15": {
+      "value_convert": "default",
+      "status_code": "feed_report",
+      "config_item": {
+        "statusFormat": "{\"feed_report\":\"$\"}",
+        "valueDesc": "{\"min\":0,\"max\":12,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "xprj7uglkr2bfrab"
+      }
+    }
+  },
+  "status_range": {
+    "meal_plan": {
+      "type": "Raw",
+      "value": "{}",
+      "report_type": null
+    },
+    "manual_feed": {
+      "type": "Integer",
+      "value": "{\"min\":1,\"max\":12,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "feed_state": {
+      "type": "Enum",
+      "value": "{\"range\":[\"standby\",\"feeding\"]}",
+      "report_type": null
+    },
+    "factory_reset": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "feed_report": {
+      "type": "Integer",
+      "value": "{\"min\":0,\"max\":12,\"scale\":0,\"step\":1}",
+      "report_type": null
+    }
+  },
+  "status": {
+    "meal_plan": "AgwAAQEBDAABAXwMAAEBfBEAAQECEQABAQERAAEB",
+    "manual_feed": 1,
+    "feed_state": "standby",
+    "factory_reset": false,
+    "feed_report": 1
+  },
+  "set_up": true,
+  "support_local": true,
+  "quirk": null,
+  "warnings": null
+}

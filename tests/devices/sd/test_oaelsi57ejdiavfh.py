@@ -1,4 +1,4 @@
-"""Test the L15 Ultra cistern enum quirk."""
+"""Test the L15 Ultra enum quirk."""
 
 import json
 
@@ -20,3 +20,19 @@ def test_cistern_enum_extended(
 
     after = json.loads(device.function["cistern"].values)["range"]
     assert "closed" in after
+
+
+def test_mode_enum_extended(
+    filled_quirks_registry: QuirksRegistry,
+) -> None:
+    """The quirk adds the missing `goto_charge` mode value."""
+    device = create_device("sd_oaelsi57ejdiavfh.json")
+
+    # Without the quirk, the cloud function list lacks `goto_charge`.
+    before = json.loads(device.function["mode"].values)["range"]
+    assert "goto_charge" not in before
+
+    filled_quirks_registry.initialise_device_quirk(device)
+
+    after = json.loads(device.function["mode"].values)["range"]
+    assert "goto_charge" in after

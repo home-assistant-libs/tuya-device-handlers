@@ -11,8 +11,12 @@ from tuya_device_handlers.device_wrapper.common import (
 from tuya_device_handlers.device_wrapper.event import (
     Base64Utf8RawEventWrapper,
     Base64Utf8StringEventWrapper,
+    BooleanTriggerEventWrapper,
+    IntegerUserIdEventWrapper,
     SimpleEventEnumWrapper,
 )
+
+from . import inject_dpcode
 
 
 @pytest.mark.parametrize(
@@ -42,6 +46,18 @@ from tuya_device_handlers.device_wrapper.event import (
             "scene",
             ("scene", None),
         ),
+        (
+            BooleanTriggerEventWrapper,
+            "demo_boolean",
+            True,
+            ("triggered", None),
+        ),
+        (
+            IntegerUserIdEventWrapper,
+            "demo_integer",
+            30,  # demo_integer has scale 1
+            ("triggered", {"user_id": 3}),
+        ),
     ],
 )
 def test_read_device_status(
@@ -64,4 +80,54 @@ def test_read_device_status(
 
     # All wrappers return None if status is missing
     mock_device.status.pop(dpcode)
+    assert wrapper.read_device_status(mock_device) is None
+
+
+def test_boolean_trigger_event(
+    mock_device: CustomerDevice,
+) -> None:
+    """Test boolean trigger wrapper ignores false and exposes its options."""
+    wrapper = BooleanTriggerEventWrapper.find_dpcode(
+        mock_device, "demo_boolean"
+    )
+
+    assert wrapper
+    assert wrapper.options == ["triggered"]
+
+    # A false report is not an event
+    mock_device.status["demo_boolean"] = False
+    assert wrapper.read_device_status(mock_device) is None
+
+
+def test_integer_user_id_event_options(
+    mock_device: CustomerDevice,
+) -> None:
+    """Test integer user id wrapper exposes its options."""
+    wrapper = IntegerUserIdEventWrapper.find_dpcode(mock_device, "demo_integer")
+
+    assert wrapper
+    assert wrapper.options == ["triggered"]
+
+
+def test_integer_user_id_event_range(mock_device: CustomerDevice) -> None:
+    """Test integer user id wrapper with a lock unlock datapoint."""
+    inject_dpcode(
+        mock_device,
+        "unlock_fingerprint",
+        3,
+        dptype="Integer",
+        values='{"min": 0, "max": 999, "scale": 0, "step": 1}',
+    )
+    wrapper = IntegerUserIdEventWrapper.find_dpcode(
+        mock_device, "unlock_fingerprint"
+    )
+
+    assert wrapper
+    assert wrapper.read_device_status(mock_device) == (
+        "triggered",
+        {"user_id": 3},
+    )
+
+    # A value outside the datapoint range is not an event
+    mock_device.status["unlock_fingerprint"] = 1000
     assert wrapper.read_device_status(mock_device) is None
