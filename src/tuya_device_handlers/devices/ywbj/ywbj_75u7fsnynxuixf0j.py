@@ -1,5 +1,6 @@
-"""Quirk for product ID 75u7fsnynxuixf0j to correctly define and scale 
-temperature (DP 23) and humidity (DP 24) sensors.
+"""Quirk for product ID 75u7fsnynxuixf0j.
+
+Correctly define and scale temperature (DP 23) and humidity (DP 24) sensors.
 """
 
 from tuya_device_handlers import TUYA_QUIRKS_REGISTRY

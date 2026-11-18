@@ -1,4 +1,5 @@
-"""Test device-level quirk for Wi-Fi Smoke Detector 
+"""Test device-level quirk for Wi-Fi Smoke Detector.
+
 with Temp & Humidity (75u7fsnynxuixf0j).
 """
 
