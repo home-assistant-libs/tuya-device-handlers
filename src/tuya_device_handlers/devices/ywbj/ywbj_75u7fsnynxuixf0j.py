@@ -27,7 +27,7 @@ from tuya_device_handlers.const import DPMode
         dpmode=DPMode.READ,
         unit="%",
         min=0,
-        max=1000,
+        max=100,
         scale=0,
         step=1,
     )
