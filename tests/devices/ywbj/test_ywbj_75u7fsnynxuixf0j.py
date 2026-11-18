@@ -52,7 +52,7 @@ def test_smoke_detector_status_updates(
     mock_manager.device_map[device.id] = device
     filled_quirks_registry.initialise_device_quirk(device)
 
-    # Simulate Temperature update (dpId 23) - device.status holds raw value (189)
+    # Simulate Temperature update (dpId 23)-device.status holds raw value (189)
     mock_manager._on_device_report(
         device.id,
         [{"dpId": 23, "t": 1752456620499, "value": 189}],
