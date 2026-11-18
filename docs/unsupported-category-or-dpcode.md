@@ -275,9 +275,9 @@ every command is rejected (for example `cdsxj` cameras and `ksdjml` doorbells,
 see home-assistant/core#189888).
 
 Neither this library nor core can work around it: commands can't be sent by
-dpId, and the integration has no local control. Only the manufacturer can
-change what the Tuya cloud accepts (Tuya can confirm the problem), and in
-practice each tends to point at the other, so don't count on a fix.
+dpId, and the integration has no local control. Tuya can confirm the problem
+on its servers, but in practice leaves the change to the manufacturer, and
+each tends to point at the other, so don't count on a fix.
 
 A quirk is still worth contributing for the readings. Declare the datapoints
 that are meant to be writable as `DPMode.READ | DPMode.WRITE` anyway, and
@@ -288,7 +288,7 @@ mention the limitation in the quirk's docstring.
 - **As a user:** report it in the Smart Life or Tuya Smart app, in the help and
   feedback section of the **Me** tab. Mention the product id and the error code
   (`2008`). Tuya can check the product's cloud definition and confirm the
-  problem, but the change itself has to be made by the brand or seller of the
+  problem, but in practice leaves the change to the brand or seller of the
   device, so pass the confirmation on to them. Some brands respond, others
   don't.
 - **As the product's owner (brand or seller):** open a technical ticket at
