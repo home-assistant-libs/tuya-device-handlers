@@ -282,16 +282,12 @@ mention the limitation in the quirk's docstring.
 
 If `function` and `status_range` are both empty and every command is rejected
 with `2008`, the product's category may have no standard instruction set in
-the Tuya cloud. According to Tuya support, standard instruction sets are
-assigned per category when a product is created, and support can't add one
-afterwards; the manufacturer may be able to move the product to a category
-that has one (for cameras, `sp` rather than `cdsxj`). Some devices have moved
-to such categories without a firmware update (for example `cdsxj` cameras in
-July 2026 and `ksdjml` doorbells in September 2026), so it's worth reporting to
-both the manufacturer and Tuya. See home-assistant/core#189888.
+the Tuya cloud (for example `cdsxj` cameras and `ksdjml` doorbells, see
+home-assistant/core#189888). Only Tuya or the manufacturer can change that,
+and in practice each tends to point at the other, so don't count on a fix.
 
-A quirk can still add the datapoints so their states are read, but commands
-won't work until the cloud definition changes.
+What you can do is write a quirk that adds the datapoints, so their states are
+read. Commands will keep failing until the cloud definition changes.
 
 ### Where to report it
 
@@ -302,9 +298,7 @@ won't work until the cloud definition changes.
 - **As the product's owner (brand or seller):** open a technical ticket at
   [service.console.tuya.com](https://service.console.tuya.com/), from the
   account that owns the product's cloud definition. Include the product id,
-  the device id, what you were doing, and the error code. If the product's
-  category has no standard instruction set, ask whether the product can be
-  moved to a category that has one.
+  the device id, what you were doing, and the error code.
 
 ## Offline devices
 
