@@ -152,7 +152,7 @@
           },
           "2": {
             "code": "smoke_sensor_status",
-6            "value": "normal"
+            "value": "normal"
           },
           "alarm": {
             "code": "smoke_sensor_status",
