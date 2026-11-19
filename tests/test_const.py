@@ -23,6 +23,14 @@ from tuya_device_handlers.const import DPType
         ("raw", DPType.RAW),
         ("string", DPType.STRING),
         ("value", DPType.INTEGER),
+        # Ill-formed (uppercase) values reported by the cloud
+        ("BITMAP", DPType.BITMAP),
+        ("BOOLEAN", DPType.BOOLEAN),
+        ("ENUM", DPType.ENUM),
+        ("INTEGER", DPType.INTEGER),
+        ("JSON", DPType.JSON),
+        ("RAW", DPType.RAW),
+        ("STRING", DPType.STRING),
         # Invalid
         ("boolbool", None),
     ],

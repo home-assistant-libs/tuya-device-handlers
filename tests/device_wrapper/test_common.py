@@ -6,11 +6,13 @@ from typing import Any
 import pytest
 from tuya_sharing import CustomerDevice
 
+from tests import create_device
 from tuya_device_handlers.device_wrapper import SetValueOutOfRangeError
 from tuya_device_handlers.device_wrapper.common import (
     DPCodeBitmapWrapper,
     DPCodeBooleanWrapper,
     DPCodeEnumWrapper,
+    DPCodeIntegerEnumWrapper,
     DPCodeIntegerWrapper,
     DPCodeJsonWrapper,
     DPCodeRawWrapper,
@@ -158,3 +160,23 @@ def test_skip_update(mock_device: CustomerDevice) -> None:
     assert wrapper.skip_update(mock_device, []) is True
     assert wrapper.skip_update(mock_device, ["a", "b", "c"]) is True
     assert wrapper.skip_update(mock_device, ["a", "demo_integer", "c"]) is False
+
+
+def test_dpcode_integer_enum_wrapper() -> None:
+    """Test DPCodeIntegerEnumWrapper with an integer enum."""
+    device = create_device("infrared_ac_1ownck.json")
+
+    wrapper = DPCodeIntegerEnumWrapper.find_dpcode(
+        device, "M", prefer_function=True
+    )
+    assert wrapper
+    assert wrapper.values == [0, 1, 2, 3, 4]
+    assert wrapper.min_value == 0
+    assert wrapper.max_value == 4
+    assert wrapper.value_step == 1
+    # IR devices do not report any status
+    assert wrapper.read_device_status(device) is None
+    assert wrapper.get_update_commands(device, 3) == [{"code": "M", "value": 3}]
+
+    with pytest.raises(SetValueOutOfRangeError, match="out of range"):
+        wrapper.get_update_commands(device, 5)

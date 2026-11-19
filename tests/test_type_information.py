@@ -8,6 +8,7 @@ import pytest
 from syrupy.assertion import SnapshotAssertion
 from tuya_sharing import CustomerDevice, DeviceStatusRange
 
+from tests import create_device
 from tuya_device_handlers import TUYA_QUIRKS_REGISTRY
 from tuya_device_handlers.builder.device_quirk import DeviceQuirk
 from tuya_device_handlers.const import DEVICE_WARNINGS, DPMode
@@ -15,6 +16,7 @@ from tuya_device_handlers.type_information import (
     BitmapTypeInformation,
     BooleanTypeInformation,
     EnumTypeInformation,
+    IntegerEnumTypeInformation,
     IntegerTypeInformation,
     JsonTypeInformation,
     PrepareSetValueError,
@@ -439,3 +441,33 @@ def test_find_dpcode_quirk_overrides_category_default(
         )
 
     assert type(type_information) is IntegerTypeInformation
+def test_integer_enum_type_information() -> None:
+    """Test integer enum type information."""
+    device = create_device("infrared_ac_1ownck.json")
+
+    type_information = IntegerEnumTypeInformation.find_dpcode(
+        device, "M", prefer_function=True
+    )
+    assert type_information
+    assert type_information.range == [0, 1, 2, 3, 4]
+    assert type_information.prepare_set_value(device, 4) == 4
+    # Floats are rounded to the closest valid value
+    assert type_information.prepare_set_value(device, 2.0) == 2
+    assert type_information.prepare_set_value(device, 2.4) == 2
+    assert type_information.prepare_set_value(device, 2.6) == 3
+
+    with pytest.raises(PrepareSetValueError, match="out of range"):
+        type_information.prepare_set_value(device, 5)
+    with pytest.raises(PrepareSetValueError, match="out of range"):
+        type_information.prepare_set_value(device, 5.2)
+    with pytest.raises(PrepareSetValueError, match="Invalid integer value"):
+        type_information.prepare_set_value(device, "2")
+
+
+def test_integer_enum_type_information_invalid(
+    mock_device: CustomerDevice,
+) -> None:
+    """Integer enum type information ignores regular enums."""
+    assert (
+        IntegerEnumTypeInformation.find_dpcode(mock_device, "demo_enum") is None
+    )

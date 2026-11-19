@@ -2,6 +2,7 @@
 
 from collections.abc import Callable
 from dataclasses import dataclass
+from typing import Any
 
 from tuya_sharing import CustomerDevice
 
@@ -16,7 +17,12 @@ from tuya_device_handlers.device_wrapper.climate import (
 from tuya_device_handlers.device_wrapper.common import (
     DPCodeBooleanWrapper,
     DPCodeEnumWrapper,
+    DPCodeIntegerEnumWrapper,
     DPCodeIntegerWrapper,
+    DPCodeStringWrapper,
+)
+from tuya_device_handlers.device_wrapper.exception import (
+    SetValueOutOfRangeError,
 )
 from tuya_device_handlers.device_wrapper.extended import (
     DPCodeRoundedIntegerWrapper,
@@ -27,6 +33,7 @@ from tuya_device_handlers.helpers.homeassistant import (
     TuyaClimateSwingMode,
     TuyaUnitOfTemperature,
 )
+from tuya_device_handlers.type_information import IntegerEnumTypeInformation
 
 from .base import BaseEntityQuirk
 
@@ -177,6 +184,184 @@ def _get_default_temperature_wrappers(
         temp_set=temp_set,
         temp_set_f=temp_set_f,
         system_temperature_unit=system_temperature_unit,
+    )
+
+
+_INFRARED_AC_MODE_TO_HVACMODE = {
+    0: TuyaClimateHVACMode.COOL,
+    1: TuyaClimateHVACMode.HEAT,
+    2: TuyaClimateHVACMode.HEAT_COOL,
+    3: TuyaClimateHVACMode.FAN_ONLY,
+    4: TuyaClimateHVACMode.DRY,
+}
+_INFRARED_AC_FAN_MODES = {
+    0: "auto",
+    1: "low",
+    2: "medium",
+    3: "high",
+}
+
+
+class InfraredAcPowerWrapper(DeviceWrapper[bool]):
+    """Power wrapper for IR air conditioners.
+
+    IR air conditioners are virtual devices driven by an IR hub. Instead of a
+    boolean switch they use two write-only string datapoints (`PowerOn` and
+    `PowerOff`). The hub does report the resulting power state as the
+    `power` status datapoint.
+    """
+
+    def __init__(self, *, power_on: str, power_off: str) -> None:
+        """Init InfraredAcPowerWrapper."""
+        self.power_on = power_on
+        self.power_off = power_off
+
+    def read_device_status(self, device: CustomerDevice) -> bool | None:
+        """Return the power state reported by the hub, if available."""
+        raw_value = device.status.get("power")
+        if raw_value is None:
+            return None
+        return bool(raw_value)
+
+    def get_update_commands(
+        self, device: CustomerDevice, value: bool
+    ) -> list[dict[str, Any]]:
+        """Return the power command for the desired state."""
+        code = self.power_on if value else self.power_off
+        return [{"code": code, "value": code}]
+
+
+class InfraredAcHVACModeWrapper(DPCodeIntegerEnumWrapper[TuyaClimateHVACMode]):
+    """HVAC mode wrapper for IR air conditioners (`M`)."""
+
+    options: list[str]
+
+    def __init__(
+        self, dpcode: str, type_information: IntegerEnumTypeInformation
+    ) -> None:
+        """Init InfraredAcHVACModeWrapper."""
+        super().__init__(dpcode, type_information)
+        self.options = [
+            str(hvac_mode)
+            for raw_value in type_information.range
+            if (hvac_mode := _INFRARED_AC_MODE_TO_HVACMODE.get(raw_value))
+        ]
+
+    def read_device_status(
+        self, device: CustomerDevice
+    ) -> TuyaClimateHVACMode | None:
+        """Return the HVAC mode reported by the hub, if available."""
+        raw_value = device.status.get("mode")
+        if raw_value is None:
+            return None
+        try:
+            value = int(raw_value)
+        except (TypeError, ValueError):
+            return None
+        return _INFRARED_AC_MODE_TO_HVACMODE.get(value)
+
+    def _convert_value_to_raw_value(
+        self, device: CustomerDevice, value: TuyaClimateHVACMode
+    ) -> int:
+        """Convert the HVAC mode to the raw `M` value."""
+        for raw_value, hvac_mode in _INFRARED_AC_MODE_TO_HVACMODE.items():
+            if hvac_mode == value and raw_value in self.values:
+                return raw_value
+        msg = f"Unsupported HVAC mode `{value}`"
+        raise SetValueOutOfRangeError(msg)
+
+
+class InfraredAcFanModeWrapper(DPCodeIntegerEnumWrapper[str]):
+    """Fan mode wrapper for IR air conditioners (`F`)."""
+
+    options: list[str]
+
+    def __init__(
+        self, dpcode: str, type_information: IntegerEnumTypeInformation
+    ) -> None:
+        """Init InfraredAcFanModeWrapper."""
+        super().__init__(dpcode, type_information)
+        self.options = [
+            fan_mode
+            for raw_value in type_information.range
+            if (fan_mode := _INFRARED_AC_FAN_MODES.get(raw_value))
+        ]
+
+    def read_device_status(self, device: CustomerDevice) -> str | None:
+        """Return the fan mode reported by the hub, if available."""
+        raw_value = device.status.get("wind")
+        if raw_value is None:
+            return None
+        try:
+            value = int(raw_value)
+        except (TypeError, ValueError):
+            return None
+        return _INFRARED_AC_FAN_MODES.get(value)
+
+    def _convert_value_to_raw_value(
+        self, device: CustomerDevice, value: str
+    ) -> int:
+        """Convert the fan mode to the raw `F` value."""
+        for raw_value, fan_mode in _INFRARED_AC_FAN_MODES.items():
+            if fan_mode == value and raw_value in self.values:
+                return raw_value
+        msg = f"Unsupported fan mode `{value}`"
+        raise SetValueOutOfRangeError(msg)
+
+
+class InfraredAcTemperatureWrapper(DPCodeIntegerEnumWrapper[float]):
+    """Set temperature wrapper for IR air conditioners (`T`)."""
+
+    def read_device_status(self, device: CustomerDevice) -> float | None:
+        """Return the temperature reported by the hub, if available."""
+        raw_value = device.status.get("temp")
+        if raw_value is None:
+            return None
+        try:
+            value = float(raw_value)
+        except (TypeError, ValueError):
+            return None
+        if not (self.type_information.min <= value <= self.type_information.max):
+            return None
+        return value
+
+
+def get_infrared_ac_definition(
+    device: CustomerDevice,
+) -> ClimateDefinition | None:
+    """Get the climate definition for an IR air conditioner.
+
+    IR air conditioners are driven through write-only commands (`PowerOn`,
+    `PowerOff`, `M`, `T` and `F`), but the hub reports the resulting state
+    as `power`, `mode`, `temp` and `wind` status datapoints, which the
+    wrappers below read back.
+    """
+    if not DPCodeStringWrapper.find_dpcode(
+        device, "PowerOn", prefer_function=True
+    ) or not DPCodeStringWrapper.find_dpcode(
+        device, "PowerOff", prefer_function=True
+    ):
+        return None
+
+    return ClimateDefinition(
+        current_humidity_wrapper=None,
+        current_temperature_wrapper=None,
+        fan_mode_wrapper=InfraredAcFanModeWrapper.find_dpcode(
+            device, "F", prefer_function=True
+        ),
+        hvac_mode_wrapper=InfraredAcHVACModeWrapper.find_dpcode(
+            device, "M", prefer_function=True
+        ),
+        preset_wrapper=None,
+        set_temperature_wrapper=InfraredAcTemperatureWrapper.find_dpcode(
+            device, "T", prefer_function=True
+        ),
+        swing_wrapper=None,
+        switch_wrapper=InfraredAcPowerWrapper(
+            power_on="PowerOn", power_off="PowerOff"
+        ),
+        target_humidity_wrapper=None,
+        temperature_unit=TuyaUnitOfTemperature.CELSIUS,
     )
 
 
