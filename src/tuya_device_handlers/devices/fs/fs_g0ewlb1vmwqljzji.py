@@ -10,8 +10,8 @@ Writes are unaffected: Home Assistant sends `{"code": "fan_speed", "value":
 "4"}`, the cloud accepts it and the fan does change speed - only the value
 coming back is lost, which makes the speed look like it never changes.
 
-Mapping the raw integers onto the declared string range fixes both the initial
-cloud status and the later MQTT reports.
+Mapping the raw integers onto the declared string range fixes the MQTT
+reports and the cached status, which holds the same raw values.
 """
 
 from tuya_device_handlers import TUYA_QUIRKS_REGISTRY
@@ -22,11 +22,6 @@ _FAN_SPEED = {1: "1", 2: "2", 3: "3", 4: "4", 5: "5", 6: "6"}
 (
     DeviceQuirk()
     .applies_to(product_id="g0ewlb1vmwqljzji")
-    .map_dpid_initial_status_values(
-        dpid=3,
-        dpcode="fan_speed",
-        status_mapping=_FAN_SPEED,
-    )
     .set_dpid_strategy_to_enum(
         dpid=3,
         dpcode="fan_speed",
