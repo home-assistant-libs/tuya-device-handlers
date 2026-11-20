@@ -441,6 +441,8 @@ def test_find_dpcode_quirk_overrides_category_default(
         )
 
     assert type(type_information) is IntegerTypeInformation
+
+
 def test_integer_enum_type_information() -> None:
     """Test integer enum type information."""
     device = create_device("infrared_ac_1ownck.json")

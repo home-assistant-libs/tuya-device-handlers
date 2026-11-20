@@ -321,7 +321,9 @@ class InfraredAcTemperatureWrapper(DPCodeIntegerEnumWrapper[float]):
             value = float(raw_value)
         except (TypeError, ValueError):
             return None
-        if not (self.type_information.min <= value <= self.type_information.max):
+        if not (
+            self.type_information.min <= value <= self.type_information.max
+        ):
             return None
         return value
 
