@@ -43,13 +43,17 @@ class DPType(StrEnum):
 
     @staticmethod
     def try_parse(current_type: str) -> DPType | None:
-        """Try to parse a string into a DPType."""
-        try:
-            return DPType(current_type)
-        except ValueError:
-            # Sometimes, we get ill-formed DPTypes from the cloud,
-            # this fixes them and maps them to the correct DPType.
-            return _DPTYPE_MAPPING.get(current_type)
+        """Try to parse a string into a DPType.
+
+        The cloud is known to return ill-formed values, for example uppercase
+        (`"ENUM"` instead of `"Enum"`) or unrelated aliases (`"bool"`).
+        """
+        for candidate in (current_type, current_type.capitalize()):
+            try:
+                return DPType(candidate)
+            except ValueError:
+                continue
+        return _DPTYPE_MAPPING.get(current_type.lower())
 
 
 _DPTYPE_MAPPING: dict[str, DPType] = {

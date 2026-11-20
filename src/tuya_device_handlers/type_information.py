@@ -255,6 +255,10 @@ class EnumTypeInformation(TypeInformation[str]):
         parsed: dict[str, Any] | None
         if not (parsed := json.loads(type_data)):
             return None
+        # Some devices declare an ENUM datapoint with an integer range
+        # instead of a list of values; see IntegerEnumTypeInformation.
+        if "range" not in parsed:
+            return None
         return cls(
             dpcode=dpcode,
             type_data=type_data,
@@ -286,6 +290,99 @@ class EnumTypeInformation(TypeInformation[str]):
             _LOGGER.warning(
                 "Found invalid ENUM value `%s` (%s) for datapoint `%s` in "
                 "product id `%s`, expected one of `%s`; %s",
+                raw_value,
+                type(raw_value),
+                self.dpcode,
+                device.product_id,
+                self.range,
+                _LOG_OR_QUIRK,
+            )
+        return None
+
+
+@dataclass(kw_only=True)
+class IntegerEnumTypeInformation(TypeInformation[int]):
+    """Enum type information backed by an integer range.
+
+    Some devices declare an `Enum` datapoint whose valid values are defined by
+    a numeric range instead of a list of values, for example:
+
+        {"min": 0, "max": 4, "scale": 0, "step": 1, "type": "Integer"}
+    """
+
+    _DPTYPE = DPType.ENUM
+
+    min: int
+    max: int
+    scale: int
+    step: int
+
+    @property
+    def range(self) -> list[int]:
+        """Return the valid values."""
+        return list(range(self.min, self.max + 1, self.step or 1))
+
+    @classmethod
+    def _from_json(
+        cls,
+        dpcode: str,
+        type_data: str,
+        *,
+        report_type: str | None,
+    ) -> Self | None:
+        """Load JSON string and return an IntegerEnumTypeInformation object."""
+        parsed: dict[str, Any] | None
+        if not (parsed := json.loads(type_data)):
+            return None
+        if parsed.get("type") != "Integer":
+            return None
+        try:
+            min_value = int(parsed["min"])
+            max_value = int(parsed["max"])
+            scale = int(parsed["scale"])
+            step = int(parsed["step"])
+        except (KeyError, TypeError, ValueError):
+            return None
+        # Scaled values are not integers, so they cannot be an integer enum
+        if scale != 0:
+            return None
+        return cls(
+            dpcode=dpcode,
+            type_data=type_data,
+            report_type=report_type,
+            min=min_value,
+            max=max_value,
+            scale=scale,
+            step=step,
+        )
+
+    def prepare_set_value(self, device: CustomerDevice, value: Any) -> int:
+        """Prepare a Home Assistant value to be sent as a device command."""
+        if isinstance(value, float):
+            # Round to the closest valid value, like integer datapoints do
+            steps = round((value - self.min) / (self.step or 1))
+            value = self.min + steps * (self.step or 1)
+        if not isinstance(value, int):
+            msg = f"Invalid integer value `{value}` ({type(value).__name__})"
+            raise PrepareSetValueError(msg)
+        if value not in self.range:
+            msg = f"Value `{value}` out of range: {self.range}"
+            raise PrepareSetValueError(msg)
+        return value
+
+    def read_device_value(self, device: CustomerDevice) -> int | None:
+        """Read the device value for this datapoint."""
+        if (raw_value := device.status.get(self.dpcode)) is None:
+            return None
+        # Validate input against defined range
+        if isinstance(raw_value, int) and raw_value in self.range:
+            return raw_value
+        if _should_log_warning(
+            device.id, f"integer_enum_out_range|{self.dpcode}|{raw_value}"
+        ):
+            _LOGGER.warning(
+                "Found invalid ENUM value `%s` (%s) for datapoint `%s` in "
+                "product id `%s`, expected value in %s; %s",
                 raw_value,
                 type(raw_value),
                 self.dpcode,
