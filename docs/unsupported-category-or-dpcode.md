@@ -269,10 +269,15 @@ We don't know the exact rules the cloud applies. Commands for datapoints or
 ENUM values missing from the cloud's definition (`original_function` in
 diagnostics taken with a quirk active) are typically rejected with error
 `2008`, but the cloud may also reject commands for datapoints it does list.
+Some products have no cloud definition at all (`function` and `status_range`
+are both empty), because their category has no standard instruction set, so
+every command is rejected (for example `cdsxj` cameras and `ksdjml` doorbells,
+see home-assistant/core#189888).
 
 Neither this library nor core can work around it: commands can't be sent by
-dpId, and the integration has no local control. Only the manufacturer (or
-Tuya support) can change what the Tuya cloud accepts.
+dpId, and the integration has no local control. Tuya can confirm the problem
+on its servers, but in practice leaves the change to the manufacturer, and
+each tends to point at the other, so don't count on a fix.
 
 A quirk is still worth contributing for the readings. Declare the datapoints
 that are meant to be writable as `DPMode.READ | DPMode.WRITE` anyway, and
@@ -282,8 +287,10 @@ mention the limitation in the quirk's docstring.
 
 - **As a user:** report it in the Smart Life or Tuya Smart app, in the help and
   feedback section of the **Me** tab. Mention the product id and the error code
-  (`2008`). Contacting the brand or seller of the device is often more
-  effective, as only they can change its cloud definition.
+  (`2008`). Tuya can check the product's cloud definition and confirm the
+  problem, but in practice leaves the change to the brand or seller of the
+  device, so pass the confirmation on to them. Some brands respond, others
+  don't.
 - **As the product's owner (brand or seller):** open a technical ticket at
   [service.console.tuya.com](https://service.console.tuya.com/), from the
   account that owns the product's cloud definition. Include the product id,
