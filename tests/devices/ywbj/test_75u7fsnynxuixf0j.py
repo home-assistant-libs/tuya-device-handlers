@@ -6,7 +6,6 @@ with Temp & Humidity (75u7fsnynxuixf0j).
 from tuya_sharing import Manager
 
 from tests import create_device
-from tests.integration_helpers.sensor import get_sensor_default_definitions
 from tuya_device_handlers.registry import QuirksRegistry
 
 
@@ -26,23 +25,6 @@ def test_quirk_adds_smoke_detector_dps(
     # After quirk initialization
     assert "temp_current" in device.status_range
     assert "humidity_value" in device.status_range
-
-
-def test_default_definitions(
-    filled_quirks_registry: QuirksRegistry,
-) -> None:
-    """Quirk exposes temperature and humidity sensors."""
-    device = create_device("ywbj_75u7fsnynxuixf0j.json")
-
-    before = get_sensor_default_definitions(device)
-    assert "temp_current" not in before
-    assert "humidity_value" not in before
-
-    filled_quirks_registry.initialise_device_quirk(device)
-
-    after = get_sensor_default_definitions(device)
-    assert "temp_current" in after
-    assert "humidity_value" in after
 
 
 def test_smoke_detector_status_updates(

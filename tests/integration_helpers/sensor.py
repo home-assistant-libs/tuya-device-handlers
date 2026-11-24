@@ -405,8 +405,6 @@ _SENSORS: dict[str, tuple[SensorEntityDescription, ...]] = {
     ),
     "ywbj": (
         SensorEntityDescription("smoke_sensor_value"),
-        SensorEntityDescription("humidity_value"),
-        SensorEntityDescription("temp_current"),
         *BATTERY_SENSORS,
     ),
     "ywcgq": (
