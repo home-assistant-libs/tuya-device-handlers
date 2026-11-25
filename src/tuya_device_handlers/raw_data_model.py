@@ -93,6 +93,22 @@ class ElectricityData:
 
 
 @dataclass(kw_only=True)
+class CatLitterBoxData:
+    """Cat litter box visit data."""
+
+    weight: int
+    duration: int
+
+    @classmethod
+    def from_bytes(cls, raw: bytes) -> Self | None:
+        """Parse a litter box visit payload."""
+        if len(raw) != 6:
+            return None
+        weight, duration = struct.unpack(">IH", raw)
+        return cls(weight=weight, duration=duration)
+
+
+@dataclass(kw_only=True)
 class FeederScheduleDataEntry:
     """One feeder schedule entry."""
 
