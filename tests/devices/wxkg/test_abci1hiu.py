@@ -1,33 +1,58 @@
 """Test the MOES four-button Zigbee scene remote quirk."""
 
-import json
+import pytest
+from tuya_sharing import Manager
 
 from tests import create_device
+from tuya_device_handlers.definition.event import get_default_definition
 from tuya_device_handlers.registry import QuirksRegistry
 
 
-def test_first_button_is_normalised(
+def test_button_1_event_definition(
     filled_quirks_registry: QuirksRegistry,
 ) -> None:
-    """Expose button 1 under the same naming scheme as buttons 2-4."""
+    """Expose a default event definition for button 1 with the quirk."""
     device = create_device("wxkg_abci1hiu.json")
 
-    assert "switch1_value" in device.status_range
-    assert "switch_mode1" not in device.status_range
+    assert get_default_definition(device, "switch_mode1") is None
 
     filled_quirks_registry.initialise_device_quirk(device)
 
-    assert "switch_mode1" in device.status_range
-    assert json.loads(device.status_range["switch_mode1"].values)["range"] == [
-        "click",
-        "double_click",
-        "press",
-    ]
-    assert device.local_strategy[1]["status_code"] == "switch_mode1"
-    assert device.local_strategy[1]["config_item"]["enumMappingMap"] == {
-        "single_click": {"code": "switch_mode1", "value": "click"},
-        "double_click": {"code": "switch_mode1", "value": "double_click"},
-        "long_press": {"code": "switch_mode1", "value": "press"},
-    }
-    for button in (2, 3, 4):
-        assert f"switch_mode{button}" in device.status_range
+    for button in (1, 2, 3, 4):
+        assert (
+            get_default_definition(device, f"switch_mode{button}") is not None
+        )
+
+
+@pytest.mark.parametrize("button", [1, 2, 3, 4])
+@pytest.mark.parametrize(
+    ("raw_value", "expected"),
+    [
+        ("single_click", "click"),
+        ("double_click", "double_click"),
+        ("long_press", "press"),
+    ],
+)
+def test_mqtt_status(
+    filled_quirks_registry: QuirksRegistry,
+    mock_manager: Manager,
+    button: int,
+    raw_value: str,
+    expected: str,
+) -> None:
+    """Convert each raw button report and update only its own status."""
+    device = create_device("wxkg_abci1hiu.json")
+    filled_quirks_registry.initialise_device_quirk(device)
+    mock_manager.device_map[device.id] = device
+
+    dpcode = f"switch_mode{button}"
+    device.status.pop(dpcode, None)
+    expected_status = {**device.status, dpcode: expected}
+
+    mock_manager._on_device_report(
+        device.id,
+        [{"dpId": button, "t": 1752456620499, "value": raw_value}],
+    )
+
+    assert device.status[dpcode] == expected
+    assert device.status == expected_status
