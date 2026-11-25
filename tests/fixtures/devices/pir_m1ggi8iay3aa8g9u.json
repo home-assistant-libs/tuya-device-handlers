@@ -1,0 +1,209 @@
+{
+  "endpoint": "https://apigw.tuyaeu.com",
+  "mqtt_connected": true,
+  "disabled_by": null,
+  "disabled_polling": false,
+  "category": "pir",
+  "product_id": "m1ggi8iay3aa8g9u",
+  "product_name": "WiFi PIR Motion & T&H Sensor",
+  "online": true,
+  "sub": false,
+  "time_zone": "+01:00",
+  "active_time": "2026-11-25T09:12:14+00:00",
+  "create_time": "2026-11-25T09:12:14+00:00",
+  "update_time": "2026-11-25T09:12:14+00:00",
+  "function": {
+    "pir_time": {
+      "type": "Enum",
+      "value": "{\"range\":[\"30s\",\"60s\",\"120s\"]}"
+    }
+  },
+  "local_strategy": {
+    "1": {
+      "value_convert": "default",
+      "status_code": "pir",
+      "config_item": {
+        "statusFormat": "{\"pir\":\"$\"}",
+        "valueDesc": "{\"range\":[\"pir\",\"none\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "m1ggi8iay3aa8g9u"
+      }
+    },
+    "4": {
+      "value_convert": "default",
+      "status_code": "battery_percentage",
+      "config_item": {
+        "statusFormat": "{\"battery_percentage\":\"$\"}",
+        "valueDesc": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "m1ggi8iay3aa8g9u"
+      }
+    },
+    "7": {
+      "value_convert": "default",
+      "status_code": "temp_current",
+      "config_item": {
+        "statusFormat": "{\"temp_current\":\"$\"}",
+        "valueDesc": "{\"unit\":\"℃\",\"min\":-400,\"max\":2000,\"scale\":1,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "m1ggi8iay3aa8g9u"
+      }
+    },
+    "10": {
+      "value_convert": "default",
+      "status_code": "pir_time",
+      "config_item": {
+        "statusFormat": "{\"pir_time\":\"$\"}",
+        "valueDesc": "{\"range\":[\"30s\",\"60s\",\"120s\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "m1ggi8iay3aa8g9u"
+      }
+    },
+    "8": {
+      "value_convert": "default",
+      "status_code": "humidity_value",
+      "config_item": {
+        "statusFormat": "{\"humidity_value\": \"$\"}",
+        "valueDesc": "{\"unit\": \"%\", \"min\": 0, \"max\": 100, \"scale\": 0, \"step\": 1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "m1ggi8iay3aa8g9u"
+      }
+    },
+    "11": {
+      "value_convert": "default",
+      "status_code": "illuminance_value",
+      "config_item": {
+        "statusFormat": "{\"illuminance_value\": \"$\"}",
+        "valueDesc": "{\"unit\": \"lx\", \"min\": 0, \"max\": 100000, \"scale\": 0, \"step\": 1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "m1ggi8iay3aa8g9u"
+      }
+    }
+  },
+  "status_range": {
+    "pir": {
+      "type": "Enum",
+      "value": "{\"range\":[\"pir\",\"none\"]}",
+      "report_type": null
+    },
+    "battery_percentage": {
+      "type": "Integer",
+      "value": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "temp_current": {
+      "type": "Integer",
+      "value": "{\"unit\":\"℃\",\"min\":-400,\"max\":2000,\"scale\":1,\"step\":1}",
+      "report_type": "un_known"
+    },
+    "pir_time": {
+      "type": "Enum",
+      "value": "{\"range\":[\"30s\",\"60s\",\"120s\"]}",
+      "report_type": null
+    },
+    "humidity_value": {
+      "type": "Integer",
+      "value": "{\"unit\": \"%\", \"min\": 0, \"max\": 100, \"scale\": 0, \"step\": 1}",
+      "report_type": null
+    },
+    "illuminance_value": {
+      "type": "Integer",
+      "value": "{\"unit\": \"lx\", \"min\": 0, \"max\": 100000, \"scale\": 0, \"step\": 1}",
+      "report_type": null
+    }
+  },
+  "status": {
+    "pir": "pir",
+    "battery_percentage": 100,
+    "temp_current": 269,
+    "pir_time": "60s",
+    "illuminance_value": 2979,
+    "humidity_value": 50
+  },
+  "set_up": true,
+  "support_local": true,
+  "quirk": "/config/tuya_quirks/pir_m1ggi8iay3aa8g9u.py:6",
+  "warnings": null,
+  "original_category": "pir",
+  "original_function": {
+    "pir_time": {
+      "type": "Enum",
+      "value": "{\"range\":[\"30s\",\"60s\",\"120s\"]}"
+    }
+  },
+  "original_local_strategy": {
+    "1": {
+      "value_convert": "default",
+      "status_code": "pir",
+      "config_item": {
+        "statusFormat": "{\"pir\":\"$\"}",
+        "valueDesc": "{\"range\":[\"pir\",\"none\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "m1ggi8iay3aa8g9u"
+      }
+    },
+    "4": {
+      "value_convert": "default",
+      "status_code": "battery_percentage",
+      "config_item": {
+        "statusFormat": "{\"battery_percentage\":\"$\"}",
+        "valueDesc": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "m1ggi8iay3aa8g9u"
+      }
+    },
+    "7": {
+      "value_convert": "default",
+      "status_code": "temp_current",
+      "config_item": {
+        "statusFormat": "{\"temp_current\":\"$\"}",
+        "valueDesc": "{\"unit\":\"℃\",\"min\":-400,\"max\":2000,\"scale\":1,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "m1ggi8iay3aa8g9u"
+      }
+    },
+    "10": {
+      "value_convert": "default",
+      "status_code": "pir_time",
+      "config_item": {
+        "statusFormat": "{\"pir_time\":\"$\"}",
+        "valueDesc": "{\"range\":[\"30s\",\"60s\",\"120s\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "m1ggi8iay3aa8g9u"
+      }
+    }
+  },
+  "original_status_range": {
+    "pir": {
+      "type": "Enum",
+      "value": "{\"range\":[\"pir\",\"none\"]}",
+      "report_type": null
+    },
+    "battery_percentage": {
+      "type": "Integer",
+      "value": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "temp_current": {
+      "type": "Integer",
+      "value": "{\"unit\":\"℃\",\"min\":-400,\"max\":2000,\"scale\":1,\"step\":1}",
+      "report_type": "un_known"
+    },
+    "pir_time": {
+      "type": "Enum",
+      "value": "{\"range\":[\"30s\",\"60s\",\"120s\"]}",
+      "report_type": null
+    }
+  },
+  "issues": []
+}
