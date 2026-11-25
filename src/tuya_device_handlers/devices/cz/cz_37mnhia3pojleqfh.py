@@ -1,4 +1,4 @@
-"""Quirk for SP111 smart plug (37mnhia3pojleqfh).
+"""Quirk for Gosund SP111 smart plug (37mnhia3pojleqfh).
 
 The cloud declares `cur_voltage` and `cur_power` with `scale=0`, but the
 device reports deci-volts and deci-watts (2255 means 225.5 V, 40 means
@@ -16,7 +16,8 @@ from tuya_device_handlers.const import DPMode
     DeviceQuirk()
     .applies_to(
         product_id="37mnhia3pojleqfh",
-        model="SP111",
+        manufacturer="Gosund",
+        model="Smart Plug",
         model_id="SP111",
     )
     .add_dpid_integer(
