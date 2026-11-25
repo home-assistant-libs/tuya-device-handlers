@@ -1,0 +1,169 @@
+{
+  "endpoint": "https://apigw.tuyaeu.com",
+  "mqtt_connected": true,
+  "disabled_by": null,
+  "disabled_polling": false,
+  "name": "WW25 entfeuchtet WDH-870FW",
+  "category": "cs",
+  "product_id": "28ts8zanupz0yytl",
+  "product_name": "WDH-870FW",
+  "online": true,
+  "sub": false,
+  "time_zone": "+02:00",
+  "active_time": "2026-08-13T11:17:15+00:00",
+  "create_time": "2026-08-13T11:17:15+00:00",
+  "update_time": "2026-08-13T11:17:15+00:00",
+  "function": {
+    "switch": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "dehumidify_set_value": {
+      "type": "Integer",
+      "value": "{\"unit\":\"%\",\"min\":30,\"max\":70,\"scale\":0,\"step\":5}"
+    },
+    "fan_speed_enum": {
+      "type": "Enum",
+      "value": "{\"range\":[\"low\",\"high\"]}"
+    },
+    "mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"dehumidify\",\"continuous\"]}"
+    },
+    "light": {
+      "type": "Boolean",
+      "value": "{}"
+    }
+  },
+  "local_strategy": {
+    "1": {
+      "value_convert": "default",
+      "status_code": "switch",
+      "config_item": {
+        "statusFormat": "{\"switch\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "28ts8zanupz0yytl"
+      }
+    },
+    "2": {
+      "value_convert": "default",
+      "status_code": "dehumidify_set_value",
+      "config_item": {
+        "statusFormat": "{\"dehumidify_set_value\":\"$\"}",
+        "valueDesc": "{\"unit\":\"%\",\"min\":30,\"max\":70,\"scale\":0,\"step\":5}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "28ts8zanupz0yytl"
+      }
+    },
+    "4": {
+      "value_convert": "default",
+      "status_code": "fan_speed_enum",
+      "config_item": {
+        "statusFormat": "{\"fan_speed_enum\":\"$\"}",
+        "valueDesc": "{\"range\":[\"low\",\"high\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "28ts8zanupz0yytl"
+      }
+    },
+    "5": {
+      "value_convert": "default",
+      "status_code": "mode",
+      "config_item": {
+        "statusFormat": "{\"mode\":\"$\"}",
+        "valueDesc": "{\"range\":[\"dehumidify\",\"continuous\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "28ts8zanupz0yytl"
+      }
+    },
+    "6": {
+      "value_convert": "default",
+      "status_code": "humidity_indoor",
+      "config_item": {
+        "statusFormat": "{\"humidity_indoor\":\"$\"}",
+        "valueDesc": "{\"unit\":\"%\",\"min\":30,\"max\":90,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "28ts8zanupz0yytl"
+      }
+    },
+    "11": {
+      "value_convert": "default",
+      "status_code": "light",
+      "config_item": {
+        "statusFormat": "{\"light\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "28ts8zanupz0yytl"
+      }
+    },
+    "19": {
+      "value_convert": "default",
+      "status_code": "fault",
+      "config_item": {
+        "statusFormat": "{\"fault\":\"$\"}",
+        "valueDesc": "{\"label\":[\"E2\"]}",
+        "valueType": "Bitmap",
+        "enumMappingMap": {},
+        "pid": "28ts8zanupz0yytl"
+      }
+    }
+  },
+  "status_range": {
+    "switch": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "dehumidify_set_value": {
+      "type": "Integer",
+      "value": "{\"unit\":\"%\",\"min\":30,\"max\":70,\"scale\":0,\"step\":5}",
+      "report_type": null
+    },
+    "fan_speed_enum": {
+      "type": "Enum",
+      "value": "{\"range\":[\"low\",\"high\"]}",
+      "report_type": null
+    },
+    "mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"dehumidify\",\"continuous\"]}",
+      "report_type": null
+    },
+    "humidity_indoor": {
+      "type": "Integer",
+      "value": "{\"unit\":\"%\",\"min\":30,\"max\":90,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "light": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "fault": {
+      "type": "Bitmap",
+      "value": "{\"label\":[\"E2\"]}",
+      "report_type": null
+    }
+  },
+  "status": {
+    "switch": true,
+    "dehumidify_set_value": 50,
+    "fan_speed_enum": "med",
+    "mode": "dehumidify",
+    "humidity_indoor": 52,
+    "light": true,
+    "fault": 0
+  },
+  "set_up": true,
+  "support_local": true,
+  "quirk": null,
+  "warnings": [
+    "enum_out_range|fan_speed_enum|med"
+  ]
+}
