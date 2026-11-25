@@ -1,0 +1,210 @@
+{
+  "endpoint": "https://apigw.tuyaus.com",
+  "mqtt_connected": true,
+  "disabled_by": null,
+  "disabled_polling": false,
+  "name": "Hot Tub Heat Pump",
+  "category": "znrb",
+  "product_id": "zqrzsid4zllmowtt",
+  "product_name": "Pool Heat Pump",
+  "online": true,
+  "sub": false,
+  "time_zone": "-04:00",
+  "active_time": "2026-08-02T01:00:58+00:00",
+  "create_time": "2026-08-02T01:00:58+00:00",
+  "update_time": "2026-08-02T01:00:58+00:00",
+  "function": {
+    "switch": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"auto\"]}"
+    },
+    "temp_set": {
+      "type": "Integer",
+      "value": "{\"unit\":\"℉\",\"min\":47,\"max\":104,\"scale\":0,\"step\":1}"
+    }
+  },
+  "local_strategy": {
+    "1": {
+      "value_convert": "default",
+      "status_code": "switch",
+      "config_item": {
+        "statusFormat": "{\"switch\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "zqrzsid4zllmowtt"
+      }
+    },
+    "2": {
+      "value_convert": "default",
+      "status_code": "mode",
+      "config_item": {
+        "statusFormat": "{\"mode\":\"$\"}",
+        "valueDesc": "{\"range\":[\"auto\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "zqrzsid4zllmowtt"
+      }
+    },
+    "4": {
+      "value_convert": "default",
+      "status_code": "temp_set",
+      "config_item": {
+        "statusFormat": "{\"temp_set\":\"$\"}",
+        "valueDesc": "{\"unit\":\"℉\",\"min\":47,\"max\":104,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "zqrzsid4zllmowtt"
+      }
+    },
+    "14": {
+      "value_convert": "default",
+      "status_code": "countdown_left",
+      "config_item": {
+        "statusFormat": "{\"countdown_left\":\"$\"}",
+        "valueDesc": "{\"unit\":\"\",\"min\":0,\"max\":2000,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "zqrzsid4zllmowtt"
+      }
+    },
+    "16": {
+      "value_convert": "default",
+      "status_code": "temp_current",
+      "config_item": {
+        "statusFormat": "{\"temp_current\":\"$\"}",
+        "valueDesc": "{\"unit\":\"P\",\"min\":-500,\"max\":500,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "zqrzsid4zllmowtt"
+      }
+    },
+    "18": {
+      "value_convert": "default",
+      "status_code": "power_consumption",
+      "config_item": {
+        "statusFormat": "{\"power_consumption\":\"$\"}",
+        "valueDesc": "{\"unit\":\"kW·h\",\"min\":0,\"max\":200000,\"scale\":2,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "zqrzsid4zllmowtt"
+      }
+    },
+    "20": {
+      "value_convert": "default",
+      "status_code": "compressor_strength",
+      "config_item": {
+        "statusFormat": "{\"compressor_strength\":\"$\"}",
+        "valueDesc": "{\"unit\":\"Hz\",\"min\":0,\"max\":200,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "zqrzsid4zllmowtt"
+      }
+    },
+    "21": {
+      "value_convert": "default",
+      "status_code": "temp_top",
+      "config_item": {
+        "statusFormat": "{\"temp_top\":\"$\"}",
+        "valueDesc": "{\"unit\":\"℉\",\"min\":-1000,\"max\":1000,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "zqrzsid4zllmowtt"
+      }
+    },
+    "22": {
+      "value_convert": "default",
+      "status_code": "temp_bottom",
+      "config_item": {
+        "statusFormat": "{\"temp_bottom\":\"$\"}",
+        "valueDesc": "{\"unit\":\"℉\",\"min\":-1000,\"max\":1000,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "zqrzsid4zllmowtt"
+      }
+    },
+    "33": {
+      "value_convert": "default",
+      "status_code": "defrost_state",
+      "config_item": {
+        "statusFormat": "{\"defrost_state\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "zqrzsid4zllmowtt"
+      }
+    }
+  },
+  "status_range": {
+    "switch": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "mode": {
+      "type": "Enum",
+      "value": "{\"range\":[\"auto\"]}",
+      "report_type": null
+    },
+    "temp_set": {
+      "type": "Integer",
+      "value": "{\"unit\":\"℉\",\"min\":47,\"max\":104,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "countdown_left": {
+      "type": "Integer",
+      "value": "{\"unit\":\"\",\"min\":0,\"max\":2000,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "temp_current": {
+      "type": "Integer",
+      "value": "{\"unit\":\"P\",\"min\":-500,\"max\":500,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "power_consumption": {
+      "type": "Integer",
+      "value": "{\"unit\":\"kW·h\",\"min\":0,\"max\":200000,\"scale\":2,\"step\":1}",
+      "report_type": null
+    },
+    "compressor_strength": {
+      "type": "Integer",
+      "value": "{\"unit\":\"Hz\",\"min\":0,\"max\":200,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "temp_top": {
+      "type": "Integer",
+      "value": "{\"unit\":\"℉\",\"min\":-1000,\"max\":1000,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "temp_bottom": {
+      "type": "Integer",
+      "value": "{\"unit\":\"℉\",\"min\":-1000,\"max\":1000,\"scale\":0,\"step\":1}",
+      "report_type": null
+    },
+    "defrost_state": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    }
+  },
+  "status": {
+    "switch": false,
+    "mode": "make_hot",
+    "temp_set": 104,
+    "countdown_left": 133,
+    "temp_current": 250,
+    "power_consumption": 0,
+    "compressor_strength": 0,
+    "temp_top": 76,
+    "temp_bottom": 81,
+    "defrost_state": false
+  },
+  "set_up": true,
+  "support_local": true,
+  "quirk": null,
+  "warnings": null
+}
