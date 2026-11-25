@@ -1,15 +1,7 @@
 """Tests for the 37mnhia3pojleqfh smart plug scaling quirk.
 
-This device (an SP111 plug) reports ``cur_voltage`` in deci-volts and
-``cur_power`` in deci-watts, but the cloud declares both with ``scale=0``.
 Without the quirk the voltage sensor reads 2255 V and the power sensor
-reads 40 W.
-
-The scale can be confirmed from the device's own report, which is
-internally consistent only when both values are divided by ten: the same
-payload carries ``cur_voltage=2255``, ``cur_current=18`` and
-``cur_power=40``, and 225.5 V x 18 mA = 4.06 W matches ``cur_power`` of
-4.0 W, whereas 2255 V x 18 mA = 40.6 W does not.
+reads 40 W. See the quirk module for the scale evidence.
 """
 
 from unittest.mock import patch
