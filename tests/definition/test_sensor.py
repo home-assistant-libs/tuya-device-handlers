@@ -40,7 +40,19 @@ from tuya_device_handlers.device_wrapper.sensor import (
         ),
         (
             "cs_zibqa9dutqyaxym2.json",
+            ("bad", "countdown_left"),
+            None,
+            DPCodeIntegerWrapper,
+        ),
+        (
+            "cs_zibqa9dutqyaxym2.json",
             "countdown_set",
+            (DPCodeEnumWrapper,),
+            DPCodeEnumWrapper,
+        ),
+        (
+            "cs_zibqa9dutqyaxym2.json",
+            ("bad", "countdown_set"),
             (DPCodeEnumWrapper,),
             DPCodeEnumWrapper,
         ),
@@ -50,7 +62,7 @@ from tuya_device_handlers.device_wrapper.sensor import (
 )
 def test_get_default_definition(
     fixture_filename: str,
-    dpcode: str,
+    dpcode: str | tuple[str, ...],
     lookup_type: tuple[type, ...] | None,
     wrapper_type: type,
 ) -> None:
