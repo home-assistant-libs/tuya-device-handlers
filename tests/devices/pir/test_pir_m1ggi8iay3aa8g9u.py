@@ -8,7 +8,7 @@ def test_quirk_adds_humidity_and_illuminance_dps(
     filled_quirks_registry: QuirksRegistry,
 ) -> None:
     """Verify humidity_value and illuminance_value datapoints are added."""
-    device = create_device("<category>_m1ggi8iay3aa8g9u.json")
+    device = create_device("pir_m1ggi8iay3aa8g9u.json")
     filled_quirks_registry.initialise_device_quirk(device)
 
     assert "humidity_value" in device.status_range
