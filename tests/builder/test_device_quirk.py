@@ -155,6 +155,19 @@ def test_add_dpid_integer() -> None:
     assert payload == {"unit": "%", "min": 0, "max": 100, "scale": 1, "step": 1}
 
 
+def test_add_dpid_raw() -> None:
+    """add_dpid_raw stores a Raw definition."""
+    quirk = DeviceQuirk().add_dpid_raw(
+        dpid=5,
+        dpcode="raw",
+        dpmode=DPMode.READ,
+    )
+    definition = quirk._quirk_entries[0]
+    assert isinstance(definition, _DatapointDefinition)
+    assert definition.dptype is DPType.RAW
+    assert definition.values == "{}"
+
+
 def test_remove_dpid() -> None:
     """remove_dpid stores a removal entry for the dpid."""
     quirk = DeviceQuirk().remove_dpid(dpid=5, dpcode="rm")
