@@ -36,7 +36,7 @@ class SensorQuirk(BaseEntityQuirk):
 
 def get_default_definition(
     device: CustomerDevice,
-    dpcode: str | tuple[str, ...],
+    dpcode: str,
     wrapper_class: tuple[type[DPCodeTypeInformationWrapper], ...] | None = None,
 ) -> SensorDefinition | None:
     """Get DPCode wrapper for an entity description."""

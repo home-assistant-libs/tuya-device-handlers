@@ -390,27 +390,6 @@ class DeviceQuirk(DeviceQuirkProtocol):
         )
         return self
 
-    def add_dpid_raw(
-        self,
-        *,
-        dpid: int,
-        dpcode: str,
-        dpmode: DPMode,
-        apply_when: Callable[[CustomerDevice], bool] | None = None,
-    ) -> Self:
-        """Add datapoint Raw definition."""
-        self._quirk_entries.append(
-            _DatapointDefinition(
-                dpid=dpid,
-                dpcode=dpcode,
-                dpmode=dpmode,
-                dptype=DPType.RAW,
-                values="{}",
-                apply_when=apply_when,
-            )
-        )
-        return self
-
     def map_dpid_initial_status_values(
         self,
         *,
