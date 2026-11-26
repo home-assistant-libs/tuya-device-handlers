@@ -1,3 +1,11 @@
+"""Quirk for WiFi PIR Motion & T&H Sensor (m1ggi8iay3aa8g9u).
+
+Adds missing read-only datapoints for relative humidity (DP 8, humidity_value)
+and illuminance (DP 11, illuminance_value).
+
+See https://github.com/home-assistant-libs/tuya-device-handlers/issues/543.
+"""
+
 from tuya_device_handlers import TUYA_QUIRKS_REGISTRY
 from tuya_device_handlers.builder import DeviceQuirk
 from tuya_device_handlers.const import DPMode
