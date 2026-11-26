@@ -1,0 +1,257 @@
+{
+  "endpoint": "https://apigw.tuyaeu.com",
+  "mqtt_connected": true,
+  "disabled_by": null,
+  "disabled_polling": false,
+  "name": "Ventilador Salón Esquerda",
+  "category": "xdd",
+  "product_id": "jaw7hqx0ulo3bkbi",
+  "product_name": "Smart fan",
+  "online": true,
+  "sub": false,
+  "time_zone": "+02:00",
+  "active_time": "2026-08-11T15:22:22+00:00",
+  "create_time": "2026-08-11T15:22:22+00:00",
+  "update_time": "2026-08-11T15:22:22+00:00",
+  "function": {
+    "switch_led": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "bright_value": {
+      "type": "Integer",
+      "value": "{\"unit\": \"\", \"min\": 10, \"max\": 1000, \"scale\": 0, \"step\": 1}"
+    },
+    "fan_switch": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "fan_mode": {
+      "type": "Enum",
+      "value": "{\"range\": [\"fresh\"]}"
+    },
+    "fan_speed": {
+      "type": "Integer",
+      "value": "{\"unit\": \"\", \"min\": 1, \"max\": 6, \"scale\": 0, \"step\": 1}"
+    },
+    "fan_direction": {
+      "type": "Enum",
+      "value": "{\"range\": [\"forward\"]}"
+    },
+    "fan_countdown_left": {
+      "type": "Integer",
+      "value": "{\"unit\": \"\", \"min\": 0, \"max\": 86400, \"scale\": 0, \"step\": 1}"
+    },
+    "cct": {
+      "type": "Enum",
+      "value": "{\"range\": [\"white\"]}"
+    },
+    "bright_value2": {
+      "type": "Integer",
+      "value": "{\"unit\": \"\", \"min\": 0, \"max\": 1000, \"scale\": 0, \"step\": 1}"
+    }
+  },
+  "local_strategy": {
+    "20": {
+      "value_convert": "default",
+      "status_code": "switch_led",
+      "config_item": {
+        "statusFormat": "{\"switch_led\": \"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "jaw7hqx0ulo3bkbi"
+      }
+    },
+    "22": {
+      "value_convert": "default",
+      "status_code": "bright_value",
+      "config_item": {
+        "statusFormat": "{\"bright_value\": \"$\"}",
+        "valueDesc": "{\"unit\": \"\", \"min\": 10, \"max\": 1000, \"scale\": 0, \"step\": 1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "jaw7hqx0ulo3bkbi"
+      }
+    },
+    "101": {
+      "value_convert": "default",
+      "status_code": "fan_switch",
+      "config_item": {
+        "statusFormat": "{\"fan_switch\": \"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "jaw7hqx0ulo3bkbi"
+      }
+    },
+    "102": {
+      "value_convert": "default",
+      "status_code": "fan_mode",
+      "config_item": {
+        "statusFormat": "{\"fan_mode\": \"$\"}",
+        "valueDesc": "{\"range\": [\"fresh\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "jaw7hqx0ulo3bkbi"
+      }
+    },
+    "103": {
+      "value_convert": "default",
+      "status_code": "fan_speed",
+      "config_item": {
+        "statusFormat": "{\"fan_speed\": \"$\"}",
+        "valueDesc": "{\"unit\": \"\", \"min\": 1, \"max\": 6, \"scale\": 0, \"step\": 1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "jaw7hqx0ulo3bkbi"
+      }
+    },
+    "104": {
+      "value_convert": "default",
+      "status_code": "fan_direction",
+      "config_item": {
+        "statusFormat": "{\"fan_direction\": \"$\"}",
+        "valueDesc": "{\"range\": [\"forward\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "jaw7hqx0ulo3bkbi"
+      }
+    },
+    "105": {
+      "value_convert": "default",
+      "status_code": "fan_countdown_left",
+      "config_item": {
+        "statusFormat": "{\"fan_countdown_left\": \"$\"}",
+        "valueDesc": "{\"unit\": \"\", \"min\": 0, \"max\": 86400, \"scale\": 0, \"step\": 1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "jaw7hqx0ulo3bkbi"
+      }
+    },
+    "106": {
+      "value_convert": "default",
+      "status_code": "cct",
+      "config_item": {
+        "statusFormat": "{\"cct\": \"$\"}",
+        "valueDesc": "{\"range\": [\"white\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "jaw7hqx0ulo3bkbi"
+      }
+    },
+    "107": {
+      "value_convert": "default",
+      "status_code": "bright_value2",
+      "config_item": {
+        "statusFormat": "{\"bright_value2\": \"$\"}",
+        "valueDesc": "{\"unit\": \"\", \"min\": 0, \"max\": 1000, \"scale\": 0, \"step\": 1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "jaw7hqx0ulo3bkbi"
+      }
+    }
+  },
+  "status_range": {
+    "switch_led": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "bright_value": {
+      "type": "Integer",
+      "value": "{\"unit\": \"\", \"min\": 10, \"max\": 1000, \"scale\": 0, \"step\": 1}",
+      "report_type": null
+    },
+    "fan_switch": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "fan_mode": {
+      "type": "Enum",
+      "value": "{\"range\": [\"fresh\"]}",
+      "report_type": null
+    },
+    "fan_speed": {
+      "type": "Integer",
+      "value": "{\"unit\": \"\", \"min\": 1, \"max\": 6, \"scale\": 0, \"step\": 1}",
+      "report_type": null
+    },
+    "fan_direction": {
+      "type": "Enum",
+      "value": "{\"range\": [\"forward\"]}",
+      "report_type": null
+    },
+    "fan_countdown_left": {
+      "type": "Integer",
+      "value": "{\"unit\": \"\", \"min\": 0, \"max\": 86400, \"scale\": 0, \"step\": 1}",
+      "report_type": null
+    },
+    "cct": {
+      "type": "Enum",
+      "value": "{\"range\": [\"white\"]}",
+      "report_type": null
+    },
+    "bright_value2": {
+      "type": "Integer",
+      "value": "{\"unit\": \"\", \"min\": 0, \"max\": 1000, \"scale\": 0, \"step\": 1}",
+      "report_type": null
+    }
+  },
+  "status": {
+    "switch_led": true,
+    "bright_value": 739
+  },
+  "set_up": true,
+  "support_local": true,
+  "quirk": "/config/tuya_quirks/smart_fan_jaw7hqx0ulo3bkbi.py:8",
+  "warnings": null,
+  "original_category": "xdd",
+  "original_function": {
+    "switch_led": {
+      "type": "Boolean",
+      "value": "{}"
+    },
+    "bright_value": {
+      "type": "Integer",
+      "value": "{\"unit\":\"\",\"min\":10,\"max\":1000,\"scale\":0,\"step\":1}"
+    }
+  },
+  "original_local_strategy": {
+    "20": {
+      "value_convert": "default",
+      "status_code": "switch_led",
+      "config_item": {
+        "statusFormat": "{\"switch_led\":\"$\"}",
+        "valueDesc": "{}",
+        "valueType": "Boolean",
+        "enumMappingMap": {},
+        "pid": "jaw7hqx0ulo3bkbi"
+      }
+    },
+    "22": {
+      "value_convert": "default",
+      "status_code": "bright_value",
+      "config_item": {
+        "statusFormat": "{\"bright_value\":\"$\"}",
+        "valueDesc": "{\"unit\":\"\",\"min\":10,\"max\":1000,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "jaw7hqx0ulo3bkbi"
+      }
+    }
+  },
+  "original_status_range": {
+    "switch_led": {
+      "type": "Boolean",
+      "value": "{}",
+      "report_type": null
+    },
+    "bright_value": {
+      "type": "Integer",
+      "value": "{\"unit\":\"\",\"min\":10,\"max\":1000,\"scale\":0,\"step\":1}",
+      "report_type": null
+    }
+  }
+}
