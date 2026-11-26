@@ -1,0 +1,150 @@
+{
+  "endpoint": "https://apigw.tuyaeu.com",
+  "mqtt_connected": true,
+  "disabled_by": null,
+  "disabled_polling": false,
+  "name": "Fernbedienung",
+  "category": "wxkg",
+  "product_id": "abci1hiu",
+  "product_name": "4 Gang ZigBee Scene Remote",
+  "online": true,
+  "sub": true,
+  "time_zone": "+01:00",
+  "active_time": "2026-11-22T13:57:30+00:00",
+  "create_time": "2026-11-22T13:57:30+00:00",
+  "update_time": "2026-11-22T13:57:30+00:00",
+  "function": {},
+  "local_strategy": {
+    "1": {
+      "value_convert": "default",
+      "status_code": "switch1_value",
+      "config_item": {
+        "statusFormat": "{\"switch1_value\":\"$\"}",
+        "valueDesc": "{\"range\":[\"single_click\",\"double_click\",\"long_press\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {},
+        "pid": "abci1hiu"
+      }
+    },
+    "2": {
+      "value_convert": "enum",
+      "status_code": "switch_mode2",
+      "config_item": {
+        "statusFormat": "{\"switch_mode2\":\"$\"}",
+        "valueDesc": "{\"range\":[\"click\",\"double_click\",\"press\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {
+          "double_click": {
+            "code": "switch_mode2",
+            "value": "double_click"
+          },
+          "long_press": {
+            "code": "switch_mode2",
+            "value": "press"
+          },
+          "single_click": {
+            "code": "switch_mode2",
+            "value": "click"
+          }
+        },
+        "pid": "abci1hiu"
+      }
+    },
+    "3": {
+      "value_convert": "enum",
+      "status_code": "switch_mode3",
+      "config_item": {
+        "statusFormat": "{\"switch_mode3\":\"$\"}",
+        "valueDesc": "{\"range\":[\"click\",\"double_click\",\"press\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {
+          "double_click": {
+            "code": "switch_mode3",
+            "value": "double_click"
+          },
+          "long_press": {
+            "code": "switch_mode3",
+            "value": "press"
+          },
+          "single_click": {
+            "code": "switch_mode3",
+            "value": "click"
+          }
+        },
+        "pid": "abci1hiu"
+      }
+    },
+    "4": {
+      "value_convert": "enum",
+      "status_code": "switch_mode4",
+      "config_item": {
+        "statusFormat": "{\"switch_mode4\":\"$\"}",
+        "valueDesc": "{\"range\":[\"click\",\"double_click\",\"press\"]}",
+        "valueType": "Enum",
+        "enumMappingMap": {
+          "double_click": {
+            "code": "switch_mode4",
+            "value": "double_click"
+          },
+          "long_press": {
+            "code": "switch_mode4",
+            "value": "press"
+          },
+          "single_click": {
+            "code": "switch_mode4",
+            "value": "click"
+          }
+        },
+        "pid": "abci1hiu"
+      }
+    },
+    "10": {
+      "value_convert": "enum",
+      "status_code": "battery_percentage",
+      "config_item": {
+        "statusFormat": "{\"battery_percentage\":\"$\"}",
+        "valueDesc": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+        "valueType": "Integer",
+        "enumMappingMap": {},
+        "pid": "abci1hiu"
+      }
+    }
+  },
+  "status_range": {
+    "switch1_value": {
+      "type": "Enum",
+      "value": "{\"range\":[\"single_click\",\"double_click\",\"long_press\"]}",
+      "report_type": null
+    },
+    "switch_mode2": {
+      "type": "Enum",
+      "value": "{\"range\":[\"click\",\"double_click\",\"press\"]}",
+      "report_type": null
+    },
+    "switch_mode3": {
+      "type": "Enum",
+      "value": "{\"range\":[\"click\",\"double_click\",\"press\"]}",
+      "report_type": null
+    },
+    "switch_mode4": {
+      "type": "Enum",
+      "value": "{\"range\":[\"click\",\"double_click\",\"press\"]}",
+      "report_type": null
+    },
+    "battery_percentage": {
+      "type": "Integer",
+      "value": "{\"unit\":\"%\",\"min\":0,\"max\":100,\"scale\":0,\"step\":1}",
+      "report_type": null
+    }
+  },
+  "status": {
+    "switch1_value": "single_click",
+    "switch_mode2": "click",
+    "switch_mode3": "click",
+    "switch_mode4": "click"
+  },
+  "set_up": true,
+  "support_local": true,
+  "quirk": null,
+  "warnings": null
+}
