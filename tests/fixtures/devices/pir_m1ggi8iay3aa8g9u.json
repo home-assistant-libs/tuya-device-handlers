@@ -3,6 +3,7 @@
   "mqtt_connected": true,
   "disabled_by": null,
   "disabled_polling": false,
+  "name": "WiFi PIR Motion & T&H Sensor",
   "category": "pir",
   "product_id": "m1ggi8iay3aa8g9u",
   "product_name": "WiFi PIR Motion & T&H Sensor",
