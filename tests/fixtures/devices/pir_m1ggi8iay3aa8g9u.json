@@ -205,6 +205,5 @@
       "value": "{\"range\":[\"30s\",\"60s\",\"120s\"]}",
       "report_type": null
     }
-  },
-  "issues": []
+  }
 }
