@@ -1,9 +1,14 @@
 """Quirk for Smart fan (jaw7hqx0ulo3bkbi).
 
-Adds missing datapoints for light control (DP 20 switch_led, DP 22 bright_value,
-DP 106 cct, DP 107 bright_value2) and fan control (DP 101 fan_switch,
-DP 102 fan_mode, DP 103 fan_speed, DP 104 fan_direction,
-DP 105 fan_countdown_left).
+Tuya declares this ceiling fan light under the wrong category ('xdd' = ceiling
+light, instead of 'fsd' = ceiling fan light) and omits the fan datapoints, so
+Home Assistant does not create a fan entity for it.
+
+Overrides the category to 'fsd' and adds the missing fan datapoints:
+  DP 101 -> fan_switch (bool)
+  DP 102 -> fan_mode (enum fresh/nature)
+  DP 103 -> fan_speed (integer 1..6)
+  DP 104 -> fan_direction (enum forward/reverse)
 
 See https://github.com/home-assistant-libs/tuya-device-handlers/issues/478.
 """
@@ -17,6 +22,7 @@ RW_MODE = DPMode.READ | DPMode.WRITE
 (
     DeviceQuirk()
     .applies_to(product_id="jaw7hqx0ulo3bkbi")
+    .override_category("fsd")
     .add_dpid_boolean(
         dpid=20,
         dpcode="switch_led",
@@ -58,32 +64,6 @@ RW_MODE = DPMode.READ | DPMode.WRITE
         dpcode="fan_direction",
         dpmode=RW_MODE,
         enum_range=["forward", "reverse"],
-    )
-    .add_dpid_integer(
-        dpid=105,
-        dpcode="fan_countdown_left",
-        dpmode=RW_MODE,
-        unit="min",
-        min=0,
-        max=540,
-        scale=0,
-        step=1,
-    )
-    .add_dpid_enum(
-        dpid=106,
-        dpcode="cct",
-        dpmode=RW_MODE,
-        enum_range=["warm", "Neutral", "white"],
-    )
-    .add_dpid_integer(
-        dpid=107,
-        dpcode="bright_value2",
-        dpmode=RW_MODE,
-        unit="%",
-        min=1,
-        max=100,
-        scale=0,
-        step=1,
     )
     .register(TUYA_QUIRKS_REGISTRY)
 )
