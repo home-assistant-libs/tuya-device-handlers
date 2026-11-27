@@ -8,6 +8,7 @@ from tuya_device_handlers.type_information import (
     BitmapTypeInformation,
     BooleanTypeInformation,
     EnumTypeInformation,
+    IntegerEnumTypeInformation,
     IntegerTypeInformation,
     JsonTypeInformation,
     PrepareSetValueError,
@@ -179,6 +180,28 @@ class DPCodeIntegerWrapper[T = float](
         self.value_step = self.type_information.scale_value(
             type_information.step
         )
+
+
+class DPCodeIntegerEnumWrapper[T = int](
+    DPCodeTypeInformationWrapper[IntegerEnumTypeInformation, int, T]
+):
+    """Simple wrapper for ENUM datapoints with an integer range."""
+
+    _DPTYPE = IntegerEnumTypeInformation
+
+    def __init__(
+        self, dpcode: str, type_information: IntegerEnumTypeInformation
+    ) -> None:
+        """Init DPCodeIntegerEnumWrapper."""
+        super().__init__(dpcode, type_information)
+        self.min_value = type_information.min
+        self.max_value = type_information.max
+        self.value_step = type_information.step
+
+    @property
+    def values(self) -> list[int]:
+        """Return the valid values."""
+        return self.type_information.range
 
 
 class DPCodeJsonWrapper[T = dict[str, Any]](
