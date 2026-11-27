@@ -7,9 +7,28 @@ import pytest
 from syrupy.assertion import SnapshotAssertion
 
 from tuya_device_handlers.raw_data_model import (
+    CatLitterBoxData,
     ElectricityData,
     FeederScheduleData,
 )
+
+
+@pytest.mark.parametrize(
+    ("base64_string", "expected"),
+    [
+        ("AAAFbAAA", CatLitterBoxData(weight=1388, duration=0)),
+        ("AAAF2ABW", CatLitterBoxData(weight=1496, duration=86)),
+        ("", None),
+        ("AAAF2A==", None),
+    ],
+)
+def test_cat_litter_box_data(
+    base64_string: str, expected: CatLitterBoxData | None
+) -> None:
+    """Test CatLitterBoxData."""
+    assert (
+        CatLitterBoxData.from_bytes(base64.b64decode(base64_string)) == expected
+    )
 
 
 @pytest.mark.parametrize(

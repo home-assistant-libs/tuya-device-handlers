@@ -14,6 +14,8 @@ from tuya_device_handlers.device_wrapper.common import (
     DPCodeTypeInformationWrapper,
 )
 from tuya_device_handlers.device_wrapper.sensor import (
+    CatLitterBoxDurationRawWrapper,
+    CatLitterBoxWeightRawWrapper,
     DeltaIntegerWrapper,
     ElectricityApparentPowerHexStringWrapper,
     ElectricityApparentPowerJsonWrapper,
@@ -302,6 +304,27 @@ def test_sensor_invalid_value(
     # All wrappers return None if status is None
     mock_device.status[dpcode] = None
     assert wrapper.read_device_status(mock_device) is None
+
+
+def test_cat_litter_box_raw_wrappers(mock_device: CustomerDevice) -> None:
+    """Test extracting values from a litter box visit payload."""
+    dpcode = "demo_raw"
+    mock_device.status[dpcode] = "AAAF2ABW"
+    mock_device.status_range[dpcode].values = "{}"
+
+    assert (
+        weight := CatLitterBoxWeightRawWrapper.find_dpcode(mock_device, dpcode)
+    )
+    assert weight.read_device_status(mock_device) == 1496
+    assert weight.native_unit == "g"
+
+    assert (
+        duration := CatLitterBoxDurationRawWrapper.find_dpcode(
+            mock_device, dpcode
+        )
+    )
+    assert duration.read_device_status(mock_device) == 86
+    assert duration.native_unit == "s"
 
 
 @pytest.mark.parametrize(

@@ -5,7 +5,10 @@ import logging
 
 from tuya_sharing import CustomerDevice
 
-from tuya_device_handlers.raw_data_model import ElectricityData
+from tuya_device_handlers.raw_data_model import (
+    CatLitterBoxData,
+    ElectricityData,
+)
 from tuya_device_handlers.type_information import (
     IntegerTypeInformation,
     RawTypeInformation,
@@ -172,6 +175,33 @@ class RemainingTimeTimestampWrapper(DPCodeIntegerWrapper[datetime]):
             self._end_time = self._calculate_end_time(device)
             self._initialized = True
         return self._end_time
+
+
+class _CatLitterBoxRawWrapper(
+    DPCodeParsedAttributeWrapper[bytes, RawTypeInformation, CatLitterBoxData]
+):
+    """Base wrapper for an attribute in a litter box visit payload."""
+
+    _DPTYPE = RawTypeInformation
+
+    @classmethod
+    def _parse(cls, raw_value: bytes) -> CatLitterBoxData | None:
+        """Parse the litter box payload."""
+        return CatLitterBoxData.from_bytes(raw_value)
+
+
+class CatLitterBoxWeightRawWrapper(_CatLitterBoxRawWrapper):
+    """Extract the cat weight from a litter box visit payload."""
+
+    _ATTRIBUTE_NAME = "weight"
+    native_unit = "g"
+
+
+class CatLitterBoxDurationRawWrapper(_CatLitterBoxRawWrapper):
+    """Extract the duration from a litter box visit payload."""
+
+    _ATTRIBUTE_NAME = "duration"
+    native_unit = "s"
 
 
 class ElectricityCurrentJsonWrapper(DPCodeJsonDictAttributeWrapper):
