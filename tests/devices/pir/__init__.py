@@ -1,1 +1,1 @@
-"""Tests for Tuya PIR category (motion sensor) quirks.""".
+"""Tests for Tuya PIR category (motion sensor) quirks."""
