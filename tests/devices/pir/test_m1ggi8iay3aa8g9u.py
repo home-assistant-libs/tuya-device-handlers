@@ -11,14 +11,19 @@ from tuya_device_handlers.type_information import IntegerTypeInformation
 def test_quirk_adds_humidity_and_illuminance(
     filled_quirks_registry: QuirksRegistry,
 ) -> None:
-    """Verify humidity_value and illuminance_value without and with the quirk."""
+    """Verify humidity and illuminance datapoints with and without quirk."""
     device = create_device("pir_m1ggi8iay3aa8g9u.json")
 
     with patch.dict(TUYA_QUIRKS_REGISTRY._quirks, clear=True):
         assert "humidity_value" not in device.status_range
         assert "illuminance_value" not in device.status_range
-        assert IntegerTypeInformation.find_dpcode(device, "humidity_value") is None
-        assert IntegerTypeInformation.find_dpcode(device, "illuminance_value") is None
+        assert (
+            IntegerTypeInformation.find_dpcode(device, "humidity_value") is None
+        )
+        assert (
+            IntegerTypeInformation.find_dpcode(device, "illuminance_value")
+            is None
+        )
 
     filled_quirks_registry.initialise_device_quirk(device)
 
